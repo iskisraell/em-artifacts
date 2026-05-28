@@ -414,14 +414,14 @@
       color: var(--text); font-size: 14px;
     }
 
-    /* Article reveal animation */
-    article { opacity: 0; transform: translateY(20px); animation: cardReveal .5s ease forwards; }
-    article:nth-child(1) { animation-delay: .05s; }
-    article:nth-child(2) { animation-delay: .10s; }
-    article:nth-child(3) { animation-delay: .15s; }
-    article:nth-child(4) { animation-delay: .20s; }
-    article:nth-child(5) { animation-delay: .25s; }
-    article:nth-child(6) { animation-delay: .30s; }
+    /* Card reveal animation — only for grid/problem-strip articles, NOT tab panels */
+    .grid > article.card, .problem-strip > article.problem-card { opacity: 0; transform: translateY(20px); animation: cardReveal .5s ease forwards; }
+    .grid > article:nth-child(1) { animation-delay: .05s; }
+    .grid > article:nth-child(2) { animation-delay: .10s; }
+    .grid > article:nth-child(3) { animation-delay: .15s; }
+    .grid > article:nth-child(4) { animation-delay: .20s; }
+    .grid > article:nth-child(5) { animation-delay: .25s; }
+    .grid > article:nth-child(6) { animation-delay: .30s; }
 
     @keyframes cardReveal {
       from { opacity: 0; transform: translateY(20px); }
@@ -478,38 +478,38 @@
     </section>
 
     <!-- STICKY NAV -->
-    <nav class="nav" aria-label="Navegacao">
+    <nav class="nav" aria-label="Navegação">
       <a href="#contexto">Contexto</a>
       <a href="#pipeline">Pipeline</a>
       <a href="#stack">Stack</a>
       <a href="#diagrama">Diagrama UML</a>
       <a href="#fases">Fases</a>
-      <a href="#proximos-passos">Proximos passos</a>
+      <a href="#próximos-passos">Próximos passos</a>
     </nav>
 
     <!-- CONTEXTO -->
     <section id="contexto">
       <div class="head">
         <h2>Por que este projeto existe.</h2>
-        <p>Separamos a captura de campo do saIA para manter cada sistema com responsabilidade clara e latencia previsivel.</p>
+        <p>Separamos a captura de campo do saIA para manter cada sistema com responsabilidade clara e latência previsível.</p>
       </div>
       <div class="problem-strip">
         <article class="problem-card">
           <span class="mini-label">Problema</span>
           <h3>Auditoria manual de face OOH</h3>
-          <p>Hoje, identificar quais faces Eletromidia estao visiveis nas rotas depende de captura manual ou processos nao estruturados.</p>
+          <p>Hoje, identificar quais faces Eletromidia estão visíveis nas rotas depende de captura manual ou processos não estruturados.</p>
         </article>
         <div class="problem-arrow">&rarr;</div>
         <article class="problem-card bad">
           <span class="mini-label">Impacto</span>
-          <h3>Lento, caro, sem metrica</h3>
-          <p>Sem um pipeline automatizado, nao ha benchmark de precisao, recall ou falsos positivos. Toda analise e ad-hoc.</p>
+          <h3>Lento, caro, sem métrica</h3>
+          <p>Sem um pipeline automatizado, não há benchmark de precisão, recall ou falsos positivos. Toda análise é ad-hoc.</p>
         </article>
         <div class="problem-arrow">&rarr;</div>
         <article class="problem-card fix">
-          <span class="mini-label">Solucao</span>
+          <span class="mini-label">Solução</span>
           <h3>Pipeline edge-first com replay benchmark</h3>
-          <p>Camera no carro captura a cada 2&ndash;5s, detector local filtra candidatos, sorter ranqueia contra catalogo conhecido. So positivos sobem para nuvem.</p>
+          <p>Câmera no carro captura a cada 2&ndash;5s, detector local filtra candidatos, sorter ranqueia contra catálogo conhecido. Só positivos sobem para nuvem.</p>
         </article>
       </div>
     </section>
@@ -518,14 +518,14 @@
     <section>
       <div class="grid">
         <article class="card span-6">
-          <span class="pill purple" style="margin-bottom:10px">separacao de responsabilidade</span>
+          <span class="pill purple" style="margin-bottom:10px">separação de responsabilidade</span>
           <h3>Edge Vision &ne; saIA</h3>
-          <p>O saIA faz auditoria visual estruturada e raciocinio multimodal. O Edge Vision faz captura, filtragem e ranqueamento de baixa latencia na ponta. Os projetos podem compartilhar contratos e padroes de cloud review, mas tem donos diferentes.</p>
+          <p>O saIA faz auditoria visual estruturada e raciocínio multimodal. O Edge Vision faz captura, filtragem e ranqueamento de baixa latência na ponta. Os projetos podem compartilhar contratos e padrões de cloud review, mas têm donos diferentes.</p>
         </article>
         <article class="card span-6">
           <span class="pill orange" style="margin-bottom:10px">estado atual</span>
-          <h3>Planejamento completo, zero codigo</h3>
-          <p>Arquitetura, PRD, protocolo de benchmark, dataset inicial, diagrama UML e decisoes de stack estao todos documentados no Obsidian. O proximo passo e criar o repositorio Python e implementar a Fase 0 (esqueleto do pipeline de replay).</p>
+          <h3>Planejamento completo, zero código</h3>
+          <p>Arquitetura, PRD, protocolo de benchmark, dataset inicial, diagrama UML e decisões de stack estão todos documentados no Obsidian. O próximo passo e criar o repositório Python e implementar a Fase 0 (esqueleto do pipeline de replay).</p>
         </article>
       </div>
     </section>
@@ -534,41 +534,41 @@
     <section id="pipeline">
       <div class="head">
         <h2>O pipeline, etapa por etapa.</h2>
-        <p>Seis estagios independentes que rodam localmente no dispositivo de captura. A nuvem so recebe positivos.</p>
+        <p>Seis estágios independentes que rodam localmente no dispositivo de captura. A nuvem só recebe positivos.</p>
       </div>
       <div class="grid">
         <article class="card orange span-4">
-          <span class="pill black" style="margin-bottom:10px">estagio 1</span>
+          <span class="pill black" style="margin-bottom:10px">estágio 1</span>
           <h3>Captura</h3>
-          <p>Camera veicular ou replay de dataset. Captura a cada 2&ndash;5 segundos. Modo replay usa imagens pre-gravadas para benchmark reprodutivel.</p>
+          <p>Câmera veicular ou replay de dataset. Captura a cada 2&ndash;5 segundos. Modo replay usa imagens pre-gravadas para benchmark reprodutível.</p>
           <p style="margin-top:10px"><strong>Dataset inicial:</strong> 50 positivas, 100 negativas, 50 hard negatives. (12 imagens coletadas ate agora.)</p>
         </article>
         <article class="card span-4">
-          <span class="pill purple" style="margin-bottom:10px">estagio 2</span>
+          <span class="pill purple" style="margin-bottom:10px">estágio 2</span>
           <h3>Detector</h3>
-          <p>MobileNet/SSD-style via ONNX Runtime. Escaneia cada frame procurando faces OOH. Retorna bounding boxes com score de confianca e recorta as regioes encontradas.</p>
-          <p style="margin-top:10px"><strong>Objetivo:</strong> detector permissivo que nao perca candidatos. Falsos positivos serao filtrados pelo sorter.</p>
+          <p>MobileNet/SSD-style via ONNX Runtime. Escaneia cada frame procurando faces OOH. Retorna bounding boxes com score de confiança e recorta as regiões encontradas.</p>
+          <p style="margin-top:10px"><strong>Objetivo:</strong> detector permissivo que não perca candidatos. Falsos positivos serao filtrados pelo sorter.</p>
         </article>
         <article class="card span-4">
-          <span class="pill yellow" style="margin-bottom:10px">estagio 3</span>
+          <span class="pill yellow" style="margin-bottom:10px">estágio 3</span>
           <h3>Sorter</h3>
-          <p>OpenCLIP (licenca MIT) converte cada crop em embedding (~512 dimensoes) e compara contra catalogo de faces Eletromidia conhecidas. Retorna top-k matches com rank margin.</p>
-          <p style="margin-top:10px"><strong>Rank margin:</strong> distancia entre 1&ordm; e 2&ordm; match. Margem alta = resultado confiavel.</p>
+          <p>OpenCLIP (licença MIT) converte cada crop em embedding (~512 dimensões) e compara contra catálogo de faces Eletromidia conhecidas. Retorna top-k matches com rank margin.</p>
+          <p style="margin-top:10px"><strong>Rank margin:</strong> distância entre 1&ordm; e 2&ordm; match. Margem alta = resultado confiável.</p>
         </article>
       </div>
       <div class="grid" style="margin-top:12px">
         <article class="card span-4">
-          <span class="pill green" style="margin-bottom:10px">estagio 4</span>
+          <span class="pill green" style="margin-bottom:10px">estágio 4</span>
           <h3>Decisao</h3>
-          <p>Classifica cada deteccao em <strong>positiva</strong>, <strong>incerta</strong> ou <strong>negativa</strong>. Thresholds em YAML, nunca hardcoded. A categoria incerta cria dados de treino e evita esconder falhas de borda.</p>
+          <p>Classifica cada detecção em <strong>positiva</strong>, <strong>incerta</strong> ou <strong>negativa</strong>. Thresholds em YAML, nunca hardcoded. A categoria incerta cria dados de treino e evita esconder falhas de borda.</p>
         </article>
         <article class="card black span-4">
-          <span class="pill orange" style="margin-bottom:10px">estagio 5</span>
+          <span class="pill orange" style="margin-bottom:10px">estágio 5</span>
           <h3>Armazenamento</h3>
           <p>SQLite para metadados por frame/crop. Arquivos retidos em pastas por categoria. Enriquecimento com GPS + nearest-place via <code>places.csv</code> exportado do MySQL Eletromidia.</p>
         </article>
         <article class="card purple span-4">
-          <span class="pill yellow" style="margin-bottom:10px">estagio 6</span>
+          <span class="pill yellow" style="margin-bottom:10px">estágio 6</span>
           <h3>Nuvem</h3>
           <p>Segunda passagem apenas para positivos. Modelos mais potentes analisam em profundidade. Offline-first com sync posterior. Crash recovery integrado.</p>
         </article>
@@ -578,13 +578,13 @@
     <!-- STACK -->
     <section id="stack">
       <div class="head">
-        <h2>Stack tecnico e decisoes.</h2>
-        <p>Python no Windows para dev, ONNX Runtime como camada de portabilidade, Linux PC como primeiro alvo de producao.</p>
+        <h2>Stack técnico e decisões.</h2>
+        <p>Python no Windows para dev, ONNX Runtime como camada de portabilidade, Linux PC como primeiro alvo de produção.</p>
       </div>
       <div class="tabs" role="tablist">
         <button class="tab-button" role="tab" aria-selected="true" data-tab="tab-modelos">Modelos</button>
         <button class="tab-button" role="tab" aria-selected="false" data-tab="tab-runtime">Runtime & Infra</button>
-        <button class="tab-button" role="tab" aria-selected="false" data-tab="tab-decisoes">Decisoes chave</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="tab-decisoes">Decisões chave</button>
       </div>
       <article class="tab-panel active" id="tab-modelos" role="tabpanel">
         <div class="grid">
@@ -592,8 +592,8 @@
             <h3>Detector baseline</h3>
             <ul class="checklist">
               <li>MobileNet/SSD-style via <strong>ONNX Runtime CPU</strong></li>
-              <li>Quantizado se possivel (int8 para velocidade)</li>
-              <li>Generico para plumbing inicial; fine-tuned com dados Eletromidia depois</li>
+              <li>Quantizado se possível (int8 para velocidade)</li>
+              <li>Genérico para plumbing inicial; fine-tuned com dados Eletromidia depois</li>
               <li>ONNX Model Zoo: <code>ssd_mobilenet_v1_10</code> como referencia</li>
             </ul>
           </div>
@@ -601,8 +601,8 @@
             <h3>Sorter baseline</h3>
             <ul class="checklist">
               <li><strong>OpenCLIP</strong> (MIT) para embeddings de crops e referencias</li>
-              <li>Embeddings de ~512 dimensoes</li>
-              <li>Comparacao por similaridade de cosseno</li>
+              <li>Embeddings de ~512 dimensões</li>
+              <li>Comparação por similaridade de cosseno</li>
               <li>MobileCLIP como opcao de benchmark futuro (mais leve, mesma familia)</li>
             </ul>
           </div>
@@ -624,15 +624,15 @@
             <ul class="checklist">
               <li>Mesmos artefatos ONNX do Windows</li>
               <li>CPU-first; OpenVINO (Intel) e CUDA/TensorRT como aceleradores</li>
-              <li>Supervisao de processo, GPS, rotacao de logs</li>
+              <li>Supervisao de processo, GPS, rotação de logs</li>
             </ul>
           </div>
           <div class="card orange span-4">
             <h3>Futuro (Jetson)</h3>
             <ul class="checklist">
-              <li>Apenas se Linux PC nao atingir latencia necessaria</li>
-              <li>TensorRT para inferencia otimizada em GPU NVIDIA</li>
-              <li>Nao e dependencia para o POC inicial</li>
+              <li>Apenas se Linux PC não atingir latência necessária</li>
+              <li>TensorRT para inferência otimizada em GPU NVIDIA</li>
+              <li>Não é dependência para o POC inicial</li>
             </ul>
           </div>
         </div>
@@ -644,24 +644,24 @@
             <span class="pill green">correto</span>
           </div>
           <div class="change-item">
-            <div><strong>Windows dev, Linux deploy</strong><br><small>Python/OpenCV/ONNX rodam bem no Windows. Camera e supervisao de processo sao melhores no Linux.</small></div>
+            <div><strong>Windows dev, Linux deploy</strong><br><small>Python/OpenCV/ONNX rodam bem no Windows. Câmera e supervisão de processo são melhores no Linux.</small></div>
             <span class="pill green">correto</span>
           </div>
           <div class="change-item">
-            <div><strong>ONNX Runtime como boundary de inferencia</strong><br><small>Portabilidade Windows/Linux comprovada. Log de provider, hash de modelo e versao de preprocessing obrigatorios.</small></div>
+            <div><strong>ONNX Runtime como boundary de inferência</strong><br><small>Portabilidade Windows/Linux comprovada. Log de provider, hash de modelo e versao de preprocessing obrigatórios.</small></div>
             <span class="pill green">correto</span>
           </div>
           <div class="change-item">
-            <div><strong>Detector + Sorter (2 estagios)</strong><br><small>Menor latencia que modelo multimodal unico. Detector permissivo + sorter preciso. Ajuste: detector precisa de fine-tune com dados Eletromidia.</small></div>
+            <div><strong>Detector + Sorter (2 estágios)</strong><br><small>Menor latência que modelo multimodal único. Detector permissivo + sorter preciso. Ajuste: detector precisa de fine-tune com dados Eletromidia.</small></div>
             <span class="pill orange">correto com ajuste</span>
           </div>
           <div class="change-item">
-            <div><strong>OpenCLIP como sorter</strong><br><small>Bom para ranking de crops contra catalogo. Risco: similaridade CLIP nao e probabilidade calibrada. Expor top-k scores e rank margin.</small></div>
+            <div><strong>OpenCLIP como sorter</strong><br><small>Bom para ranking de crops contra catálogo. Risco: similaridade CLIP não é probabilidade calibrada. Expor top-k scores e rank margin.</small></div>
             <span class="pill yellow">validar cedo</span>
           </div>
           <div class="change-item">
-            <div><strong>Evitar componentes AGPL</strong><br><small>YOLO via Ultralytics so com licenca comercial ou enterprise. Stack base deve ser permissiva (MIT/Apache).</small></div>
-            <span class="pill purple">politica</span>
+            <div><strong>Evitar componentes AGPL</strong><br><small>YOLO via Ultralytics so com licença comercial ou enterprise. Stack base deve ser permissiva (MIT/Apache).</small></div>
+            <span class="pill purple">política</span>
           </div>
         </div>
       </article>
@@ -677,7 +677,7 @@
         <img src="media/01-uml-architecture.png" alt="Diagrama UML da arquitetura Edge Vision" loading="lazy">
       </article>
       <details style="margin-top:12px">
-        <summary>Glossario de termos tecnicos</summary>
+        <summary>Glossário de termos técnicos</summary>
         <div class="details-body">
           <div class="grid">
             <div class="card span-6" style="padding:14px">
@@ -692,10 +692,10 @@
             <div class="card span-6" style="padding:14px">
               <ul class="checklist">
                 <li><strong>Top-k:</strong> os K resultados mais similares (ex: top-3)</li>
-                <li><strong>Rank Margin:</strong> distancia entre 1o e 2o match; alta = confiavel</li>
-                <li><strong>p50 / p95:</strong> percentis de latencia; p95 cobre 95% dos casos</li>
+                <li><strong>Rank Margin:</strong> distância entre 1o e 2o match; alta = confiável</li>
+                <li><strong>p50 / p95:</strong> percentis de latência; p95 cobre 95% dos casos</li>
                 <li><strong>Drop Policy:</strong> descarta frames antigos quando a fila enche</li>
-                <li><strong>Precision / Recall:</strong> precisao = acertos entre positivos; recall = positivos reais encontrados</li>
+                <li><strong>Precision / Recall:</strong> precisão = acertos entre positivos; recall = positivos reais encontrados</li>
               </ul>
             </div>
           </div>
@@ -707,25 +707,25 @@
     <section id="fases">
       <div class="head">
         <h2>Fases de desenvolvimento.</h2>
-        <p>Oito fases sequenciais do POC a veiculo pronto. Comecamos com replay benchmark antes de qualquer dependencia de camera ao vivo.</p>
+        <p>Oito fases sequenciais do POC a veículo pronto. Começamos com replay benchmark antes de qualquer dependência de camera ao vivo.</p>
       </div>
       <div class="grid">
         <article class="card span-4">
           <span class="pill black" style="margin-bottom:10px">Fase 0</span>
           <h3>Project Setup</h3>
-          <p>Criar repo Python com venv, OpenCV, ONNX Runtime, SQLite e CLI runner basico. Esqueleto de pastas: <code>src/capture/</code>, <code>src/models/</code>, <code>src/pipeline/</code>, <code>src/storage/</code>, <code>src/geo/</code>, <code>src/benchmarks/</code>.</p>
+          <p>Criar repo Python com venv, OpenCV, ONNX Runtime, SQLite e CLI runner básico. Esqueleto de pastas: <code>src/capture/</code>, <code>src/models/</code>, <code>src/pipeline/</code>, <code>src/storage/</code>, <code>src/geo/</code>, <code>src/benchmarks/</code>.</p>
           <span class="badge red" style="margin-top:8px">nao iniciado</span>
         </article>
         <article class="card span-4">
           <span class="pill purple" style="margin-bottom:10px">Fase 1</span>
           <h3>Dataset de Replay</h3>
-          <p>Criar dataset fixo com 50 positivas, 100 negativas, 50 hard negatives + <code>labels.csv</code>, <code>places.csv</code> e <code>manifest.json</code>. 12 imagens coletadas. Essencial para benchmark reprodutivel.</p>
+          <p>Criar dataset fixo com 50 positivas, 100 negativas, 50 hard negatives + <code>labels.csv</code>, <code>places.csv</code> e <code>manifest.json</code>. 12 imagens coletadas. Essencial para benchmark reprodutível.</p>
           <span class="badge orange" style="margin-top:8px">em coleta</span>
         </article>
         <article class="card span-4">
           <span class="pill yellow" style="margin-bottom:10px">Fase 2</span>
           <h3>Detector Baseline</h3>
-          <p>Carregar detector ONNX, rodar sobre dataset de replay, salvar bounding boxes, scores e latencia p50/p95. Usar para gerar crops para o sorter.</p>
+          <p>Carregar detector ONNX, rodar sobre dataset de replay, salvar bounding boxes, scores e latência p50/p95. Usar para gerar crops para o sorter.</p>
           <span class="badge red" style="margin-top:8px">nao iniciado</span>
         </article>
       </div>
@@ -744,8 +744,8 @@
         </article>
         <article class="card span-4">
           <span class="pill orange" style="margin-bottom:10px">Fase 5</span>
-          <h3>Camera ao Vivo</h3>
-          <p>OpenCV VideoCapture com intervalo de 2&ndash;5s. Fila separada para inferencia com drop policy. Soak test de 30&ndash;60 min.</p>
+          <h3>Câmera ao Vivo</h3>
+          <p>OpenCV VideoCapture com intervalo de 2&ndash;5s. Fila separada para inferência com drop policy. Soak test de 30&ndash;60 min.</p>
           <span class="badge red" style="margin-top:8px">nao iniciado</span>
         </article>
       </div>
@@ -753,13 +753,13 @@
         <article class="card purple span-6">
           <span class="pill yellow" style="margin-bottom:10px">Fase 6</span>
           <h3>Linux Parity</h3>
-          <p>Rodar mesmo dataset e mesmos artefatos ONNX no Linux. Comparar outputs e latencia. CPU-first; OpenVINO/CUDA como opcionais.</p>
+          <p>Rodar mesmo dataset e mesmos artefatos ONNX no Linux. Comparar outputs e latência. CPU-first; OpenVINO/CUDA como opcionais.</p>
           <span class="badge red" style="margin-top:8px">nao iniciado</span>
         </article>
         <article class="card black span-6">
           <span class="pill green" style="margin-bottom:10px">Fase 7</span>
           <h3>Veiculo-Ready</h3>
-          <p>Plano de montagem, alimentacao estavel, GPS, politica de armazenamento local, offline-first, rotacao de logs, crash recovery, export de positivos.</p>
+          <p>Plano de montagem, alimentação estável, GPS, política de armazenamento local, offline-first, rotação de logs, crash recovery, export de positivos.</p>
           <span class="badge red" style="margin-top:8px">nao iniciado</span>
         </article>
       </div>
@@ -769,7 +769,7 @@
     <section>
       <div class="head">
         <h2>Como medimos o sucesso.</h2>
-        <p>Cinco rodadas de benchmark independentes. Cada uma responde perguntas especificas sobre o pipeline.</p>
+        <p>Cinco rodadas de benchmark independentes. Cada uma responde perguntas específicas sobre o pipeline.</p>
       </div>
       <div class="table-wrap">
         <table>
@@ -783,27 +783,27 @@
           <tbody>
             <tr>
               <td><strong>Run A: Detector</strong></td>
-              <td>Recall de deteccao, falsos candidatos por imagem, latencia p50/p95</td>
-              <td>p95 abaixo do intervalo de captura; hard negatives inspecionaveis</td>
+              <td>Recall de detecção, falsos candidatos por imagem, latência p50/p95</td>
+              <td>p95 abaixo do intervalo de captura; hard negatives inspecionáveis</td>
             </tr>
             <tr>
               <td><strong>Run B: Sorter</strong></td>
               <td>Top-1/3 accuracy, rank margin, falsos matches em hard negatives</td>
-              <td>Ranking visivelmente util para positivas faceis; incertezas identificaveis</td>
+              <td>Ranking visivelmenteútilpara positivas fáceis; incertezas identificáveis</td>
             </tr>
             <tr>
               <td><strong>Run C: End-to-End</strong></td>
-              <td>Precision, recall, FPR, FNR, latencia total, disco, falhas</td>
-              <td>Output reprodutivel; separa positivo/incerto/negativo; metadados para debug</td>
+              <td>Precision, recall, FPR, FNR, latência total, disco, falhas</td>
+              <td>Output reprodutível; separa positivo/incerto/negativo; metadados para debug</td>
             </tr>
             <tr>
               <td><strong>Run D: Live Soak</strong></td>
               <td>Frames capturados, frames dropados, queue lag, crashes</td>
-              <td>30 min sem crash; captura nao bloqueia permanentemente</td>
+              <td>30 min sem crash; captura não bloqueia permanentemente</td>
             </tr>
             <tr>
               <td><strong>Run E: Win vs Linux</strong></td>
-              <td>Diferencas de output, drift numerico, delta de latencia</td>
+              <td>Diferencas de output, drift numérico, delta de latência</td>
               <td>Decisoes equivalentes na maioria das imagens; drift documentado</td>
             </tr>
           </tbody>
@@ -812,7 +812,7 @@
     </section>
 
     <!-- PROXIMOS PASSOS -->
-    <section id="proximos-passos">
+    <section id="próximos-passos">
       <div class="head">
         <h2>Para destravar o desenvolvimento.</h2>
         <p>Acoes concretas e perguntas abertas que precisam de resposta para o projeto sair do papel.</p>
@@ -822,11 +822,11 @@
           <h3>Acoes imediatas</h3>
           <div class="change-list" style="margin-top:10px">
             <div class="change-item" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)">
-              <div><strong>1. Criar repo Python</strong><br><small>Estrutura de pastas, venv, OpenCV, ONNX Runtime, SQLite, CLI runner basico.</small></div>
+              <div><strong>1. Criar repo Python</strong><br><small>Estrutura de pastas, venv, OpenCV, ONNX Runtime, SQLite, CLI runner básico.</small></div>
               <span class="badge orange">Fase 0</span>
             </div>
             <div class="change-item" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)">
-              <div><strong>2. Coletar dataset minimo</strong><br><small>50 positivas, 100 negativas, 50 hard negatives + labels. So temos 12 imagens.</small></div>
+              <div><strong>2. Coletar dataset mínimo</strong><br><small>50 positivas, 100 negativas, 50 hard negatives + labels. Só temos 12 imagens.</small></div>
               <span class="badge orange">Fase 1</span>
             </div>
             <div class="change-item" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)">
@@ -844,7 +844,7 @@
           <details style="margin-top:10px">
             <summary>Qual objeto exato o detector deve aprender?</summary>
             <div class="details-body">
-              <p>Face OOH inteira? Tela? Estrutura do painel? Asset? Regiao mais ampla de signage? A resposta define o escopo de anotacao do dataset.</p>
+              <p>Face OOH inteira? Tela? Estrutura do painel? Asset? Regiao mais ampla de signage? A resposta define o escopo de anotação do dataset.</p>
             </div>
           </details>
           <details>
@@ -856,7 +856,7 @@
           <details>
             <summary>Temos imagens de rota com metadados GPS?</summary>
             <div class="details-body">
-              <p>Imagens com GPS embutido aceleram o enriquecimento e eliminam a necessidade de uma fonte externa de localizacao no POC inicial.</p>
+              <p>Imagens com GPS embutido aceleram o enriquecimento e eliminam a necessidade de uma fonte externa de localização no POC inicial.</p>
             </div>
           </details>
           <details>
@@ -868,7 +868,7 @@
           <details>
             <summary>Licenca de detector enterprise e aceitavel ou stack 100% permissiva?</summary>
             <div class="details-body">
-              <p>YOLO/Ultralytics tem licenca AGPL. Se for aceitavel pagar enterprise, o leque de detectores expande significativamente.</p>
+              <p>YOLO/Ultralytics tem licença AGPL. Se for aceitavel pagar enterprise, o leque de detectores expande significativamente.</p>
             </div>
           </details>
         </div>
@@ -880,7 +880,7 @@
       <div class="callout">
         <div>
           <h3>O Edge Vision esta pronto para sair do papel.</h3>
-          <p>Planejamento solido, arquitetura validada, metricas definidas. O que falta e a primeira linha de codigo e o dataset minimo. O investimento inicial e baixo: um repo Python, 200 imagens rotuladas e um CLI runner. O resto e iteracao.</p>
+          <p>Planejamento sólido, arquitetura validada, métricas definidas. O que falta é a primeira linha de código e o dataset mínimo. O investimento inicial é baixo: um repo Python, 200 imagens rotuladas e um CLI runner. O resto e iteração.</p>
         </div>
         <span class="pill black">kick off</span>
       </div>
