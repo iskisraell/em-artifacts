@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | Curadoria de skills — de 118 para 30</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--surface);
+      color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--white); color: var(--purple);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+
+    main { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 24px 0 56px; }
+    section { margin-top: 22px; }
+    h1, h2, h3 { margin-top: 0; font-weight: 800; }
+
+    h1 { max-width: 980px; margin-bottom: 20px; font-size: clamp(42px, 7.5vw, 90px); line-height: .92; letter-spacing: 0; }
+    h2 { max-width: 820px; margin-bottom: 0; font-size: clamp(28px, 3.6vw, 46px); line-height: 1.04; }
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+
+    /* Hero */
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius); background: var(--black); color: var(--white);
+      display: grid; align-content: space-between; gap: 48px;
+      overflow: hidden; position: relative; isolation: isolate;
+    }
+
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 34px;
+    }
+
+    .hero::before {
+      right: clamp(116px, 15vw, 220px); bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px); background: var(--orange); transform: rotate(10deg);
+    }
+
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px); bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px); background: var(--purple); transform: rotate(-8deg);
+    }
+
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 22px; padding: 7px 11px; border-radius: 999px; background: var(--yellow); color: var(--black); font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: .08em; }
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* Pills */
+    .pill { display: inline-flex; align-items: center; min-height: 32px; padding: 7px 11px; border-radius: 999px; font-size: 13px; font-weight: 800; line-height: 1; white-space: normal; }
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+
+    /* Nav */
+    .nav { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; padding: 10px 0; background: var(--surface); }
+    .nav a, .tab-button { border: 1px solid var(--black); border-radius: 999px; background: var(--white); cursor: pointer; font: inherit; font-weight: 800; text-decoration: none; white-space: normal; text-align: center; transition: background .15s, color .15s; }
+    .nav a { padding: 10px 13px; font-size: 14px; }
+    .tab-button { padding: 11px 14px; font-size: 14px; }
+    .nav a:hover, .tab-button:hover, .tab-button[aria-selected="true"] { background: var(--black); color: var(--white); }
+
+    /* Grid */
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; min-width: 0; }
+    .card { min-width: 0; min-height: 100%; padding: clamp(18px, 2.4vw, 28px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); overflow: hidden; transition: transform .18s, box-shadow .18s; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .card.black, .card.purple, .card.orange, .card.green { border-color: transparent; color: var(--white); }
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.pink { background: var(--pink); }
+    .card.green { background: var(--green); }
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code { color: var(--black); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric { margin-bottom: 6px; font-size: clamp(44px, 8vw, 86px); font-weight: 800; line-height: .86; }
+
+    /* Head */
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 14px; }
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    /* Tabs */
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Flow board */
+    .flow-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; align-items: stretch; min-width: 0; }
+    .flow-lane { min-width: 0; display: grid; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); transition: transform .15s; }
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.removed { border-color: var(--red); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.kept { border-color: var(--purple); }
+    .flow-node { min-width: 0; padding: 12px; border-radius: 12px; background: var(--muted); }
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+
+    /* Split */
+    .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; min-width: 0; }
+    .compare { min-width: 0; min-height: 180px; padding: 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--white); }
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+
+    /* Syntax box */
+    .syntax-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; min-width: 0; }
+    .syntax-box { min-width: 0; padding: 14px; border-radius: 14px; background: var(--black); color: var(--white); overflow: hidden; }
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code { display: block; width: 100%; max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; background: transparent; color: var(--yellow); padding: 0; }
+
+    /* Checklist */
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+
+    /* Details */
+    details { border: 1px solid var(--line); border-radius: 14px; background: var(--white); overflow: hidden; }
+    details + details { margin-top: 8px; }
+    summary { cursor: pointer; padding: 16px 18px; font-weight: 800; list-style: none; transition: background .15s; }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    /* Change list */
+    .change-list { display: grid; gap: 8px; }
+    .change-item { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); transition: transform .15s, box-shadow .15s; }
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { background: var(--black); color: var(--white); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; line-height: 1; }
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+
+    /* Callout */
+    .callout { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius); background: var(--yellow); }
+
+    /* Rail */
+    .rail { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; min-width: 0; }
+    .rail-step { min-width: 0; padding: 14px; border-radius: 14px; background: var(--black); color: var(--white); transition: transform .15s; }
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+
+    /* Problem strip */
+    .problem-strip { display: grid; grid-template-columns: 1fr 92px 1fr 92px 1fr; gap: 12px; align-items: stretch; }
+    .problem-card { min-height: 172px; border-radius: var(--radius); padding: 20px; display: grid; align-content: space-between; border: 1px solid var(--line); background: var(--white); position: relative; overflow: hidden; }
+    .problem-card:before { content: ""; position: absolute; right: -34px; top: -34px; width: 96px; height: 96px; border-radius: 50%; background: var(--yellow); opacity: .7; }
+    .problem-card h3 { position: relative; z-index: 1; }
+    .problem-card p { position: relative; z-index: 1; margin-bottom: 0; }
+    .problem-card.bad { background: var(--black); color: var(--white); border-color: var(--black); }
+    .problem-card.bad p { color: #D4D4D4; }
+    .problem-card.fix { background: var(--orange); border-color: var(--orange); }
+    .problem-card.fix p { color: var(--black); }
+    .problem-card.fix::before { display: none; }
+    .problem-arrow { border-radius: var(--radius); background: var(--purple); color: var(--white); display: grid; place-items: center; font-size: 34px; font-weight: 800; }
+    .mini-label { width: fit-content; padding: 6px 10px; border-radius: 999px; background: var(--muted); color: var(--black); font-size: 11px; font-weight: 800; text-transform: uppercase; position: relative; z-index: 1; }
+    .bad .mini-label { background: var(--red); color: var(--white); }
+    .fix .mini-label { background: var(--black); color: var(--white); }
+
+    /* Tags */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .tag.purple { background: rgba(78,24,255,.12); color: var(--purple); }
+    .tag.green { background: rgba(61,119,0,.14); color: var(--green); }
+    .tag.yellow { background: var(--yellow); color: var(--black); }
+    .tag.orange { background: rgba(255,79,0,.12); color: var(--orange); }
+
+    /* Demo */
+    .filter-demo { display: grid; gap: 14px; padding: 20px; border-radius: 16px; background: var(--muted); border: 1px solid var(--line); }
+    .filter-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+    .filter-chip { padding: 8px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--white); font-weight: 700; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; }
+    .filter-chip:hover { border-color: var(--orange); }
+    .filter-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .filter-payload { padding: 14px; border-radius: 14px; background: var(--black); color: var(--yellow); font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; white-space: pre-wrap; overflow-x: auto; min-height: 80px; transition: all .2s; }
+    .filter-label { font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+
+    /* Counter */
+    .counter { display: inline-block; transition: all .3s ease; }
+    .counter.bump { transform: scale(1.15); color: var(--orange); }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; border-radius: 14px; background: var(--black); color: var(--white); font-weight: 700; font-size: 14px; z-index: 100; opacity: 0; transform: translateY(20px); transition: all .3s ease; pointer-events: none; }
+    .toast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* Skill tree list */
+    .skill-list { display: grid; gap: 8px; }
+    .skill-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); transition: transform .15s; }
+    .skill-row:hover { transform: translateX(3px); }
+    .skill-row strong { font-size: 15px; }
+    .skill-row small { display: block; color: var(--text); font-size: 13px; margin-top: 2px; }
+
+    /* Category card */
+    .cat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .cat-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+    footer { margin-top: 22px; padding: 20px 0 0; color: var(--text); font-size: 14px; }
+
+    @media (max-width: 920px) {
+      .head, .callout, .split { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr 1fr; }
+      .change-item { grid-template-columns: 1fr; }
+      .problem-arrow { min-height: 54px; transform: rotate(90deg); }
+      .skill-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .hero::before { right: 62px; width: 260px; }
+      .hero::after { width: 210px; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr; }
+      .card, .flow-lane, .compare, details { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div>
+        <span class="eyebrow">Agentes &middot; Curadoria de skills &middot; 28/05/2026</span>
+        <h1>De 118 skills para 30. A curadoria que limpou o contexto dos agentes.</h1>
+        <p>Cada skill carregado no system prompt custa tokens. Com 118 skills &mdash; 65 deles de Google Workspace que nunca eram usados &mdash; o contexto estava poluído. Esta sessão reduziu 75% e ainda pariu um skill novo.</p>
+      </div>
+      <div class="hero-bar">
+        <span class="pill orange">118 → 30 skills</span>
+        <span class="pill purple">75% de redução</span>
+        <span class="pill yellow">eletromidia-artifact</span>
+        <span class="pill green">contexto limpo</span>
+        <span class="pill black">89 removidos</span>
+      </div>
+    </section>
+
+    <!-- NAV -->
+    <nav class="nav" aria-label="Navegação">
+      <a href="#contexto">Contexto</a>
+      <a href="#problema">Problema</a>
+      <a href="#removidos">Removidos</a>
+      <a href="#mantidos">Mantidos</a>
+      <a href="#novo-skill">Novo skill</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#hub">Hub page</a>
+      <a href="#demo">Demo</a>
+    </nav>
+
+    <!-- CONTEXTO -->
+    <section id="contexto">
+      <div class="head">
+        <h2>O ponto de partida: 118 skills, 3 diretórios.</h2>
+        <p>Skills instalados via <code>bunx skills add</code> e replicados entre <code>.claude/skills</code> e <code>.agents/skills</code>. Nenhum filtro, nenhuma curadoria.</p>
+      </div>
+      <div class="grid">
+        <article class="card black span-4">
+          <div class="metric" style="color:var(--white);">118</div>
+          <p style="color:rgba(255,255,255,.72);">skills totais instalados entre <code>.claude/</code> e <code>.agents/</code></p>
+        </article>
+        <article class="card orange span-4">
+          <div class="metric" style="color:var(--white);">65</div>
+          <p style="color:rgba(255,255,255,.9);">skills Google Workspace &mdash; gws, recipes, personas &mdash; nunca usados</p>
+        </article>
+        <article class="card purple span-4">
+          <div class="metric" style="color:var(--white);">3</div>
+          <p style="color:rgba(255,255,255,.8);">agentes consumindo o mesmo pool: OpenCode, Claude Code, Codex</p>
+        </article>
+      </div>
+      <div class="grid" style="margin-top:12px;">
+        <article class="card span-6">
+          <h3>Como chegou nisso</h3>
+          <p>Instalação cumulativa via <code>bunx skills add</code> sem nunca remover. O ecossistema de skills do Antigravity empurrou pacotes completos &mdash; o Google Workspace veio com 15 core skills, 5 workflows, 35 recipes e 10 personas. Tudo junto, sem distinção do que realmente seria usado.</p>
+        </article>
+        <article class="card span-6">
+          <h3>O custo invisível</h3>
+          <p>Cada skill no system prompt ocupa tokens. Com 118 skills, mesmo que a maioria nunca fosse invocada, seus metadados (nome + descrição) já pesavam no contexto antes de qualquer pergunta. Isso significa menos espaço para o código real e o histórico da conversa.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROBLEMA -->
+    <section id="problema">
+      <div class="head">
+        <h2>A cadeia: instalação cega &rarr; contexto poluído &rarr; respostas piores.</h2>
+        <p>Não era questão de espaço em disco. Era token budget. Cada skill não usado roubava espaço de algo que importa.</p>
+      </div>
+      <div class="problem-strip">
+        <article class="problem-card">
+          <span class="mini-label">Problema</span>
+          <h3>Instalação sem curadoria</h3>
+          <p>Pacotes inteiros de skills eram instalados sem avaliar se 100% do conteúdo seria usado. GWS sozinho trouxe 65 skills.</p>
+        </article>
+        <div class="problem-arrow">&rarr;</div>
+        <article class="problem-card bad">
+          <span class="mini-label">Impacto</span>
+          <h3>Contexto poluído</h3>
+          <p>Metadados de 118 skills no system prompt. Menos tokens para o código da sessão. Respostas menos precisas em projetos grandes como Operações.</p>
+        </article>
+        <div class="problem-arrow">&rarr;</div>
+        <article class="problem-card fix">
+          <span class="mini-label">Solução</span>
+          <h3>Curadoria guiada por uso real</h3>
+          <p>Perguntar por stack, eliminar o que nunca foi usado, manter só o que entrega valor. Resultado: 30 skills, 75% menor.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- REMOVIDOS -->
+    <section id="removidos">
+      <div class="head">
+        <h2>89 skills removidos em 4 categorias.</h2>
+        <p>Agrupados por família. Todos foram deletados de <code>.claude/skills</code> e <code>.agents/skills</code> simultaneamente.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Categorias removidas">
+        <button class="tab-button" role="tab" aria-selected="true" data-tab="t-gws">GWS Core (32)</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="t-wf">Workflows (5)</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="t-recipe">Recipes (35)</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="t-persona">Personas (10)</button>
+      </div>
+
+      <article class="tab-panel active" id="t-gws" role="tabpanel">
+        <div class="card span-12">
+          <div class="skill-list">
+            <div class="skill-row"><div><strong>gws-admin-reports</strong><small>Relatórios administrativos do Google Workspace</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-calendar, gws-calendar-agenda, gws-calendar-insert</strong><small>Gestão de calendário e agendamento</small></div><span class="badge red">3 skills</span></div>
+            <div class="skill-row"><div><strong>gws-chat, gws-chat-send</strong><small>Google Chat e envio de mensagens</small></div><span class="badge red">2 skills</span></div>
+            <div class="skill-row"><div><strong>gws-classroom</strong><small>Google Classroom</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-docs, gws-docs-write</strong><small>Criação e edição de documentos</small></div><span class="badge red">2 skills</span></div>
+            <div class="skill-row"><div><strong>gws-drive, gws-drive-upload</strong><small>Gerenciamento de arquivos no Drive</small></div><span class="badge red">2 skills</span></div>
+            <div class="skill-row"><div><strong>gws-events, gws-events-renew, gws-events-subscribe</strong><small>Eventos e inscrições</small></div><span class="badge red">3 skills</span></div>
+            <div class="skill-row"><div><strong>gws-forms</strong><small>Google Forms</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-gmail, gws-gmail-send, gws-gmail-triage, gws-gmail-watch</strong><small>Email e triagem de caixa de entrada</small></div><span class="badge red">4 skills</span></div>
+            <div class="skill-row"><div><strong>gws-keep</strong><small>Google Keep</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-meet</strong><small>Google Meet</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-modelarmor + 3 sub-skills</strong><small>Sanitização de prompts para IA</small></div><span class="badge red">4 skills</span></div>
+            <div class="skill-row"><div><strong>gws-people</strong><small>Google People / Contatos</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-shared</strong><small>Utilitários compartilhados GWS</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-sheets, gws-sheets-append, gws-sheets-read</strong><small>Planilhas Google</small></div><span class="badge red">3 skills</span></div>
+            <div class="skill-row"><div><strong>gws-slides</strong><small>Google Slides</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-tasks</strong><small>Google Tasks</small></div><span class="badge red">removido</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="t-wf" role="tabpanel">
+        <div class="card span-12">
+          <div class="skill-list">
+            <div class="skill-row"><div><strong>gws-workflow</strong><small>Orquestrador de workflows GWS</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-workflow-email-to-task</strong><small>Converter email em tarefa</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-workflow-file-announce</strong><small>Anunciar arquivo novo no time</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-workflow-meeting-prep</strong><small>Preparar material de reunião</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-workflow-standup-report</strong><small>Gerar relatório de standup</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>gws-workflow-weekly-digest</strong><small>Resumo semanal automático</small></div><span class="badge red">removido</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="t-recipe" role="tabpanel">
+        <div class="card span-12">
+          <p style="margin-bottom:14px;">35 receitas cobrindo operações comuns do Google Workspace: automação de planilhas, criação de eventos, filtros de email, organização de Drive, formulários e apresentações.</p>
+          <div class="syntax-box" style="margin-top:0;">
+            <code>recipe-backup-sheet-as-csv, recipe-batch-invite-to-event, recipe-block-focus-time,
+recipe-bulk-download-folder, recipe-collect-form-responses, recipe-compare-sheet-tabs,
+recipe-copy-sheet-for-new-month, recipe-create-classroom-course, recipe-create-doc-from-template,
+recipe-create-events-from-sheet, recipe-create-expense-tracker, recipe-create-feedback-form,
+recipe-create-gmail-filter, recipe-create-meet-space, recipe-create-presentation,
+recipe-create-shared-drive, recipe-create-task-list, recipe-create-vacation-responder,
+recipe-draft-email-from-doc, recipe-email-drive-link, recipe-find-free-time,
+recipe-find-large-files, recipe-forward-labeled-emails, recipe-generate-report-from-sheet,
+recipe-label-and-archive-emails, recipe-log-deal-update, recipe-organize-drive-folder,
+recipe-plan-weekly-schedule, recipe-post-mortem-setup, recipe-reschedule-meeting,
+recipe-review-meet-participants, recipe-review-overdue-tasks, recipe-save-email-attachments,
+recipe-save-email-to-doc, recipe-schedule-recurring-event, recipe-send-team-announcement,
+recipe-share-doc-and-notify, recipe-share-event-materials, recipe-share-folder-with-team,
+recipe-sync-contacts-to-sheet, recipe-watch-drive-changes</code>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="t-persona" role="tabpanel">
+        <div class="card span-12">
+          <div class="skill-list">
+            <div class="skill-row"><div><strong>persona-content-creator</strong><small>Criação de conteúdo e copywriting</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-customer-support</strong><small>Suporte ao cliente</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-event-coordinator</strong><small>Coordenação de eventos</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-exec-assistant</strong><small>Assistente executivo</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-hr-coordinator</strong><small>Coordenação de RH</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-it-admin</strong><small>Administração de TI</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-project-manager</strong><small>Gestão de projetos</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-researcher</strong><small>Pesquisa e análise</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-sales-ops</strong><small>Operações de vendas</small></div><span class="badge red">removido</span></div>
+            <div class="skill-row"><div><strong>persona-team-lead</strong><small>Liderança de time</small></div><span class="badge red">removido</span></div>
+          </div>
+        </div>
+      </article>
+
+      <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <span class="pill red" id="counter-gws">32 gws core</span>
+        <span class="pill red" id="counter-wf">5 workflows</span>
+        <span class="pill red" id="counter-recipe">35 recipes</span>
+        <span class="pill red" id="counter-persona">10 personas</span>
+        <span class="pill black" style="margin-left:auto;" id="counter-total">89 removidos</span>
+      </div>
+    </section>
+
+    <!-- MANTIDOS -->
+    <section id="mantidos">
+      <div class="head">
+        <h2>30 skills mantidos. Organizados por função.</h2>
+        <p>Cada grupo foi validado contra uso real. Stacks que você reportou usar: Laravel, Vue, Convex, Remotion e SQLite/Tauri.</p>
+      </div>
+
+      <!-- Caveman -->
+      <div class="cat-header" style="margin-top:16px;">
+        <div class="cat-dot" style="background:var(--yellow);"></div>
+        <h3>Suite Caveman — comunicação compacta</h3>
+      </div>
+      <div class="grid">
+        <article class="card span-4"><h3>caveman</h3><p>Modo de comunicação ultra-comprimido. Reduz tokens em ~75% mantendo precisão técnica.</p><div class="tags"><span class="tag yellow">core</span></div></article>
+        <article class="card span-4"><h3>caveman-commit</h3><p>Mensagens de commit ultra-compactas. Conventional Commits, ≤50 chars no subject.</p><div class="tags"><span class="tag yellow">git</span></div></article>
+        <article class="card span-4"><h3>caveman-help</h3><p>Referência rápida de todos os modos e comandos caveman.</p><div class="tags"><span class="tag yellow">docs</span></div></article>
+        <article class="card span-4"><h3>caveman-review</h3><p>Code review ultra-comprimido. Um comentário por problema: local, causa, solução.</p><div class="tags"><span class="tag yellow">review</span></div></article>
+        <article class="card span-4"><h3>caveman-compress</h3><p>Comprime arquivos de memória (.md) para formato caveman. Preserva substância técnica.</p><div class="tags"><span class="tag yellow">compress</span></div></article>
+        <article class="card span-4"><h3>compress</h3><p>Versão standalone do compressor de arquivos de memória.</p><div class="tags"><span class="tag yellow">compress</span></div></article>
+      </div>
+
+      <!-- Stacks -->
+      <div class="cat-header" style="margin-top:24px;">
+        <div class="cat-dot" style="background:var(--purple);"></div>
+        <h3>Stacks de desenvolvimento</h3>
+      </div>
+      <div class="grid">
+        <article class="card purple span-4"><h3>Laravel (5 skills)</h3><p><code>laravel-blade</code>, <code>laravel-specialist</code>, <code>laravel-quality-checks</code>, <code>pest-testing</code>, <code>spatie-laravel-php</code></p></article>
+        <article class="card green span-4"><h3>Vue (2 skills)</h3><p><code>vue</code>, <code>vue-best-practices</code>. Composition API, SFCs, Volar, TypeScript.</p></article>
+        <article class="card span-4"><h3>Convex (2 skills)</h3><p><code>convex</code>, <code>convex-best-practices</code>. Funções, validação, real-time.</p></article>
+        <article class="card orange span-4"><h3>Remotion (1 skill)</h3><p><code>remotion-best-practices</code>. Criação de vídeos em React.</p></article>
+        <article class="card black span-4"><h3>SQLite (1 skill)</h3><p><code>sqlite-database-expert</code>. SQLite para Tauri/desktop, migrations, FTS.</p></article>
+      </div>
+
+      <!-- Utilities -->
+      <div class="cat-header" style="margin-top:24px;">
+        <div class="cat-dot" style="background:var(--green);"></div>
+        <h3>Utilitários e fluxo de trabalho</h3>
+      </div>
+      <div class="grid">
+        <article class="card span-4"><h3>obsidian-cli</h3><p>Interação com vault Obsidian. Notas, tasks, properties, search.</p><div class="tags"><span class="tag purple">memória</span></div></article>
+        <article class="card span-4"><h3>frontend-design</h3><p>Criação de interfaces com design original. Auxiliar do eletromidia-artifact.</p><div class="tags"><span class="tag green">UI</span></div></article>
+        <article class="card span-4"><h3>pptx + xlsx</h3><p>Manipulação de apresentações PowerPoint e planilhas Excel.</p><div class="tags"><span class="tag orange">docs</span></div></article>
+        <article class="card span-4"><h3>find-skills</h3><p>Descoberta e instalação de novos skills.</p><div class="tags"><span class="tag purple">discovery</span></div></article>
+        <article class="card span-4"><h3>create-skill + skill-development</h3><p>Criação de novos skills seguindo boas práticas.</p><div class="tags"><span class="tag yellow">meta</span></div></article>
+        <article class="card span-4"><h3>yeet</h3><p>Stage, commit, push e PR em um fluxo via gh CLI.</p><div class="tags"><span class="tag green">git</span></div></article>
+        <article class="card span-4"><h3>worktree-feature-execution</h3><p>Features em worktrees isolados com PR automatizado.</p><div class="tags"><span class="tag green">git</span></div></article>
+        <article class="card span-4"><h3>context-planning-agent-framework</h3><p>Planejamento com contexto multi-fonte para agentes.</p><div class="tags"><span class="tag purple">planning</span></div></article>
+        <article class="card span-4"><h3>grill-with-docs</h3><p>Code review contra documentação do projeto.</p><div class="tags"><span class="tag orange">review</span></div></article>
+        <article class="card yellow span-4"><h3>eletromidia-doc</h3><p>Geração de documentos DOCX + PDF com branding Eletromidia.</p><div class="tags"><span class="tag green">brand</span></div></article>
+        <article class="card pink span-4"><h3>fiap-doc</h3><p>Geração de documentos DOCX + PDF com branding FIAP.</p><div class="tags"><span class="tag green">brand</span></div></article>
+      </div>
+    </section>
+
+    <!-- NOVO SKILL -->
+    <section id="novo-skill">
+      <div class="head">
+        <h2>O que nasceu: eletromidia-artifact.</h2>
+        <p>Da limpeza do contexto, surgiu espaço para criar. Um skill que gera artefatos HTML com o design system da Eletromidia.</p>
+      </div>
+      <div class="grid">
+        <article class="card black span-6">
+          <h3>Propósito</h3>
+          <p>Gerar artefatos HTML standalone que documentam decisões de arquitetura, implementações e conceitos. Usa o design system Eletromidia: Rethink Sans, paleta vibrante, flat design, sem sombras ou gradientes.</p>
+          <p style="margin-top:8px;">O artefato é auto-contido (só Google Fonts CDN como dependência externa). Abre em qualquer navegador, sem build step.</p>
+        </article>
+        <article class="card orange span-6">
+          <h3>Gatilhos</h3>
+          <p><code>/em-artifact</code>, <code>"create artifact"</code>, <code>"gerar artefato"</code>, <code>"document this"</code>, <code>"criar documentação visual"</code>. Também sugere proativamente após sessões com mudanças significativas de arquitetura.</p>
+          <p style="margin-top:8px;color:rgba(255,255,255,.9);">Sempre gera em português (pt-BR), a menos que o usuário peça outro idioma.</p>
+        </article>
+      </div>
+
+      <div class="syntax-grid" style="margin-top:14px;">
+        <article class="syntax-box">
+          <h3>Estrutura do skill</h3>
+          <code>eletromidia-artifact/
+├── SKILL.md             85 linhas
+├── references/
+│   ├── design-system.md
+│   ├── components.md    24 padrões
+│   ├── storytelling.md
+│   ├── media-module.md
+│   └── deploy-guide.md
+└── assets/
+    ├── skeleton.html
+    └── hub-template.html</code>
+        </article>
+        <article class="syntax-box">
+          <h3>Design system extraído</h3>
+          <code>Font: Rethink Sans (Google Fonts)
+Paleta: #FF4F00 orange, #4E18FF purple
+       #FECC14 yellow, #3D7700 green
+       #000000 black, #F577ED pink
+Design: flat, sem sombras
+        border-radius 18px/14px/12px
+        grid 12 colunas, clamp() fluid
+Componentes: 24 padrões reutilizáveis
+             hero, cards, tabs, flow board
+             tables, accordions, demo, toast</code>
+        </article>
+      </div>
+    </section>
+
+    <!-- WORKFLOW -->
+    <section id="workflow">
+      <div class="head">
+        <h2>5 fases. Da sessão ao GitHub Pages.</h2>
+        <p>O workflow do skill foi desenhado para ser interativo: o agente pergunta, o usuário aprova, o código gera.</p>
+      </div>
+      <div class="flow-board">
+        <article class="flow-lane kept">
+          <span class="pill purple">Fase 1</span>
+          <h3>Coletar contexto</h3>
+          <div class="flow-node"><strong>git log, diff, AGENTS.md, Obsidian</strong><p>Identificar o que foi construído, qual o problema e as decisões tomadas.</p></div>
+        </article>
+        <article class="flow-lane kept">
+          <span class="pill orange">Fase 2</span>
+          <h3>Coletar mídia</h3>
+          <div class="flow-node"><strong>Screenshots, vídeos, diagramas</strong><p>Perguntar se o usuário tem arquivos para incluir. Copiar para <code>media/</code> com nomes limpos.</p></div>
+        </article>
+        <article class="flow-lane kept">
+          <span class="pill yellow">Fase 3</span>
+          <h3>Estruturar narrativa</h3>
+          <div class="flow-node"><strong>Outline com seções e componentes</strong><p>Mapear conteúdo para o framework: Hero → Contexto → Deep Dives → Demo → Callout.</p></div>
+        </article>
+        <article class="flow-lane added">
+          <span class="pill green">Fase 4</span>
+          <h3>Gerar HTML</h3>
+          <div class="flow-node"><strong>frontend-design skill + design system</strong><p>Produzir HTML standalone com todos os componentes e interações.</p></div>
+        </article>
+        <article class="flow-lane added">
+          <span class="pill black">Fase 5</span>
+          <h3>Deploy</h3>
+          <div class="flow-node"><strong>gh CLI → GitHub Pages</strong><p>Push para <code>iskisraell/em-artifacts</code>. Atualizar hub page com novo artefato.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- HUB -->
+    <section id="hub">
+      <div class="head">
+        <h2>Hub page: o índice de artefatos.</h2>
+        <p>O <code>em-artifacts</code> repo tem uma landing page que lista todos os artefatos com search, time buckets e "Copiar prompt".</p>
+      </div>
+      <div class="grid">
+        <article class="card span-4">
+          <h3>Busca</h3>
+          <p>Input de texto que filtra por título, descrição e tags. Case insensitive, resposta instantânea.</p>
+        </article>
+        <article class="card span-4">
+          <h3>Ordenação</h3>
+          <p>Botões "Mais recentes" e "Mais antigos". Default: mais recentes primeiro.</p>
+        </article>
+        <article class="card span-4">
+          <h3>Time buckets</h3>
+          <p>Hoje, Ontem, Última semana, Último mês, Anteriores. Cada seção com contador de artefatos.</p>
+        </article>
+        <article class="card black span-6">
+          <h3>Copiar prompt</h3>
+          <p>Botão em cada card que copia um prompt pronto para colar em qualquer agente. O prompt inclui:</p>
+          <ul class="checklist" style="margin-top:8px;">
+            <li>URL do artefato original</li>
+            <li>Design system constraints (Rethink Sans, paleta, componentes)</li>
+            <li>Contexto do artefato (título, descrição, seções existentes)</li>
+            <li>Espaço para o usuário colar sua solicitação</li>
+          </ul>
+        </article>
+        <article class="card orange span-6">
+          <h3>Exemplo de prompt copiado</h3>
+          <div class="syntax-box" style="background:var(--black); margin-top:10px;">
+            <code style="color:var(--yellow); font-size:12px;">Continue iterando o artefato em
+https://iskisraell.github.io/em-artifacts/2026-05-28-skill-curation/
+
+Design system: Eletromidia — Rethink Sans,
+#FF4F00 orange, flat design, border-radius 18px
+Componentes: hero, pills, nav, grid 12,
+cards coloridos, tabs, flow board, split,
+syntax boxes, tabelas, accordions, callouts,
+rail steps, filter demo, toasts, counters...
+
+Idioma: português (pt-BR)
+Contexto: Curadoria de skills — 118 para 30
+Seções: Hero, Contexto, Problem Strip,
+Removidos, Mantidos, Novo skill, Hub page
+
+Meu pedido: [cole sua solicitação aqui]</code>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section id="demo">
+      <div class="head">
+        <h2>Simule a curadoria.</h2>
+        <p>Clique nas categorias para ver o efeito no total de skills. Cada toggle remove ou adiciona um grupo.</p>
+      </div>
+      <div class="filter-demo">
+        <div>
+          <div class="filter-label">Categorias (clique para remover/restaurar)</div>
+          <div class="filter-controls" id="filter-controls"></div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; align-items:center;">
+          <div>
+            <div class="filter-label">Total de skills</div>
+            <div class="filter-payload" id="filter-total" style="font-size:48px; font-weight:800; text-align:center; line-height:1; border:none; background:transparent; color:var(--black);"><span class="counter" id="total-count">118</span></div>
+          </div>
+          <div>
+            <div class="filter-label">Removidos</div>
+            <div class="filter-payload" id="filter-removed" style="font-size:48px; font-weight:800; text-align:center; line-height:1; border:none; background:transparent; color:var(--red);"><span class="counter" id="removed-count">89</span></div>
+          </div>
+          <div>
+            <div class="filter-label">Mantidos</div>
+            <div class="filter-payload" id="filter-kept" style="font-size:48px; font-weight:800; text-align:center; line-height:1; border:none; background:transparent; color:var(--green);"><span class="counter" id="kept-count">29</span></div>
+          </div>
+        </div>
+        <button class="tab-button" id="reset-btn" type="button" style="width:fit-content;">Resetar curadoria</button>
+      </div>
+    </section>
+
+    <!-- CALLOUT -->
+    <section>
+      <div class="callout">
+        <div>
+          <h3>Menos contexto = respostas mais rápidas e precisas.</h3>
+          <p>Curar skills não é perder funcionalidade. É manutenção de ferramenta. O que saiu não era usado. O que ficou cobre todas as stacks reais. E o que nasceu (eletromidia-artifact) transforma sessões em documentação viva, compartilhável e iterável.</p>
+        </div>
+        <span class="pill black">75% menor, 100% funcional</span>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Agentes &middot; Curadoria de skills &middot; 28/05/2026</strong>
+      <p>Baseado na sessão de curadoria de skills entre Israel Toledo e OpenCode. Fonte: diretórios <code>.claude/skills</code> e <code>.agents/skills</code>, output do <code>bunx skills list</code>, e criação do skill <code>eletromidia-artifact</code>.</p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // --- Tabs ---
+    document.querySelectorAll('.tab-button[role="tab"]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.dataset.tab;
+        var parent = btn.closest('section');
+        var buttons = parent.querySelectorAll('.tab-button[role="tab"]');
+        var panels = parent.querySelectorAll('.tab-panel');
+        buttons.forEach(function(b) { b.setAttribute('aria-selected', 'false'); });
+        btn.setAttribute('aria-selected', 'true');
+        panels.forEach(function(p) { p.classList.toggle('active', p.id === target); });
+      });
+    });
+
+    // --- Filter Demo ---
+    var groups = [
+      { key: 'gws-core', label: 'GWS Core', count: 32, active: true },
+      { key: 'gws-wf', label: 'Workflows', count: 5, active: true },
+      { key: 'gws-recipes', label: 'Recipes', count: 35, active: true },
+      { key: 'gws-personas', label: 'Personas', count: 10, active: true },
+      { key: 'gws-base', label: '+ 7 (base)', count: 7, active: true },
+    ];
+
+    var baseTotal = 118;
+
+    function renderFilters() {
+      var container = document.getElementById('filter-controls');
+      container.innerHTML = '';
+      groups.forEach(function(g) {
+        var chip = document.createElement('div');
+        chip.className = 'filter-chip' + (g.active ? ' active' : '');
+        chip.textContent = g.label + ' (' + g.count + ')';
+        chip.addEventListener('click', function() {
+          g.active = !g.active;
+          renderFilters();
+          updateCounters();
+          showToast(g.active ? g.label + ' restaurado' : g.label + ' removido');
+        });
+        container.appendChild(chip);
+      });
+    }
+
+    function updateCounters() {
+      var removed = groups.filter(function(g) { return g.active; }).reduce(function(s, g) { return s + g.count; }, 0);
+      var kept = baseTotal - removed;
+      document.getElementById('total-count').textContent = baseTotal;
+      document.getElementById('removed-count').textContent = removed;
+      document.getElementById('kept-count').textContent = kept;
+
+      document.querySelectorAll('.counter').forEach(function(el) {
+        el.classList.add('bump');
+        setTimeout(function() { el.classList.remove('bump'); }, 300);
+      });
+    }
+
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(function() { toast.classList.remove('visible'); }, 1800);
+    }
+
+    document.getElementById('reset-btn').addEventListener('click', function() {
+      groups.forEach(function(g) { g.active = true; });
+      renderFilters();
+      updateCounters();
+      showToast('Curadoria resetada — 118 skills');
+    });
+
+    renderFilters();
+    updateCounters();
+  </script>
+</body>
+</html>
