@@ -1,0 +1,7 @@
+{
+  "title": "Radar Operações: de MVP SP a plataforma nacional em 3 semanas.",
+  "date": "2026-05-28",
+  "description": "O Radar nasceu como módulo nativo do Operações (Cenário E). Em 23 dias, saiu de um shell Vue para uma plataforma multi-concessão com 5 superfícies de dados, cache composto, 102 testes e PR em review. Esta é a jornada completa de arquitetura e implementação.",
+  "tags": ["radar", "operacoes", "MVP", "arquitetura", "cache", "filtros", "nacional", "laravel", "vue"],
+  "sections": ["Decisão fundadora", "Timeline 6 fases", "5 superfícies", "Cache composto", "Filtros payload-driven", "Estado atual", "Demo de escopo"]
+}

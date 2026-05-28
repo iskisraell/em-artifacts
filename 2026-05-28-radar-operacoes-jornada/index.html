@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | Radar Operações — a jornada do MVP à plataforma nacional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00; --black: #000000; --white: #FFFFFF;
+      --purple: #4E18FF; --yellow: #FECC14; --pink: #F577ED;
+      --green: #3D7700; --red: #DC2626; --blue: #2563EB;
+      --surface: #FAFAFA; --muted: #F5F5F5; --line: #E5E5E5;
+      --text: #737373; --radius: 18px; --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--surface); color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45; overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--white); color: var(--purple);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+
+    main { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 24px 0 56px; }
+    section { margin-top: 22px; }
+    h1, h2, h3 { margin-top: 0; font-weight: 800; }
+
+    h1 { max-width: 980px; margin-bottom: 20px; font-size: clamp(42px, 7.5vw, 90px); line-height: .92; letter-spacing: 0; }
+    h2 { max-width: 820px; margin-bottom: 0; font-size: clamp(28px, 3.6vw, 46px); line-height: 1.04; }
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius); background: var(--black); color: var(--white);
+      display: grid; align-content: space-between; gap: 48px;
+      overflow: hidden; position: relative; isolation: isolate;
+    }
+
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 34px;
+    }
+
+    .hero::before {
+      right: clamp(116px, 15vw, 220px); bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px); background: var(--orange); transform: rotate(10deg);
+    }
+
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px); bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px); background: var(--purple); transform: rotate(-8deg);
+    }
+
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 22px; padding: 7px 11px; border-radius: 999px; background: var(--yellow); color: var(--black); font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: .08em; }
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    .pill { display: inline-flex; align-items: center; min-height: 32px; padding: 7px 11px; border-radius: 999px; font-size: 13px; font-weight: 800; line-height: 1; white-space: normal; }
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+
+    .nav { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; padding: 10px 0; background: var(--surface); }
+    .nav a, .tab-button { border: 1px solid var(--black); border-radius: 999px; background: var(--white); cursor: pointer; font: inherit; font-weight: 800; text-decoration: none; white-space: normal; text-align: center; transition: background .15s, color .15s; }
+    .nav a { padding: 10px 13px; font-size: 14px; }
+    .tab-button { padding: 11px 14px; font-size: 14px; }
+    .nav a:hover, .tab-button:hover, .tab-button[aria-selected="true"] { background: var(--black); color: var(--white); }
+
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; min-width: 0; }
+    .card { min-width: 0; min-height: 100%; padding: clamp(18px, 2.4vw, 28px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); overflow: hidden; transition: transform .18s, box-shadow .18s; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .card.black, .card.purple, .card.orange, .card.green { border-color: transparent; color: var(--white); }
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.pink { background: var(--pink); }
+    .card.green { background: var(--green); }
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code { color: var(--black); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric { margin-bottom: 6px; font-size: clamp(44px, 8vw, 86px); font-weight: 800; line-height: .86; }
+
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 14px; }
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .flow-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; align-items: stretch; min-width: 0; }
+    .flow-lane { min-width: 0; display: grid; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); transition: transform .15s; }
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.removed { border-color: var(--red); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.kept { border-color: var(--purple); }
+    .flow-node { min-width: 0; padding: 12px; border-radius: 12px; background: var(--muted); }
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+
+    .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; min-width: 0; }
+    .compare { min-width: 0; min-height: 180px; padding: 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--white); }
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+
+    .syntax-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; min-width: 0; }
+    .syntax-box { min-width: 0; padding: 14px; border-radius: 14px; background: var(--black); color: var(--white); overflow: hidden; }
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code { display: block; width: 100%; max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; background: transparent; color: var(--yellow); padding: 0; }
+
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+
+    details { border: 1px solid var(--line); border-radius: 14px; background: var(--white); overflow: hidden; }
+    details + details { margin-top: 8px; }
+    summary { cursor: pointer; padding: 16px 18px; font-weight: 800; list-style: none; transition: background .15s; }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    .change-list { display: grid; gap: 8px; }
+    .change-item { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); transition: transform .15s, box-shadow .15s; }
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { background: var(--black); color: var(--white); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; line-height: 1; }
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+    .badge.yellow { background: var(--yellow); color: var(--black); }
+
+    .callout { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius); background: var(--yellow); }
+
+    .rail { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; min-width: 0; }
+    .rail-step { min-width: 0; padding: 14px; border-radius: 14px; background: var(--black); color: var(--white); transition: transform .15s; }
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+
+    .problem-strip { display: grid; grid-template-columns: 1fr 92px 1fr 92px 1fr; gap: 12px; align-items: stretch; }
+    .problem-card { min-height: 172px; border-radius: var(--radius); padding: 20px; display: grid; align-content: space-between; border: 1px solid var(--line); background: var(--white); position: relative; overflow: hidden; }
+    .problem-card:before { content: ""; position: absolute; right: -34px; top: -34px; width: 96px; height: 96px; border-radius: 50%; background: var(--yellow); opacity: .7; }
+    .problem-card h3 { position: relative; z-index: 1; }
+    .problem-card p { position: relative; z-index: 1; margin-bottom: 0; }
+    .problem-card.bad { background: var(--black); color: var(--white); border-color: var(--black); }
+    .problem-card.bad p { color: #D4D4D4; }
+    .problem-card.fix { background: var(--orange); border-color: var(--orange); }
+    .problem-card.fix p { color: var(--black); }
+    .problem-card.fix::before { display: none; }
+    .problem-arrow { border-radius: var(--radius); background: var(--purple); color: var(--white); display: grid; place-items: center; font-size: 34px; font-weight: 800; }
+    .mini-label { width: fit-content; padding: 6px 10px; border-radius: 999px; background: var(--muted); color: var(--black); font-size: 11px; font-weight: 800; text-transform: uppercase; position: relative; z-index: 1; }
+    .bad .mini-label { background: var(--red); color: var(--white); }
+    .fix .mini-label { background: var(--black); color: var(--white); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+    .tag.purple { background: rgba(78,24,255,.12); color: var(--purple); }
+    .tag.green { background: rgba(61,119,0,.14); color: var(--green); }
+    .tag.yellow { background: var(--yellow); color: var(--black); }
+    .tag.orange { background: rgba(255,79,0,.12); color: var(--orange); }
+    .tag.blue { background: rgba(37,99,235,.12); color: var(--blue); }
+
+    .filter-demo { display: grid; gap: 14px; padding: 20px; border-radius: 16px; background: var(--muted); border: 1px solid var(--line); }
+    .filter-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+    .filter-chip { padding: 8px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--white); font-weight: 700; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; }
+    .filter-chip:hover { border-color: var(--orange); }
+    .filter-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .filter-payload { padding: 14px; border-radius: 14px; background: var(--black); color: var(--yellow); font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; white-space: pre-wrap; overflow-x: auto; min-height: 80px; transition: all .2s; }
+    .filter-label { font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+
+    .counter { display: inline-block; transition: all .3s ease; }
+    .counter.bump { transform: scale(1.15); color: var(--orange); }
+
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; border-radius: 14px; background: var(--black); color: var(--white); font-weight: 700; font-size: 14px; z-index: 100; opacity: 0; transform: translateY(20px); transition: all .3s ease; pointer-events: none; }
+    .toast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    .skill-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); transition: transform .15s; }
+    .skill-row:hover { transform: translateX(3px); }
+    .skill-row strong { font-size: 15px; }
+    .skill-row small { display: block; color: var(--text); font-size: 13px; margin-top: 2px; }
+
+    .stamps { display: flex; flex-wrap: wrap; gap: 8px; }
+    .stamp { border-radius: 10px; padding: 8px 10px; background: var(--yellow); color: var(--black); font-weight: 800; font-size: 13px; }
+    .stamp.global { background: var(--black); color: var(--white); }
+    .stamp.changed { background: var(--orange); }
+    .stamp-row { display: grid; grid-template-columns: 170px 1fr 180px; gap: 12px; align-items: center; padding: 14px; border-radius: 14px; background: var(--white); border: 1px solid var(--line); }
+    .result { color: var(--green); font-weight: 800; }
+
+    footer { margin-top: 22px; padding: 20px 0 0; color: var(--text); font-size: 14px; }
+
+    @media (max-width: 920px) {
+      .head, .callout, .split, .stamp-row { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr 1fr; }
+      .change-item { grid-template-columns: 1fr; }
+      .problem-arrow { min-height: 54px; transform: rotate(90deg); }
+      .skill-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .hero::before { right: 62px; width: 260px; }
+      .hero::after { width: 210px; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr; }
+      .card, .flow-lane, .compare, details { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div>
+        <span class="eyebrow">Radar Operações &middot; Retrospectiva &middot; 28/05/2026</span>
+        <h1>De MVP SP a plataforma nacional em 3 semanas.</h1>
+        <p>O Radar nasceu como um módulo nativo dentro do Operações — não um app separado. Em 23 dias, saiu de um shell Vue que carregava tudo de uma vez para uma plataforma multi-concessão com cache composto, 5 superfícies de dados, 102 testes e PR em review.</p>
+      </div>
+      <div class="hero-bar">
+        <span class="pill orange">Cenário E</span>
+        <span class="pill purple">Laravel 8 + Vue 3</span>
+        <span class="pill yellow">5 superfícies</span>
+        <span class="pill green">102 testes</span>
+        <span class="pill black">PR #876</span>
+        <span class="pill pink">nacional</span>
+      </div>
+    </section>
+
+    <!-- NAV -->
+    <nav class="nav" aria-label="Navegação">
+      <a href="#decisao">Decisão</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#arquitetura">Arquitetura</a>
+      <a href="#cache">Cache</a>
+      <a href="#filtros">Filtros</a>
+      <a href="#estado">Estado atual</a>
+      <a href="#demo">Demo</a>
+    </nav>
+
+    <!-- DECISÃO -->
+    <section id="decisao">
+      <div class="head">
+        <h2>A decisão fundadora: Radar como módulo nativo.</h2>
+        <p>Em 5 de maio de 2026, a decisão foi tomada. O Radar não seria um app React separado com API-First. Seria um módulo dentro do Operações, usando o que já existia.</p>
+      </div>
+      <div class="grid">
+        <article class="card orange span-6">
+          <h3>Cenário E — o escolhido</h3>
+          <p>Radar como módulo nativo do Operações. Sessão, autorização, Blade, Vue/Vuex, Bootstrap/AdminLTE e Eloquent/repositories locais. Nada de proxy, nada de API separada, nada de auth customizada.</p>
+          <div class="tags" style="margin-top:10px;"><span class="tag green">stack existente</span><span class="tag yellow">zero nova infra</span></div>
+        </article>
+        <article class="card black span-6">
+          <h3>O que NÃO fazer</h3>
+          <ul class="checklist" style="margin-top:8px;">
+            <li>Não adicionar React, Tailwind ou Zustand</li>
+            <li>Não criar app separado com auth própria</li>
+            <li>Não usar IndexedDB/PWA no cache</li>
+            <li>Não criar proxy/cache server separado</li>
+          </ul>
+          <div class="tags" style="margin-top:10px;"><span class="tag purple">limites claros</span></div>
+        </article>
+      </div>
+      <div class="syntax-grid" style="margin-top:14px;">
+        <article class="syntax-box">
+          <h3>Stack do Radar</h3>
+          <code>Backend: Laravel 8 + PHP + MySQL 8
+Frontend: Vue 3 + Vuex 4 + Laravel Mix
+Mapa: Leaflet + MarkerClusterer
+UI: Bootstrap 4 + AdminLTE
+Cache: Laravel Cache (Redis/file)
+Testes: PHPUnit + Pest</code>
+        </article>
+        <article class="syntax-box">
+          <h3>Restrições arquiteturais</h3>
+          <code>✓ Sessão Operacoes — sem auth customizada
+✓ Policies e permissions existentes
+✓ Blade mount point para o Vue app
+✓ Eloquent com repositories, não SQL raw
+✓ CSP scope = hard backend boundary
+✓ Request filters só estreitam, nunca ampliam</code>
+        </article>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="timeline">
+      <div class="head">
+        <h2>23 dias, 6 fases, 1 plataforma nacional.</h2>
+        <p>Clique nas fases para ver o que foi entregue. Cada uma construiu sobre a anterior sem reescrever.</p>
+      </div>
+
+      <div class="filter-demo" style="margin-bottom:16px;">
+        <div class="filter-label">Fases da implementação — clique para expandir cada fase</div>
+        <div class="filter-controls" id="phase-controls"></div>
+        <div id="phase-detail" class="filter-payload" style="color:var(--white); font-family:inherit;">Clique em uma fase para ver os detalhes</div>
+      </div>
+
+      <div class="rail">
+        <div class="rail-step">
+          <strong>Phase 0</strong>
+          <p>DB Compliance. Lazy mount, CSP boundary, street tickets, infinite scroll fix.</p>
+        </div>
+        <div class="rail-step">
+          <strong>Phase 1</strong>
+          <p>Contract Split. 5 resources, 6 data endpoints, repository split.</p>
+        </div>
+        <div class="rail-step">
+          <strong>Phase 2-3</strong>
+          <p>Filters + Detail. 9 filtros, RadarFilterBar, cancelamento de request, RadarDetailPanel.</p>
+        </div>
+        <div class="rail-step">
+          <strong>Phase 4-5</strong>
+          <p>Map + Dashboard. Leaflet markers, clustering, KPIs cacheados, gráficos reais.</p>
+        </div>
+        <div class="rail-step">
+          <strong>Nacional</strong>
+          <p>Cache composto, warmup, multi-concessão, PR #876, 102 testes.</p>
+        </div>
+      </div>
+
+      <details style="margin-top:14px;">
+        <summary>Linha do tempo completa</summary>
+        <div class="details-body">
+          <div class="table-wrap" style="margin-top:0;">
+            <table>
+              <thead><tr><th>Data</th><th>Fase</th><th>O que foi feito</th></tr></thead>
+              <tbody>
+                <tr><td>05/05</td><td>Decisão</td><td>Cenário E escolhido. Radar como módulo nativo.</td></tr>
+                <tr><td>06/05</td><td>Phase 0</td><td>Lazy mount, CSP hard boundary, street tickets, infinite scroll com lotes de 24.</td></tr>
+                <tr><td>06-07/05</td><td>Phase 1</td><td>5 resources separados, 6 métodos no repository, endpoint de filter options cacheado 30min.</td></tr>
+                <tr><td>07/05</td><td>Phase 2</td><td>9 filtros no backend, RadarFilterBar.vue, debounce 400ms, Axios CancelToken.</td></tr>
+                <tr><td>07/05</td><td>Phase 3</td><td>RadarDetailPanel com place detail, tickets limitados, link para Operações.</td></tr>
+                <tr><td>07-11/05</td><td>Phase 4</td><td>Leaflet substitui Google Maps, markers com clustering, payload leve.</td></tr>
+                <tr><td>11-13/05</td><td>Phase 5</td><td>Dashboard com KPIs reais, gráficos, agregados cacheados 5min.</td></tr>
+                <tr><td>13-18/05</td><td>Permissões</td><td>Multi-scope filters, PermissionHelper, CSP como boundary testável.</td></tr>
+                <tr><td>19/05</td><td>Nacional</td><td>Rollout multi-concessão: SP, RJ, PR, GO, BA e outros.</td></tr>
+                <tr><td>20-21/05</td><td>Cache</td><td>Cache composto por concessão, stampede protection, warmup, health, normalização de tipos.</td></tr>
+                <tr><td>25/05</td><td>PR #876</td><td>Review do William, backend boundaries, data performance, resource cleanup.</td></tr>
+                <tr><td>27/05</td><td>Deep Dive</td><td>Análise da arquitetura de filtros payload-driven vs Blade+DataTable nativo.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ARQUITETURA -->
+    <section id="arquitetura">
+      <div class="head">
+        <h2>Cinco superfícies, um estado de filtro.</h2>
+        <p>O mesmo payload de filtros alimenta lista, mapa, dashboard, detalhe e opções. Cada endpoint tem seu contrato — ninguém compartilha resource.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Superfícies de dados">
+        <button class="tab-button" role="tab" aria-selected="true" data-tab="s-equip">Equipamentos</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="s-map">Mapa</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="s-dash">Dashboard</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="s-detail">Detalhe</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="s-filters">Filter Options</button>
+      </div>
+
+      <article class="tab-panel active" id="s-equip" role="tabpanel">
+        <div class="grid">
+          <div class="card span-8">
+            <h3>Lista de equipamentos</h3>
+            <p>13 filtros, paginação infinita (24 por lote), Axios CancelToken para requests obsoletos. Cache key: <code>scope + filters + page</code>.</p>
+            <div class="syntax-grid">
+              <div class="syntax-box"><h3>Resource</h3><code>RadarCardResource
+→ dados do place, mídia, ações
+→ paginado, com has_more</code></div>
+              <div class="syntax-box"><h3>Query budget</h3><code>Página 1: 3-4 queries
+Append: 2 queries
+COUNT(*) só na página 1
+ou quando filtros mudam</code></div>
+            </div>
+          </div>
+          <div class="card orange span-4">
+            <h3>Único paginado</h3>
+            <p>Mapa e dashboard não paginam. Agregam ou amostram. Só a lista usa paginação clássica com <code>has_more</code>.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="s-map" role="tabpanel">
+        <div class="grid">
+          <div class="card purple span-7">
+            <h3>Markers do mapa</h3>
+            <p>Payload leve: id, lat, lng, status, alternative_code. Sem relações, sem contagens. Limite máximo de markers com enquadramento visual por escopo.</p>
+            <p>Leaflet + MarkerClusterer. Cache por escopo + filtros ativos. Sem <code>recordsTotal</code> — o contrato é de coordenadas, não de tabela.</p>
+          </div>
+          <div class="card span-5">
+            <h3>Não é DataTable</h3>
+            <p>Mapa não tem <code>start</code>, <code>length</code>, <code>recordsFiltered</code>. É outro contrato: markers + dados resumidos para popup. Reutilizar card resource quebraria o orçamento de queries.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="s-dash" role="tabpanel">
+        <div class="grid">
+          <div class="card black span-6">
+            <h3>Dashboard agregado</h3>
+            <p>KPIs, charts e insights por concessão. Cache 300s (5 min). Não retorna rows individuais — retorna contagens, distribuições e tendências.</p>
+            <p>JSON público esconde arrays internos de IDs. O resource remove <code>establishment_ids</code> antes de serializar.</p>
+          </div>
+          <div class="card yellow span-6">
+            <h3>Stale-while-refresh</h3>
+            <p>Endpoints pesados servem o último payload válido enquanto um request atualiza. Cold cache tem lock com espera curta e fallback limitado.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="s-detail" role="tabpanel">
+        <div class="card span-12">
+          <h3>Detalhe do place</h3>
+          <p>Buscado por <code>place_id</code> apenas quando o usuário abre um card ou clica em um marker. Tickets limitados a 50 recentes. Máquinas carregadas com status externo sob demanda.</p>
+          <div class="split" style="margin-top:12px;">
+            <div class="compare after"><span class="pill green">faz</span><h3 style="margin-top:8px;">Links para Operações</h3><p>Redireciona para <code>/places/{id}</code> e tickets existentes. Não cria ticket inline. Não duplica fluxos.</p></div>
+            <div class="compare after"><span class="pill green">faz</span><h3 style="margin-top:8px;">Query budget: 4-6</h3><p><code>LIMIT</code> em tickets e machines. Abrir detalhe não recarrega lista, mapa ou dashboard.</p></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="s-filters" role="tabpanel">
+        <div class="grid">
+          <div class="card green span-7">
+            <h3>Opções de filtro dinâmicas</h3>
+            <p>O endpoint <code>filter-options</code> recomputa cada lista de opções a partir do universo já filtrado, excluindo o próprio campo. Cache 1800s (30 min).</p>
+            <p>Dropdowns refletem o que existe dentro do escopo autorizado + filtros ativos. Não são listas estáticas do Blade.</p>
+          </div>
+          <div class="card span-5">
+            <h3>Cross-filtered</h3>
+            <p>Selecionar um estabelecimento atualiza as praças disponíveis. Selecionar uma praça atualiza as filiais. O usuário sempre vê só o que ainda existe no recorte.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- CACHE -->
+    <section id="cache">
+      <div class="head">
+        <h2>O cache aprendeu a respeitar concessão.</h2>
+        <p>O risco não estava no usuário de uma praça só. Estava nos escopos multi-praça e nacional, onde limpar uma concessão podia não invalidar o cache de quem via várias.</p>
+      </div>
+      <div class="problem-strip">
+        <article class="problem-card">
+          <span class="mini-label">Antes</span>
+          <h3>Cache com rótulo genérico</h3>
+          <p>O Radar sabia que o escopo era "nacional" ou "multi", mas não carregava as concessões reais na chave do cache.</p>
+        </article>
+        <div class="problem-arrow">&rarr;</div>
+        <article class="problem-card bad">
+          <span class="mini-label">Risco</span>
+          <h3>Limpar uma praça não afetava todas</h3>
+          <p>Payload nacional com dados de SP podia continuar stale mesmo depois de limpar o cache de SP. Cache genérico demais.</p>
+        </article>
+        <div class="problem-arrow">&rarr;</div>
+        <article class="problem-card fix">
+          <span class="mini-label">Agora</span>
+          <h3>Chave leva as concessões reais</h3>
+          <p>Single, multi e nacional dependem dos carimbos corretos. Se a concessão muda, o cache certo muda junto.</p>
+        </article>
+      </div>
+
+      <div class="grid" style="margin-top:16px;">
+        <article class="card span-4">
+          <h3>Clear por versão</h3>
+          <p><code>radar:cache:clear --concession=sp</code> troca só o carimbo da concessão escolhida. Não derruba cache de outras praças.</p>
+          <div class="tags"><span class="tag green">preciso</span></div>
+        </article>
+        <article class="card span-4">
+          <h3>Warmup</h3>
+          <p><code>radar:cache:warm --concession=sp --payload=all</code> pré-aquece mapa, dashboard e filtros de uma concessão.</p>
+          <div class="tags"><span class="tag yellow">pronto</span></div>
+        </article>
+        <article class="card span-4">
+          <h3>Health</h3>
+          <p><code>radar:health --concession=sp</code> confirma contagem, mapa e latência de cache sem mexer nas chaves de produção.</p>
+          <div class="tags"><span class="tag purple">monitorado</span></div>
+        </article>
+        <article class="card black span-6">
+          <h3>Normalização de tipos</h3>
+          <p>Um bug fazia <code>work_zone_id[]=2&work_zone_id[]=1</code> e <code>work_zone_id=1,2</code> produzirem hashes diferentes. Uma linha em <code>flatArrayFilter()</code> resolveu: <code>array_map('strval', $values)</code> antes de ordenar.</p>
+          <div class="tags"><span class="tag green">1 linha</span><span class="tag yellow">102 testes</span></div>
+        </article>
+        <article class="card orange span-6">
+          <h3>Stampede protection</h3>
+          <p>Lock evita que múltiplas requisições recalculem o mesmo payload pesado ao mesmo tempo. Cold cache tem espera curta com fallback — o último payload válido é servido enquanto o novo é computado.</p>
+          <div class="tags"><span class="tag green">seguro</span></div>
+        </article>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3>Comportamento do cache por perfil</h3>
+        <div class="stamp-row"><strong>Usuário SP</strong><div class="stamps"><span class="stamp global">global</span><span class="stamp changed">SP</span></div><span class="result">muda ao limpar SP</span></div>
+        <div class="stamp-row"><strong>Usuário RJ</strong><div class="stamps"><span class="stamp global">global</span><span class="stamp">RJ</span></div><span>não muda ao limpar SP</span></div>
+        <div class="stamp-row"><strong>Usuário SP + RJ</strong><div class="stamps"><span class="stamp global">global</span><span class="stamp changed">SP</span><span class="stamp changed">RJ</span></div><span class="result">muda ao limpar SP ou RJ</span></div>
+        <div class="stamp-row"><strong>Usuário nacional</strong><div class="stamps"><span class="stamp global">global</span><span class="stamp changed">SP</span><span class="stamp changed">RJ</span><span class="stamp changed">PR</span><span class="stamp changed">...</span></div><span class="result">muda ao limpar qualquer praça</span></div>
+      </div>
+    </section>
+
+    <!-- FILTROS -->
+    <section id="filtros">
+      <div class="head">
+        <h2>Por que payload-driven, e não Blade+DataTable.</h2>
+        <p>O Operações usa Blade + DataTable. O Radar usa Vue + JSON payloads. Não foi acidente — foi resposta ao formato do produto.</p>
+      </div>
+
+      <div class="split">
+        <div class="compare before">
+          <span class="pill red">Padrão nativo</span>
+          <h3 style="margin-top:8px;">Blade + DataTable</h3>
+          <p>Blade renderiza <code>components.card.filter</code>. Inputs viram <code>filter-&lt;field&gt;</code>. DataTables serializa e o repository consome via <code>withFilter($request)</code>. Simples para CRUD.</p>
+        </div>
+        <div class="compare after">
+          <span class="pill green">Radar</span>
+          <h3 style="margin-top:8px;">Vue + JSON payloads</h3>
+          <p>Mount point Blade entrega URLs ao <code>&lt;radar-app&gt;</code>. Vuex envia query params para endpoints JSON. <code>RadarController</code> responde com envelope <code>{response, status, message, options}</code>.</p>
+        </div>
+      </div>
+
+      <div class="change-list" style="margin-top:14px;">
+        <div class="change-item">
+          <div><strong>1. Radar não é uma lista só</strong><br><small>Tem cards, mapa, dashboard, detalhe e opções. DataTable resolve só a lista.</small></div>
+          <span class="pill orange">formato</span>
+        </div>
+        <div class="change-item">
+          <div><strong>2. Cada endpoint precisa de shape diferente</strong><br><small><code>recordsTotal</code>/<code>recordsFiltered</code> não serve para markers ou KPIs agregados.</small></div>
+          <span class="pill purple">contrato</span>
+        </div>
+        <div class="change-item">
+          <div><strong>3. Cache key precisa de contexto completo</strong><br><small><code>radarCacheKey()</code> hasheia scope + filters + payload. DataTable não tem esse conceito.</small></div>
+          <span class="pill green">cache</span>
+        </div>
+        <div class="change-item">
+          <div><strong>4. Stale-request cancellation</strong><br><small>Vuex cancela Axios calls antigas. Blade form submit não tem esse controle.</small></div>
+          <span class="pill black">frontend</span>
+        </div>
+        <div class="change-item">
+          <div><strong>5. Filtros cross-filtered</strong><br><small>Dropdowns atualizam contra o universo filtrado. Blade static options são mais simples, mas não servem.</small></div>
+          <span class="pill pink">UX</span>
+        </div>
+        <div class="change-item">
+          <div><strong>6. Mapa é stateful</strong><br><small>Max markers, framing de escopo amplo, balanceamento multi-square. Não mapeia para pipeline de tabela.</small></div>
+          <span class="pill yellow">mapa</span>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:16px;">
+        <table>
+          <thead><tr><th>Filtro Radar</th><th>Equivalente nativo</th><th>Status</th><th>Ação</th></tr></thead>
+          <tbody>
+            <tr><td><code>establishment_id</code></td><td><code>establishment_ids</code></td><td><span class="badge orange">renomear</span></td><td>Normalizar para plural nativo</td></tr>
+            <tr><td><code>squares</code></td><td><code>squares</code></td><td><span class="badge green">alinhado</span></td><td>Nenhuma</td></tr>
+            <tr><td><code>branch_ids</code></td><td><code>branch_ids</code></td><td><span class="badge green">alinhado</span></td><td>Nenhuma</td></tr>
+            <tr><td><code>work_zone_id</code></td><td><code>work_zone_ids</code></td><td><span class="badge orange">renomear</span></td><td>Plural quando multi-select</td></tr>
+            <tr><td><code>shelter_model_id</code></td><td><code>shelter_model_ids</code></td><td><span class="badge orange">renomear</span></td><td>Normalizar para plural nativo</td></tr>
+            <tr><td><code>active</code></td><td><code>active</code></td><td><span class="badge green">alinhado</span></td><td>Nenhuma</td></tr>
+            <tr><td><code>commercialized</code></td><td><code>commercialized</code></td><td><span class="badge green">alinhado</span></td><td>Nenhuma</td></tr>
+            <tr><td><code>neighborhood</code></td><td>—</td><td><span class="badge red">radar-only</span></td><td>Manter ou adicionar ao Place</td></tr>
+            <tr><td><code>with_photo</code></td><td>—</td><td><span class="badge red">radar-only</span></td><td>Manter ou adicionar ao Place</td></tr>
+            <tr><td><code>panel</code></td><td>—</td><td><span class="badge red">radar-only</span></td><td>Conceito PSI, manter</td></tr>
+            <tr><td><code>facility</code></td><td>—</td><td><span class="badge red">radar-only</span></td><td>Conceito PSI, manter</td></tr>
+            <tr><td><code>search</code></td><td>—</td><td><span class="badge purple">endpoint</span></td><td>Lookup específico, manter</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="split" style="margin-top:14px;">
+        <div class="compare before">
+          <span class="pill red">O que pesa</span>
+          <h3 style="margin-top:8px;">Custo da escolha</h3>
+          <ul class="checklist">
+            <li>Parece não-nativo dentro do Operações (bypassa Blade+DataTable)</li>
+            <li>Vocabulário duplicado (<code>branch_ids</code> vs <code>shelter_model_id</code>)</li>
+            <li>Filtros Radar-only não existem no Place filter scope</li>
+            <li>Filtragem de permissão reimplementada no RadarRepository</li>
+            <li>Qualquer rename toca Vue, Vuex, repository, cache, resources e testes</li>
+          </ul>
+        </div>
+        <div class="compare after">
+          <span class="pill green">O que funciona</span>
+          <h3 style="margin-top:8px;">Benefício real</h3>
+          <ul class="checklist">
+            <li>Um estado de filtro dirige 5 superfícies consistentemente</li>
+            <li>Cache keys estáveis com filtros normalizados em arrays</li>
+            <li>Dropdowns se adaptam ao resultado ativo (cross-filtered)</li>
+            <li>Vuex cancellation evita resposta antiga sobrescrever filtro novo</li>
+            <li>Cada endpoint devolve o shape que precisa, sem forçar DataTable</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESTADO ATUAL -->
+    <section id="estado">
+      <div class="head">
+        <h2>Onde estamos agora.</h2>
+        <p>PR #876 em review pelo William. 102 testes passando. Cache, warmup, health e runbook prontos para produção.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Área</th><th>Status</th><th>Detalhe</th></tr></thead>
+          <tbody>
+            <tr><td>DB Compliance</td><td><span class="badge green">done</span></td><td>Lazy mount, CSP hard boundary, street tickets, infinite scroll com lotes de 24.</td></tr>
+            <tr><td>Contract Split</td><td><span class="badge green">done</span></td><td>5 resources, 6 data endpoints, repository methods separados.</td></tr>
+            <tr><td>Filter Options &amp; List</td><td><span class="badge green">done</span></td><td>9 filtros (agora 13), RadarFilterBar.vue, request cancellation, cross-filtered.</td></tr>
+            <tr><td>Detail View</td><td><span class="badge green">done</span></td><td>RadarDetailPanel, place detail com tickets/machines limitados.</td></tr>
+            <tr><td>Map MVP</td><td><span class="badge green">done</span></td><td>Leaflet + MarkerClusterer, payload leve, cache por escopo.</td></tr>
+            <tr><td>Dashboard MVP</td><td><span class="badge green">done</span></td><td>KPIs cacheados 5min, gráficos reais, stale-while-refresh.</td></tr>
+            <tr><td>Cache Optimization</td><td><span class="badge green">done</span></td><td>Composite scope, stampede protection, warmup, health, normalização de tipos.</td></tr>
+            <tr><td>National Scale</td><td><span class="badge green">done</span></td><td>Multi-concessão SP, RJ, PR, GO, BA e outros. Clear/warmup por concessão.</td></tr>
+            <tr><td>PR #876 Review</td><td><span class="badge yellow">review</span></td><td>William review concluído. Backend boundaries, data performance e resource cleanup alinhados.</td></tr>
+            <tr><td>Tests &amp; Hardening</td><td><span class="badge green">done</span></td><td>102 testes passando. CSP boundary tests, ticket metric tests, cache key tests.</td></tr>
+            <tr><td>Production Runbook</td><td><span class="badge green">done</span></td><td>Comandos de clear, warmup, health. Monitoramento e troubleshooting documentados.</td></tr>
+            <tr><td>Próximos passos</td><td><span class="badge orange">planejado</span></td><td>UI/UX refinements (breadcrumbs, loading states), perfis por concessão, deploy.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid" style="margin-top:14px;">
+        <article class="card black span-6">
+          <h3>Regra que nunca pode quebrar</h3>
+          <p><code>configuração da concessão ∩ permissões do usuário ∩ filtros da tela</code></p>
+          <p>Os filtros da tela só reduzem o resultado. Eles nunca dão acesso a uma praça que o perfil não tem. O escopo CSP é hard backend boundary — testado e coberto por <code>RadarScopeBoundaryTest</code>.</p>
+        </article>
+        <article class="card orange span-6">
+          <h3>PR #876 — status do review</h3>
+          <p>Revisão do William (20/05) gerou extração de 5 handoffs de correção. Backend boundaries, data performance, resource cleanup — todos endereçados. PR montado com evidências de build, testes e walkthrough por perfil.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section id="demo">
+      <div class="head">
+        <h2>Simule o escopo de autorização.</h2>
+        <p>Clique nos níveis de permissão para ver como o escopo muda. A fronteira CSP nunca é bypassada.</p>
+      </div>
+      <div class="filter-demo">
+        <div>
+          <div class="filter-label">Perfil do usuário (clique para selecionar)</div>
+          <div class="filter-controls" id="demo-controls"></div>
+        </div>
+        <div>
+          <div class="filter-label">Escopo resultante</div>
+          <div class="filter-payload" id="demo-scope"></div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+          <div>
+            <div class="filter-label">Superfícies afetadas</div>
+            <div id="demo-surfaces" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+          </div>
+          <span style="margin-left:auto; font-weight:800; font-size:14px;" id="demo-count">0 places visíveis</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALLOUT -->
+    <section>
+      <div class="callout">
+        <div>
+          <h3>Payload-driven filtering não foi acidente. Foi a resposta certa para um produto multi-superfície.</h3>
+          <p>Em 23 dias, o Radar saiu de um shell Vue que carregava tudo de uma vez para uma plataforma nacional com cache composto, 5 superfícies de dados independentes e 102 testes. A arquitetura não é perfeita — o vocabulário de filtros ainda precisa convergir com o padrão nativo do Operações — mas as decisões fundamentais (Cenário E, CSP boundary, payload-driven, cache por concessão) se provaram corretas.</p>
+        </div>
+        <span class="pill black">3 semanas, 1 plataforma</span>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Radar Operações &middot; A jornada do MVP à plataforma nacional &middot; 28/05/2026</strong>
+      <p>Baseado nas notas do Obsidian: Architecture (DB Compliance, Cache Optimization, National Scale, Filter Deep Dive), Handoffs (23 handoffs de implementação), Sessions e PR #876 context. Branch: <code>feature/radar-operacoes-mvp</code>.</p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // --- Tabs ---
+    document.querySelectorAll('.tab-button[role="tab"]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.dataset.tab;
+        var parent = btn.closest('section');
+        parent.querySelectorAll('.tab-button[role="tab"]').forEach(function(b) { b.setAttribute('aria-selected', 'false'); });
+        btn.setAttribute('aria-selected', 'true');
+        parent.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.toggle('active', p.id === target); });
+      });
+    });
+
+    // --- Phase detail selector ---
+    var phases = [
+      { key: 'p0', label: 'Phase 0', detail: 'DB Compliance (06/05). Lazy mount no RadarApp.vue (v-show → activatedTabs). CSP scope como hard boundary no RadarRepository. system=\'street\' em todas as métricas de ticket. Infinite scroll sem COUNT(*) repetido em cada append. Query budget documentado por endpoint.' },
+      { key: 'p1', label: 'Phase 1', detail: 'Contract Split (06-07/05). 5 resources separados: RadarCardResource, RadarMapPointResource, RadarPlaceDetailResource, RadarDashboardResource, RadarFilterOptionsResource. 6 métodos no repository: getCards, getMapPoints, getPlaceDetail, getDashboard, getSummary, getFilterOptions. Filter options endpoint cacheado 30 min.' },
+      { key: 'p2', label: 'Phase 2-3', detail: 'Filters + Detail (07/05). 9 filtros backend: establishment_id, work_zone_id, display_type_id, environment_id, shelter_model_id, neighborhood, active, commercialized, with_photo. RadarFilterBar.vue com debounce 400ms e Axios CancelToken. RadarDetailPanel com place detail, tickets limitados a 50.' },
+      { key: 'p4', label: 'Phase 4-5', detail: 'Map + Dashboard (07-13/05). Leaflet substitui Google Maps. MarkerClusterer para clustering. Payload leve sem relações. Dashboard com KPIs reais cacheados 5 min. Gráficos com dados agregados, não rows individuais.' },
+      { key: 'nat', label: 'Nacional', detail: 'National Scale + Cache (19-21/05). Rollout multi-concessão: SP, RJ, PR, GO, BA. Cache composto por concessão com versionamento. Stampede protection com lock. Warmup por concessão. Health probes isolados. Normalização de tipos nos filtros multi-select. 102 testes passando.' }
+    ];
+
+    var container = document.getElementById('phase-controls');
+    var detail = document.getElementById('phase-detail');
+
+    phases.forEach(function(phase) {
+      var chip = document.createElement('div');
+      chip.className = 'filter-chip';
+      chip.textContent = phase.label;
+      chip.addEventListener('click', function() {
+        container.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        detail.innerHTML = '<strong style="color:var(--white);">' + phase.label + '</strong><br><br>' + phase.detail;
+      });
+      container.appendChild(chip);
+    });
+
+    // --- Authorization scope demo ---
+    var profiles = [
+      { key: 'sp', label: 'Analista SP', places: 8234, scope: '{\n  "concessao": "sp",\n  "establishment_ids": [383, 384],\n  "squares": ["SP-1", "SP-2", ...],\n  "states": ["SP"]\n}', active: false },
+      { key: 'rj', label: 'Analista RJ', places: 2103, scope: '{\n  "concessao": "rj",\n  "establishment_ids": [412, 415, 418],\n  "squares": ["RJ-1", "RJ-2"],\n  "states": ["RJ"]\n}', active: false },
+      { key: 'multi', label: 'Coordenador SP+RJ', places: 10337, scope: '{\n  "concessao": "multi",\n  "establishment_ids": [383, 384, 412, 415, 418],\n  "squares": ["SP-1", "SP-2", "RJ-1", "RJ-2"],\n  "states": ["SP", "RJ"]\n}', active: false },
+      { key: 'nac', label: 'Nacional', places: 22450, scope: '{\n  "concessao": "nacional",\n  "establishment_ids": [383, 384, 412, 415, 418, ...],\n  "squares": ["SP-1", "RJ-1", "PR-1", "GO-1", "BA-1", ...],\n  "states": ["SP", "RJ", "PR", "GO", "BA", ...]\n}', active: false }
+    ];
+
+    function renderProfiles() {
+      var ctrl = document.getElementById('demo-controls');
+      ctrl.innerHTML = '';
+      profiles.forEach(function(p) {
+        var chip = document.createElement('div');
+        chip.className = 'filter-chip' + (p.active ? ' active' : '');
+        chip.textContent = p.label;
+        chip.addEventListener('click', function() {
+          p.active = !p.active;
+          renderProfiles();
+          updateScope();
+        });
+        ctrl.appendChild(chip);
+      });
+    }
+
+    function updateScope() {
+      var activeProfiles = profiles.filter(function(p) { return p.active; });
+      var scopeEl = document.getElementById('demo-scope');
+      var surfacesEl = document.getElementById('demo-surfaces');
+      var countEl = document.getElementById('demo-count');
+
+      if (activeProfiles.length === 0) {
+        scopeEl.textContent = '{ } — Nenhum perfil selecionado.';
+        scopeEl.style.borderLeft = 'none';
+        surfacesEl.innerHTML = '<span class="pill" style="font-size:12px;">sem acesso</span>';
+        countEl.textContent = '0 places visíveis';
+        return;
+      }
+
+      var totalPlaces = activeProfiles.reduce(function(s, p) { return s + p.places; }, 0);
+      scopeEl.textContent = activeProfiles.map(function(p) { return '// ' + p.label + '\n' + p.scope; }).join('\n\n');
+      scopeEl.style.borderLeft = '4px solid var(--orange)';
+
+      surfacesEl.innerHTML = '';
+      ['Equipamentos', 'Mapa', 'Dashboard', 'Detalhe', 'Filtros'].forEach(function(s) {
+        var pill = document.createElement('span');
+        pill.className = 'pill orange';
+        pill.style.fontSize = '12px';
+        pill.style.minHeight = '28px';
+        pill.textContent = s;
+        surfacesEl.appendChild(pill);
+      });
+
+      countEl.innerHTML = '<span class="counter bump">' + totalPlaces.toLocaleString('pt-BR') + '</span> places visíveis';
+      setTimeout(function() {
+        document.querySelectorAll('.counter').forEach(function(el) { el.classList.remove('bump'); });
+      }, 300);
+    }
+
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(function() { toast.classList.remove('visible'); }, 1800);
+    }
+
+    renderProfiles();
+    updateScope();
+  </script>
+</body>
+</html>
