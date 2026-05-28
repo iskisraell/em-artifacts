@@ -1,0 +1,7 @@
+{
+  "title": "Edge Vision: deteccao de faces OOH direto do carro, do clique ao pipeline em segundos.",
+  "date": "2026-05-28",
+  "description": "Sistema de visao computacional embarcada para captura de rotas urbanas com deteccao local de faces Eletromidia. Pipeline detector+sorter com ONNX Runtime, OpenCLIP e benchmark reprodutivel. Planejamento completo, pronto para kick off de desenvolvimento.",
+  "tags": ["edge-ai", "computer-vision", "onnx", "python", "poc", "eletromidia"],
+  "sections": ["Contexto", "Pipeline", "Stack Tecnico", "Diagrama UML", "Fases de Desenvolvimento", "Benchmark", "Proximos Passos"]
+}
