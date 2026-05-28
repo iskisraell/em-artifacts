@@ -1,0 +1,30 @@
+name: Index Hub
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/metadata.json"
+      - "scripts/**"
+      - ".github/workflows/index-hub.yml"
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun run scripts/generate-hub.js
+      - name: Commit updated hub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "No changes to hub"
+          else
+            git commit -m "chore: auto-index hub [skip ci]"
+            git push
+          fi
