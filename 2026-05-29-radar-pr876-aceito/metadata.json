@@ -1,0 +1,7 @@
+{
+  "title": "Radar no Operações: PR #876 aceito, deploy segunda-feira",
+  "date": "2026-05-29",
+  "description": "Do MVP à aprovação: nativo no Operações com segurança, performance e cache inteligente. PR #876 aceito, deploy em produção segunda-feira.",
+  "tags": ["radar", "operacoes", "pr-876", "vue3", "laravel8", "leaflet", "web-worker", "cache", "seguranca", "performance"],
+  "sections": ["Contexto", "Segurança", "Review", "Performance", "Commits", "Mídia", "Q&A"]
+}
