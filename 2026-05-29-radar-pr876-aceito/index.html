@@ -424,8 +424,8 @@
     <section class="hero">
       <div>
         <div class="eyebrow">PR #876 &bull; Aprovado &bull; 29/05/2026</div>
-        <h1>Radar é módulo nativo do Operações. Deploy segunda-feira.</h1>
-        <p>Do MVP à aprovação em 10 dias. Nativo em /radar com a mesma sessão, mesma permissão, mesmo deploy. Nada de app paralelo, login próprio ou proxy separado.</p>
+        <h1>Radar é módulo nativo do Operações. PR aceito.</h1>
+        <p>Do conceito à aprovação em 34 dias. Nativo em /radar com a mesma sessão, mesma permissão, mesmo deploy. Nada de app paralelo, login próprio ou proxy separado.</p>
         <div class="hero-bar">
           <span class="pill green">Aprovado</span>
           <span class="pill orange">Vue 3</span>
@@ -464,9 +464,30 @@
         </article>
         <article class="card span-4 green">
           <h3>Estado</h3>
-          <p>PR #876 aceito. Deploy em produção segunda-feira. 123+ testes, 5600+ asserções. Cache web-authoritative, sem comandos Artisan. Web Worker para o mapa.</p>
+          <p>PR #876 aceito. 123+ testes, 5600+ asserções. Cache web-authoritative, sem comandos Artisan. Web Worker para o mapa. Todos os estabelecimentos do Operações.</p>
         </article>
       </div>
+    </section>
+
+    <!-- JORNADA -->
+    <section>
+      <div class="head">
+        <h2>A jornada até aqui.</h2>
+        <p>De 22/04 a 29/05: 6 cenários avaliados, 1 decisão, 1 PR aceito.</p>
+      </div>
+      <article class="card full">
+        <div class="storyline">
+          <div class="story-step"><div><b>22-23/04</b><span>4 cenários avaliados: DB direto, API-only, SPA embarcado, híbrido. Todos rejeitados.</span></div><span class="tag red">rejeitados</span></div>
+          <div class="story-step"><div><b>23/04</b><span>API-First aprovado: proxy Laravel + React SPA + cache server-side.</span></div><span class="tag blue">aprovado</span></div>
+          <div class="story-step"><div><b>05/05</b><span>Cenário E: módulo nativo. William + Doglas + Israel. Um sistema, um deploy, uma auth.</span></div><span class="tag green">decisão</span></div>
+          <div class="story-step"><div><b>05/05</b><span>Fundação: controller, rotas, policy, repository, Blade shell, menu.</span></div><span class="tag purple">baseline</span></div>
+          <div class="story-step"><div><b>06-22/05</b><span>Implementação: lista, mapa, dashboard, filtros, cache, permissões, testes.</span></div><span class="tag orange">MVP</span></div>
+        </div>
+      </article>
+      <article class="card full" style="margin-top:12px">
+        <h3>Por que cenário E?</h3>
+        <p>William e Doglas concordaram: espalhar operações entre dois sistemas vira espaguete. O cenário E (módulo nativo) eliminou toda a complexidade de integração que consumiu 2 semanas de planejamento. Mesma stack que o time já conhece: Blade + Vue 3 + AdminLTE. William pode manter. Doglas aprova. 3 semanas de esforço vs 4-5 do API-First.</p>
+      </article>
     </section>
 
     <!-- O QUE O RADAR FAZ -->
@@ -478,11 +499,11 @@
       <div class="grid">
         <article class="card span-3">
           <h3>Lista</h3>
-          <p>Equipamentos/pontos com filtros operacionais: praça, estabelecimento, ramal, zona, busca textual. Paginação server-side.</p>
+          <p>Equipamentos/pontos com filtros operacionais: praça, estabelecimento, filial, zona, busca textual. Paginação server-side.</p>
         </article>
         <article class="card span-3">
           <h3>Mapa</h3>
-          <p>Leaflet + Supercluster em Web Worker. Até 50k pontos. Agrupamento de co-localizados com carousel. Popup lazy.</p>
+          <p>Leaflet + Supercluster em Web Worker. Até 100k pontos. Agrupamento de co-localizados com carousel. Popup lazy.</p>
         </article>
         <article class="card span-3">
           <h3>Dashboard</h3>
@@ -591,9 +612,9 @@
           <p>Supercluster KD-tree moveu para Web Worker dedicado. Browser continua pintando frames durante construção do índice.</p>
         </article>
         <article class="card span-4 purple">
-          <div class="metric">50k</div>
+          <div class="metric">100k</div>
           <h3>Pontos no mapa</h3>
-          <p>Query enxuta: 7 campos, sem JOIN, raw builder. Limite subiu de 15k para 50k. Seguro com worker off main thread.</p>
+          <p>Query enxuta: 7 campos, sem JOIN, raw builder. Limite padrão alto. Seguro com worker off main thread.</p>
         </article>
         <article class="card span-4 orange">
           <div class="metric">2 → 1</div>
@@ -746,11 +767,6 @@
           <p>Perfis não analistas ficam fora.</p>
           <figure class="media ar-denied"><img src="pr-media/08-non-analyst-denied.png" alt="Acesso negado"></figure>
         </article>
-        <article class="media-card full">
-          <h3>Cache em terminal</h3>
-          <p>Clear, warm e health por concessão (comandos removidos após review; cache agora é web-authoritative).</p>
-          <figure class="media ar-cache"><img src="pr-media/06-cache-clear-warm-health.png" alt="Cache commands"></figure>
-        </article>
         <article class="media-card full black">
           <h3>Walkthrough de analista</h3>
           <p>Fluxo completo com perfil real de analista.</p>
@@ -777,9 +793,9 @@
           <p>Autenticadas. 5 com <code>LogSlowRadarDataEndpoint</code>.</p>
         </article>
         <article class="card span-4 yellow">
-          <div class="metric">20</div>
-          <h3>praças</h3>
-          <p>SP, RJ, PR, RS, MG, BA, CP, GO, SO, SC, ST, PB, MA, AM, AL, PI, BE, CE, PE, DF.</p>
+          <div class="metric">389</div>
+          <h3>estabelecimentos</h3>
+          <p>Todos os estabelecimentos do Operações. ~79k pontos ativos. Sem hardcode de praças.</p>
         </article>
       </div>
     </section>
@@ -807,7 +823,7 @@
         <div class="details-body">Não. O plano de abril (React + proxy + APIs) foi substituído pela decisão de maio: Radar nativo dentro do Operações. Mesmo stack, mesmo deploy, mesma sessão.</div>
       </details>
       <details>
-        <summary>O que vai mudar no deploy de segunda?</summary>
+        <summary>O que vai mudar no deploy?</summary>
         <div class="details-body">Nada de estrutural. A branch já está sincronizada com main. Bundles regenerados. Conflitos resolvidos. O deploy é o mesmo processo do Operações.</div>
       </details>
     </section>
@@ -816,7 +832,7 @@
     <section>
       <div class="callout">
         <div>
-          <h3>PR aceito. Deploy segunda-feira.</h3>
+          <h3>PR aceito. Deploy em produção.</h3>
           <p style="margin-bottom:0">Radar é um módulo nativo do Operações. Mesma sessão, mesma permissão, mesmo deploy. Nada de app paralelo.</p>
         </div>
       </div>
