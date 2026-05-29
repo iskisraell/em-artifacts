@@ -617,9 +617,9 @@
           <p>Query enxuta: 7 campos, sem JOIN, raw builder. Limite padrão alto. Seguro com worker off main thread.</p>
         </article>
         <article class="card span-4 orange">
-          <div class="metric">2 → 1</div>
-          <h3>Round-trips</h3>
-          <p>Dashboard e mapa disparam em paralelo via <code>Promise.all</code>. Sequenciamento: filtros → dashboard+mapa.</p>
+          <div class="metric">3s</div>
+          <h3>Startup</h3>
+          <p>Sequenciamento frontend: filtros carregam primeiro, depois cada superfície (mapa, dashboard, lista) carrega independentemente.</p>
         </article>
       </div>
       <div class="grid" style="margin-top:12px">
@@ -662,7 +662,7 @@
           <small>efa9c5848</small>
         </div>
         <div class="change-item">
-          <div><strong>fix(radar): sequence first-user cache loads</strong><p style="margin:4px 0 0;font-size:13px">Filtros → dashboard → mapa, não tudo de uma vez.</p></div>
+          <div><strong>fix(radar): sequence first-user cache loads</strong><p style="margin:4px 0 0;font-size:13px">Filtros carregam primeiro. Cada superfície carrega independentemente depois.</p></div>
           <small>4ca2164da</small>
         </div>
         <div class="change-item">
