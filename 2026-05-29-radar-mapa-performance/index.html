@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | Radar Mapa: Performance, Agrupamento e Cache Inteligente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--surface);
+      color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--white); color: var(--purple);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+
+    main {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto; padding: 24px 0 56px;
+    }
+
+    section { margin-top: 22px; }
+
+    h1, h2, h3 { margin-top: 0; font-weight: 800; }
+
+    h1 {
+      max-width: 980px; margin-bottom: 20px;
+      font-size: clamp(42px, 7.5vw, 90px);
+      line-height: .92; letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 820px; margin-bottom: 0;
+      font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 1.04;
+    }
+
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+
+    /* Hero */
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius);
+      background: var(--black); color: var(--white);
+      display: grid; align-content: space-between;
+      gap: 48px; overflow: hidden;
+      position: relative; isolation: isolate;
+    }
+
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 34px;
+    }
+
+    .hero::before {
+      right: clamp(116px, 15vw, 220px);
+      bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px);
+      background: var(--orange);
+      transform: rotate(10deg);
+    }
+
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px);
+      bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px);
+      background: var(--purple);
+      transform: rotate(-8deg);
+    }
+
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 22px; padding: 7px 11px;
+      border-radius: 999px; background: var(--yellow);
+      color: var(--black); font-weight: 800;
+      text-transform: uppercase; font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* Pills */
+    .pill {
+      display: inline-flex; align-items: center;
+      min-height: 32px; padding: 7px 11px;
+      border-radius: 999px; font-size: 13px;
+      font-weight: 800; line-height: 1; white-space: normal;
+    }
+
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0 18px; padding: 10px 0;
+      background: var(--surface);
+    }
+
+    .nav a {
+      border: 1px solid var(--black); border-radius: 999px;
+      background: var(--white); color: var(--black);
+      cursor: pointer; font: inherit; font-weight: 800;
+      text-decoration: none; white-space: normal; text-align: center;
+      transition: background .15s, color .15s;
+      padding: 10px 13px; font-size: 14px;
+    }
+
+    .nav a:hover { background: var(--black); color: var(--white); }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+
+    .card {
+      min-width: 0; min-height: 100%;
+      padding: clamp(18px, 2.4vw, 28px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--white); overflow: hidden;
+      transition: transform .18s, box-shadow .18s;
+    }
+
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+
+    .card.black, .card.purple, .card.orange, .card.green {
+      border-color: transparent; color: var(--white);
+    }
+
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.green { background: var(--green); }
+
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li { color: #FFFFFF; }
+    .card.yellow p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code { color: var(--black); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      margin-bottom: 6px;
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800; line-height: .86;
+    }
+
+    /* Head */
+    .head {
+      display: flex; justify-content: space-between;
+      align-items: end; gap: 18px; margin-bottom: 14px;
+    }
+
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    /* Tabs */
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Flow board */
+    .flow-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 12px; align-items: stretch; min-width: 0;
+    }
+
+    .flow-lane {
+      min-width: 0; display: grid; gap: 10px;
+      padding: 16px; border: 1px solid var(--line);
+      border-radius: 16px; background: var(--white);
+      transition: transform .15s;
+    }
+
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.added { border-color: var(--green); }
+
+    .flow-node {
+      min-width: 0; padding: 12px; border-radius: 12px;
+      background: var(--muted);
+    }
+
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+
+    /* Syntax box */
+    .syntax-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px; margin-top: 12px; min-width: 0;
+    }
+
+    .syntax-box {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white); overflow: hidden;
+    }
+
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code {
+      display: block; width: 100%; max-width: 100%;
+      white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
+      background: transparent; color: var(--yellow); padding: 0;
+    }
+
+    /* Checklist */
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+
+    /* Details */
+    details {
+      border: 1px solid var(--line); border-radius: 14px;
+      background: var(--white); overflow: hidden;
+    }
+
+    details + details { margin-top: 8px; }
+
+    summary {
+      cursor: pointer; padding: 16px 18px;
+      font-weight: 800; list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    /* Change list */
+    .change-list { display: grid; gap: 8px; }
+
+    .change-item {
+      min-width: 0; display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px; align-items: center;
+      padding: 12px 14px; border: 1px solid var(--line);
+      border-radius: 12px; background: var(--white);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+
+    th {
+      background: var(--black); color: var(--white);
+      font-weight: 800; font-size: 13px;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+
+    .badge {
+      display: inline-block; padding: 3px 8px;
+      border-radius: 999px; font-size: 11px;
+      font-weight: 800; line-height: 1;
+    }
+
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+
+    /* Callout */
+    .callout {
+      display: flex; justify-content: space-between;
+      gap: 16px; align-items: center;
+      padding: clamp(20px, 3vw, 32px);
+      border-radius: var(--radius);
+      background: var(--yellow);
+    }
+
+    /* Rail */
+    .rail {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px; min-width: 0;
+    }
+
+    .rail-step {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white);
+      transition: transform .15s;
+    }
+
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+
+    /* Problem strip */
+    .problem-strip {
+      display: grid;
+      grid-template-columns: 1fr 92px 1fr 92px 1fr;
+      gap: 12px; align-items: stretch;
+    }
+
+    .problem-card {
+      min-height: 172px; border-radius: var(--radius);
+      padding: 20px; display: grid; align-content: space-between;
+      border: 1px solid var(--line); background: var(--white);
+      position: relative; overflow: hidden;
+    }
+
+    .problem-card:before {
+      content: ""; position: absolute;
+      right: -34px; top: -34px;
+      width: 96px; height: 96px;
+      border-radius: 50%; background: var(--yellow); opacity: .7;
+    }
+
+    .problem-card h3 { position: relative; z-index: 1; }
+    .problem-card p { position: relative; z-index: 1; margin-bottom: 0; }
+
+    .problem-card.bad { background: var(--black); color: var(--white); border-color: var(--black); }
+    .problem-card.bad p { color: #D4D4D4; }
+    .problem-card.fix { background: var(--orange); border-color: var(--orange); }
+    .problem-card.fix p { color: var(--black); }
+    .problem-card.fix::before { display: none; }
+
+    .problem-arrow {
+      border-radius: var(--radius);
+      background: var(--purple); color: var(--white);
+      display: grid; place-items: center;
+      font-size: 34px; font-weight: 800;
+    }
+
+    .mini-label {
+      width: fit-content; padding: 6px 10px;
+      border-radius: 999px; background: var(--muted);
+      color: var(--black); font-size: 11px;
+      font-weight: 800; text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+
+    .bad .mini-label { background: var(--red); color: var(--white); }
+    .fix .mini-label { background: var(--black); color: var(--white); }
+
+    /* Footer */
+    footer {
+      margin-top: 22px; padding: 20px 0 0;
+      color: var(--text); font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .head, .callout, .split { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr 1fr; }
+      .change-item { grid-template-columns: 1fr; }
+      .problem-arrow { min-height: 54px; transform: rotate(90deg); }
+    }
+
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .hero::before { right: 62px; width: 260px; }
+      .hero::after { width: 210px; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr; }
+      .card, .flow-lane, details { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Radar &bull; Mapa &bull; 29/05/2026</div>
+        <h1>O mapa agora roda sem travar, agrupa pontos e não polui o cache.</h1>
+        <p>Quatro commits resolveram o freeze de 6s no carregamento, eliminaram a sobreposição de marcadores e cortaram a proliferação de entradas de cache. Detalhes técnicos completos abaixo.</p>
+        <div class="hero-bar">
+          <span class="pill orange">Web Worker</span>
+          <span class="pill purple">Supercluster</span>
+          <span class="pill yellow">Cache Skip</span>
+          <span class="pill green">Carousel Popup</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="#contexto">Contexto</a>
+      <a href="#problemas">Problemas</a>
+      <a href="#worker">Web Worker</a>
+      <a href="#agrupamento">Agrupamento</a>
+      <a href="#cache">Cache Inteligente</a>
+      <a href="#commits">Commits</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+
+    <!-- CONTEXTO -->
+    <section id="contexto">
+      <div class="head">
+        <h2>Contexto.</h2>
+        <p>De onde viemos e por que isso importa agora.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-6">
+          <h3>Antes</h3>
+          <ul class="checklist">
+            <li>Mapa travava o browser por ~6s ao carregar 6k pontos (Supercluster KD-tree na thread principal)</li>
+            <li>Marcadores na mesma coordenada se sobrepunham, só o topo era clicável</li>
+            <li>Cada termo de busca criava uma entrada de cache de 6 horas no filter-options</li>
+            <li>Dashboard e mapa disparavam em sequência, somando latência</li>
+            <li>Query do mapa fazia LEFT JOIN em place_shelter_informations para cada ponto</li>
+          </ul>
+        </div>
+        <div class="card span-6">
+          <h3>Depois</h3>
+          <ul class="checklist">
+            <li>Supercluster roda em Web Worker dedicado, browser continua pintando frames</li>
+            <li>Pontos co-localizados viram badge com contagem + carousel de popups</li>
+            <li>Busca textual ignora cache de filter-options (cross-filtering preservado)</li>
+            <li>Dashboard e mapa disparam em paralelo via Promise.all</li>
+            <li>Query do mapa retorna só 7 campos, sem JOIN, via raw builder</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEMAS -->
+    <section id="problemas">
+      <div class="head">
+        <h2>Os três problemas.</h2>
+        <p>Cada um com impacto diferente, todos resolvidos nesta rodada.</p>
+      </div>
+      <div class="problem-strip">
+        <div class="problem-card bad">
+          <div>
+            <div class="mini-label">Problema 1</div>
+            <h3>Freeze de 6s</h3>
+            <p>Supercluster construía KD-tree de 50k pontos na thread principal, bloqueando o browser.</p>
+          </div>
+        </div>
+        <div class="problem-arrow">&rarr;</div>
+        <div class="problem-card fix">
+          <div>
+            <div class="mini-label">Solução</div>
+            <h3>Web Worker</h3>
+            <p>Worker dedicado com kdbush próprio. Mapa interativo durante construção do índice.</p>
+          </div>
+        </div>
+      </div>
+      <div class="problem-strip" style="margin-top:12px">
+        <div class="problem-card bad">
+          <div>
+            <div class="mini-label">Problema 2</div>
+            <h3>Marcadores sobrepostos</h3>
+            <p>Equipamentos na mesma coordenada: só o topo era visível e clicável em qualquer zoom.</p>
+          </div>
+        </div>
+        <div class="problem-arrow">&rarr;</div>
+        <div class="problem-card fix">
+          <div>
+            <div class="mini-label">Solução</div>
+            <h3>Carousel Popup</h3>
+            <p>Agrupamento por coordenada + navegação prev/next com lazy fetch de dados.</p>
+          </div>
+        </div>
+      </div>
+      <div class="problem-strip" style="margin-top:12px">
+        <div class="problem-card bad">
+          <div>
+            <div class="mini-label">Problema 3</div>
+            <h3>Cache poluído</h3>
+            <p>Cada termo de busca criava entrada de 6h no cache de filter-options. Keyspace ilimitado.</p>
+          </div>
+        </div>
+        <div class="problem-arrow">&rarr;</div>
+        <div class="problem-card fix">
+          <div>
+            <div class="mini-label">Solução</div>
+            <h3>Cache Skip</h3>
+            <p>Quando search está presente, bypass total do cache. Cross-filtering preservado.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEEP DIVE: WEB WORKER -->
+    <section id="worker">
+      <div class="head">
+        <h2>Web Worker.</h2>
+        <p>O ganho de performance mais significativo: Supercluster off main thread.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-12">
+          <h3>Arquitetura</h3>
+          <div class="syntax-grid">
+            <div class="syntax-box">
+              <p>Thread Principal (RadarMap.vue)</p>
+              <code>Leaflet map rendering
+DOM management (&le;150 markers)
+Popup lazy-fetch
+fitBounds / setView</code>
+            </div>
+            <div class="syntax-box">
+              <p>Worker (radar-cluster.worker.js)</p>
+              <code>Supercluster.load() -- KD-tree build
+getClusters()
+getLeaves()
+getClusterExpansionZoom()</code>
+            </div>
+          </div>
+          <p style="margin-top:14px">Comunicação via <code>postMessage</code> / <code>onmessage</code>. O worker é compilado como entry separado no webpack (31.5 KiB, self-contained com kdbush). O mapa continua respondendo enquanto o índice é construído.</p>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card span-6">
+          <h3>Slim Map Query</h3>
+          <p>Query anterior fazia <code>LEFT JOIN place_shelter_informations</code> e retornava campos pesados para cada ponto. Agora retorna só 7 campos:</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Campo</th><th>Tipo</th></tr></thead>
+              <tbody>
+                <tr><td>id</td><td>int</td></tr>
+                <tr><td>latitude</td><td>varchar (normalizada em SQL)</td></tr>
+                <tr><td>longitude</td><td>varchar (normalizada em SQL)</td></tr>
+                <tr><td>stop_number</td><td>varchar</td></tr>
+                <tr><td>alternative_code</td><td>varchar</td></tr>
+                <tr><td>code</td><td>varchar</td></tr>
+                <tr><td>active</td><td>boolean</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card span-6">
+          <h3>Lazy Popup Endpoint</h3>
+          <p>Novo endpoint <code>GET /radar/data/map/popup/{place}</code> carrega dados do popup sob demanda (nome, sync_id, stop_number). O popup abre com spinner e atualiza quando a resposta chega.</p>
+          <p>Dashboard e mapa agora disparam em paralelo:</p>
+          <div class="syntax-box" style="margin-top:10px">
+            <code>// Antes: sequencial
+await fetchDashboard();
+await fetchMapData();
+
+// Depois: paralelo
+await Promise.all([
+  fetchDashboard(),
+  fetchMapData()
+]);</code>
+          </div>
+          <p style="margin-top:10px">Limite padrão do mapa: <code>15.000 &rarr; 50.000</code> pontos (seguro com worker off main thread).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEEP DIVE: AGRUPAMENTO -->
+    <section id="agrupamento">
+      <div class="head">
+        <h2>Agrupamento de pontos.</h2>
+        <p>De marcadores sobrepostos para carousel navegável.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-4">
+          <h3>1. Grouping</h3>
+          <p><code>applyGroupedMarkers()</code> agrupa features por coordenada arredondada para 5 decimais (~1.1m precisão). Grupos de 1 ponto: marker normal. Grupos de 2+: badge laranja com contagem.</p>
+        </div>
+        <div class="card span-4">
+          <h3>2. Co-location</h3>
+          <p>Clusters pequenos (&le;8 pontos) verificam co-localização antes de spiderfyar. Se todos compartilham coordenada: abre carousel diretamente. Se não: spiderfy normal.</p>
+        </div>
+        <div class="card span-4">
+          <h3>3. Carousel</h3>
+          <p>Barra de navegação <code>&larr; 1 de 3 &rarr;</code> com dots indicadores. Cada slide carrega dados via endpoint lazy. Footer "Ver detalhes" abre drawer de detalhe.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEEP DIVE: CACHE -->
+    <section id="cache">
+      <div class="head">
+        <h2>Cache inteligente.</h2>
+        <p>Por que search não deve ser cacheado em filter-options.</p>
+      </div>
+      <div class="grid">
+        <div class="card span-6">
+          <h3>O problema do cache com busca</h3>
+          <p>Cada termo de busca único gerava uma entrada separada de cache com TTL de 6 horas. O keyspace era ilimitado: <code>escopo &times; filtros &times; termo_busca</code>.</p>
+          <p>Termos de busca são efêmeros. Um usuário digita "rest", depois "resta", depois "restau". Cada uma criava uma entrada de cache que ninguém mais ia usar.</p>
+        </div>
+        <div class="card span-6">
+          <h3>A solução: bypass total</h3>
+          <p>Quando <code>$request-&gt;filled('search')</code>, o <code>getFilterOptions()</code> retorna direto via <code>computeFilterOptions()</code>, sem passar pelo <code>rememberHeavyPayload</code>.</p>
+          <p>O cross-filtering (dropdowns se adaptam ao resultado da busca) é preservado porque o termo de busca ainda flui para <code>filterOptionPlaceIds()</code>. A única diferença é que o resultado não é cacheado.</p>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card span-12">
+          <h3>Comportamento por tipo de busca</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Valor do search</th><th>filled()</th><th>applySearch</th><th>Cache?</th><th>Resultado</th></tr></thead>
+              <tbody>
+                <tr><td>null / vazio</td><td>false</td><td>ignora LIKE</td><td><span class="badge green">Sim</span></td><td>Nível escopo, cached 6h</td></tr>
+                <tr><td>" " (só espaço)</td><td>true</td><td>trim vazio, ignora</td><td><span class="badge orange">Não</span></td><td>Nível escopo, sem cache</td></tr>
+                <tr><td>"a" (1 char)</td><td>true</td><td>strlen &lt; 2, ignora</td><td><span class="badge orange">Não</span></td><td>Nível escopo, sem cache</td></tr>
+                <tr><td>"ab" (2+ chars)</td><td>true</td><td>aplica LIKE</td><td><span class="badge orange">Não</span></td><td>Cross-filtered, sem cache</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMITS -->
+    <section id="commits">
+      <div class="head">
+        <h2>Commits de hoje.</h2>
+        <p>Quatro commits no branch feature/radar-operacoes-mvp.</p>
+      </div>
+      <div class="change-list">
+        <div class="change-item">
+          <div>
+            <strong>perf(radar): offload Supercluster to Web Worker, slim map payload, lazy popup, parallel requests</strong>
+            <p style="margin:4px 0 0;font-size:13px">Worker dedicado, query enxuta (7 campos, sem JOIN), popup lazy, dashboard+mapa em paralelo, limite 50k.</p>
+          </div>
+          <small>a06870550</small>
+        </div>
+        <div class="change-item">
+          <div>
+            <strong>feat(radar): co-located marker grouping + carousel popup</strong>
+            <p style="margin:4px 0 0;font-size:13px">Agrupamento por coordenada, detecção de co-localização em cluster, carousel com navegação prev/next.</p>
+          </div>
+          <small>da979b854</small>
+        </div>
+        <div class="change-item">
+          <div>
+            <strong>fix(radar): show all map points, center only on Brazil</strong>
+            <p style="margin:4px 0 0;font-size:13px">Remove filtro de bounds do markerCoordinate, mantém fitBounds restrito ao Brasil.</p>
+          </div>
+          <small>ba4e45a3d</small>
+        </div>
+        <div class="change-item">
+          <div>
+            <strong>fix(radar): skip filter-options cache when search is present</strong>
+            <p style="margin:4px 0 0;font-size:13px">Extrai computeFilterOptions, bypass do rememberHeavyPayload quando busca textual está ativa.</p>
+          </div>
+          <small>c34fa29d8</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap">
+      <div class="head">
+        <h2>Próximos passos.</h2>
+        <p>O que falta para validação completa.</p>
+      </div>
+      <div class="rail">
+        <div class="rail-step">
+          <h3>1. Browser Test</h3>
+          <p>Validar em sessão autenticada: pontos renderizam, cluster funciona, carousel navega, busca filtra.</p>
+        </div>
+        <div class="rail-step">
+          <h3>2. National Scope</h3>
+          <p>Testar com ~50k pontos (escopo nacional). Verificar que não há freeze e o worker entrega clusters em tempo hábil.</p>
+        </div>
+        <div class="rail-step">
+          <h3>3. Performance Profiling</h3>
+          <p>Medir tempo de carregamento do mapa antes e depois com DevTools. Documentar métricas reais.</p>
+        </div>
+        <div class="rail-step">
+          <h3>4. Merge &amp; Deploy</h3>
+          <p>Revisar PR, rodar suite completa de testes, merge em main e deploy controlado.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALLOUT -->
+    <section>
+      <div class="callout">
+        <div>
+          <h3>Performance não é feature, é respeito pelo usuário.</h3>
+          <p style="margin-bottom:0">Cada segundo de freeze no mapa é um usuário que perde confiança na ferramenta. Os quatro commits de hoje atacam a raiz: thread principal bloqueada, dados desnecessários no payload, cache poluído por buscas efêmeras.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>Radar Mapa Performance &bull; Eletromidia Operações &bull; 29/05/2026 &bull; Branch: feature/radar-operacoes-mvp</p>
+    </footer>
+
+  </main>
+</body>
+</html>

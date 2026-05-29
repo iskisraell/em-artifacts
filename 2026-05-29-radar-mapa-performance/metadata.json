@@ -1,0 +1,7 @@
+{
+  "title": "Radar Mapa: Performance, Agrupamento e Cache Inteligente",
+  "date": "2026-05-29",
+  "description": "Quatro commits resolveram freeze de 6s no mapa (Web Worker), eliminaram sobreposição de marcadores (carousel popup) e cortaram poluição de cache (search bypass).",
+  "tags": ["radar", "performance", "web-worker", "supercluster", "cache", "leaflet", "vue", "laravel"],
+  "sections": ["Contexto", "Problemas", "Web Worker", "Agrupamento", "Cache Inteligente", "Commits", "Roadmap"]
+}
