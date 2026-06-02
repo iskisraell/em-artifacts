@@ -1,0 +1,7 @@
+{
+  "title": "Auditoria visual por IA chega à manutenção de rua em São Paulo.",
+  "date": "2026-06-02",
+  "description": "Estudo de viabilidade para expandir o saIA (Sistema de Análise por IA) além do fluxo de postagem, atingindo atividades corretivas e preventivas de rua em SP no Operações. Mapeia o pipeline Gemini existente, nove lacunas, quatro oportunidades de integração e um roadmap de 6-8 sprints.",
+  "tags": ["saIA", "Gemini", "Operações", "corretiva", "preventiva", "SP", "roadmap", "computer-vision"],
+  "sections": ["Contexto", "O que já existe", "Fluxo Gemini", "Lacunas", "Oportunidades", "Roadmap"]
+}

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | saIA no Operações — Corretiva/Preventiva SP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00; --black: #000000; --white: #FFFFFF; --purple: #4E18FF;
+      --yellow: #FECC14; --pink: #F577ED; --green: #3D7700; --red: #DC2626;
+      --blue: #2563EB; --surface: #FAFAFA; --muted: #F5F5F5; --line: #E5E5E5;
+      --text: #737373; --radius: 18px; --radius-md: 14px; --radius-sm: 12px; --max: 1180px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { overflow-x: hidden; background: var(--surface); font-family: "Rethink Sans", system-ui, -apple-system, sans-serif; }
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    main { max-width: var(--max); width: min(var(--max), calc(100% - 32px)); margin: 13px auto 30px; }
+    section { margin-top: 22px; }
+
+    h1 { font-size: clamp(42px, 7.5vw, 90px); line-height: .92; font-weight: 800; max-width: 980px; }
+    h2 { font-size: clamp(28px, 3.6vw, 46px); line-height: 1.04; font-weight: 800; max-width: 820px; }
+    h3 { font-size: 21px; line-height: 1.12; font-weight: 800; }
+    p { font-size: 16px; line-height: 1.45; color: var(--text); }
+    p + p { margin-top: 10px; }
+    code { padding: 2px 6px; border-radius: 5px; background: var(--white); color: var(--purple); font-family: Consolas, "Cascadia Mono", monospace; font-size: .86em; }
+
+    .hero { position: relative; isolation: isolate; overflow: hidden; background: var(--black); color: var(--white); border-radius: var(--radius); padding: clamp(24px, 4vw, 52px); min-height: 400px; display: flex; flex-direction: column; justify-content: space-between; }
+    .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; }
+    .hero::before { right: -58px; top: -58px; width: 220px; height: 220px; border-radius: 50%; border: 34px solid rgba(255,255,255,.12); }
+    .hero::after { left: -40px; bottom: -40px; width: 160px; height: 160px; background: var(--orange); border-radius: 34px; transform: rotate(22deg); opacity: .22; }
+    .hero h1 { color: var(--white); margin-bottom: 14px; }
+    .hero .lead { color: rgba(255,255,255,.68); max-width: 620px; font-size: 18px; }
+    .eyebrow { display: inline-flex; padding: 6px 11px; background: var(--yellow); color: var(--black); font-weight: 800; border-radius: 999px; font-size: 12px; margin-bottom: 16px; align-self: flex-start; }
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+
+    .pill { display: inline-flex; align-items: center; min-height: 32px; padding: 7px 11px; border-radius: 999px; font-size: 13px; font-weight: 800; line-height: 1; white-space: normal; }
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+
+    .nav { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; padding: 10px 0; background: var(--surface); }
+    .nav a { padding: 10px 13px; border: 1px solid var(--black); border-radius: 999px; background: var(--white); color: var(--black); font-weight: 800; font-size: 14px; text-decoration: none; transition: background .15s, color .15s; }
+    .nav a:hover { background: var(--black); color: var(--white); }
+
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 14px; }
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; }
+    .span-3 { grid-column: span 3; } .span-4 { grid-column: span 4; } .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; } .span-7 { grid-column: span 7; } .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .card { min-height: 100%; padding: clamp(18px, 2.4vw, 28px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); transition: transform .18s, box-shadow .18s; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .card.black, .card.purple, .card.orange, .card.green { border-color: transparent; color: var(--white); }
+    .card.black { background: var(--black); } .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); } .card.green { background: var(--green); }
+    .card.yellow { background: var(--yellow); } .card.pink { background: var(--pink); }
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card h3 { margin-bottom: 8px; }
+
+    .flow-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+    .flow-lane { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); }
+    .flow-lane.kept { border-color: var(--purple); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.gap { border-color: var(--orange); }
+    .flow-lane h3 { margin-bottom: 10px; }
+    .flow-node { padding: 12px; border-radius: 12px; background: var(--muted); margin-top: 8px; }
+    .flow-node code { display: block; margin-bottom: 4px; }
+
+    .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .compare { min-height: 180px; padding: 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--white); }
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+
+    .change-list { display: grid; gap: 8px; }
+    .change-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--white); transition: transform .15s, box-shadow .15s; }
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item strong { font-size: 15px; }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    .rail { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .rail-step { padding: 14px; border-radius: var(--radius-md); background: var(--black); color: var(--white); transition: transform .15s; }
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); font-size: 14px; margin-top: 6px; }
+    .rail-step strong { display: block; font-size: 15px; }
+
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: var(--radius-md); border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { background: var(--black); color: var(--white); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+    tr:last-child td { border-bottom: none; }
+
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; line-height: 1; }
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+
+    .callout { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius); background: var(--yellow); }
+    .callout h3 { margin-bottom: 8px; }
+    .callout p { color: rgba(0,0,0,.72); max-width: 600px; }
+
+    .syntax-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .syntax-box { padding: 14px; border-radius: var(--radius-md); background: var(--black); color: var(--white); overflow: hidden; }
+    .syntax-box p { color: rgba(255,255,255,.76); font-size: 13px; margin-bottom: 6px; }
+    .syntax-box code { display: block; width: 100%; max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; background: transparent; color: var(--yellow); padding: 0; }
+
+    .metric { margin-bottom: 6px; font-size: clamp(44px, 8vw, 86px); font-weight: 800; line-height: .86; }
+
+    details { border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--white); overflow: hidden; }
+    details + details { margin-top: 8px; }
+    summary { cursor: pointer; padding: 16px 18px; font-weight: 800; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    footer { margin-top: 22px; padding: 20px 0 0; color: var(--text); font-size: 14px; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } }
+    @media (max-width: 920px) {
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .head, .callout, .split { display: grid; }
+      .rail { grid-template-columns: 1fr 1fr; }
+      .syntax-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); }
+      .hero { border-radius: 14px; } .hero { min-height: 320px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .rail, .syntax-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero" id="top">
+    <div>
+      <span class="eyebrow">Operações &middot; saIA &middot; 02 de junho de 2026</span>
+      <h1>Auditoria visual por IA chega à manutenção de rua em São Paulo.</h1>
+      <p class="lead">Estudo de viabilidade para expandir o saIA além da postagem — alcançando chamados corretivos e preventivos de rua em SP com o Gemini Flash.</p>
+    </div>
+    <div class="hero-bar">
+      <span class="pill orange">saIA</span>
+      <span class="pill purple">Gemini Flash</span>
+      <span class="pill yellow">SP</span>
+      <span class="pill pink">corretiva/preventiva</span>
+      <span class="pill black">roadmap</span>
+    </div>
+  </section>
+
+  <nav class="nav" aria-label="Navegação">
+    <a href="#contexto">Contexto</a>
+    <a href="#existe">O que já existe</a>
+    <a href="#fluxo">Fluxo Gemini</a>
+    <a href="#lacunas">Lacunas</a>
+    <a href="#oportunidades">Oportunidades</a>
+    <a href="#roadmap">Roadmap</a>
+  </nav>
+
+  <section id="contexto">
+    <div class="head">
+      <h2>O que é o saIA e por que expandi-lo.</h2>
+      <p>Um vencedor de AI Concourse que já roda em produção — só que em um único módulo.</p>
+    </div>
+    <div class="grid">
+      <article class="card purple span-6">
+        <h3>saIA (Sistema de Análise por IA)</h3>
+        <p>Produto de auditoria de evidências visuais de campo. Compara fotos de antes/depois, aplica prompts de domínio específico, consulta o Gemini por JSON estruturado e retorna diagnósticos auditáveis com pontuação de confiança.</p>
+        <p style="margin-top:10px;">Venceu o Eletromidia AI Concourse em outubro de 2025 com um dicionário rico de ocorrências: colagem, pichação, vidro quebrado, fita zebrada, sujeira, lona solta.</p>
+      </article>
+      <article class="card span-6">
+        <h3>Por que expandir agora</h3>
+        <p>O Operações já tem a infraestrutura base: fila Horizon, chave Gemini configurada, tabela com colunas de IA e um fluxo completo de upload de fotos com metadados de checklist. A postagem já prova que funciona.</p>
+        <p style="margin-top:10px;">O que falta é um serviço compartilhado e a extensão do contrato de análise para o dicionário de manutenção de rua.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="existe">
+    <div class="head">
+      <h2>O que já existe no Operações.</h2>
+      <p>Infraestrutura, esquema de banco e um job funcional que chama o Gemini.</p>
+    </div>
+    <div class="grid">
+      <article class="card span-6">
+        <h3>ValidatePostingPhotoWithAiJob</h3>
+        <p>Job na fila <code>scripts</code> que valida fotos de postagem contra a arte de campanha. Disparado pelo <code>TicketUploadEventJob</code> quando a propriedade da foto é <code>XA_RUA_PSTG_PHOTO</code>.</p>
+        <ul style="margin-top:10px;">
+          <li>Baixa foto de referência e foto do técnico</li>
+          <li>Converte para base64 inline_data</li>
+          <li>Monta prompt de auditor de mídia OOH</li>
+          <li>Chama <code>gemini-flash-latest:generateContent</code></li>
+          <li>Config: temperature 0.1, response_mime_type JSON</li>
+          <li>Aprova automaticamente se confiança >= 80%</li>
+        </ul>
+      </article>
+      <article class="card span-6">
+        <h3>Esquema no banco</h3>
+        <p>Tabela <code>posting_assignment_tickets</code> já tem:</p>
+        <div class="syntax-grid" style="margin-top:10px;">
+          <div class="syntax-box">
+            <code>ia_confidence INT
+ai_note LONGTEXT
+validated_by FK users
+validation_status ENUM
+has_corretive_problem TINYINT</code>
+          </div>
+          <div class="syntax-box">
+            <code>Usuário IA: ID 5
+IA_GEMINI_USER_ID
+Status: approved/rejected
+Fila Horizon + Redis
+3 retentativas, 120s timeout</code>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="fluxo">
+    <div class="head">
+      <h2>Pipeline Gemini atual e onde o saIA entra.</h2>
+      <p>O fluxo de postagem já é um pipeline supervisionado completo. A expansão replica o padrão.</p>
+    </div>
+    <div class="flow-board">
+      <article class="flow-lane kept">
+        <span class="pill purple">1. Upload</span>
+        <h3>TicketUploadEventJob</h3>
+        <p>Foto chega do app de campo. PropertyUpload rotaciona, redimensiona, adiciona watermark e salva no storage.</p>
+        <div class="flow-node">
+          <code>XA_RUA_PSTG_PHOTO</code>
+          <p>Propriedade que dispara a validação IA.</p>
+        </div>
+      </article>
+      <article class="flow-lane kept">
+        <span class="pill purple">2. Análise</span>
+        <h3>ValidatePostingPhotoWithAiJob</h3>
+        <p>Busca foto de referência da campanha, lê foto do técnico, monta prompt e chama Gemini Flash.</p>
+        <div class="flow-node">
+          <code>gemini-flash-latest</code>
+          <p>Retorna JSON: status, confidence, análise.</p>
+        </div>
+      </article>
+      <article class="flow-lane kept">
+        <span class="pill green">3. Decisão</span>
+        <h3>Auto-approve ou human_review</h3>
+        <p>Confiança >= 80% → aprova automaticamente. Abaixo disso → encaminha para revisão humana.</p>
+        <div class="flow-node">
+          <code>IA_GEMINI_USER_ID = 5</code>
+          <p>Identidade do aprovador IA na trilha de auditoria.</p>
+        </div>
+      </article>
+      <article class="flow-lane added">
+        <span class="pill orange">4. Expansão</span>
+        <h3>PreventivePhotoAnalysisJob</h3>
+        <p>Novo job que analisa fotos de checklist preventivo (XA_RUA_*, XA_ABG_*) contra o dicionário de ocorrências do saIA.</p>
+        <div class="flow-node">
+          <code>saIA occurrence glossary</code>
+          <p>Colagem, pichação, vidro quebrado, fita zebrada, sujeira, lona solta...</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="lacunas">
+    <div class="head">
+      <h2>Nove lacunas entre o estado atual e a visão integrada.</h2>
+      <p>Mapeadas a partir da análise do código, banco, filas e notas de arquitetura.</p>
+    </div>
+    <div class="change-list">
+      <div class="change-item"><div><strong>1. Sem IA para chamados de rua</strong><br><small>Corretivos e preventivos têm dezenas de fotos de checklist — zero análise visual.</small></div><span class="pill red">crítico</span></div>
+      <div class="change-item"><div><strong>2. Serviço de IA não compartilhado</strong><br><small>Prompt hardcoded inline no job de postagem. Sem contrato, sem versionamento, sem reúso.</small></div><span class="pill red">crítico</span></div>
+      <div class="change-item"><div><strong>3. Dicionário de ocorrências não utilizado</strong><br><small>O glossário rico do protótipo saIA está ausente do Operações.</small></div><span class="pill orange">alto</span></div>
+      <div class="change-item"><div><strong>4. Sem comparação antes/depois para manutenção</strong><br><small>Postagem compara contra arte. Manutenção de rua não tem comparação por IA.</small></div><span class="pill orange">alto</span></div>
+      <div class="change-item"><div><strong>5. Sem pré-check de qualidade de imagem</strong><br><small>Fotos vão ao Gemini sem verificação de nitidez, iluminação ou ângulo.</small></div><span class="pill yellow">médio</span></div>
+      <div class="change-item"><div><strong>6. Sem tabela de análises reutilizável</strong><br><small>Resultados só existem em posting_assignment_tickets. Sem tabela ai_analyses cross-módulo.</small></div><span class="pill orange">alto</span></div>
+      <div class="change-item"><div><strong>7. Auto-close corretiva/preventiva sem verificação visual</strong><br><small>Fechamento em SP é baseado apenas em checklist — sem confirmação por IA.</small></div><span class="pill red">crítico</span></div>
+      <div class="change-item"><div><strong>8. Sem pipeline de revisão humana estruturada</strong><br><small>Decisões binárias, sem fila de revisão, dashboard ou rastreamento de overrides.</small></div><span class="pill orange">alto</span></div>
+      <div class="change-item"><div><strong>9. Categorização de concorrentes manual</strong><br><small>Problema de classificação pura de imagens — atualmente sem IA.</small></div><span class="pill yellow">médio</span></div>
+    </div>
+  </section>
+
+  <section id="oportunidades">
+    <div class="head">
+      <h2>Quatro módulos, quatro níveis de esforço.</h2>
+      <p>Da normalização da postagem até a classificação de concorrentes.</p>
+    </div>
+    <div class="grid">
+      <article class="card brown span-6" style="background:var(--purple);color:var(--white);border-color:transparent;">
+        <span class="pill pink" style="margin-bottom:12px;display:inline-flex;">baixo esforço</span>
+        <h3 style="color:var(--white);">Postagem — Normalizar</h3>
+        <p style="color:rgba(255,255,255,.78);">Refatorar o job existente para usar um serviço compartilhado de IA com perfil versionado. Manter o fluxo de aprovação automática. Adicionar UI de revisão para decisões borderline.</p>
+      </article>
+      <article class="card orange span-6">
+        <span class="pill yellow" style="margin-bottom:12px;display:inline-flex;">alto valor</span>
+        <h3>Corretiva/Preventiva SP — Expansão Principal</h3>
+        <p>IA classifica fotos de checklist preventivo contra o dicionário de ocorrências. Comparação antes/depois para validação de conclusão de corretiva. Auto-close de preventiva aumentado por verificação visual da IA.</p>
+      </article>
+      <article class="card pink span-6">
+        <span class="pill purple" style="margin-bottom:12px;display:inline-flex;">médio esforço</span>
+        <h3>Inspeções de Qualidade</h3>
+        <p>IA pré-classifica fotos de inspeção. Detecta problemas de tela (pixels mortos, degradação, dano físico). Preenche sugestões de checklist para confirmação do inspetor.</p>
+      </article>
+      <article class="card yellow span-6">
+        <span class="pill black" style="margin-bottom:12px;display:inline-flex;">baixo esforço</span>
+        <h3>Monitoramento de Concorrentes</h3>
+        <p>IA classifica automaticamente fotos de grades de concorrentes por anunciante, formato e tipo de localização. Problema de classificação pura — menor complexidade de integração.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="head">
+      <h2>Roadmap de implementação.</h2>
+      <p>Seis a oito sprints para cobertura completa. Fase 2 é o maior ROI.</p>
+    </div>
+    <div class="rail">
+      <div class="rail-step">
+        <strong>Fase 0: Fundação</strong>
+        <p>Tabela ai_analyses, GeminiAnalysisService compartilhado, perfil de prompt versionado.</p>
+        <span class="pill green" style="margin-top:8px;">1-2 sprints</span>
+      </div>
+      <div class="rail-step">
+        <strong>Fase 1: Postagem</strong>
+        <p>Refatorar job para serviço compartilhado. UI de revisão para human_review.</p>
+        <span class="pill green" style="margin-top:8px;">1 sprint</span>
+      </div>
+      <div class="rail-step" style="border:2px solid var(--orange);">
+        <strong>Fase 2: Corretiva/Preventiva SP</strong>
+        <p>Portar glossário, novos jobs, auto-close com IA, dashboard de revisão.</p>
+        <span class="pill orange" style="margin-top:8px;">2-3 sprints ★</span>
+      </div>
+      <div class="rail-step">
+        <strong>Fase 3: Qualidade + Concorrentes</strong>
+        <p>Análise de inspeção, classificação automática, relatórios cross-módulo.</p>
+        <span class="pill green" style="margin-top:8px;">2 sprints</span>
+      </div>
+    </div>
+    <div class="table-wrap" style="margin-top:14px;">
+      <table>
+        <thead><tr><th>Fase</th><th>Entregáveis</th><th>Esforço</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge purple">0</span></td><td>Tabela <code>ai_analyses</code> (polimórfica). Serviço GeminiAnalysisService. Registro de perfis de prompt.</td><td>1-2 sprints</td></tr>
+          <tr><td><span class="badge purple">1</span></td><td>Refatorar Postagem para serviço compartilhado. Adicionar análises à tabela. UI de revisão.</td><td>1 sprint</td></tr>
+          <tr><td><span class="badge orange">2</span></td><td>Portar glossário do protótipo. PreventivePhotoAnalysisJob. CorrectiveCompletionAnalysisJob. Auto-close com IA.</td><td>2-3 sprints</td></tr>
+          <tr><td><span class="badge green">3</span></td><td>Análise de fotos de qualidade. Classificação automática de concorrentes. Relatórios cross-módulo.</td><td>2 sprints</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <div>
+        <h3>supervisedCLT: o conceito que já existe.</h3>
+        <p>O termo não foi encontrado no código ou documentação, mas o padrão que ele descreve já está implementado: foto do campo → fila de processamento → IA classifica com confiança → humano revisa os casos borderline → decisão operacional. O ValidatePostingPhotoWithAiJob é exatamente isso. A expansão proposta replica esse mesmo pipeline supervisionado para os demais módulos.</p>
+      </div>
+      <span class="pill black">recomendação</span>
+    </div>
+  </section>
+
+  <footer>
+    <strong>saIA no Operações — Corretiva/Preventiva SP</strong>
+    <p>Fontes: código (ValidatePostingPhotoWithAiJob, StreetRepository, PropertyUpload, TicketUploadEventJob), banco (posting_assignment_tickets), Obsidian (10-Projects/saia/*, 10-Projects/operacoes/*). Sessão de 02 de junho de 2026.</p>
+  </footer>
+</main>
+</body>
+</html>
