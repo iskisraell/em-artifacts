@@ -158,6 +158,7 @@
       <span class="pill purple">Gemini Flash</span>
       <span class="pill yellow">SP</span>
       <span class="pill pink">corretiva/preventiva</span>
+      <span class="pill orange">Supervisor CLT</span>
       <span class="pill black">roadmap</span>
     </div>
   </section>
@@ -282,6 +283,7 @@ Fila Horizon + Redis
       <p>Mapeadas a partir da análise do código, banco, filas e notas de arquitetura.</p>
     </div>
     <div class="change-list">
+      <div class="change-item"><div><strong>0. Reconstrução assíncrona de fotos (Supervisor CLT)</strong><br><small>Fotos chegam individualmente com até 15 min de latência. Sistema precisa esperar 6h e reconstruir pares antes/depois por chamado.</small></div><span class="pill red">crítico</span></div>
       <div class="change-item"><div><strong>1. Sem IA para chamados de rua</strong><br><small>Corretivos e preventivos têm dezenas de fotos de checklist — zero análise visual.</small></div><span class="pill red">crítico</span></div>
       <div class="change-item"><div><strong>2. Serviço de IA não compartilhado</strong><br><small>Prompt hardcoded inline no job de postagem. Sem contrato, sem versionamento, sem reúso.</small></div><span class="pill red">crítico</span></div>
       <div class="change-item"><div><strong>3. Dicionário de ocorrências não utilizado</strong><br><small>O glossário rico do protótipo saIA está ausente do Operações.</small></div><span class="pill orange">alto</span></div>
@@ -331,7 +333,7 @@ Fila Horizon + Redis
     <div class="rail">
       <div class="rail-step">
         <strong>Fase 0: Fundação</strong>
-        <p>Tabela ai_analyses, GeminiAnalysisService compartilhado, perfil de prompt versionado.</p>
+        <p>Tabela ai_analyses, GeminiAnalysisService compartilhado, perfil de prompt versionado. Coluna ia_analyzed_at, lógica de reconstrução de fotos, cron saia:analyze-maintenance.</p>
         <span class="pill green" style="margin-top:8px;">1-2 sprints</span>
       </div>
       <div class="rail-step">
@@ -354,7 +356,7 @@ Fila Horizon + Redis
       <table>
         <thead><tr><th>Fase</th><th>Entregáveis</th><th>Esforço</th></tr></thead>
         <tbody>
-          <tr><td><span class="badge purple">0</span></td><td>Tabela <code>ai_analyses</code> (polimórfica). Serviço GeminiAnalysisService. Registro de perfis de prompt.</td><td>1-2 sprints</td></tr>
+          <tr><td><span class="badge purple">0</span></td><td>Tabela <code>ai_analyses</code> (polimórfica). Serviço GeminiAnalysisService. Registro de perfis de prompt. Coluna <code>ia_analyzed_at</code>, lógica de reconstrução de fotos, cron <code>saia:analyze-maintenance</code>.</td><td>1-2 sprints</td></tr>
           <tr><td><span class="badge purple">1</span></td><td>Refatorar Postagem para serviço compartilhado. Adicionar análises à tabela. UI de revisão.</td><td>1 sprint</td></tr>
           <tr><td><span class="badge orange">2</span></td><td>Portar glossário do protótipo. PreventivePhotoAnalysisJob. CorrectiveCompletionAnalysisJob. Auto-close com IA.</td><td>2-3 sprints</td></tr>
           <tr><td><span class="badge green">3</span></td><td>Análise de fotos de qualidade. Classificação automática de concorrentes. Relatórios cross-módulo.</td><td>2 sprints</td></tr>
@@ -364,10 +366,67 @@ Fila Horizon + Redis
   </section>
 
   <section>
+    <div class="head">
+      <h2>Supervisor CLT: o calcanhar de Aquiles.</h2>
+      <p>Fotos não chegam juntas. O sistema precisa esperar e reconstruir os pares.</p>
+    </div>
+    <div class="grid">
+      <article class="card black span-6">
+        <span class="pill orange" style="margin-bottom:12px;display:inline-flex;">externo</span>
+        <h3>Supervisor CLT</h3>
+        <p>Sistema externo de filas que gerencia a chegada de fotos de campo. 4 níveis de prioridade (crítico, alto, padrão, baixo). Fotos entram majoritariamente na fila padrão com latência máxima de 15 minutos.</p>
+        <p style="margin-top:10px;">Cada foto chega <strong>individualmente</strong>, não em lotes. Este é o problema central: para o saIA comparar antes/depois, todas as fotos do chamado precisam ter chegado.</p>
+      </article>
+      <article class="card span-6">
+        <h3>Estratégia de reconstrução</h3>
+        <p>A decisão arquitetural (reunião William Pinheiro, 01/06) é usar <strong>cron job horário</strong> processando apenas chamados <strong>encerrados há &geq;6 horas</strong>.</p>
+        <div class="syntax-grid" style="margin-top:12px;">
+          <div class="syntax-box">
+            <p>Query do cron</p>
+            <code>tickets WHERE
+end_date &geq; 6h ago
+has photos (before+after)
+NOT yet analyzed</code>
+          </div>
+          <div class="syntax-box">
+            <p>Reconstrução por chamado</p>
+            <code>1. Busca XA_FILE_FADE_PHOO
+2. Busca XA_PHOTO
+3. Converte base64
+4. Monta prompt + perfil
+5. Chama Gemini Flash</code>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div style="margin-top:14px;" class="grid">
+      <article class="card yellow span-6">
+        <h3>Por que 6 horas</h3>
+        <ul>
+          <li>15 min de latência máxima do Supervisor CLT</li>
+          <li>Margem para retentativas e reprocessamento</li>
+          <li>Isola a IA do fluxo operacional principal</li>
+          <li>Zero risco de degradação do sistema legado</li>
+        </ul>
+      </article>
+      <article class="card pink span-6">
+        <h3>Perguntas ainda em aberto</h3>
+        <ul>
+          <li>Como parear XA_FILE_FADE_PHOO + XA_PHOTO? Ambos sempre presentes?</li>
+          <li>Qual coluna/tabela marca tickets já analisados?</li>
+          <li>Fotos de checklist (XA_RUA_*, XA_ABG_*): standalone ou pareadas?</li>
+          <li>Supervisor CLT: supervisord, sistema externo ou camada mobile?</li>
+          <li>Cron: usar end_date ou updated_at?</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section>
     <div class="callout">
       <div>
-        <h3>supervisedCLT: o conceito que já existe.</h3>
-        <p>O termo não foi encontrado no código ou documentação, mas o padrão que ele descreve já está implementado: foto do campo → fila de processamento → IA classifica com confiança → humano revisa os casos borderline → decisão operacional. O ValidatePostingPhotoWithAiJob é exatamente isso. A expansão proposta replica esse mesmo pipeline supervisionado para os demais módulos.</p>
+        <h3>O pipeline supervisionado já existe. É só expandir.</h3>
+        <p>O ValidatePostingPhotoWithAiJob já prova o padrão: foto &rarr; fila &rarr; IA classifica com confiança &rarr; humano revisa borderlines &rarr; decisão. A expansão para manutenção de rua replica o mesmo modelo, com a adição do cron horário para lidar com a chegada assíncrona de fotos do Supervisor CLT. A Fase 2 (corretiva/preventiva SP) é o maior ROI.</p>
       </div>
       <span class="pill black">recomendação</span>
     </div>
@@ -375,7 +434,7 @@ Fila Horizon + Redis
 
   <footer>
     <strong>saIA no Operações — Corretiva/Preventiva SP</strong>
-    <p>Fontes: código (ValidatePostingPhotoWithAiJob, StreetRepository, PropertyUpload, TicketUploadEventJob), banco (posting_assignment_tickets), Obsidian (10-Projects/saia/*, 10-Projects/operacoes/*). Sessão de 02 de junho de 2026.</p>
+    <p>Fontes: código (ValidatePostingPhotoWithAiJob, StreetRepository, PropertyUpload, TicketUploadEventJob), banco (posting_assignment_tickets), Obsidian (10-Projects/saia/*, 10-Projects/operacoes/*). Sessão de 02 de junho de 2026. Reunião William Pinheiro (01/06/2026), Supervisor CLT.</p>
   </footer>
 </main>
 </body>
