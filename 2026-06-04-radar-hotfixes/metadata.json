@@ -1,0 +1,7 @@
+{
+  "title": "Radar — Hotfixes de Produção pós-Deploy",
+  "date": "2026-06-04",
+  "description": "Dois ajustes críticos antes da liberação do Radar para Prefeitura de São Paulo: remoção do filtro de status para usuários municipais e skeleton de carregamento no dashboard.",
+  "tags": ["radar", "hotfix", "prefeitura", "permissões", "dashboard", "UX", "cache", "laravel", "vue"],
+  "sections": ["Contexto", "Filtro Prefeitura", "Dashboard Skeleton", "Arquivos", "Decisão", "Rollout"]
+}
