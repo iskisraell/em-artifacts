@@ -416,8 +416,8 @@
     <section class="hero" id="top">
       <div>
         <span class="eyebrow">Radar &bull; Hotfix &bull; 04 Jun 2026</span>
-        <h1>Dois ajustes que destravaram o Radar em produção.</h1>
-        <p>Remoção do filtro de status para a Prefeitura de São Paulo e skeleton de carregamento no dashboard. O que mudou, por quê e como cada decisão foi tomada.</p>
+        <h1>Três ajustes que destravaram o Radar em produção.</h1>
+        <p>Remoção do filtro de status para a Prefeitura, ordenação ativo-antes-inativo no grid de equipamentos, default "Ativo" na primeira carga e skeleton de carregamento no dashboard. O que mudou, por quê e como cada decisão foi tomada.</p>
       </div>
       <div class="hero-bar">
         <span class="pill orange">backend</span>
@@ -425,6 +425,7 @@
         <span class="pill yellow">UX</span>
         <span class="pill green">cache</span>
         <span class="pill pink">prefeitura</span>
+        <span class="pill black">sorter</span>
       </div>
     </section>
 
@@ -432,6 +433,7 @@
     <nav class="nav" aria-label="Navegação">
       <a href="#contexto">Contexto</a>
       <a href="#prefeitura">Filtro Prefeitura</a>
+      <a href="#sorter">Sorter Ativo</a>
       <a href="#dashboard">Dashboard Skeleton</a>
       <a href="#arquivos">Arquivos</a>
       <a href="#rollout">Rollout</a>
@@ -540,6 +542,41 @@
       </details>
     </section>
 
+    <!-- HOTFIX 1B: SORTER ATIVO -->
+    <section id="sorter">
+      <div class="head">
+        <h2>Ativos primeiro, inativos depois.</h2>
+        <p>O grid de equipamentos agora ordena ativos antes de inativos, e a página de equipamentos inicia filtrada em "Ativo" por padrão.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card span-6">
+          <span class="pill black" style="margin-bottom:12px">ordenação</span>
+          <h3>Active DESC no backend.</h3>
+          <p>A query de cards agora usa <code>orderBy('places.active', 'desc')->orderBy('places.name')</code>. Todos os usuários veem equipamentos ativos primeiro, independentemente de filtros. Isso é um comportamento global, não apenas para prefeitura.</p>
+        </article>
+        <article class="card span-6">
+          <span class="pill orange" style="margin-bottom:12px">default de UX</span>
+          <h3>Primeira carga mostra só Ativos.</h3>
+          <p>Na primeira visita à página de equipamentos, se o usuário tem o filtro de Status disponível e não definiu nada, o frontend automaticamente seleciona "Ativo". Limpar filtros volta a mostrar tudo. A lógica vive no componente, não na store.</p>
+        </article>
+      </div>
+
+      <div class="syntax-grid" style="margin-top:14px">
+        <div class="syntax-box">
+          <p style="margin-bottom:6px;font-weight:800">Ordenação no RadarRepository</p>
+          <code>$idsQuery->orderBy('places.active', 'desc')
+    ->orderBy('places.name');</code>
+        </div>
+        <div class="syntax-box">
+          <p style="margin-bottom:6px;font-weight:800">Default ativo no componente</p>
+          <code>if (!this.defaultActiveApplied && !params.active) {
+    params.active = '1';
+}</code>
+        </div>
+      </div>
+    </section>
+
     <!-- HOTFIX 2: DASHBOARD SKELETON -->
     <section id="dashboard">
       <div class="head">
@@ -597,7 +634,7 @@ showEmptyState: this.hasLoaded && !this.loading
     <section id="arquivos">
       <div class="head">
         <h2>Arquivos alterados.</h2>
-        <p>Cinco arquivos de source, zero alterações em assets compilados ou configurações.</p>
+        <p>Sete arquivos de source + assets compilados. Zero migrations ou dependências novas.</p>
       </div>
 
       <div class="table-wrap">
@@ -612,8 +649,8 @@ showEmptyState: this.hasLoaded && !this.loading
           <tbody>
             <tr>
               <td><code>RadarRepository.php</code></td>
-              <td><span class="badge orange">Prefeitura</span></td>
-              <td>Detector <code>shouldForceActiveOnly()</code>, força <code>active=1</code> em filters/detail/popup, omite <code>active_options</code>, <code>is_municipal</code> no cache context</td>
+              <td><span class="badge orange">Prefeitura</span> <span class="badge black">Sorter</span></td>
+              <td>Detector <code>shouldForceActiveOnly()</code>, força <code>active=1</code>, omite <code>active_options</code>, <code>is_municipal</code> no cache context, ordenação <code>active DESC, name</code></td>
             </tr>
             <tr>
               <td><code>RadarFilterOptionsResource.php</code></td>
@@ -626,14 +663,24 @@ showEmptyState: this.hasLoaded && !this.loading
               <td>Status filter com <code>v-if</code> condicionado a <code>active_options</code></td>
             </tr>
             <tr>
+              <td><code>RadarEquipment.vue</code></td>
+              <td><span class="badge black">Sorter</span></td>
+              <td>Default <code>active=1</code> na primeira carga, flag <code>defaultActiveApplied</code>, remove double-fetch em <code>clearAll()</code></td>
+            </tr>
+            <tr>
+              <td><code>radar.js</code> (store)</td>
+              <td><span class="badge black">Sorter</span></td>
+              <td>Removida lógica de <code>_applyDefaultActive</code> da store — lógica de default movida para o componente</td>
+            </tr>
+            <tr>
               <td><code>RadarDashboard.vue</code></td>
               <td><span class="badge purple">Dashboard</span></td>
               <td>Skeleton local, estados de erro/retry/vazio, <code>dashboardRequestId</code> para cancelamento de requests</td>
             </tr>
             <tr>
               <td><code>RadarScopeBoundaryTest.php</code></td>
-              <td><span class="badge orange">Prefeitura</span></td>
-              <td>8 novos testes municipais, remoção de prefeitura do provider de permissões negadas</td>
+              <td><span class="badge orange">Prefeitura</span> <span class="badge black">Sorter</span></td>
+              <td>10 novos testes municipais + sort order + municipal-only active results</td>
             </tr>
           </tbody>
         </table>
@@ -662,6 +709,22 @@ showEmptyState: this.hasLoaded && !this.loading
           <div class="flow-node">
             <strong>3. Implementação</strong>
             <p style="font-size:14px">Force active-only no <code>RadarRepository</code>. Frontend reflete capacidade do backend. Cache keys automáticas.</p>
+          </div>
+        </article>
+        <article class="flow-lane">
+          <span class="pill black">Sorter Ativo</span>
+          <h3>Solicitação → Revisão</h3>
+          <div class="flow-node">
+            <strong>1. Solicitação</strong>
+            <p style="font-size:14px">"Para perfis com filtro de status, sempre mostrar ativos primeiro no grid de equipamentos."</p>
+          </div>
+          <div class="flow-node">
+            <strong>2. Implementação</strong>
+            <p style="font-size:14px">Ordenação <code>active DESC, name</code> no backend + default <code>active=1</code> no frontend na primeira carga.</p>
+          </div>
+          <div class="flow-node">
+            <strong>3. Revisão técnica</strong>
+            <p style="font-size:14px">Removeu magic flag <code>_applyDefaultActive</code> da store. Lógica movida para o componente. Corrigido double-fetch em <code>clearAll()</code>.</p>
           </div>
         </article>
         <article class="flow-lane">
@@ -725,8 +788,8 @@ showEmptyState: this.hasLoaded && !this.loading
     <section>
       <div class="callout">
         <div>
-          <h3>Dois hotfixes, zero breaking changes.</h3>
-          <p>Sem migrations, sem novas dependências, sem alterações de config. Apenas código que reforça invariantes de segurança e experiência de uso. O Radar está pronto para a Prefeitura de São Paulo.</p>
+          <h3>Três hotfixes, zero breaking changes.</h3>
+          <p>Sem migrations, sem novas dependências, sem alterações de config. Apenas código que reforça invariantes de segurança, ordenação intuitiva e experiência de uso. O Radar está pronto para a Prefeitura de São Paulo.</p>
         </div>
         <span class="pill black">pronto para deploy</span>
       </div>
