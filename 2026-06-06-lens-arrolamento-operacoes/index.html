@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | Lens se aposenta — arrolamento modular no Operações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--surface);
+      color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--white); color: var(--purple);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+
+    main {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto; padding: 24px 0 56px;
+    }
+
+    section { margin-top: 22px; }
+
+    h1, h2, h3 { margin-top: 0; font-weight: 800; }
+
+    h1 {
+      max-width: 980px; margin-bottom: 20px;
+      font-size: clamp(42px, 7.5vw, 90px);
+      line-height: .92; letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 820px; margin-bottom: 0;
+      font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 1.04;
+    }
+
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+
+    /* Hero */
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius);
+      background: var(--black); color: var(--white);
+      display: grid; align-content: space-between;
+      gap: 48px; overflow: hidden;
+      position: relative; isolation: isolate;
+    }
+
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 34px;
+    }
+
+    .hero::before {
+      right: clamp(116px, 15vw, 220px);
+      bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px);
+      background: var(--orange);
+      transform: rotate(10deg);
+    }
+
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px);
+      bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px);
+      background: var(--purple);
+      transform: rotate(-8deg);
+    }
+
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 22px; padding: 7px 11px;
+      border-radius: 999px; background: var(--yellow);
+      color: var(--black); font-weight: 800;
+      text-transform: uppercase; font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* Pills */
+    .pill {
+      display: inline-flex; align-items: center;
+      min-height: 32px; padding: 7px 11px;
+      border-radius: 999px; font-size: 13px;
+      font-weight: 800; line-height: 1; white-space: normal;
+    }
+
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0 18px; padding: 10px 0;
+      background: var(--surface);
+    }
+
+    .nav a {
+      padding: 10px 13px;
+      border: 1px solid var(--black); border-radius: 999px;
+      background: var(--white); color: var(--black);
+      font-weight: 800; font-size: 14px; text-decoration: none;
+      transition: background .15s, color .15s;
+    }
+
+    .nav a:hover { background: var(--black); color: var(--white); }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+
+    .card {
+      min-width: 0; min-height: 100%;
+      padding: clamp(18px, 2.4vw, 28px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--white); overflow: hidden;
+      transition: transform .18s, box-shadow .18s;
+    }
+
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+
+    .card.black, .card.purple, .card.orange, .card.green {
+      border-color: transparent; color: var(--white);
+    }
+
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.pink { background: var(--pink); }
+    .card.green { background: var(--green); }
+
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code { color: var(--black); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      margin-bottom: 6px;
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800; line-height: .86;
+    }
+
+    /* Head */
+    .head {
+      display: flex; justify-content: space-between;
+      align-items: end; gap: 18px; margin-bottom: 14px;
+    }
+
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    /* Flow board */
+    .flow-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 12px; align-items: stretch; min-width: 0;
+    }
+
+    .flow-lane {
+      min-width: 0; display: grid; gap: 10px;
+      padding: 16px; border: 1px solid var(--line);
+      border-radius: 16px; background: var(--white);
+      transition: transform .15s;
+    }
+
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.kept { border-color: var(--purple); }
+
+    .flow-node {
+      min-width: 0; padding: 12px; border-radius: 12px;
+      background: var(--muted);
+    }
+
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+
+    /* Split / Compare */
+    .split {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+
+    .compare {
+      min-width: 0; min-height: 180px; padding: 18px;
+      border-radius: 16px; border: 1px solid var(--line);
+      background: var(--white);
+    }
+
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+
+    /* Syntax box */
+    .syntax-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px; margin-top: 12px; min-width: 0;
+    }
+
+    .syntax-box {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white); overflow: hidden;
+    }
+
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code {
+      display: block; width: 100%; max-width: 100%;
+      white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
+      background: transparent; color: var(--yellow); padding: 0;
+    }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+
+    th {
+      background: var(--black); color: var(--white);
+      font-weight: 800; font-size: 13px;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+
+    .badge {
+      display: inline-block; padding: 3px 8px;
+      border-radius: 999px; font-size: 11px;
+      font-weight: 800; line-height: 1;
+    }
+
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+
+    /* Callout */
+    .callout {
+      display: flex; justify-content: space-between;
+      gap: 16px; align-items: center;
+      padding: clamp(20px, 3vw, 32px);
+      border-radius: var(--radius);
+      background: var(--yellow);
+    }
+
+    /* Rail */
+    .rail {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px; min-width: 0;
+    }
+
+    .rail-step {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white);
+      transition: transform .15s;
+    }
+
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+
+    /* Details */
+    details {
+      border: 1px solid var(--line); border-radius: 14px;
+      background: var(--white); overflow: hidden;
+    }
+
+    details + details { margin-top: 8px; }
+
+    summary {
+      cursor: pointer; padding: 16px 18px;
+      font-weight: 800; list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    /* Change list */
+    .change-list { display: grid; gap: 8px; }
+
+    .change-item {
+      min-width: 0; display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px; align-items: center;
+      padding: 12px 14px; border: 1px solid var(--line);
+      border-radius: 12px; background: var(--white);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    /* Footer */
+    footer {
+      margin-top: 22px; padding: 20px 0 0;
+      color: var(--text); font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .head, .callout, .split { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .syntax-grid { grid-template-columns: 1fr 1fr; }
+      .change-item { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .rail, .flow-board, .syntax-grid { grid-template-columns: 1fr; }
+      .card, .flow-lane, .compare, details { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div>
+        <span class="eyebrow">Operações &bull; 06 de junho de 2026</span>
+        <h1>Lens se aposenta. Os termos de arrolamento agora moram no Operações.</h1>
+        <p class="lead">Um módulo, vários perfis. O Rio de Janeiro entra primeiro com MUPI e Relógio. Depois, qualquer praça com qualquer checklist — mesma estrutura, zero retrabalho. Alvo: 1º de agosto de 2026.</p>
+      </div>
+      <div class="hero-bar">
+        <span class="pill orange">migração</span>
+        <span class="pill purple">design modular</span>
+        <span class="pill yellow">perfil trocável</span>
+        <span class="pill green">Laravel</span>
+        <span class="pill black">RJ</span>
+      </div>
+    </section>
+
+    <!-- Nav -->
+    <nav class="nav" aria-label="Navegação">
+      <a href="#contexto">Contexto</a>
+      <a href="#modulo">O design modular</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#reuso">Reuso vs novo</a>
+      <a href="#sprint">Primeiro sprint</a>
+    </nav>
+
+    <!-- Contexto -->
+    <section id="contexto">
+      <div class="head">
+        <h2>Duas casas, um endereço.</h2>
+        <p>O que existia separado agora converge para o Operações.</p>
+      </div>
+      <div class="split">
+        <div class="compare before">
+          <span class="pill red">antes</span>
+          <h3>Lens no Vercel</h3>
+          <p>App React/Convex independente. Dois fluxos: <code>terceiros</code> para preventiva e <code>rj-inventory</code> para arrolamento. Autenticação Clerk. Fotos no Google Drive. PDF gerado via Google Docs. Descontinuado após outubro.</p>
+        </div>
+        <div class="compare after">
+          <span class="pill green">agora</span>
+          <h3>Operações unificado</h3>
+          <p>Termos de arrolamento viram um módulo nativo no Operações &mdash; mesma autenticação, mesmas permissões, mesmo banco. Sem Vercel, sem Clerk, sem Google Docs. Prefeituras como JC e Clear acessam direto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- O design modular -->
+    <section id="modulo">
+      <div class="head">
+        <h2>Um módulo, muitos perfis.</h2>
+        <p>A aposta: não construir "o módulo do RJ". Construir um shell genérico que qualquer praça veste com seu próprio checklist.</p>
+      </div>
+      <div class="grid">
+        <article class="card purple span-6">
+          <h3>A ideia central</h3>
+          <p>O módulo se chama <code>AssetDocument</code> e não sabe nada sobre Rio de Janeiro. Quem define os campos, seções, obrigatoriedades e o template do PDF é o <strong>perfil</strong>. Hoje existe um: <code>rj_arrolamento</code>. Amanhã pode existir <code>sp_arrolamento</code> ou <code>jc_arrolamento</code> &mdash; mesma engine, configuração diferente.</p>
+        </article>
+        <article class="card black span-6">
+          <div class="metric" style="color:var(--orange)">1</div>
+          <h3>módulo</h3>
+          <p><code>AssetDocument</code> &mdash; genérico, sem hardcode de praça ou tipologia.</p>
+          <div class="metric" style="color:var(--purple); margin-top:16px">N</div>
+          <h3>perfis</h3>
+          <p><code>AssetDocumentProfile</code> &mdash; cada concessão ganha o seu, com checklist e template próprios. O Rio é só o primeiro.</p>
+        </article>
+      </div>
+
+      <div class="syntax-grid" style="margin-top:12px">
+        <div class="syntax-box">
+          <h3>AssetDocument (shell)</h3>
+          <code>place_id          → FK para Place
+profile_id        → FK para Profile
+status            → draft | submitted | approved
+metadata_snapshot → JSON congelado do Place
+created_by / submitted_by / approved_by
+generated_pdf_path</code>
+        </div>
+        <div class="syntax-box">
+          <h3>AssetDocumentProfile (config)</h3>
+          <code>alias: "rj_arrolamento"
+name: "Termo de Arrolamento RJ"
+form_definition: {
+  sections: [...],
+  fields_per_typology: {...}
+}
+pdf_template_config: {...}</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- Checklist por tipologia -->
+    <section id="checklist">
+      <div class="head">
+        <h2>O checklist muda conforme o equipamento.</h2>
+        <p>Não é um formulário único. Cada tipologia tem suas seções e seus campos obrigatórios.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Seção</th>
+              <th>MUPI</th>
+              <th>Relógio</th>
+              <th>Campos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>A &mdash; Estrutura / Vidros</strong></td>
+              <td><span class="badge black">8 required</span></td>
+              <td><span class="badge black">8 required</span></td>
+              <td><code>semOcorrencia</code>, <code>estruturaDanificada</code>, <code>ferrugem</code>, <code>pinturaRiscada</code>, <code>vidroQuebrado</code>, <code>vidroRiscado</code>, <code>vidroAusente</code>, <code>serigrafiaDefeituosa</code></td>
+            </tr>
+            <tr>
+              <td><strong>B &mdash; Elétrica</strong></td>
+              <td><span class="badge black">7 required</span></td>
+              <td><span class="badge black">7 required</span></td>
+              <td><code>equipamentoEnergizado</code>, <code>energia24h</code>, <code>quadroEletricoConforme</code>, <code>aterramento</code>, <code>kitIluminacao</code>, <code>kitDifusor</code>, <code>fixacaoCartaz</code></td>
+            </tr>
+            <tr>
+              <td><strong>R &mdash; Inspeção Relógio</strong></td>
+              <td><span class="badge red">N/A</span></td>
+              <td><span class="badge black">7 required</span> + <span class="badge purple">2 optional</span></td>
+              <td><code>displayHora</code>, <code>displayAd</code>, <code>ledFuncionando</code>, <code>controladoras</code>, <code>possuiPc</code>, <code>ventilacao</code>, <code>amortecedor</code>, <code>difusor</code>, <code>sensorTemp</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:8px;font-size:14px"><strong>27 campos</strong> no total, todos booleanos. O perfil define quais aparecem conforme a tipologia do ponto. Seção C (Complementar MUPI) existia só para teste no Lens &mdash; não vai para produção.</p>
+    </section>
+
+    <!-- Reuso vs novo -->
+    <section id="reuso">
+      <div class="head">
+        <h2>O que já temos e o que precisamos criar.</h2>
+        <p>Mapeamento do código existente via Graphify. Reuso onde faz sentido, criação onde o domínio é novo.</p>
+      </div>
+      <div class="split">
+        <div class="compare after">
+          <span class="pill green">reuso</span>
+          <h3>Já existe no Operações</h3>
+          <ul class="checklist" style="list-style:none;padding:0">
+            <li><strong>Place</strong> &mdash; âncora do documento, com endereço, praça, ambiente, tipologia (<code>app/Models/Place.php</code>)</li>
+            <li><strong>Permissões por praça</strong> &mdash; policy + scope existentes, replicáveis para AssetDocument</li>
+            <li><strong>Blade + AdminLTE + DataTable</strong> &mdash; padrão visual de listas e formulários</li>
+            <li><strong>PDF queue</strong> &mdash; <code>PlaceReportJob</code>, <code>FleetVehicleInspectionPdfReportJob</code> como padrão de fila + geração</li>
+            <li><strong>Upload helpers</strong> &mdash; <code>savePhoto()</code>, <code>saveFile()</code> no TicketsRepository</li>
+            <li><strong>Estado de documento</strong> &mdash; draft &rarr; submitted &rarr; approved, padrão similar ao ciclo de ticket</li>
+          </ul>
+        </div>
+        <div class="compare before">
+          <span class="pill orange">novo</span>
+          <h3>Precisa ser criado</h3>
+          <ul class="checklist" style="list-style:none;padding:0">
+            <li><strong>AssetDocument</strong> &mdash; model, migration, controller, repository, policy</li>
+            <li><strong>AssetDocumentProfile</strong> &mdash; model, migration, seeder (perfil rj_arrolamento)</li>
+            <li><strong>AssetDocumentAnswer</strong> &mdash; model, migration (respostas do checklist)</li>
+            <li><strong>AssetDocumentPhoto</strong> &mdash; model, migration (evidências por slot)</li>
+            <li><strong>Form renderer</strong> &mdash; componente Blade/Vue que monta o formulário a partir do <code>form_definition</code> do perfil</li>
+            <li><strong>PDF renderer</strong> &mdash; geração de PDF a partir do snapshot + respostas + fotos, configurado por perfil</li>
+            <li><strong>Menu + rotas</strong> &mdash; item "Documentação de Ativos", CRUD de documentos</li>
+          </ul>
+        </div>
+      </div>
+      <details style="margin-top:12px">
+        <summary>Por que não usar Ticket como base?</summary>
+        <div class="details-body">
+          <p>Ticket carrega um ciclo de vida operacional (agendado &rarr; em rota &rarr; iniciado &rarr; concluído) que não se aplica a um documento de estado de ativo. Além disso, o fluxo de upload e espelhamento do Ticket é complexo e acoplado ao motor de manutenção. Usar Ticket agora criaria confusão futura: "por que esse documento de concessão é um chamado de manutenção?"</p>
+          <p>Do <code>ProjectWorkInspection</code> também não: ele é centrado em instalação de projetos e carrega premissas de empresa terceirizada que não se aplicam ao arrolamento interno.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- Primeiro sprint -->
+    <section id="sprint">
+      <div class="head">
+        <h2>O primeiro sprint em quatro atos.</h2>
+        <p>Escopo mínimo para validar o design com o Rio de Janeiro. Sem form builder genérico, sem overengineering.</p>
+      </div>
+      <div class="rail">
+        <div class="rail-step">
+          <strong>1. Shell do módulo</strong>
+          <p>Menu, lista de documentos, criação a partir de um <code>Place</code>. Perfil fixo em <code>rj_arrolamento</code> mas armazenado como registro de perfil.</p>
+        </div>
+        <div class="rail-step">
+          <strong>2. Formulário RJ</strong>
+          <p>Prefill de localização, formulário de checklist por tipologia (MUPI/Relógio), upload de fotos, estados <code>draft</code> e <code>submitted</code>.</p>
+        </div>
+        <div class="rail-step">
+          <strong>3. Geração de PDF</strong>
+          <p>Snapshot do Place + respostas + fotos &rarr; PDF do termo. Histórico de versões geradas. Fila assíncrona para não travar o form.</p>
+        </div>
+        <div class="rail-step">
+          <strong>4. Permissões</strong>
+          <p>Usuários RJ criam/submetem para pontos RJ. Revisores internos visualizam/exportam. Escopo por praça, sem hardcode de IDs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decisões de design -->
+    <section>
+      <div class="head">
+        <h2>Decisões que moldam o módulo.</h2>
+        <p>Trade-offs discutidos e resolvidos na sessão de design.</p>
+      </div>
+      <div class="change-list">
+        <div class="change-item">
+          <div><strong>1. Place congela no momento da criação</strong><br><small>O documento armazena um <code>metadata_snapshot</code> JSON. Se o endereço ou tipologia mudar depois, o termo gerado ainda reflete o que foi documentado naquele momento. O FK para <code>places</code> continua vivo para navegação.</small></div>
+          <span class="pill purple">arquivamento</span>
+        </div>
+        <div class="change-item">
+          <div><strong>2. Edição antes de aprovar: sim, mas com portão</strong><br><small>No Lens o admin edita livremente até aprovar. No Operações a edição só é permitida em <code>draft</code>. Uma vez <code>submitted</code>, o documento trava. Se precisar corrigir, o revisor rejeita de volta para <code>draft</code> &mdash; ação explícita, com rastro de auditoria.</small></div>
+          <span class="pill orange">auditoria</span>
+        </div>
+        <div class="change-item">
+          <div><strong>3. Checklist por tipologia, não por praça</strong><br><small>Dentro da mesma concessão RJ, um MUPI e um Relógio têm checklists diferentes. O <code>form_definition</code> do perfil é indexado por tipologia, não é um formulário chato.</small></div>
+          <span class="pill green">tipologia</span>
+        </div>
+        <div class="change-item">
+          <div><strong>4. Compatibilidade futura com saIA</strong><br><small>As tabelas <code>AssetDocumentAnswer</code> e <code>AssetDocumentPhoto</code> usam a mesma convenção de <code>field_key</code> e path de fotos esperada pelo job de análise do saIA. Checklist e IA não vão precisar de tradução.</small></div>
+          <span class="pill pink">forward compat</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Callout -->
+    <section>
+      <div class="callout">
+        <div>
+          <h3>Lens sai de cena em 1º de agosto. O Operações entra com um módulo que o Rio inaugura, mas qualquer praça herda.</h3>
+          <p>A arquitetura de perfil garante que o segundo termo de arrolamento custe uma fração do primeiro. O que é RJ hoje vira template amanhã.</p>
+        </div>
+        <span class="pill black">posição</span>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Lens se aposenta &mdash; arrolamento modular no Operações</strong>
+      <p>Fontes: código do Operações (graphify), Obsidian vault, reunião William 05/06/2026, planilha de checklist do Lens.</p>
+    </footer>
+  </main>
+</body>
+</html>
