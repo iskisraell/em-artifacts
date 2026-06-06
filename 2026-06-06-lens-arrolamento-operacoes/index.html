@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eletromidia | Lens se aposenta — arrolamento modular no Operações</title>
+  <title>Eletromidia | Documentação de Ativo — Lens migra para o Operações</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -384,25 +384,27 @@
     <section class="hero" id="top">
       <div>
         <span class="eyebrow">Operações &bull; 06 de junho de 2026</span>
-        <h1>Lens se aposenta. Os termos de arrolamento agora moram no Operações.</h1>
-        <p class="lead">Um módulo, vários perfis. O Rio de Janeiro entra primeiro com MUPI e Relógio. Depois, qualquer praça com qualquer checklist — mesma estrutura, zero retrabalho. Alvo: 1º de agosto de 2026.</p>
+        <h1>Lens sai de cena. A Documentação de Ativo nasce no Operações.</h1>
+        <p class="lead">Depois dos grills de arquitetura, o caminho ficou fechado: módulo novo, perfil configurável, tipologia congelada, PDF por Dompdf/ReportJobs e issues prontas para implementação. O Rio inaugura com o Termo de Arrolamento; o desenho já nasce para outras praças.</p>
       </div>
       <div class="hero-bar">
-        <span class="pill orange">migração</span>
-        <span class="pill purple">design modular</span>
-        <span class="pill yellow">perfil trocável</span>
-        <span class="pill green">Laravel</span>
-        <span class="pill black">RJ</span>
+        <span class="pill orange">Documentação de Ativo</span>
+        <span class="pill purple">decisões fechadas</span>
+        <span class="pill yellow">PRD #886</span>
+        <span class="pill green">issues #887-#892</span>
+        <span class="pill black">Operações</span>
       </div>
     </section>
 
     <!-- Nav -->
     <nav class="nav" aria-label="Navegação">
       <a href="#contexto">Contexto</a>
-      <a href="#modulo">O design modular</a>
+      <a href="#decisoes">Decisões travadas</a>
+      <a href="#modulo">Modelo</a>
       <a href="#checklist">Checklist</a>
       <a href="#reuso">Reuso vs novo</a>
-      <a href="#sprint">Primeiro sprint</a>
+      <a href="#issues">Issues</a>
+      <a href="#lens">Lens</a>
     </nav>
 
     <!-- Contexto -->
@@ -420,21 +422,51 @@
         <div class="compare after">
           <span class="pill green">agora</span>
           <h3>Operações unificado</h3>
-          <p>Termos de arrolamento viram um módulo nativo no Operações &mdash; mesma autenticação, mesmas permissões, mesmo banco. Sem Vercel, sem Clerk, sem Google Docs. Prefeituras como JC e Clear acessam direto.</p>
+          <p>Termos de arrolamento viram o primeiro perfil do módulo <strong>Documentação de Ativo</strong> dentro do Operações: mesma autenticação, mesmas permissões, mesmo banco, PDF na fila existente e escopo por filtros reais de usuário/perfil.</p>
         </div>
+      </div>
+    </section>
+
+    <!-- Decisões travadas -->
+    <section id="decisoes">
+      <div class="head">
+        <h2>Cinco bloqueios viraram contrato.</h2>
+        <p>O segundo grill tirou o desenho do campo das intenções e transformou cada decisão em regra implementável.</p>
+      </div>
+      <div class="grid">
+        <article class="card orange span-4">
+          <h3>1. Formulário versionado</h3>
+          <p><code>form_definition</code> passa a ter <code>schema_version</code>, <code>sections</code>, <code>fields</code>, <code>photo_slots</code> e <code>typologies</code>. Campos ficam flat e referenciam seção.</p>
+        </article>
+        <article class="card purple span-4">
+          <h3>2. Tipologia congelada</h3>
+          <p>A tipologia é resolvida na criação, preferindo <code>place_equipment_type.alias</code> e usando fallback do perfil para RJ. Depois, fica congelada em <code>asset_documents.typology</code>.</p>
+        </article>
+        <article class="card black span-4">
+          <h3>3. PDF sem motor novo</h3>
+          <p>O PDF usa o que o Operações já tem: <code>PdfHelper</code>, Dompdf, Blade e <code>ReportJobs</code>. O perfil escolhe view, storage e estratégia de nome.</p>
+        </article>
+        <article class="card green span-6">
+          <h3>4. Permissões por alias e escopo</h3>
+          <p><code>documentos-de-ativo-*</code> segue o padrão das policies atuais. O perfil adiciona aplicabilidade; ele nunca substitui o filtro real do usuário.</p>
+        </article>
+        <article class="card yellow span-6">
+          <h3>5. Lens não bloqueia o código</h3>
+          <p>A implementação pode começar sem export Convex. O rollout só fecha depois de classificar se existem documentos Lens para migrar.</p>
+        </article>
       </div>
     </section>
 
     <!-- O design modular -->
     <section id="modulo">
       <div class="head">
-        <h2>Um módulo, muitos perfis.</h2>
-        <p>A aposta: não construir "o módulo do RJ". Construir um shell genérico que qualquer praça veste com seu próprio checklist.</p>
+        <h2>Um módulo, muitos perfis, dados relacionais.</h2>
+        <p>A aposta continua: não construir "o módulo do RJ". Mas agora o contrato está mais nítido: definição em JSON, respostas e fotos em tabelas próprias.</p>
       </div>
       <div class="grid">
         <article class="card purple span-6">
           <h3>A ideia central</h3>
-          <p>O módulo se chama <code>AssetDocument</code> e não sabe nada sobre Rio de Janeiro. Quem define os campos, seções, obrigatoriedades e o template do PDF é o <strong>perfil</strong>. Hoje existe um: <code>rj_arrolamento</code>. Amanhã pode existir <code>sp_arrolamento</code> ou <code>jc_arrolamento</code> &mdash; mesma engine, configuração diferente.</p>
+          <p>O módulo se chama <code>AssetDocument</code> e não sabe nada sobre Rio de Janeiro. Quem define campos, seções, foto obrigatória, tipologia e template de PDF é o <strong>perfil</strong>. Hoje existe um: <code>rj_arrolamento</code>. Amanhã pode existir <code>sp_arrolamento</code> ou <code>jc_arrolamento</code> sem reabrir a arquitetura.</p>
         </article>
         <article class="card black span-6">
           <div class="metric" style="color:var(--orange)">1</div>
@@ -451,20 +483,20 @@
           <h3>AssetDocument (shell)</h3>
           <code>place_id          → FK para Place
 profile_id        → FK para Profile
-status            → draft | submitted | approved
+typology          → mupi | relogio
+status            → draft | submitted | rejected | approved
 metadata_snapshot → JSON congelado do Place
-created_by / submitted_by / approved_by
+created_by / submitted_by / approved_by / rejected_by
 generated_pdf_path</code>
         </div>
         <div class="syntax-box">
           <h3>AssetDocumentProfile (config)</h3>
           <code>alias: "rj_arrolamento"
 name: "Termo de Arrolamento RJ"
-form_definition: {
-  sections: [...],
-  fields_per_typology: {...}
-}
-pdf_template_config: {...}</code>
+form_definition     → JSON versionado
+pdf_template_config → view + storage
+applicability       → escopo do perfil
+typology_detection  → regras de resolução</code>
         </div>
       </div>
     </section>
@@ -507,38 +539,39 @@ pdf_template_config: {...}</code>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:8px;font-size:14px"><strong>27 campos</strong> no total, todos booleanos. O perfil define quais aparecem conforme a tipologia do ponto. Seção C (Complementar MUPI) existia só para teste no Lens &mdash; não vai para produção.</p>
+      <p style="margin-top:8px;font-size:14px"><strong>27/28 campos</strong> no total esperado, todos booleanos no RJ. A estrutura está definida, mas as chaves finais ainda dependem da planilha/código-fonte do Lens. Esse input virou a issue #892, não bloqueio da arquitetura.</p>
     </section>
 
     <!-- Reuso vs novo -->
     <section id="reuso">
       <div class="head">
         <h2>O que já temos e o que precisamos criar.</h2>
-        <p>Mapeamento do código existente via Graphify. Reuso onde faz sentido, criação onde o domínio é novo.</p>
+        <p>Mapeamento atualizado por código e banco local. Reuso onde o Operações já tem infraestrutura; criação onde o domínio é novo.</p>
       </div>
       <div class="split">
         <div class="compare after">
           <span class="pill green">reuso</span>
           <h3>Já existe no Operações</h3>
           <ul class="checklist" style="list-style:none;padding:0">
-            <li><strong>Place</strong> &mdash; âncora do documento, com endereço, praça, ambiente, tipologia (<code>app/Models/Place.php</code>)</li>
-            <li><strong>Permissões por praça</strong> &mdash; policy + scope existentes, replicáveis para AssetDocument</li>
+            <li><strong>Place</strong> &mdash; âncora do documento, com endereço, praça, ambiente, <code>displayType()</code> e <code>equipmentType()</code></li>
+            <li><strong>PlaceEquipmentType</strong> &mdash; tabela já tem aliases como <code>mupi-estatico</code>, <code>mupi-digital</code>, <code>relogio-digital</code></li>
+            <li><strong>Permissões por escopo</strong> &mdash; <code>PermissionHelper</code> já filtra praça, UF, ambiente, estabelecimento e grupo</li>
             <li><strong>Blade + AdminLTE + DataTable</strong> &mdash; padrão visual de listas e formulários</li>
-            <li><strong>PDF queue</strong> &mdash; <code>PlaceReportJob</code>, <code>FleetVehicleInspectionPdfReportJob</code> como padrão de fila + geração</li>
-            <li><strong>Upload helpers</strong> &mdash; <code>savePhoto()</code>, <code>saveFile()</code> no TicketsRepository</li>
-            <li><strong>Estado de documento</strong> &mdash; draft &rarr; submitted &rarr; approved, padrão similar ao ciclo de ticket</li>
+            <li><strong>PDF queue</strong> &mdash; <code>PdfHelper</code>, Dompdf e <code>ReportJobs</code> como padrão de fila + geração</li>
+            <li><strong>UploadHelper</strong> &mdash; armazenamento em disco público com path dedicado</li>
           </ul>
         </div>
         <div class="compare before">
           <span class="pill orange">novo</span>
           <h3>Precisa ser criado</h3>
           <ul class="checklist" style="list-style:none;padding:0">
-            <li><strong>AssetDocument</strong> &mdash; model, migration, controller, repository, policy</li>
-            <li><strong>AssetDocumentProfile</strong> &mdash; model, migration, seeder (perfil rj_arrolamento)</li>
-            <li><strong>AssetDocumentAnswer</strong> &mdash; model, migration (respostas do checklist)</li>
-            <li><strong>AssetDocumentPhoto</strong> &mdash; model, migration (evidências por slot)</li>
+            <li><strong>AssetDocument</strong> &mdash; model, migration, controller, repository, policy e <code>typology</code> congelada</li>
+            <li><strong>AssetDocumentProfile</strong> &mdash; perfil <code>rj_arrolamento</code> com JSON versionado</li>
+            <li><strong>AssetDocumentAnswer</strong> &mdash; respostas por <code>section_key</code> e <code>field_key</code></li>
+            <li><strong>AssetDocumentPhoto</strong> &mdash; evidências por <code>profile_slot</code></li>
+            <li><strong>AssetDocumentAudit</strong> &mdash; trilha de criação, envio, rejeição, aprovação e ajustes</li>
             <li><strong>Form renderer</strong> &mdash; componente Blade/Vue que monta o formulário a partir do <code>form_definition</code> do perfil</li>
-            <li><strong>PDF renderer</strong> &mdash; geração de PDF a partir do snapshot + respostas + fotos, configurado por perfil</li>
+            <li><strong>PDF renderer</strong> &mdash; Blade específico selecionado por <code>pdf_template_config</code></li>
             <li><strong>Menu + rotas</strong> &mdash; item "Documentação de Ativos", CRUD de documentos</li>
           </ul>
         </div>
@@ -552,54 +585,68 @@ pdf_template_config: {...}</code>
       </details>
     </section>
 
-    <!-- Primeiro sprint -->
-    <section id="sprint">
+    <!-- Issues -->
+    <section id="issues">
       <div class="head">
-        <h2>O primeiro sprint em quatro atos.</h2>
-        <p>Escopo mínimo para validar o design com o Rio de Janeiro. Sem form builder genérico, sem overengineering.</p>
+        <h2>O plano virou fila de issues.</h2>
+        <p>O PRD e os cortes verticais já estão abertos no GitHub. Cada issue entrega uma fatia completa e verificável.</p>
       </div>
       <div class="rail">
         <div class="rail-step">
-          <strong>1. Shell do módulo</strong>
-          <p>Menu, lista de documentos, criação a partir de um <code>Place</code>. Perfil fixo em <code>rj_arrolamento</code> mas armazenado como registro de perfil.</p>
+          <strong>#887 Schema + seeders</strong>
+          <p>Tabelas, models, policy, aliases <code>documentos-de-ativo-*</code> e perfil RJ inicial.</p>
         </div>
         <div class="rail-step">
-          <strong>2. Formulário RJ</strong>
-          <p>Prefill de localização, formulário de checklist por tipologia (MUPI/Relógio), upload de fotos, estados <code>draft</code> e <code>submitted</code>.</p>
+          <strong>#888 Criação + tipologia</strong>
+          <p>Criar a partir de <code>Place</code>, cruzar escopo, resolver tipologia e congelar snapshot.</p>
         </div>
         <div class="rail-step">
-          <strong>3. Geração de PDF</strong>
-          <p>Snapshot do Place + respostas + fotos &rarr; PDF do termo. Histórico de versões geradas. Fila assíncrona para não travar o form.</p>
+          <strong>#889 Form + envio</strong>
+          <p>Renderizar por perfil/tipologia, salvar draft, fotos e submeter para revisão.</p>
         </div>
         <div class="rail-step">
-          <strong>4. Permissões</strong>
-          <p>Usuários RJ criam/submetem para pontos RJ. Revisores internos visualizam/exportam. Escopo por praça, sem hardcode de IDs.</p>
+          <strong>#890 Aprovação</strong>
+          <p>Fila por escopo, aprovar, rejeitar com motivo e manter trilha de auditoria.</p>
         </div>
+      </div>
+      <div class="change-list" style="margin-top:12px">
+        <a class="change-item" href="https://github.com/eletromidia/operacoes/issues/886" target="_blank" rel="noreferrer">
+          <div><strong>#886 PRD: Asset Document Module</strong><br><small>Documento pai com problema, solução, histórias, decisões e testes.</small></div>
+          <span class="pill yellow">PRD</span>
+        </a>
+        <a class="change-item" href="https://github.com/eletromidia/operacoes/issues/891" target="_blank" rel="noreferrer">
+          <div><strong>#891 PDF oficial</strong><br><small>Gerar e baixar PDF usando dados congelados do documento aprovado.</small></div>
+          <span class="pill purple">PDF</span>
+        </a>
+        <a class="change-item" href="https://github.com/eletromidia/operacoes/issues/892" target="_blank" rel="noreferrer">
+          <div><strong>#892 Lens: catálogo e migração</strong><br><small>Congelar campos finais do RJ e decidir se há import histórico do Lens.</small></div>
+          <span class="pill orange">HITL</span>
+        </a>
       </div>
     </section>
 
     <!-- Decisões de design -->
-    <section>
+    <section id="lens">
       <div class="head">
-        <h2>Decisões que moldam o módulo.</h2>
-        <p>Trade-offs discutidos e resolvidos na sessão de design.</p>
+        <h2>O que ainda depende do Lens.</h2>
+        <p>As incertezas restantes foram isoladas. Elas não impedem começar o módulo, mas impedem encerrar o rollout.</p>
       </div>
       <div class="change-list">
         <div class="change-item">
-          <div><strong>1. Place congela no momento da criação</strong><br><small>O documento armazena um <code>metadata_snapshot</code> JSON. Se o endereço ou tipologia mudar depois, o termo gerado ainda reflete o que foi documentado naquele momento. O FK para <code>places</code> continua vivo para navegação.</small></div>
-          <span class="pill purple">arquivamento</span>
+          <div><strong>1. Campo final do RJ</strong><br><small>A estrutura JSON está decidida, mas as chaves finais, labels, seções e obrigatoriedades precisam vir da planilha ou fonte do Lens.</small></div>
+          <span class="pill purple">#892</span>
         </div>
         <div class="change-item">
-          <div><strong>2. Edição antes de aprovar: sim, mas com portão</strong><br><small>No Lens o admin edita livremente até aprovar. No Operações a edição só é permitida em <code>draft</code>. Uma vez <code>submitted</code>, o documento trava. Se precisar corrigir, o revisor rejeita de volta para <code>draft</code> &mdash; ação explícita, com rastro de auditoria.</small></div>
-          <span class="pill orange">auditoria</span>
+          <div><strong>2. Histórico a migrar?</strong><br><small>Se não houver documentos submetidos/aprovados no Lens, começa fresco. Se houver, entra import único para documentos, respostas, fotos e auditoria.</small></div>
+          <span class="pill orange">rollout</span>
         </div>
         <div class="change-item">
-          <div><strong>3. Checklist por tipologia, não por praça</strong><br><small>Dentro da mesma concessão RJ, um MUPI e um Relógio têm checklists diferentes. O <code>form_definition</code> do perfil é indexado por tipologia, não é um formulário chato.</small></div>
-          <span class="pill green">tipologia</span>
+          <div><strong>3. Perfil inicial</strong><br><small>As permissões serão semeadas; o perfil que recebe acesso inicial ainda precisa confirmação do dono de negócio. Sem hardcode de William, Douglas ou Israel.</small></div>
+          <span class="pill green">governança</span>
         </div>
         <div class="change-item">
-          <div><strong>4. Compatibilidade futura com saIA</strong><br><small>As tabelas <code>AssetDocumentAnswer</code> e <code>AssetDocumentPhoto</code> usam a mesma convenção de <code>field_key</code> e path de fotos esperada pelo job de análise do saIA. Checklist e IA não vão precisar de tradução.</small></div>
-          <span class="pill pink">forward compat</span>
+          <div><strong>4. Tipologia manual</strong><br><small>Quando as regras não resolverem MUPI vs Relógio, precisamos confirmar se um usuário autorizado pode selecionar manualmente.</small></div>
+          <span class="pill pink">produto</span>
         </div>
       </div>
     </section>
@@ -608,16 +655,16 @@ pdf_template_config: {...}</code>
     <section>
       <div class="callout">
         <div>
-          <h3>Lens sai de cena em 1º de agosto. O Operações entra com um módulo que o Rio inaugura, mas qualquer praça herda.</h3>
-          <p>A arquitetura de perfil garante que o segundo termo de arrolamento custe uma fração do primeiro. O que é RJ hoje vira template amanhã.</p>
+          <h3>Próximo passo real: implementar #887 e buscar os insumos de #892 em paralelo.</h3>
+          <p>O módulo já tem PRD, issues e handoff no Obsidian. Agora a primeira fatia é banco/modelo/permissão/perfil; a trilha Lens corre como dependência de rollout, não como trava de desenvolvimento.</p>
         </div>
         <span class="pill black">posição</span>
       </div>
     </section>
 
     <footer>
-      <strong>Lens se aposenta &mdash; arrolamento modular no Operações</strong>
-      <p>Fontes: código do Operações (graphify), Obsidian vault, reunião William 05/06/2026, planilha de checklist do Lens.</p>
+      <strong>Documentação de Ativo &mdash; Lens migra para o Operações</strong>
+      <p>Fontes: grills de 06/06/2026, código e banco local do Operações, Obsidian vault, PRD #886 e issues #887-#892.</p>
     </footer>
   </main>
 </body>
