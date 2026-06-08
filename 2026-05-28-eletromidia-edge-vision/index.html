@@ -464,7 +464,7 @@
     <!-- HERO -->
     <section class="hero" id="top">
       <div>
-        <span class="eyebrow">Eletromidia Edge Vision &bull; Maio 2026</span>
+        <span class="eyebrow">Eletromidia Edge Vision &bull; Maio 2026 &bull; Atualizado Jun 2026</span>
         <h1>Detecção de faces OOH direto do carro, do clique ao pipeline em segundos.</h1>
         <p class="lead">Um sistema de visão computacional embarcado que captura rotas urbanas a cada 2&ndash;5 segundos, detecta faces Eletromidia localmente com um pipeline detector+sorter e envia só o que interessa para a nuvem.</p>
       </div>
@@ -474,6 +474,8 @@
         <span class="pill yellow">POC Windows</span>
         <span class="pill pink">ONNX Runtime</span>
         <span class="pill green">Python 3.12</span>
+        <span class="pill black">Supervision</span>
+        <span class="pill orange">RF-DETR</span>
       </div>
     </section>
 
@@ -491,7 +493,7 @@
     <section id="contexto">
       <div class="head">
         <h2>Por que este projeto existe.</h2>
-        <p>Separamos a captura de campo do saIA para manter cada sistema com responsabilidade clara e latência previsível.</p>
+        <p>Separamos a captura de campo do saIA para manter cada sistema com responsabilidade clara e latência previsível. Pipeline em Python, detector Apache 2.0, dados locais. Em junho, o stack ganhou duas decisões concretas.</p>
       </div>
       <div class="problem-strip">
         <article class="problem-card">
@@ -528,6 +530,18 @@
           <p>Arquitetura, PRD, protocolo de benchmark, dataset inicial, diagrama UML e decisões de stack estão todos documentados no Obsidian. O próximo passo e criar o repositório Python e implementar a Fase 0 (esqueleto do pipeline de replay).</p>
         </article>
       </div>
+      <div class="grid" style="margin-top:12px">
+        <article class="card black span-6">
+          <span class="pill yellow" style="margin-bottom:10px">nova decisão Jun 2026</span>
+          <h3>Supervision adotado para dataset, métricas e detections</h3>
+          <p>Roboflow Supervision (MIT, 42k estrelas) entra no stack para três módulos: <code>sv.Detections</code> como container canônico entre estágios do pipeline, <code>sv.DetectionDataset</code> para carga e conversao de datasets COCO/YOLO/VOC, e métricas (mAP, precision, recall, F1) direto da caixa. Economiza 200-400 linhas de boilerplate.</p>
+        </article>
+        <article class="card span-6">
+          <span class="pill purple" style="margin-bottom:10px">nova decisão Jun 2026</span>
+          <h3>Detector: RF-DETR Small (Apache 2.0)</h3>
+          <p>O baseline MobileNet/SSD foi substituído. O detector recomendado é <strong>RF-DETR Small</strong> — backbone DINOv2 ViT, 53% COCO AP, 3.5ms de latência em T4, fine-tunável em dados Eletromidia, exporta ONNX e retorna <code>sv.Detections</code> nativamente. Fallback: RT-DETRv4-S para cenas complexas com oclusões e motion blur. Ambos Apache 2.0 — stack 100% permissiva.</p>
+        </article>
+      </div>
     </section>
 
     <!-- PIPELINE -->
@@ -546,8 +560,8 @@
         <article class="card span-4">
           <span class="pill purple" style="margin-bottom:10px">estágio 2</span>
           <h3>Detector</h3>
-          <p>MobileNet/SSD-style via ONNX Runtime. Escaneia cada frame procurando faces OOH. Retorna bounding boxes com score de confiança e recorta as regiões encontradas.</p>
-          <p style="margin-top:10px"><strong>Objetivo:</strong> detector permissivo que não perca candidatos. Falsos positivos serao filtrados pelo sorter.</p>
+          <p><strong>RF-DETR Small</strong> (Apache 2.0, backbone DINOv2) via ONNX Runtime. Escaneia cada frame procurando faces OOH. Retorna bounding boxes com score de confiança no formato <code>sv.Detections</code> e recorta as regiões encontradas.</p>
+          <p style="margin-top:10px"><strong>Objetivo:</strong> detector permissivo fine-tunado em dados Eletromidia. Falsos positivos serao filtrados pelo sorter. Fallback: RT-DETRv4-S para cenas com oclusão ou motion blur.</p>
         </article>
         <article class="card span-4">
           <span class="pill yellow" style="margin-bottom:10px">estágio 3</span>
@@ -591,10 +605,12 @@
           <div class="card span-6">
             <h3>Detector baseline</h3>
             <ul class="checklist">
-              <li>MobileNet/SSD-style via <strong>ONNX Runtime CPU</strong></li>
-              <li>Quantizado se possível (int8 para velocidade)</li>
-              <li>Genérico para plumbing inicial; fine-tuned com dados Eletromidia depois</li>
-              <li>ONNX Model Zoo: <code>ssd_mobilenet_v1_10</code> como referencia</li>
+              <li><strong>RF-DETR Small</strong> (Apache 2.0) via ONNX Runtime</li>
+              <li>Backbone DINOv2 ViT — forte adaptacao a domínios visuais diversos</li>
+              <li>53% COCO AP, 3.5ms latencia em T4, fine-tunavel</li>
+              <li>Retorna <code>sv.Detections</code> nativamente — zero glue code com Supervision</li>
+              <li>Fallback: RT-DETRv4-S para cenas com oclusao e motion blur de camera veicular</li>
+              <li>Exporta ONNX — mesmo artefato Windows e Linux</li>
             </ul>
           </div>
           <div class="card span-6">
@@ -662,6 +678,14 @@
           <div class="change-item">
             <div><strong>Evitar componentes AGPL</strong><br><small>YOLO via Ultralytics so com licença comercial ou enterprise. Stack base deve ser permissiva (MIT/Apache).</small></div>
             <span class="pill purple">política</span>
+          </div>
+          <div class="change-item">
+            <div><strong>Adotar Supervision (Jun 2026)</strong><br><small>MIT, 42k estrelas. <code>sv.Detections</code> como container canônico, <code>sv.DetectionDataset</code> para datasets, métricas (mAP/precision/recall/F1) out of the box.</small></div>
+            <span class="pill green">nova decisao</span>
+          </div>
+          <div class="change-item">
+            <div><strong>RF-DETR como detector (Jun 2026)</strong><br><small>Apache 2.0, DINOv2 backbone, nativo <code>sv.Detections</code>, 53% COCO AP, fine-tunavel. Substitui o baseline MobileNet/SSD generico.</small></div>
+            <span class="pill green">nova decisao</span>
           </div>
         </div>
       </article>
@@ -822,7 +846,7 @@
           <h3>Acoes imediatas</h3>
           <div class="change-list" style="margin-top:10px">
             <div class="change-item" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)">
-              <div><strong>1. Criar repo Python</strong><br><small>Estrutura de pastas, venv, OpenCV, ONNX Runtime, SQLite, CLI runner básico.</small></div>
+              <div><strong>1. Criar repo Python + deps</strong><br><small>Estrutura de pastas, venv, OpenCV, ONNX Runtime, SQLite, <strong>supervision</strong>, <strong>rfdetr</strong>, CLI runner básico.</small></div>
               <span class="badge orange">Fase 0</span>
             </div>
             <div class="change-item" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)">
@@ -866,9 +890,15 @@
             </div>
           </details>
           <details>
-            <summary>Licenca de detector enterprise e aceitavel ou stack 100% permissiva?</summary>
+            <summary>Licenca de detector enterprise e aceitavel ou stack 100% permissiva? <span class="badge green" style="margin-left:6px">respondida</span></summary>
             <div class="details-body">
-              <p>YOLO/Ultralytics tem licença AGPL. Se for aceitavel pagar enterprise, o leque de detectores expande significativamente.</p>
+              <p>Stack 100% permissiva confirmada. RF-DETR Small (Apache 2.0) recomendado como detector principal. RT-DETRv4-S (Apache 2.0) como fallback. Ambos exportam ONNX. Nao dependemos de YOLO/Ultralytics.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Quando instalar Supervision e RF-DETR no ambiente Python?</summary>
+            <div class="details-body">
+              <p><code>pip install supervision rfdetr</code> na Fase 0 (project setup). Supervision fornece o <code>sv.Detections</code> container e métricas desde o primeiro benchmark. RF-DETR pode ser usado como placeholder ou diretamente como detector com pesos pre-treinados COCO para validacao de plumbing.</p>
             </div>
           </details>
         </div>
@@ -889,7 +919,7 @@
     <!-- FOOTER -->
     <footer>
       <strong>Eletromidia Edge Vision | Visao Computacional Embarcada</strong>
-      <p>Fontes: handoffs e notas do Obsidian (Maio 2026), PRD Windows POC, Architecture Decision Review, Benchmarking Protocol, Development Phases.</p>
+      <p>Fontes: handoffs e notas do Obsidian (Maio 2026, atualizado Junho 2026), PRD Windows POC, Architecture Decision Review, Benchmarking Protocol, Development Phases, ADR Supervision, Detector Model Research.</p>
     </footer>
   </main>
 
