@@ -1,0 +1,7 @@
+{
+  "title": "Da planilha à instalação rastreável.",
+  "date": "2026-06-10",
+  "description": "Proposta de arquitetura para Curvas de Instalação, com cadastro prévio dos pontos, tickets por ativo, etapas configuráveis, evidências fotográficas e aprovação auditável.",
+  "tags": ["Operações", "Instalação", "Curva", "Place", "Evidências", "Arquitetura"],
+  "sections": ["Problema", "Modelo proposto", "Resolução de pontos", "Execução por etapas", "MVP", "Decisões para alinhamento"]
+}
