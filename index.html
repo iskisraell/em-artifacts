@@ -248,6 +248,28 @@
     // ============================================================
     var artifacts = [
       {
+            "slug": "2026-06-10-curva-instalacao-fases",
+            "title": "Da planilha à instalação rastreável.",
+            "date": "2026-06-10",
+            "description": "Proposta de arquitetura para Curvas de Instalação, com cadastro prévio dos pontos, tickets por ativo, etapas configuráveis, evidências fotográficas e aprovação auditável.",
+            "tags": [
+                  "Operações",
+                  "Instalação",
+                  "Curva",
+                  "Place",
+                  "Evidências",
+                  "Arquitetura"
+            ],
+            "sections": [
+                  "Problema",
+                  "Modelo proposto",
+                  "Resolução de pontos",
+                  "Execução por etapas",
+                  "MVP",
+                  "Decisões para alinhamento"
+            ]
+      },
+      {
             "slug": "2026-06-06-lens-arrolamento-operacoes",
             "title": "Documentação de Ativo — Lens migra para o Operações",
             "date": "2026-06-06",
@@ -378,26 +400,29 @@
             ]
       },
       {
-            "slug": "2026-05-28-skill-curation",
-            "title": "De 118 skills para 30. A curadoria que limpou o contexto dos agentes.",
+            "slug": "2026-05-28-eletromidia-edge-vision",
+            "title": "Edge Vision: deteccao de faces OOH direto do carro, do clique ao pipeline em segundos.",
             "date": "2026-05-28",
-            "description": "Cada skill no system prompt custa tokens. Com 118 skills — 65 deles de Google Workspace que nunca eram usados — o contexto estava poluído. Esta sessão reduziu 75% e ainda pariu o skill eletromidia-artifact.",
+            "description": "Sistema de visao computacional embarcada para captura de rotas urbanas com deteccao local de faces Eletromidia. Pipeline detector+sorter com RF-DETR Small (Apache 2.0) + ONNX Runtime + Supervision + OpenCLIP. Benchmark reprodutivel. Planejamento completo, pronto para kick off de desenvolvimento.",
             "tags": [
-                  "skills",
-                  "curadoria",
-                  "eletromidia-artifact",
-                  "contexto",
-                  "agentes"
+                  "edge-ai",
+                  "computer-vision",
+                  "onnx",
+                  "python",
+                  "poc",
+                  "eletromidia",
+                  "supervision",
+                  "rf-detr"
             ],
             "sections": [
                   "Contexto",
-                  "Problem Strip",
-                  "89 Removidos",
-                  "30 Mantidos",
-                  "Novo skill",
-                  "Workflow 5 fases",
-                  "Hub page",
-                  "Demo interativa"
+                  "Pipeline",
+                  "Stack Tecnico",
+                  "Diagrama UML",
+                  "Fases de Desenvolvimento",
+                  "Benchmark",
+                  "Próximos Passos",
+                  "Decisoes Junho 2026"
             ]
       },
       {
@@ -427,29 +452,26 @@
             ]
       },
       {
-            "slug": "2026-05-28-eletromidia-edge-vision",
-            "title": "Edge Vision: deteccao de faces OOH direto do carro, do clique ao pipeline em segundos.",
+            "slug": "2026-05-28-skill-curation",
+            "title": "De 118 skills para 30. A curadoria que limpou o contexto dos agentes.",
             "date": "2026-05-28",
-            "description": "Sistema de visao computacional embarcada para captura de rotas urbanas com deteccao local de faces Eletromidia. Pipeline detector+sorter com RF-DETR Small (Apache 2.0) + ONNX Runtime + Supervision + OpenCLIP. Benchmark reprodutivel. Planejamento completo, pronto para kick off de desenvolvimento.",
+            "description": "Cada skill no system prompt custa tokens. Com 118 skills — 65 deles de Google Workspace que nunca eram usados — o contexto estava poluído. Esta sessão reduziu 75% e ainda pariu o skill eletromidia-artifact.",
             "tags": [
-                  "edge-ai",
-                  "computer-vision",
-                  "onnx",
-                  "python",
-                  "poc",
-                  "eletromidia",
-                  "supervision",
-                  "rf-detr"
+                  "skills",
+                  "curadoria",
+                  "eletromidia-artifact",
+                  "contexto",
+                  "agentes"
             ],
             "sections": [
                   "Contexto",
-                  "Pipeline",
-                  "Stack Tecnico",
-                  "Diagrama UML",
-                  "Fases de Desenvolvimento",
-                  "Benchmark",
-                  "Próximos Passos",
-                  "Decisoes Junho 2026"
+                  "Problem Strip",
+                  "89 Removidos",
+                  "30 Mantidos",
+                  "Novo skill",
+                  "Workflow 5 fases",
+                  "Hub page",
+                  "Demo interativa"
             ]
       }
 ];
