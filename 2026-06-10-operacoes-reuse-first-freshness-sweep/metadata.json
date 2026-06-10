@@ -3,5 +3,5 @@
   "date": "2026-06-10",
   "description": "Freshness sweep do Operações após o alinhamento com William: documentação de ativos e instalação em quatro fases começam reutilizando chamados, checklists, evidências e PDFs. O caminho muda conforme Matheus peça padronização Brasil ou somente São Paulo.",
   "tags": ["operacoes", "freshness-sweep", "checklists", "project-ticket", "asset-documentation", "curvas", "sao-paulo", "brasil", "arquitetura"],
-  "sections": ["O que mudou", "Fluxo reutilizado", "Quatro fases", "Decisão de escala", "Exemplos reais", "Spike", "Próximos passos"]
+  "sections": ["O que mudou", "Fluxo reutilizado", "Quatro fases", "Decisão de escala", "Nossa recomendação", "Exemplos reais", "Spike", "Próximos passos"]
 }

@@ -144,6 +144,29 @@
       padding:14px; border-radius:var(--radius-sm); background:var(--muted);
     }
     .code-row code { width:max-content; background:var(--white); }
+    .card.black .code-row p { color:var(--text); }
+    .card.black .code-row code { color:var(--purple); }
+    .position {
+      padding:clamp(22px,3vw,34px); border:1px solid var(--line); border-radius:var(--radius);
+      background:var(--white);
+    }
+    .position-grid {
+      display:grid; grid-template-columns:1.05fr .95fr; gap:12px; margin-top:16px;
+    }
+    .position-core {
+      padding:clamp(22px,3vw,34px); border-radius:var(--radius-md); background:var(--purple); color:var(--white);
+    }
+    .position-core p { color:rgba(255,255,255,.82); }
+    .position-core h3 { margin:16px 0 10px; font-size:clamp(28px,3vw,42px); }
+    .position-risks { display:grid; gap:10px; }
+    .risk {
+      padding:17px; border:1px solid var(--line); border-radius:var(--radius-md); background:var(--muted);
+    }
+    .risk strong { display:block; margin:9px 0 5px; font-size:18px; }
+    .source-note {
+      margin-top:12px; padding:14px 16px; border-left:5px solid var(--orange);
+      border-radius:0 var(--radius-sm) var(--radius-sm) 0; background:var(--muted);
+    }
     .example {
       display:grid; grid-template-columns:90px 1fr; gap:16px; align-items:start;
       padding:18px 0; border-bottom:1px solid var(--line);
@@ -167,6 +190,7 @@
       .flow-board,.phase-line { grid-template-columns:1fr 1fr; }
       .phase:not(:last-child)::after { display:none; }
       .rail { grid-template-columns:1fr; }
+      .position-grid { grid-template-columns:1fr; }
     }
     @media(max-width:620px) {
       main { width:min(100% - 20px,var(--max)); margin-top:10px; }
@@ -199,6 +223,7 @@
     <a href="#fluxo">Fluxo real</a>
     <a href="#fases">Quatro fases</a>
     <a href="#escala">Brasil ou SP</a>
+    <a href="#recomendacao">Nossa recomendação</a>
     <a href="#exemplos">Exemplos</a>
     <a href="#spike">Spike</a>
   </nav>
@@ -385,6 +410,44 @@
           <h3 style="margin-top:18px">Regra de investimento.</h3>
           <p>Generalizar a variação observada, não a variação imaginada. O primeiro modelo nacional nasce de pelo menos dois fluxos reais comparados.</p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="recomendacao">
+    <div class="head">
+      <h2>Padronize o contrato. Não antecipe o módulo.</h2>
+      <p>A leitura combinada do código, da estratégia Lean Six Sigma e do NotebookLM aponta um meio-termo mais rigoroso que “reusar tudo” ou “criar tudo novo”.</p>
+    </div>
+    <div class="position">
+      <div class="position-grid">
+        <article class="position-core">
+          <span class="pill yellow">posição recomendada</span>
+          <h3>Uma plataforma de execução comum, com saídas que podem divergir.</h3>
+          <p>Place, Ticket, autoria, geolocalização, checklist, evidência, histórico e autorização formam o contrato operacional nacional. Fundação, Implantação, Acabamento e Entrega devem provar esse contrato em São Paulo.</p>
+          <p style="margin-top:12px">A configuração nacional só deve nascer depois de comparar variação real entre SP, RJ e outra concessão. Asset Documentation só se separa quando sua natureza documental exigir garantias que o ticket não oferece.</p>
+        </article>
+        <div class="position-risks">
+          <article class="risk">
+            <span class="pill red">limite 1</span>
+            <strong>Snapshot imutável.</strong>
+            <p>Um Termo histórico não pode mudar porque endereço, tipologia ou equipamento do Place foram editados depois.</p>
+          </article>
+          <article class="risk">
+            <span class="pill red">limite 2</span>
+            <strong>Aprovação independente.</strong>
+            <p>Se o documento exigir draft, submissão, rejeição, aprovação e bloqueio próprios, o ciclo do ticket pode ser insuficiente.</p>
+          </article>
+          <article class="risk">
+            <span class="pill red">limite 3</span>
+            <strong>Continuidade confiável.</strong>
+            <p>Se <code>parent_id</code> e <code>last_ticket_id</code> não formarem uma cadeia inequívoca, fases e evidências precisam de identidade dedicada.</p>
+          </article>
+        </div>
+      </div>
+      <div class="source-note">
+        <strong>Leitura NotebookLM.</strong>
+        <p>O notebook “Eletromidia Weekly Report - Jun 1-7 2026” confirmou o piloto reuse-first e apontou esses três gatilhos como os principais motivos para separar Asset Documentation depois. Fonte adicionada: <code>research-pack.md</code>, ID <code>1d6d0d06-7d05-47b3-8cbe-4eed374f7144</code>.</p>
       </div>
     </div>
   </section>
