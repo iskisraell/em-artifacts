@@ -227,6 +227,7 @@
       <a href="#contexto">Contexto</a>
       <a href="#decisao">Decisao</a>
       <a href="#fluxo">Fluxo</a>
+      <a href="#pesquisa">Pesquisa</a>
       <a href="#arquitetura">Arquitetura</a>
       <a href="#riscos">Riscos</a>
       <a href="#proximos">Proximos passos</a>
@@ -292,6 +293,41 @@
       </div>
     </section>
 
+    <section id="pesquisa">
+      <div class="head">
+        <h2>O que a pesquisa destravou.</h2>
+        <p>NotebookLM foi enriquecido com fontes oficiais da Gupy, Meta WhatsApp Business Platform e LGPD. A principal mudanca: o MVP ganhou um contrato tecnico mais claro.</p>
+      </div>
+      <div class="grid">
+        <article class="card span-8 purple">
+          <span class="pill yellow">Gupy API</span>
+          <h3>Preferir integracao como teste externo.</h3>
+          <p>A documentacao da Gupy para provedores externos de teste encaixa melhor no MVP: o candidato inicia um teste na etapa da vaga, vai para a plataforma externa e o resultado volta para a Gupy.</p>
+          <p>O campo de resultado para a empresa permite resumo estruturado; isso combina com score, evidencias, bloqueadores e perguntas sugeridas para o recrutador.</p>
+        </article>
+        <article class="card span-4 yellow">
+          <span class="pill black">fallback</span>
+          <h3>Tag ou comentario ainda servem.</h3>
+          <p>Se o fluxo de teste externo nao estiver habilitado na conta, o piloto pode provar valor escrevendo retorno por tag ou comentario na timeline.</p>
+        </article>
+        <article class="card span-4">
+          <span class="pill orange">WhatsApp</span>
+          <h3>Templates sao dependencia real.</h3>
+          <p>Mensagem ativa para candidato fora da janela de atendimento exige template aprovado pela Meta. Status e qualidade do template precisam entrar no monitoramento.</p>
+        </article>
+        <article class="card span-4">
+          <span class="pill purple">audio</span>
+          <h3>Audio tem regra de formato.</h3>
+          <p>Para comportamento de mensagem de voz, WhatsApp Cloud API exige arquivo <strong>.ogg</strong> com codec <strong>OPUS</strong>. O MVP deve aceitar texto sempre.</p>
+        </article>
+        <article class="card span-4">
+          <span class="pill red">LGPD</span>
+          <h3>Art. 20 reforca revisao humana.</h3>
+          <p>Decisoes somente automatizadas que afetem perfil profissional podem ser revisadas. Isso confirma a escolha: IA recomenda, recrutador decide.</p>
+        </article>
+      </div>
+    </section>
+
     <section id="arquitetura">
       <div class="head">
         <h2>Arquitetura: adaptadores em volta de uma conversa controlada.</h2>
@@ -301,8 +337,8 @@
         <article class="flow-lane kept">
           <span class="pill purple">Gupy</span>
           <h3>Sistema de registro</h3>
-          <div class="flow-node"><strong>Leitura</strong><p>Vaga, candidato, aplicacao, etapa.</p></div>
-          <div class="flow-node"><strong>Escrita</strong><p>Comentario, tag, campo, resultado ou etapa.</p></div>
+          <div class="flow-node"><strong>Contrato preferido</strong><p>Etapa de teste externo com callback e envio assincrono de resultado.</p></div>
+          <div class="flow-node"><strong>Fallback</strong><p>Comentario ou tag na timeline se teste externo estiver bloqueado.</p></div>
         </article>
         <article class="flow-lane added">
           <span class="pill green">WhatsApp</span>
@@ -325,6 +361,27 @@
       </div>
     </section>
 
+    <section id="contrato-gupy">
+      <div class="head">
+        <h2>Contrato Gupy recomendado para o MVP.</h2>
+        <p>A pergunta deixou de ser somente "onde escrever o resultado?" e virou "podemos configurar a triagem como teste externo?".</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Elemento</th><th>Como entra no piloto</th><th>Por que importa</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="badge purple">teste externo</span></td><td>Triagem IA aparece como teste/etapa acionada pelo candidato.</td><td>Usa um fluxo oficial da Gupy em vez de improvisar estado paralelo.</td></tr>
+            <tr><td><span class="badge green">callback</span></td><td>Ao terminar, o parceiro redireciona ou confirma conclusao para a Gupy.</td><td>Fecha o ciclo candidato -> triagem -> retorno ao ATS.</td></tr>
+            <tr><td><span class="badge orange">result webhook</span></td><td>Resultado pode ser enviado de forma assincrona.</td><td>Protege contra candidato fechar janela ou falha de redirecionamento.</td></tr>
+            <tr><td><span class="badge black">score 0-100</span></td><td>Score normalizado por requisito ou dimensao.</td><td>Facilita leitura e comparacao, sem fingir precisao absoluta.</td></tr>
+            <tr><td><span class="badge purple">resumo markdown</span></td><td>Resumo para empresa com evidencias, bloqueadores e follow-ups.</td><td>Entrega valor direto ao recrutador sem automatizar decisao final.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section id="riscos">
       <div class="head">
         <h2>Riscos que precisam ficar na mesa.</h2>
@@ -336,11 +393,12 @@
             <tr><th>Risco</th><th>Impacto</th><th>Mitigacao</th><th>Status</th></tr>
           </thead>
           <tbody>
-            <tr><td>WhatsApp sem API real</td><td>Sem webhooks e automacao robusta.</td><td>Confirmar Cloud API/BSP com Wesley.</td><td><span class="badge orange">aberto</span></td></tr>
-            <tr><td>Writeback limitado no Gupy</td><td>Resultado pode nao voltar na superficie ideal.</td><td>Comecar por comentario/tag/resultado externo.</td><td><span class="badge orange">aberto</span></td></tr>
+            <tr><td>WhatsApp sem API real</td><td>Sem webhooks, templates e automacao robusta.</td><td>Confirmar Cloud API/BSP com Wesley.</td><td><span class="badge orange">aberto</span></td></tr>
+            <tr><td>Teste externo Gupy nao habilitado</td><td>Perde o contrato mais limpo para MVP.</td><td>Validar com Gupy/Eletromidia; usar tag/comentario como fallback.</td><td><span class="badge orange">aberto</span></td></tr>
             <tr><td>Identidade fraca</td><td>Candidato pode ser associado a aplicacao errada.</td><td>Token rastreado por aplicacao e expiracao.</td><td><span class="badge purple">desenhar</span></td></tr>
-            <tr><td>LGPD e vies</td><td>Risco juridico e reputacional.</td><td>Consentimento, retencao minima, revisao humana.</td><td><span class="badge red">critico</span></td></tr>
-            <tr><td>Audio bruto</td><td>Aumenta sensibilidade do dado armazenado.</td><td>Transcrever e definir expiracao do arquivo original.</td><td><span class="badge black">politica</span></td></tr>
+            <tr><td>LGPD Art. 20</td><td>Decisao somente automatizada pode ser contestada.</td><td>IA como apoio, revisao humana e criterio explicavel.</td><td><span class="badge red">critico</span></td></tr>
+            <tr><td>Audio bruto</td><td>Aumenta sensibilidade do dado armazenado.</td><td>Transcrever, aplicar TTL e nao depender so de audio.</td><td><span class="badge black">politica</span></td></tr>
+            <tr><td>Template pausado/rejeitado</td><td>Candidato nao recebe chamada para triagem.</td><td>Monitorar status/qualidade dos templates WhatsApp.</td><td><span class="badge purple">operacao</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -359,8 +417,8 @@
         </article>
         <article class="card span-6">
           <span class="pill purple">Gupy / integracao</span>
-          <h3>Onde o resultado volta?</h3>
-          <p>Mapear endpoints, permissoes e melhor superficie de writeback para piloto sem automatizar decisao final.</p>
+          <h3>Podemos usar teste externo?</h3>
+          <p>Validar se a conta permite configurar a triagem como provedor/teste externo. Se nao, confirmar tag/comentario como fallback.</p>
         </article>
         <article class="card span-6">
           <span class="pill green">RH / Facilities</span>
@@ -379,7 +437,7 @@
       <div class="callout">
         <div>
           <h3>Posicao final</h3>
-          <p>Construir um MVP pequeno: uma vaga, uma rubrica, um link rastreado, uma conversa WhatsApp, uma avaliacao explicavel e um writeback simples no Gupy. O resto vem depois que esse ciclo provar valor sem quebrar governanca.</p>
+          <p>Construir um MVP pequeno: uma vaga, uma rubrica, um link rastreado, uma conversa WhatsApp, uma avaliacao explicavel e retorno pela integracao de teste externo da Gupy se estiver disponivel. Se nao estiver, usar tag/comentario como fallback. O resto vem depois que esse ciclo provar valor sem quebrar governanca.</p>
         </div>
         <span class="pill black">recomendacao</span>
       </div>
@@ -387,7 +445,7 @@
 
     <footer>
       <strong>WhatsApp Business | Selecao Inteligente com IA</strong>
-      <p>Fontes: notas Gemini da reuniao de 2026-06-10, memoria Obsidian Eletromidia e freshness sweep de 2026-06-11.</p>
+      <p>Fontes: notas Gemini da reuniao de 2026-06-10, memoria Obsidian Eletromidia, pesquisa NotebookLM com docs Gupy, Meta WhatsApp Business Platform e LGPD.</p>
     </footer>
   </main>
 </body>

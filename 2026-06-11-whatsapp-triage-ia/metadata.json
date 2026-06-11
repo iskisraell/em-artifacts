@@ -1,7 +1,7 @@
 {
   "title": "WhatsApp Business | Selecao Inteligente com IA",
   "date": "2026-06-11",
-  "description": "Visao geral do projeto de triagem inteligente por WhatsApp para R&S operacional: Gupy como fonte da verdade, WhatsApp como canal e IA como apoio explicavel ao recrutador.",
+  "description": "Visao geral enriquecida do projeto de triagem inteligente por WhatsApp para R&S operacional: Gupy como fonte da verdade, teste externo como contrato de MVP, WhatsApp como canal e IA como apoio explicavel ao recrutador.",
   "tags": ["whatsapp", "recrutamento", "gupy", "vertex-ai", "lgpd", "operacoes"],
-  "sections": ["Contexto", "Decisao Atual", "Fluxo do Piloto", "Arquitetura", "Riscos", "Proximos Passos"]
+  "sections": ["Contexto", "Decisao Atual", "Fluxo do Piloto", "Pesquisa Enriquecida", "Contrato Gupy", "Arquitetura", "Riscos", "Proximos Passos"]
 }
