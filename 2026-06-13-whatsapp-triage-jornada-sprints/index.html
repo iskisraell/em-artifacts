@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Da ideia ao MVP — a jornada do WhatsApp Triage com IA | Eletromidia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #FF4F00;
+  --purple: #4E18FF;
+  --yellow: #FECC14;
+  --pink: #F577ED;
+  --green: #3D7700;
+  --black: #000000;
+  --white: #FFFFFF;
+  --red: #DC2626;
+  --blue: #2563EB;
+  --surface: #FAFAFA;
+  --muted: #F5F5F5;
+  --text: #737373;
+  --line: #E5E5E5;
+  --radius: 18px;
+  --radius-md: 14px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --radius-pill: 999px;
+  --max: 1180px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  overflow-x: hidden;
+  background: var(--surface);
+  font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+a { color: inherit; }
+ul, ol { padding-left: 20px; }
+li { margin-bottom: 7px; }
+code {
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--white);
+  color: var(--purple);
+  font-family: Consolas, "Cascadia Mono", monospace;
+  font-size: .86em;
+}
+
+main {
+  width: min(var(--max), calc(100% - 32px));
+  margin: 0 auto;
+  padding: 22px 0 60px;
+}
+
+h1 {
+  font-size: clamp(42px, 7.5vw, 90px);
+  line-height: .92;
+  letter-spacing: 0;
+  font-weight: 800;
+  max-width: 980px;
+  color: var(--white);
+}
+h2 {
+  font-size: clamp(28px, 3.6vw, 46px);
+  line-height: 1.04;
+  font-weight: 800;
+  max-width: 820px;
+  letter-spacing: -.01em;
+}
+h3 {
+  font-size: 21px;
+  line-height: 1.12;
+  font-weight: 800;
+}
+h4 {
+  font-size: 16px;
+  font-weight: 800;
+}
+p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+}
+strong { font-weight: 700; }
+small { font-weight: 600; }
+
+/* ============ HERO ============ */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--black);
+  color: var(--white);
+  padding: clamp(28px, 4vw, 52px);
+  border-radius: var(--radius);
+  margin-top: 22px;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 30px;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  right: -120px;
+  top: -120px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 34px solid rgba(255, 79, 0, .22);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: -90px;
+  bottom: -160px;
+  width: 320px;
+  height: 320px;
+  border-radius: 34px;
+  background: rgba(78, 24, 255, .32);
+  transform: rotate(28deg);
+}
+.hero > * { position: relative; z-index: 1; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--yellow);
+  color: var(--black);
+  font-weight: 800;
+  font-size: 13px;
+  padding: 9px 14px;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+  letter-spacing: .01em;
+}
+.hero-eyebrow .dot {
+  width: 7px; height: 7px;
+  background: var(--black);
+  border-radius: 50%;
+}
+.hero-lead {
+  max-width: 660px;
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.4;
+  color: rgba(255,255,255,.82);
+  font-weight: 500;
+}
+.hero-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  display: inline-flex; align-items: center;
+  min-height: 32px; padding: 7px 11px;
+  border-radius: var(--radius-pill);
+  font-size: 13px; font-weight: 800; line-height: 1;
+  white-space: normal;
+}
+.pill.orange { background: var(--orange); color: var(--white); }
+.pill.purple { background: var(--purple); color: var(--white); }
+.pill.yellow { background: var(--yellow); color: var(--black); }
+.pill.green { background: var(--green); color: var(--white); }
+.pill.pink { background: var(--pink); color: var(--black); }
+.pill.black { background: var(--black); color: var(--white); }
+.pill.red { background: var(--red); color: var(--white); }
+.pill.blue { background: var(--blue); color: var(--white); }
+.pill.outline {
+  background: transparent;
+  border: 1.5px solid var(--white);
+  color: var(--white);
+}
+
+/* ============ NAV ============ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+  padding: 12px 0;
+  background: var(--surface);
+}
+.nav a {
+  padding: 10px 14px;
+  border: 1px solid var(--black);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--black);
+  font-weight: 800;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background .15s, color .15s, transform .15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav a:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.nav a .num {
+  font-size: 11px;
+  opacity: .55;
+  font-weight: 800;
+}
+
+/* ============ SECTION ============ */
+section {
+  margin-top: 22px;
+  scroll-margin-top: 90px;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+.head h2 { margin: 0; }
+.head p { max-width: 440px; margin: 0; font-size: 16px; }
+.chapter-num {
+  font-size: clamp(56px, 8vw, 96px);
+  font-weight: 800;
+  line-height: .8;
+  color: var(--black);
+  letter-spacing: -.03em;
+  display: block;
+  margin-bottom: 8px;
+}
+.chapter-num .accent { color: var(--orange); }
+.chapter-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text);
+}
+.chapter-meta .bar {
+  width: 28px;
+  height: 3px;
+  background: var(--orange);
+  border-radius: 2px;
+}
+
+/* ============ GRID + CARDS ============ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+}
+.span-3 { grid-column: span 3; }
+.span-4 { grid-column: span 4; }
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-7 { grid-column: span 7; }
+.span-8 { grid-column: span 8; }
+.span-12 { grid-column: span 12; }
+
+.card {
+  min-height: 100%;
+  padding: clamp(18px, 2.4vw, 28px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  transition: transform .18s, box-shadow .18s;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+.card h3 { margin-bottom: 8px; }
+.card h3 + p { margin-top: 0; }
+.card p + p { margin-top: 10px; }
+
+.card.black, .card.purple, .card.orange, .card.green {
+  border-color: transparent;
+  color: var(--white);
+}
+.card.black { background: var(--black); }
+.card.purple { background: var(--purple); }
+.card.orange { background: var(--orange); }
+.card.green { background: var(--green); }
+.card.yellow { background: var(--yellow); border-color: transparent; }
+.card.pink { background: var(--pink); border-color: transparent; }
+.card.black p, .card.purple p, .card.orange p, .card.green p { color: rgba(255,255,255,.88); }
+.card.black h3, .card.purple h3, .card.orange h3, .card.green h3 { color: var(--white); }
+.card.yellow p, .card.yellow h3, .card.pink p, .card.pink h3 { color: var(--black); }
+.card.yellow p { color: rgba(0,0,0,.78); }
+.card.pink p { color: rgba(0,0,0,.78); }
+
+/* ============ PROBLEM STRIP ============ */
+.problem-strip {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr 60px 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+.problem-card {
+  min-height: 200px;
+  border-radius: var(--radius);
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.problem-card::before {
+  content: "";
+  position: absolute;
+  right: -34px;
+  top: -34px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--yellow);
+  opacity: .6;
+}
+.problem-card.bad {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+.problem-card.bad::before { background: var(--red); opacity: .45; }
+.problem-card.bad p { color: #D4D4D4; }
+.problem-card.fix {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+.problem-card.fix::before { background: var(--yellow); opacity: .55; }
+.problem-card.fix p { color: rgba(0,0,0,.85); }
+.problem-card.fix h3 { color: var(--black); }
+.problem-arrow {
+  border-radius: var(--radius);
+  background: var(--purple);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  font-weight: 800;
+  transition: transform .2s;
+}
+.problem-arrow:hover { transform: scale(1.08); }
+.mini-label {
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--muted);
+  color: var(--black);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  position: relative;
+  z-index: 1;
+}
+.bad .mini-label { background: var(--red); color: var(--white); }
+.fix .mini-label { background: var(--black); color: var(--white); }
+
+/* ============ TIMELINE ============ */
+.timeline {
+  display: grid;
+  gap: 12px;
+}
+.tl-item {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  align-items: start;
+  transition: transform .18s, box-shadow .18s;
+}
+.tl-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,.05);
+}
+.tl-date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.tl-date .day {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.02em;
+}
+.tl-date .month {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text);
+  margin-top: 4px;
+}
+.tl-date .tag {
+  margin-top: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--muted);
+  color: var(--black);
+}
+.tl-body h4 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+.tl-body p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.tl-body .pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.tl-body .pill-row .pill {
+  font-size: 11px;
+  min-height: 24px;
+  padding: 5px 9px;
+}
+
+/* ============ CHANGE LIST ============ */
+.change-list { display: grid; gap: 8px; }
+.change-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  transition: transform .15s, box-shadow .15s;
+}
+.change-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.05);
+}
+.change-item .label {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.change-item .num {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--orange);
+  min-width: 20px;
+}
+.change-item strong {
+  display: block;
+  font-size: 15px;
+}
+.change-item small {
+  display: block;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 3px;
+  line-height: 1.45;
+}
+
+/* ============ BEFORE/AFTER SPLIT ============ */
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.compare {
+  min-height: 200px;
+  padding: 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+.compare.before { border-color: var(--red); }
+.compare.after { border-color: var(--green); }
+.compare h3 { margin-bottom: 10px; }
+.compare .compare-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 12px;
+}
+.compare .compare-list li {
+  font-size: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+  font-weight: 500;
+}
+.compare .compare-list li:last-child { border-bottom: 0; }
+.compare .compare-list li strong { color: var(--black); }
+
+/* ============ FLOW BOARD ============ */
+.flow-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 12px;
+}
+.flow-lane {
+  padding: 18px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  position: relative;
+  transition: transform .18s;
+}
+.flow-lane:hover { transform: translateY(-3px); }
+.flow-lane.kept { border-color: var(--purple); }
+.flow-lane.added { border-color: var(--green); }
+.flow-lane.removed { border-color: var(--red); }
+.flow-lane.core {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: var(--white);
+}
+.flow-lane.core h3 { color: var(--white); }
+.flow-lane.core p { color: rgba(255,255,255,.9); }
+.flow-lane h3 {
+  font-size: 16px;
+  margin: 10px 0 6px;
+}
+.flow-lane p {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.flow-node {
+  padding: 10px 12px;
+  border-radius: var(--radius-xs);
+  background: var(--muted);
+  font-size: 12px;
+  margin-top: 10px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.flow-lane.core .flow-node {
+  background: rgba(0,0,0,.25);
+  color: rgba(255,255,255,.95);
+}
+
+/* ============ TABS ============ */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.tab-button {
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  border: 1px solid var(--black);
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  transition: background .15s, color .15s, transform .15s;
+}
+.tab-button:hover { transform: translateY(-1px); }
+.tab-button[aria-selected="true"] {
+  background: var(--black);
+  color: var(--white);
+}
+.tab-panel { display: none; }
+.tab-panel.active {
+  display: block;
+  animation: fadeIn .25s ease;
+}
+
+/* ============ TABLE ============ */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th {
+  background: var(--black);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: var(--muted); }
+td strong { color: var(--black); }
+td .owner {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--black);
+}
+
+/* ============ ACCORDION ============ */
+details {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  overflow: hidden;
+  transition: box-shadow .15s;
+}
+details + details { margin-top: 8px; }
+details:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+summary {
+  cursor: pointer;
+  padding: 16px 20px;
+  font-weight: 800;
+  font-size: 15px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+  content: "+";
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--orange);
+  transition: transform .2s;
+}
+details[open] summary::after {
+  content: "−";
+}
+details[open] summary {
+  background: var(--yellow);
+  color: var(--black);
+}
+.details-body {
+  padding: 0 20px 18px;
+  font-size: 14px;
+}
+.details-body p { margin-bottom: 8px; }
+.details-body .answer-block {
+  background: var(--muted);
+  padding: 12px 14px;
+  border-radius: var(--radius-xs);
+  margin-top: 10px;
+}
+.details-body .answer-block strong { color: var(--black); }
+
+/* ============ RAIL ============ */
+.rail {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+.rail-step {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--black);
+  color: var(--white);
+  transition: transform .18s, background .18s;
+  position: relative;
+}
+.rail-step:hover {
+  transform: translateY(-3px);
+  background: var(--purple);
+}
+.rail-step.current {
+  background: var(--orange);
+}
+.rail-step .rail-week {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  opacity: .65;
+  margin-bottom: 6px;
+}
+.rail-step .rail-num {
+  font-size: 13px;
+  font-weight: 800;
+  padding: 4px 10px;
+  background: rgba(255,255,255,.15);
+  border-radius: var(--radius-pill);
+  width: fit-content;
+  margin-bottom: 10px;
+}
+.rail-step.current .rail-num {
+  background: var(--black);
+  color: var(--white);
+}
+.rail-step strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.rail-step p {
+  font-size: 12px;
+  color: rgba(255,255,255,.78);
+  line-height: 1.45;
+}
+.rail-step.current p { color: rgba(255,255,255,.92); }
+
+/* ============ METRIC ============ */
+.metric {
+  font-size: clamp(48px, 8vw, 92px);
+  font-weight: 800;
+  line-height: .86;
+  letter-spacing: -.03em;
+}
+.metric .arrow-down {
+  display: inline-block;
+  color: var(--green);
+  font-size: .65em;
+  margin: 0 6px;
+  vertical-align: middle;
+}
+.metric-row {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ============ CALLOUT ============ */
+.callout {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  padding: clamp(22px, 3vw, 36px);
+  border-radius: var(--radius);
+  background: var(--yellow);
+  position: relative;
+  overflow: hidden;
+}
+.callout::before {
+  content: "";
+  position: absolute;
+  right: -50px;
+  bottom: -50px;
+  width: 180px;
+  height: 180px;
+  background: var(--orange);
+  opacity: .15;
+  border-radius: 50%;
+}
+.callout > * { position: relative; z-index: 1; }
+.callout h3 {
+  font-size: clamp(22px, 2.6vw, 32px);
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.callout p {
+  font-size: 16px;
+  color: rgba(0,0,0,.78);
+  max-width: 720px;
+}
+
+/* ============ PULL QUOTE ============ */
+.pullquote {
+  padding: 22px 26px;
+  border-left: 4px solid var(--orange);
+  background: var(--muted);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin: 16px 0;
+}
+.pullquote p {
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--black);
+  font-style: normal;
+}
+.pullquote .source {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text);
+  margin-top: 10px;
+  display: block;
+}
+
+/* ============ CHECKLIST ============ */
+.checklist {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--text);
+}
+.checklist li {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.checklist li strong { color: var(--black); }
+
+/* ============ FUNNEL DEMO ============ */
+.funnel-demo {
+  padding: 22px;
+  border-radius: var(--radius);
+  background: var(--black);
+  color: var(--white);
+  overflow: hidden;
+}
+.funnel-demo h3 { color: var(--white); margin-bottom: 14px; }
+.funnel-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 800;
+}
+.funnel-bar .stage {
+  min-width: 120px;
+  font-size: 13px;
+  color: rgba(255,255,255,.7);
+}
+.funnel-bar .bar-track {
+  flex: 1;
+  height: 28px;
+  background: rgba(255,255,255,.08);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  position: relative;
+}
+.funnel-bar .bar-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: var(--radius-xs);
+  transition: width 1.2s cubic-bezier(.16,1,.3,1);
+}
+.funnel-bar .num-val {
+  min-width: 60px;
+  text-align: right;
+  font-size: 18px;
+  font-weight: 800;
+}
+.funnel-bar:last-child .bar-fill { background: var(--green); }
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.fade-in.visible {
+  animation: fadeIn .55s ease forwards;
+}
+.counter.bump {
+  transform: scale(1.15);
+  color: var(--orange);
+}
+.counter {
+  display: inline-block;
+  transition: all .35s ease;
+}
+
+/* ============ TOAST ============ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 22px;
+  border-radius: var(--radius-md);
+  background: var(--black);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 14px;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all .3s ease;
+  pointer-events: none;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ TAG ROW ============ */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+.tag {
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--muted);
+  color: var(--text);
+}
+.tag.purple { background: rgba(78,24,255,.12); color: var(--purple); }
+.tag.green { background: rgba(61,119,0,.14); color: var(--green); }
+.tag.blue { background: rgba(37,99,235,.12); color: var(--blue); }
+.tag.red { background: rgba(220,38,38,.12); color: var(--red); }
+.tag.orange { background: rgba(255,79,0,.12); color: var(--orange); }
+
+/* ============ FOOTER ============ */
+footer {
+  margin-top: 28px;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+footer strong { color: var(--black); }
+.footer-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .15s, color .15s, transform .15s;
+  font-family: inherit;
+}
+.btn:hover {
+  background: var(--black);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.btn.primary {
+  background: var(--orange);
+  color: var(--white);
+  border-color: var(--orange);
+}
+.btn.primary:hover {
+  background: var(--black);
+  border-color: var(--black);
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 920px) {
+  .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+  .problem-strip { grid-template-columns: 1fr; }
+  .problem-arrow { display: none; }
+  .rail { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tl-item { grid-template-columns: 1fr; }
+  .tl-date { flex-direction: row; align-items: center; gap: 12px; }
+  .tl-date .tag { margin-top: 0; }
+}
+@media (max-width: 560px) {
+  main { width: min(100% - 20px, var(--max)); }
+  .hero { border-radius: var(--radius-md); }
+  h1 { font-size: clamp(40px, 13vw, 56px); }
+  h2 { font-size: clamp(30px, 9.5vw, 40px); }
+  .rail { grid-template-columns: 1fr; }
+  .head { flex-direction: column; align-items: flex-start; }
+  .callout { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div>
+    <span class="hero-eyebrow">
+      <span class="dot"></span>
+      Eletromidia · WhatsApp AI Triage · Jun 2026
+    </span>
+    <h1 style="margin-top: 22px;">Da avaliação DigAI ao MVP em N8N.<br>A jornada completa.</h1>
+    <p class="hero-lead" style="margin-top: 22px;">
+      Seis semanas, duas decisões arquiteturais, cinco sprints planejados. Como a Eletromidia está montando uma camada de triagem inteligente sobre WhatsApp e Gupy sem treinar um único modelo do zero.
+    </p>
+  </div>
+  <div class="hero-bar">
+    <span class="pill orange">N8N orchestrator</span>
+    <span class="pill purple">Gupy ATS</span>
+    <span class="pill yellow">WhatsApp Business</span>
+    <span class="pill green">Gemini / Vertex</span>
+    <span class="pill pink">LGPD</span>
+    <span class="pill outline">5 sprints · até 2026-07-17</span>
+  </div>
+</section>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" aria-label="Capítulos">
+  <a href="#problema"><span class="num">01</span> Problema</a>
+  <a href="#linha-do-tempo"><span class="num">02</span> Linha do tempo</a>
+  <a href="#decisoes"><span class="num">03</span> Decisões</a>
+  <a href="#conflitos"><span class="num">04</span> Conflitos</a>
+  <a href="#arquitetura"><span class="num">05</span> Arquitetura</a>
+  <a href="#validacao"><span class="num">06</span> Validação</a>
+  <a href="#sprints"><span class="num">07</span> Sprint roadmap</a>
+  <a href="#proximos"><span class="num">08</span> Próximos passos</a>
+</nav>
+
+<!-- ============ 01. PROBLEMA ============ -->
+<section id="problema" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 01 · O Problema
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">01.</span> Volume alto, decisão lenta.</span>
+      <h2>Operações contrata em escala. A triagem manual não acompanha.</h2>
+    </div>
+    <p>A Eletromidia tem a equipe com a maior rotatividade do grupo em operações. Instaladores, técnicos, motoristas. São centenas de candidatos por vaga, nem sempre com currículo estruturado, quase sempre chegando pelo WhatsApp.</p>
+  </div>
+
+  <div class="problem-strip">
+    <article class="problem-card">
+      <span class="mini-label">Problema</span>
+      <h3 style="margin-top: 12px;">Triagem 100% manual.</h3>
+      <p>Recrutador abre 42 candidaturas, lê uma a uma, agenda entrevista prática. Decisão demora dias. Candidato desiste no caminho.</p>
+    </article>
+    <div class="problem-arrow">→</div>
+    <article class="problem-card bad">
+      <span class="mini-label">Impacto</span>
+      <h3 style="margin-top: 12px;">Vaga aberta custa campanha.</h3>
+      <p>Cada dia com posição aberta = impacto operacional direto. Concessões paradas, instalações atrasadas, fila de manutenção cresce.</p>
+    </article>
+    <div class="problem-arrow">→</div>
+    <article class="problem-card fix">
+      <span class="mini-label">Solução</span>
+      <h3 style="margin-top: 12px;">Triagem inteligente via WhatsApp.</h3>
+      <p>Pré-entrevista por IA com perguntas fechadas estilo URA. O recrutador recebe ranking, razões e bloqueadores. Decide em minutos, não em dias.</p>
+    </article>
+  </div>
+
+  <div class="pullquote" style="margin-top: 22px;">
+    <p>"A IA apoia recrutadores. Não substitui. Candidatos promissores mas incompletos vão para revisão humana, nunca para descarte automático."</p>
+    <span class="source">Princípio de produto · Decisão 2026-06-10</span>
+  </div>
+
+  <div class="grid" style="margin-top: 14px;">
+    <article class="card black span-6">
+      <h3>O que era hipótese em abril.</h3>
+      <p>Avaliar o DigAI como plataforma de entrevistas por áudio. Caiu rápido: DigAI resolve triagem de conhecimento (tech, banco, consultoria), não contratação de campo.</p>
+      <div class="tag-row">
+        <span class="tag">CI&amp;T</span>
+        <span class="tag">Nubank</span>
+        <span class="tag">Zenvia</span>
+        <span class="tag red">não-fit-ops</span>
+      </div>
+    </article>
+    <article class="card orange span-6">
+      <h3>O que virou direção em maio.</h3>
+      <p>Construir uma camada própria sobre o Gupy (API já existente). WhatsApp-first porque o candidato operacional já está lá. Pandape vira segundo conector, não primeiro.</p>
+      <div class="tag-row">
+        <span class="tag" style="background: rgba(255,255,255,.2); color: var(--white);">Gupy-first</span>
+        <span class="tag" style="background: rgba(255,255,255,.2); color: var(--white);">WhatsApp-native</span>
+        <span class="tag" style="background: rgba(255,255,255,.2); color: var(--white);">Pandape depois</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 02. LINHA DO TEMPO ============ -->
+<section id="linha-do-tempo" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 02 · Linha do tempo
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">02.</span> Seis semanas, seis marcos.</span>
+      <h2>Cada reunião mudou uma peça do quebra-cabeça.</h2>
+    </div>
+    <p>Da pesquisa inicial à validação externa, em ordem cronológica. Os marcos vermelhos são correções de rumo, não erros. Eles seguraram o time longe de decisões caras demais.</p>
+  </div>
+
+  <div class="timeline">
+    <article class="tl-item">
+      <div class="tl-date">
+        <span class="day">30/04</span>
+        <span class="month">Abr 2026</span>
+        <span class="tag">Pesquisa</span>
+      </div>
+      <div class="tl-body">
+        <h4>Avaliação DigAI: o botão "comprar" foi recusado.</h4>
+        <p>Briefing completo antes da reunião com Raphaela Melo (HR) e DigAI em 05/05. Conclusão: o DigAI resolve triagem de conhecimento, não vaga operacional. Recomendação interna: não comprar isolado para o problema de operações.</p>
+        <div class="pill-row">
+          <span class="pill purple">build vs buy</span>
+          <span class="pill red">declínio DigAI</span>
+          <span class="pill outline">14 concorrentes mapeados</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="tl-item">
+      <div class="tl-date">
+        <span class="day">19/05</span>
+        <span class="month">Mai 2026</span>
+        <span class="tag">Start</span>
+      </div>
+      <div class="tl-body">
+        <h4>"Recrutamento por IA | Start inicial." Correção da Gabriela.</h4>
+        <p>Slack 14:58: usar Gupy porque a API já existe. Pandape vem depois. Essa correção economizou semanas de negociação de contrato e migrou o time para um caminho comprovável.</p>
+        <div class="pill-row">
+          <span class="pill green">Gupy-first</span>
+          <span class="pill yellow">Slack correction</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="tl-item">
+      <div class="tl-date">
+        <span class="day">08/06</span>
+        <span class="month">Jun 2026</span>
+        <span class="tag">Research</span>
+      </div>
+      <div class="tl-body">
+        <h4>Brief de integração ATS proposto.</h4>
+        <p>Arquitetura adapter-based com hipóteses para Gupy, WhatsApp, triagem, IA e auditoria. Sete perguntas abertas sobre contrato do Gupy, capacidade WhatsApp, retenção LGPD e mapeamento de identidade do candidato.</p>
+        <div class="pill-row">
+          <span class="pill purple">adapter arch</span>
+          <span class="pill outline">7 open questions</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="tl-item">
+      <div class="tl-date">
+        <span class="day">10/06</span>
+        <span class="month">Jun 2026</span>
+        <span class="tag">Decisão 1</span>
+      </div>
+      <div class="tl-body">
+        <h4>Decisão oficial: Gupy-first, Vertex AI preferido, IA advisory.</h4>
+        <p>Reunião com Higor e facilities. Quatro princípios fixados: ATS continua sendo sistema de registro, IA aconselha (não decide), 72h de janela de resposta, Vertex/Gemini preferido para residência de dados.</p>
+        <div class="pill-row">
+          <span class="pill green">human-in-the-loop</span>
+          <span class="pill orange">Vertex preferred</span>
+          <span class="pill yellow">72h window</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="tl-item">
+      <div class="tl-date">
+        <span class="day">12/06</span>
+        <span class="month">Jun 2026</span>
+        <span class="tag">Decisão 2</span>
+      </div>
+      <div class="tl-body">
+        <h4>Reunião com Weslley: N8N vira o orquestrador central.</h4>
+        <p>Mudança grande. N8N consome Gupy, segura o estado da conversa, orquestra WhatsApp, Document AI e Gemini. Sem banco externo na fase 1. Projeto interno "Helen" vira referência reutilizável. Revisor sênior (Douglas) vira portão de deploy.</p>
+        <div class="pill-row">
+          <span class="pill orange">N8N orchestrator</span>
+          <span class="pill purple">no DB phase 1</span>
+          <span class="pill green">Helen reuse</span>
+          <span class="pill black">Douglas review gate</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="tl-item">
+      <div class="tl-date">
+        <span class="day">13/06</span>
+        <span class="month">Jun 2026</span>
+        <span class="tag">Validação</span>
+      </div>
+      <div class="tl-body">
+        <h4>Validação externa: o padrão n8n + WhatsApp já é provado.</h4>
+        <p>Três templates ativos de n8n + WhatsApp + IA para recrutamento, um projeto open-source, padrão LGPD documentado. Smart Vagas da própria Gupy valida a tese (40% mais candidaturas, 60% mais rápido). Arquitetura confirmada, não inovada.</p>
+        <div class="pill-row">
+          <span class="pill green">arch validated</span>
+          <span class="pill purple">3 n8n templates</span>
+          <span class="pill yellow">Gupy Smart Vagas</span>
+          <span class="pill outline">Supabase alt</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 03. DECISÕES ============ -->
+<section id="decisoes" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 03 · Decisões
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">03.</span> Sete decisões que travam a forma.</span>
+      <h2>O que foi decidido e por quê.</h2>
+    </div>
+    <p>Cada item abaixo é durável. Não é hipótese, é compromisso. As razões estão resumidas porque foram discutidas em reuniões longas e registradas no Obsidian.</p>
+  </div>
+
+  <div class="change-list">
+    <div class="change-item">
+      <div class="label">
+        <span class="num">01</span>
+        <div>
+          <strong>Gupy é o sistema de registro.</strong>
+          <small>Vagas, candidaturas, candidatos e etapas ficam no Gupy. A camada de triagem só lê e escreve resultados. Nunca substitui o ATS.</small>
+        </div>
+      </div>
+      <span class="pill purple">contrato</span>
+    </div>
+
+    <div class="change-item">
+      <div class="label">
+        <span class="num">02</span>
+        <div>
+          <strong>IA apoia, recrutador decide.</strong>
+          <small>Saída do Gemini é advisory. Candidato promissor com um requisito faltante vai para revisão humana. LGPD Art. 20 reforça: decisão automatizada é revisável.</small>
+        </div>
+      </div>
+      <span class="pill green">human-in-loop</span>
+    </div>
+
+    <div class="change-item">
+      <div class="label">
+        <span class="num">03</span>
+        <div>
+          <strong>N8N é o orquestrador central.</strong>
+          <small>Decisão da reunião com Weslley em 12/06. N8N consome Gupy API, segura a máquina de estado da conversa, integra WhatsApp, Document AI e Gemini. Não há orquestrador custom.</small>
+        </div>
+      </div>
+      <span class="pill orange">arquitetura</span>
+    </div>
+
+    <div class="change-item">
+      <div class="label">
+        <span class="num">04</span>
+        <div>
+          <strong>Sem banco externo na fase 1.</strong>
+          <small>N8N segura o estado. Supabase é alternativa documentada se a escala ou a auditoria exigirem, mas não entra no MVP.</small>
+        </div>
+      </div>
+      <span class="pill yellow">escopo MVP</span>
+    </div>
+
+    <div class="change-item">
+      <div class="label">
+        <span class="num">05</span>
+        <div>
+          <strong>WhatsApp Business é só canal de mensagem.</strong>
+          <small>Usa números Eletromidia existentes. Nenhuma lógica de negócio vive no WhatsApp. Como email: entrega, não pensa.</small>
+        </div>
+      </div>
+      <span class="pill blue">boundary</span>
+    </div>
+
+    <div class="change-item">
+      <div class="label">
+        <span class="num">06</span>
+        <div>
+          <strong>Vertex AI / Gemini preferido, APIs pré-treinadas.</strong>
+          <small>Mantém dados do candidato dentro do ambiente Google Cloud da Eletromidia. Sem fine-tuning. Sem treinar modelo do zero. Aproveita APIs generativas.</small>
+        </div>
+      </div>
+      <span class="pill orange">data residency</span>
+    </div>
+
+    <div class="change-item">
+      <div class="label">
+        <span class="num">07</span>
+        <div>
+          <strong>Governança: Git + revisor sênior obrigatório.</strong>
+          <small>Código versionado. Douglas é candidato a revisor. DevOps fecha o portão para N8N e GCP. Projeto "Helen" vira base de referência reutilizável.</small>
+        </div>
+      </div>
+      <span class="pill black">governance</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04. CONFLITOS ============ -->
+<section id="conflitos" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 04 · Conflitos & tensões
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">04.</span> Onde a reunião mudou de ideia.</span>
+      <h2>O que mudou entre 10/06 e 12/06.</h2>
+    </div>
+    <p>A reunião com Weslley não foi confirmação, foi pivot. Quatro pontos da arquitetura de 10/06 foram substituídos. Os princípios de piloto continuam válidos.</p>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-button" role="tab" aria-selected="true" data-tab="tab-delta">O que mudou</button>
+    <button class="tab-button" role="tab" aria-selected="false" data-tab="tab-open">7 decisões em aberto</button>
+  </div>
+
+  <article class="tab-panel active" id="tab-delta" role="tabpanel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tópico</th>
+            <th>Posição em 10/06</th>
+            <th>Atualização em 12/06</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Orquestrador</strong></td>
+            <td>Indefinido (adapter custom)</td>
+            <td><strong>N8N</strong> é o orquestrador</td>
+            <td><span class="tag green">decidido</span></td>
+          </tr>
+          <tr>
+            <td><strong>Banco de dados</strong></td>
+            <td>Assumido como necessário</td>
+            <td><strong>Não precisa</strong> na fase 1, N8N segura estado</td>
+            <td><span class="tag green">simplificado</span></td>
+          </tr>
+          <tr>
+            <td><strong>Vertex AI</strong></td>
+            <td>Preferido para dados de candidato</td>
+            <td><strong>Gemini + Document AI</strong> confirmados, Vertex ainda válido como guarda-chuva</td>
+            <td><span class="tag purple">refinado</span></td>
+          </tr>
+          <tr>
+            <td><strong>WhatsApp</strong></td>
+            <td>Pacote em questão</td>
+            <td>Usar <strong>números Eletromidia existentes</strong>, channel-only</td>
+            <td><span class="tag green">definido</span></td>
+          </tr>
+          <tr>
+            <td><strong>Code review</strong></td>
+            <td>Aberto</td>
+            <td><strong>Revisor sênior obrigatório</strong> (Douglas candidato)</td>
+            <td><span class="tag orange">portão novo</span></td>
+          </tr>
+          <tr>
+            <td><strong>Referência técnica</strong></td>
+            <td>Nenhuma</td>
+            <td>Projeto interno <strong>"Helen"</strong> reutilizável</td>
+            <td><span class="tag green">upside</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pullquote" style="margin-top: 18px;">
+      <p>"WhatsApp Business é estritamente canal de mensagem, como email. Toda a inteligência vive no N8N."</p>
+      <span class="source">Weslley · Reunião 12/06 16:01 GMT-03</span>
+    </div>
+  </article>
+
+  <article class="tab-panel" id="tab-open" role="tabpanel">
+    <details>
+      <summary>1. Qual é a primeira vaga piloto? <span class="tag red">bloqueia rubrica</span></summary>
+      <div class="details-body">
+        <p><strong>Dono:</strong> Higor + HR.</p>
+        <p><strong>Por que bloqueia:</strong> define a rubrica, os bloqueadores duros (CNH, região, turno) e a métrica de sucesso. Sem vaga não há o que avaliar.</p>
+        <div class="answer-block">
+          <strong>Candidatos:</strong> Técnico de Campo, manutenção, instalação. Evitar generalização multi-cargo no MVP.
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>2. Qual é a superfície de writeback do Gupy? <span class="tag orange">define output</span></summary>
+      <div class="details-body">
+        <p><strong>Dono:</strong> Israel, validação no sandbox.</p>
+        <p><strong>Por que bloqueia:</strong> define o shape de saída do N8N. Se for comment/tag é mais simples; external-test é o contrato MVP ideal (redirect + callback_url + result_webhook_url, score 0-100, markdown em company_result_string).</p>
+        <div class="answer-block">
+          <strong>Recomendação:</strong> começar com comment/tag/external result. Evitar stage movement até validação de compliance e revisão do recrutador.
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>3. Quais webhook events do Gupy estão habilitados? <span class="tag orange">define trigger</span></summary>
+      <div class="details-body">
+        <p><strong>Dono:</strong> DevOps + Israel.</p>
+        <p><strong>Por que bloqueia:</strong> define a arquitetura de trigger. Sem webhook, cai em polling, que muda o desenho de Sprint 1.</p>
+        <div class="answer-block">
+          <strong>Mínimo:</strong> capturar ao menos um evento (criação de candidatura, mudança de etapa ou conclusão) ou documentar por que polling é necessário.
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>4. Qual é o escopo de reuso do projeto "Helen"? <span class="tag green">upside potencial</span></summary>
+      <div class="details-body">
+        <p><strong>Dono:</strong> Weslley + donos do Helen.</p>
+        <p><strong>Por que importa:</strong> pode cortar semanas do build. Helen já usa N8N para triagem e análise de documento.</p>
+        <div class="answer-block">
+          <strong>Ação:</strong> identificar quem é dono, o que é reutilizável, que restrições de licença/propriedade existem.
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>5. Douglas confirma como revisor? <span class="tag red">portão de deploy</span></summary>
+      <div class="details-body">
+        <p><strong>Dono:</strong> Israel + Douglas.</p>
+        <p><strong>Por que bloqueia:</strong> porta todo deploy. Sem revisor confirmado, Sprint 4 não sai do papel.</p>
+        <div class="answer-block">
+          <strong>Acordar:</strong> escopo da revisão, SLA, caminho de escalonamento.
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>6. Quem aprova LGPD? <span class="tag red">porta de produção</span></summary>
+      <div class="details-body">
+        <p><strong>Dono:</strong> Higor + compliance.</p>
+        <p><strong>Por que bloqueia:</strong> gate de produção. LGPD Art. 20 garante ao titular o direito de revisar decisão automatizada. Log de auditoria é requisito legal, não opcional.</p>
+        <div class="answer-block">
+          <strong>Caminho:</strong> nomear aprovador único (HR + IT/security/compliance). IA fica advisory até esse caminho assinar.
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>7. Instância N8N e isolamento de projeto? <span class="tag orange">gate de dev</span></summary>
+      <div class="details-body">
+        <p><strong>Dono:</strong> DevOps.</p>
+        <p><strong>Por que bloqueia:</strong> define onde o ambiente de desenvolvimento vive e quem provisiona secrets.</p>
+        <div class="answer-block">
+          <strong>Ação:</strong> definir instância N8N, workspace, gates de acesso (gerenciado pela DevOps, acesso mediante aprovação sênior).
+        </div>
+      </div>
+    </details>
+  </article>
+</section>
+
+<!-- ============ 05. ARQUITETURA ============ -->
+<section id="arquitetura" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 05 · Arquitetura final
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">05.</span> N8N no centro.</span>
+      <h2>Cinco peças, um orquestrador.</h2>
+    </div>
+    <p>O N8N é o cérebro. Em volta, sistemas com papéis claros. Sem banco de dados na fase 1, sem lógica no WhatsApp, sem modelo treinado do zero.</p>
+  </div>
+
+  <div class="flow-board">
+    <article class="flow-lane kept">
+      <span class="pill purple">sistema de registro</span>
+      <h3>Gupy API</h3>
+      <p>Vagas, candidaturas, candidatos, etapas. N8N lê dados e escreve resultados de volta.</p>
+      <div class="flow-node">Writeback em aberto: comment · tag · external-test · stage move</div>
+    </article>
+
+    <article class="flow-lane core">
+      <span class="pill black">orquestrador</span>
+      <h3>N8N</h3>
+      <p>Consome Gupy, segura o estado da conversa, chama IA e Document AI, envia WhatsApp. Sem banco externo na fase 1.</p>
+      <div class="flow-node">Máquina de estado URA-style · semântica de retry · persistência interna</div>
+    </article>
+
+    <article class="flow-lane added">
+      <span class="pill green">canal</span>
+      <h3>WhatsApp Business</h3>
+      <p>Números Eletromidia existentes. Só entrega mensagem. Nenhuma lógica de negócio aqui.</p>
+      <div class="flow-node">Link rastreado 72h · template message · webhook de entrada</div>
+    </article>
+
+    <article class="flow-lane added">
+      <span class="pill blue">leitura</span>
+      <h3>Google Document AI</h3>
+      <p>Lê e valida documentos/CVs: CNH, certificados, currículo anexo.</p>
+      <div class="flow-node">Validação de identidade · extração de campos</div>
+    </article>
+
+    <article class="flow-lane added">
+      <span class="pill orange">avaliação</span>
+      <h3>Gemini / Vertex AI</h3>
+      <p>Interação com candidato. APIs pré-treinadas. Sem fine-tuning, sem treino do zero.</p>
+      <div class="flow-node">Saída JSON: score 1-5 · bloqueadores · evidência · resumo · follow-up</div>
+    </article>
+  </div>
+
+  <div class="grid" style="margin-top: 14px;">
+    <article class="card span-7">
+      <h3>Fluxo candidato fim a fim.</h3>
+      <ol style="margin-top: 12px;">
+        <li>Recrutador seleciona vaga piloto no Gupy.</li>
+        <li>Candidato se aplica pelo Gupy, chega em etapa configurada ("Triagem IA").</li>
+        <li>N8N consome webhook/poll, busca candidato + rubrica da vaga.</li>
+        <li>N8N envia link WhatsApp rastreado via número existente.</li>
+        <li>Candidato abre, conversa começa, consent capturado.</li>
+        <li>Perguntas estilo URA (texto ou áudio). Document AI lê anexos.</li>
+        <li>Gemini pontua 1-5 com razões, bloqueadores, evidência, resumo.</li>
+        <li>N8N escreve resultado no Gupy (superfície a definir).</li>
+        <li>Recrutador revisa ranking, avança ou encaminha para talent pool.</li>
+      </ol>
+    </article>
+
+    <article class="card black span-5">
+      <h3>Formato da conversa: URA-style.</h3>
+      <p>Perguntas fechadas, opções pré-definidas. Restringe o modelo, previne alucinação. Áudio entra como transcrição para candidatos que respondem por voz.</p>
+      <div style="margin-top: 14px; padding: 12px 14px; border-radius: var(--radius-xs); background: rgba(255,255,255,.1);">
+        <code style="background: transparent; color: var(--yellow); display: block; font-size: 12px; line-height: 1.6;">
+{<br>
+&nbsp;&nbsp;"score": 1-5,<br>
+&nbsp;&nbsp;"blockers": ["sem CNH D"],<br>
+&nbsp;&nbsp;"evidence": [...],<br>
+&nbsp;&nbsp;"missing": [...],<br>
+&nbsp;&nbsp;"summary": "markdown..."<br>
+}
+        </code>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 06. VALIDAÇÃO ============ -->
+<section id="validacao" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 06 · Validação externa
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">06.</span> A arquitetura não é inovação.</span>
+      <h2>É padrão provado, com compliance documentada.</h2>
+    </div>
+    <p>Em 13/06 o time rodou uma rodada de web research. Cinco achados confirmam que a arquitetura é sólida, e adicionam uma surpresa estratégica.</p>
+  </div>
+
+  <div class="grid">
+    <article class="card purple span-6">
+      <span class="pill yellow">surpresa estratégica</span>
+      <h3 style="margin-top: 10px;">Gupy já tem "Smart Vagas".</h3>
+      <p>A própria Gupy lançou triagem por WhatsApp com 4 campos, IA analisa e pontua. Resultados reportados: 40% mais candidaturas, 60% mais rápido no fechamento, 98% de satisfação do candidato.</p>
+      <p style="margin-top: 10px;"><strong>Implicação:</strong> confirmar se o plano Eletromidia inclui Smart Vagas. Se sim, o N8N se posiciona como camada de orquestração multi-ATS, não competidora.</p>
+    </article>
+
+    <article class="card span-6">
+      <span class="pill green">padrão provado</span>
+      <h3 style="margin-top: 10px;">n8n + WhatsApp recrutamento existe.</h3>
+      <p>Três templates ativos de workflow, mais um projeto open-source no GitHub:</p>
+      <ul class="checklist" style="margin-top: 8px;">
+        <li><strong>Template #15620</strong> · screen + schedule via WhatsApp + OpenAI</li>
+        <li><strong>Template #14814</strong> · score PDF com GPT-4o-mini + Supabase</li>
+        <li><strong>Template #11604</strong> · automação com lista interativa + escalonamento humano</li>
+        <li><strong>GitHub: whatsapp-hiring-assistant</strong> · sem IA paga</li>
+      </ul>
+      <p style="margin-top: 8px;"><strong>Implicação:</strong> arquitetura validada. Supabase é alternativa leve se o estado interno do N8N ficar curto.</p>
+    </article>
+
+    <article class="card span-4">
+      <span class="pill orange">LGPD</span>
+      <h3 style="margin-top: 10px;">Padrão de compliance documentado.</h3>
+      <p>Consentimento na primeira mensagem. Minimização de dados. Retenção definida. Controle de acesso por papel. Auditoria. Direitos do titular suportados.</p>
+      <p style="margin-top: 10px;"><strong>Ação:</strong> rascunhar mensagem de consentimento no Sprint 0.</p>
+    </article>
+
+    <article class="card black span-4">
+      <span class="pill red">obrigação legal</span>
+      <h3 style="margin-top: 10px;">Humano no loop não é opcional.</h3>
+      <p>LGPD Art. 20: titular tem direito de revisar decisão automatizada. Teste de viés, auditoria e supervisão humana são essenciais. PL 2.338/2023 esperado para 2026.</p>
+      <p style="margin-top: 10px;"><strong>Implicação:</strong> "IA advisory, recrutador decisão final" é juridicamente correto. Log de auditoria é requisito legal.</p>
+    </article>
+
+    <article class="card green span-4">
+      <span class="pill yellow">contrato MVP</span>
+      <h3 style="margin-top: 10px;">External-test é o melhor MVP.</h3>
+      <p>Padrão redirect com callback_url + result_webhook_url. Score 0-100. company_result_string suporta markdown para resumo do recrutador.</p>
+      <p style="margin-top: 10px;"><strong>Ação:</strong> priorizar external-test como writeback do Gupy, se disponível no plano.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 07. SPRINTS ============ -->
+<section id="sprints" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 07 · Sprint roadmap
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">07.</span> Cinco sprints até piloto duro.</span>
+      <h2>Da conta N8N ao piloto com 20-50 candidatos reais.</h2>
+    </div>
+    <p>Cada sprint tem uma meta, escopo e critério de saída claros. Sem critério de saída, não acabou. Sprint 4 termina em piloto real com sign-off do Douglas.</p>
+  </div>
+
+  <div class="rail">
+    <article class="rail-step current">
+      <div class="rail-num">Sprint 0</div>
+      <div class="rail-week">Semana 15/06</div>
+      <strong>Foundations</strong>
+      <p>Ambiente dev no ar. Conta N8N, sandbox Gupy, Douglas confirmado, Helen KT agendado, repo Git pronto.</p>
+    </article>
+
+    <article class="rail-step">
+      <div class="rail-num">Sprint 1</div>
+      <div class="rail-week">Semana 22/06</div>
+      <strong>Prova Gupy</strong>
+      <p>Loop de leitura+escrita no N8N. Auth OAuth, lê vaga/candidato/etapa, escreve comment+tag. Webhook capturado.</p>
+    </article>
+
+    <article class="rail-step">
+      <div class="rail-num">Sprint 2</div>
+      <div class="rail-week">Semana 29/06</div>
+      <strong>Prova WhatsApp</strong>
+      <p>Round-trip de link rastreado. Template message + webhook de entrada no N8N. Mapeia contato → application id.</p>
+    </article>
+
+    <article class="rail-step">
+      <div class="rail-num">Sprint 3</div>
+      <div class="rail-week">Semana 06/07</div>
+      <strong>Triagem + IA</strong>
+      <p>Conversa URA-style com score. Rubrica definida com HR, state machine no N8N, Gemini com JSON estruturado, writeback no Gupy.</p>
+    </article>
+
+    <article class="rail-step">
+      <div class="rail-num">Sprint 4</div>
+      <div class="rail-week">Semana 13/07</div>
+      <strong>Pilot Hardening</strong>
+      <p>Pronto para vaga real 20-50 candidatos. Ranking view, LGPD text, audit log, retry. Sign-off Douglas + HR.</p>
+    </article>
+  </div>
+
+  <div class="grid" style="margin-top: 18px;">
+    <article class="card span-7">
+      <h3>Critérios de saída por sprint.</h3>
+      <div class="table-wrap" style="margin-top: 12px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Sprint</th>
+              <th>Critério de saída</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Sprint 0</strong></td>
+              <td>Conta N8N ativa, sandbox Gupy solicitada, Douglas confirmado, Helen KT agendado.</td>
+            </tr>
+            <tr>
+              <td><strong>Sprint 1</strong></td>
+              <td>Candidato sandbox movido/tagueado a partir do N8N com payload sintético.</td>
+            </tr>
+            <tr>
+              <td><strong>Sprint 2</strong></td>
+              <td>Candidato (número teste) responde WhatsApp → N8N loga mensagem → mapeia para application Gupy.</td>
+            </tr>
+            <tr>
+              <td><strong>Sprint 3</strong></td>
+              <td>End-to-end em candidato teste, recrutador vê resultado no Gupy.</td>
+            </tr>
+            <tr>
+              <td><strong>Sprint 4</strong></td>
+              <td>Sign-off Douglas, vaga piloto real aprovada por HR, primeiro lote processado com feedback do recrutador.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="card black span-5">
+      <h3>O que está fora do MVP.</h3>
+      <p style="margin-top: 8px;">Listado explicitamente para proteger o escopo:</p>
+      <ul class="checklist" style="margin-top: 10px; color: rgba(255,255,255,.85);">
+        <li>Transcrição e síntese de áudio</li>
+        <li>Google Document AI (CNH, certificados)</li>
+        <li>Conector Pandape</li>
+        <li>Multi-vacancy em paralelo</li>
+        <li>Editor de rubrica self-service</li>
+        <li>UI completa de audit log</li>
+      </ul>
+      <p style="margin-top: 12px; color: var(--yellow); font-weight: 800; font-size: 13px;">Tudo acima é Phase 2 ou além.</p>
+    </article>
+  </div>
+
+  <div class="pullquote" style="margin-top: 18px;">
+    <p>"Helen reuse é upside de schedule, não baseline. O plano assume código novo. Se reuso vier, é bônus."</p>
+    <span class="source">Postura de planejamento · Sprint Planning 13/06</span>
+  </div>
+</section>
+
+<!-- ============ PROGRESS DASHBOARD ============ -->
+<section class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 07.5 · Funil esperado
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">07.5.</span> De 42 para 10.</span>
+      <h2>O funil que o recrutador deve enxergar.</h2>
+    </div>
+    <p>O alvo operacional do piloto. Números animados para mostrar a redução de carga manual que a triagem traz.</p>
+  </div>
+
+  <div class="funnel-demo">
+    <h3>Candidatos por etapa (alvo do piloto Sprint 4).</h3>
+    <div class="funnel-bar">
+      <span class="stage">Aplicaram</span>
+      <div class="bar-track"><div class="bar-fill" style="width: 100%;" data-target="100"></div></div>
+      <span class="num-val counter">42</span>
+    </div>
+    <div class="funnel-bar">
+      <span class="stage">Iniciaram triagem</span>
+      <div class="bar-track"><div class="bar-fill" style="width: 76%; background: var(--purple);" data-target="76"></div></div>
+      <span class="num-val counter">32</span>
+    </div>
+    <div class="funnel-bar">
+      <span class="stage">Completaram</span>
+      <div class="bar-track"><div class="bar-fill" style="width: 52%; background: var(--blue);" data-target="52"></div></div>
+      <span class="num-val counter">22</span>
+    </div>
+    <div class="funnel-bar">
+      <span class="stage">Pré-aprovados p/ entrevista</span>
+      <div class="bar-track"><div class="bar-fill" style="width: 24%;" data-target="24"></div></div>
+      <span class="num-val counter">10</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RISCOS ============ -->
+<section class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 07.7 · Riscos & mitigações
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">07.7.</span> Cinco riscos, cinco mitigações.</span>
+      <h2>O que pode atrasar e o que fazer.</h2>
+    </div>
+    <p>Identificados no planejamento. Cada um tem um gatilho, um impacto e uma mitigação concreta.</p>
+  </div>
+
+  <div class="grid">
+    <article class="card span-4">
+      <span class="pill red">risco</span>
+      <h3 style="margin-top: 10px;">Sandbox Gupy atrasa.</h3>
+      <p><strong>Impacto:</strong> Sprint 1 bloqueado.</p>
+      <p><strong>Mitigação:</strong> escalar via Higor, cair para spec de API documentada + payloads mockados.</p>
+    </article>
+
+    <article class="card span-4">
+      <span class="pill orange">risco</span>
+      <h3 style="margin-top: 10px;">Capacidade WhatsApp pouco clara.</h3>
+      <p><strong>Impacto:</strong> Sprint 2 bloqueado.</p>
+      <p><strong>Mitigação:</strong> Weslley é dono da decisão, fechar a resposta no Sprint 0.</p>
+    </article>
+
+    <article class="card span-4">
+      <span class="pill pink">risco</span>
+      <h3 style="margin-top: 10px;">Reuso do Helen superestimado.</h3>
+      <p><strong>Impacto:</strong> plano de sprint otimista.</p>
+      <p><strong>Mitigação:</strong> tratar qualquer reuso como upside de schedule, não baseline.</p>
+    </article>
+
+    <article class="card span-6">
+      <span class="pill purple">risco</span>
+      <h3 style="margin-top: 10px;">Gargalo de revisão sênior (Douglas).</h3>
+      <p><strong>Impacto:</strong> Sprint 4 desliza.</p>
+      <p><strong>Mitigação:</strong> acordar SLA e cadência de revisão já no Sprint 0, não deixar para o Sprint 4.</p>
+    </article>
+
+    <article class="card span-6">
+      <span class="pill black">risco</span>
+      <h3 style="margin-top: 10px;">Aprovador LGPD não nomeado.</h3>
+      <p><strong>Impacto:</strong> portão de produção sem dono, vira Sprint 4 para resolver.</p>
+      <p><strong>Mitigação:</strong> subir o assunto no Sprint 0. Caminho: HR + IT/security + compliance, aprovador único.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 08. PRÓXIMOS PASSOS ============ -->
+<section id="proximos" class="fade-in">
+  <div class="chapter-meta">
+    <span class="bar"></span>
+    Capítulo 08 · Próximos passos
+  </div>
+  <div class="head">
+    <div>
+      <span class="chapter-num"><span class="accent">08.</span> O que vem depois do MVP.</span>
+      <h2>Horizonte de produto em quatro fases.</h2>
+    </div>
+    <p>O MVP prova o loop em uma vaga. As próximas fases expandem canal, capacidade e inteligência, sempre mantendo o ATS como registro e a IA como advisory.</p>
+  </div>
+
+  <div class="rail">
+    <article class="rail-step current">
+      <div class="rail-num">MVP</div>
+      <div class="rail-week">Até 17/07</div>
+      <strong>Vaga única, end-to-end</strong>
+      <p>Texto só. Comment+tag no Gupy. Ranking view simples.</p>
+    </article>
+    <article class="rail-step">
+      <div class="rail-num">Phase 2</div>
+      <div class="rail-week">Pós MVP</div>
+      <strong>Áudio + Document AI</strong>
+      <p>Transcrição, síntese de voz, validação de CNH e certificados.</p>
+    </article>
+    <article class="rail-step">
+      <div class="rail-num">Phase 3</div>
+      <div class="rail-week">Escala</div>
+      <strong>Pandape + multi-vacancy</strong>
+      <p>Segundo conector ATS, vagas em paralelo, editor de rubrica self-service.</p>
+    </article>
+    <article class="rail-step">
+      <div class="rail-num">Phase 4</div>
+      <div class="rail-week">Dados</div>
+      <strong>Analytics + onboarding</strong>
+      <p>Time-to-hire, conversão de funil, métricas de fairness, writeback external-test, integração com admissão.</p>
+    </article>
+    <article class="rail-step">
+      <div class="rail-num">Long-term</div>
+      <div class="rail-week">Plataforma</div>
+      <strong>Padrão conversacional</strong>
+      <p>N8N + Gupy + WhatsApp reutilizável para qualquer workflow conversacional na Eletromidia.</p>
+    </article>
+  </div>
+
+  <div class="grid" style="margin-top: 18px;">
+    <article class="card yellow span-6">
+      <h3>Ação imediata de Sprint 0.</h3>
+      <p>Cinco tarefas para a semana de 15/06:</p>
+      <ul class="checklist" style="margin-top: 10px;">
+        <li>Criar conta N8N grátis, explorar UI e HTTP node</li>
+        <li>Solicitar sandbox Gupy, identificar account manager</li>
+        <li>Confirmar Douglas como revisor, alinhar SLA e Git workflow</li>
+        <li>Identificar donos do Helen via Weslley, agendar KT</li>
+        <li>Subir Git repo privado, README, branch policy</li>
+      </ul>
+    </article>
+
+    <article class="card orange span-6">
+      <h3>Antes do Sprint 0: confirmar plano Gupy.</h3>
+      <p>Verificar se o plano Eletromidia inclui <strong>Smart Vagas</strong> e/ou <strong>external-test provider</strong>. Isso muda o posicionamento estratégico do N8N.</p>
+      <div class="tag-row" style="margin-top: 10px;">
+        <span class="tag" style="background: rgba(255,255,255,.22); color: var(--white);">action Israel</span>
+        <span class="tag" style="background: rgba(255,255,255,.22); color: var(--white);">prioridade alta</span>
+      </div>
+      <p style="margin-top: 14px; color: rgba(255,255,255,.9);"><strong>Se sim:</strong> N8N vira orquestrador multi-ATS, não competidor.</p>
+      <p style="margin-top: 6px; color: rgba(255,255,255,.9);"><strong>Se não:</strong> integration layer entrega valor que a Gupy ainda não dá.</p>
+    </article>
+  </div>
+
+  <div class="callout" style="margin-top: 22px;">
+    <div>
+      <h3>A jornada não termina no piloto. Termina no padrão.</h3>
+      <p>O MVP prova o loop numa vaga. A meta real é deixar a combinação N8N + Gupy + WhatsApp + Gemini como padrão conversacional reutilizável em qualquer processo de alto volume na Eletromidia. Triagem de recrutamento é só a primeira aplicação.</p>
+    </div>
+    <span class="pill black">posição final</span>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div>
+    <strong>WhatsApp Triage com IA · Jornada & Sprint Roadmap</strong>
+    <p style="margin-top: 4px;">Fontes: Obsidian 10-Projects/eletromidia (Decisions, Sessions, Research), reuniões 10/06 e 12/06, web research 13/06.</p>
+  </div>
+  <div class="footer-actions">
+    <button class="btn primary" id="copyPromptBtn">Copiar prompt</button>
+    <a class="btn" href="#top">↑ Topo</a>
+  </div>
+</footer>
+
+</main>
+
+<div class="toast" id="toast">Prompt copiado.</div>
+
+<script>
+// ============ TABS ============
+document.querySelectorAll('.tab-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tabId = btn.getAttribute('data-tab');
+    document.querySelectorAll('.tab-button').forEach(b => b.setAttribute('aria-selected', 'false'));
+    btn.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+  });
+});
+
+// ============ TOAST ============
+const toast = document.getElementById('toast');
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(() => toast.classList.remove('visible'), 2000);
+}
+
+// ============ COPY PROMPT ============
+document.getElementById('copyPromptBtn').addEventListener('click', () => {
+  const prompt = `Continue iterando o artefato em https://iskisraell.github.io/em-artifacts/2026-06-13-whatsapp-triage-jornada-sprints/
+Design system: Eletromidia - Rethink Sans, #FF4F00 orange, flat design, border-radius 18px.
+Contexto do artefato: WhatsApp Triage com IA, jornada do DigAI eval ao MVP em N8N. 5 sprints planejados até 2026-07-17, 7 decisões em aberto bloqueando o build.
+Minha solicitação: [descreva aqui o que deseja]`;
+  navigator.clipboard.writeText(prompt).then(() => {
+    showToast('Prompt copiado.');
+  }).catch(() => {
+    showToast('Falha ao copiar.');
+  });
+});
+
+// ============ FADE-IN ON SCROLL ============
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Trigger counter bumps in this section
+      entry.target.querySelectorAll('.counter').forEach(c => {
+        if (!c.dataset.bumped) {
+          c.dataset.bumped = 'true';
+          setTimeout(() => {
+            c.classList.add('bump');
+            setTimeout(() => c.classList.remove('bump'), 350);
+          }, 300);
+        }
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ============ FUNNEL BAR ANIMATION ============
+const funnelObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+        const target = bar.getAttribute('data-target');
+        bar.style.width = '0%';
+        setTimeout(() => { bar.style.width = target + '%'; }, 100);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.funnel-demo').forEach(el => funnelObserver.observe(el));
+</script>
+</body>
+</html>

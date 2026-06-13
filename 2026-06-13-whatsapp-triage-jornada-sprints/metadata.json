@@ -1,0 +1,7 @@
+{
+  "title": "Da ideia ao MVP — a jornada do WhatsApp Triage com IA",
+  "date": "2026-06-13",
+  "description": "Storytelling completo da jornada de triagem inteligente da Eletromidia: da avaliação DigAI em abril ao MVP em N8N decidido em junho, com 5 sprints planejados até 2026-07-17, 7 decisões em aberto e validação externa.",
+  "tags": ["eletromidia", "whatsapp-triage", "n8n", "gupy", "gemini", "lgpd", "sprint-planning", "ai-hiring", "recruitment"],
+  "sections": ["Problema", "Linha do tempo", "Decisões", "Conflitos", "Arquitetura", "Validação", "Sprint roadmap", "Próximos passos"]
+}
