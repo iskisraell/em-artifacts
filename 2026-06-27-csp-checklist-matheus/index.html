@@ -182,7 +182,7 @@ footer code{font-size:11px}
 <main>
   <span class="tag">Curadoria de Checklist · CSP</span>
   <h1>Defina os campos da instalação CSP</h1>
-  <p class="lede">Para cada campo, decida o status no <b style="color:var(--orange)">Abrigo</b> e no <b style="color:var(--blue)">Totem</b> independentemente: <b>Obrigatório</b>, <b>Opcional</b>, <b>Não aplica</b>, ou mantenha <b>Revisar</b>. Edite nomes, comente, reordene e adicione campos. Ao terminar, exporte o PDF e o JSON.</p>
+  <p class="lede">Para cada campo, decida o status no <b style="color:var(--orange)">Abrigo</b> e no <b style="color:var(--blue)">Totem</b> independentemente: <b>Obrigatório</b>, <b>Opcional</b>, <b>Não aplica</b>, ou mantenha <b>Revisar</b>. A fase <b>Elétrica CSP</b> é Abrigo apenas, com ELT separada (após Acabamento). Edite nomes, comente, reordene e adicione campos. Ao terminar, exporte o PDF e o JSON.</p>
 
   <div class="header-row">
     <div class="help">
@@ -233,6 +233,7 @@ const PHASES=[
  {id:'implantacao',name:'Implantação',alias:'csp-implantacao',desc:'Após Fundação · N1 · Abrigo + Totem'},
  {id:'montagem',name:'Montagem',alias:'csp-montagem',desc:'Só Abrigo · Totem pula esta fase'},
  {id:'acabamento',name:'Acabamento',alias:'csp-acabamento',desc:'Terminal · habilita o relatório CSP'},
+ {id:'eletrica',name:'Elétrica CSP',alias:'csp-corretiva-eletrica-abrigo',desc:'Abrigo apenas · ELT separada · após Acabamento · N2'},
 ];
 const BASE={
  fundacao:[
@@ -279,6 +280,12 @@ const BASE={
   {label:'Piso',prop:'XA_CSP_ACA_PISO',kind:'foto',a:'req',t:'req'},
   {label:'Piso medido',prop:'XA_CSP_ACA_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
  ],
+ eletrica:[
+  {label:'Poste',prop:'XA_CSP_ELE_POSTE',kind:'foto',a:'req',t:'na',note:'Evidência de instalação — campo do branch antigo.'},
+  {label:'Medições elétricas',prop:'XA_CSP_ELE_MEDICOES_ELETRICAS',kind:'foto',a:'req',t:'na',note:'Medições da instalação — campo do branch antigo.'},
+  {label:'Luminária',prop:'XA_CSP_ELE_LUMINARIA',kind:'foto',a:'rev',t:'na',note:'Branch antigo tinha este campo inativo. Confirmar com Matheus.'},
+  {label:'Observação de conclusão',prop:'XA_RUA_PRV_OBRS',kind:'texto',a:'opt',t:'na',note:'Nota de conclusão, mesma convenção das outras fases.'},
+ ],
 };
 const KIND={foto:'Foto',fotos:'Fotos',texto:'Texto'};
 const STATUS=[['required','Obrigatório'],['optional','Opcional'],['na','Não aplica'],['review','Revisar']];
@@ -287,7 +294,7 @@ const BASE_DEFAULT={req:'required',rev:'review',na:'na'};
 /* STATE */
 const LS='csp-curation-v2';
 let S=load();
-function blank(){return{fields:{},order:{fundacao:null,implantacao:null,montagem:null,acabamento:null},custom:{fundacao:[],implantacao:[],montagem:[],acabamento:[]},reviewer:''}}
+function blank(){return{fields:{},order:{fundacao:null,implantacao:null,montagem:null,acabamento:null,eletrica:null},custom:{fundacao:[],implantacao:[],montagem:[],acabamento:[],eletrica:[]},reviewer:''}}
 function load(){try{let s=JSON.parse(localStorage.getItem(LS));if(!s)return blank();if(s.fields){Object.keys(s.fields).forEach(id=>{const fd=s.fields[id];if(fd&&fd.comment!==undefined&&fd.note===undefined){fd.note=fd.comment;delete fd.comment}})}return s}catch(e){return blank()}}
 function save(){S.reviewer=document.getElementById('reviewer').value;localStorage.setItem(LS,JSON.stringify(S))}
 
@@ -357,7 +364,7 @@ function rowHTML(f,i,arr){
   +'</div>';
 }
 function addFormHTML(p){
-  var PRE={fundacao:'FUND',implantacao:'IMP',montagem:'MON',acabamento:'ACA'};
+  var PRE={fundacao:'FUND',implantacao:'IMP',montagem:'MON',acabamento:'ACA',eletrica:'ELE'};
   var pre=PRE[p]||p.slice(0,4).toUpperCase();
   function statSel(name,def){return '<select data-k="'+name+'">'
     +[['required','Obrigatório'],['optional','Opcional'],['na','Não aplica']].map(function(v){return '<option value="'+v[0]+'"'+(v[0]===def?' selected':'')+'>'+v[1]+'</option>'}).join('')
@@ -497,7 +504,8 @@ function manifest(){
     generated:new Date().toISOString(),
     reviewer:S.reviewer||'',
     source:['docs/checklists/csp-abrigo-checklist-mock.md','docs/checklists/csp-totem-checklist-mock.md'],
-    conventions:{sharedAliases:true,multiPhotoAsExplicitFields:true,activity:'Ruas - Instalacao (id 19)',scopeEstablishments:[383,384]},
+    conventions:{sharedAliases:true,multiPhotoAsExplicitFields:true,activity:'Ruas - Instalacao (id 19)',scopeEstablishments:[383,384],
+      electrical:{alias:'csp-corretiva-eletrica-abrigo',activityType:'Ruas - Corretiva - Eletrica (id 10)',level:'n2',separateElt:true,abrigoOnly:true,note:'After Abrigo Acabamento. Custom checklist, not the existing maintenance corretivaEletricaRuasAbrigosSp.'}},
     phases:PHASES.map(p=>({
       name:p.name,alias:p.alias,
       fields:fieldsFor(p.id).map(f=>({
