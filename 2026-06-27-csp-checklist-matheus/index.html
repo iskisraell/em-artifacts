@@ -84,10 +84,14 @@ section.phase{margin-top:24px}
 
 /* asset decisions */
 .assets{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px}
-.asset{display:flex;align-items:center;gap:8px;background:var(--muted);border:1px solid var(--line);border-radius:10px;padding:6px 9px 6px 7px}
-.asset .badge{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;font-size:11px;font-weight:800;font-family:Consolas,monospace;color:#fff}
-.asset.abrigo .badge{background:var(--orange)}
-.asset.totem .badge{background:var(--blue)}
+.asset{display:flex;align-items:center;gap:8px;background:var(--muted);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:10px;padding:6px 9px 6px 7px}
+.asset.abrigo{border-left-color:var(--orange)}
+.asset.totem{border-left-color:var(--blue)}
+.asset .badge{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;font-size:11px;font-weight:800;font-family:Consolas,monospace;color:#fff;background:#d4d4d4;transition:background .14s,color .14s}
+.asset .badge.b-required{background:var(--green);color:#fff}
+.asset .badge.b-optional{background:#9b9b9b;color:#fff}
+.asset .badge.b-na{background:#ededed;color:#b0b0b0;text-decoration:line-through}
+.asset .badge.b-review{background:var(--yellow);color:#000}
 .sel{font-family:inherit;font-size:12.5px;font-weight:700;border:none;border-radius:7px;padding:6px 8px;cursor:pointer;background:#fff;color:var(--ink);transition:background .14s,color .14s}
 .sel:focus{outline:2px solid var(--ink);outline-offset:1px}
 .sel.s-required{background:#3D7700;color:#fff}
@@ -95,12 +99,18 @@ section.phase{margin-top:24px}
 .sel.s-na{background:#E5E5E5;color:#9b9b9b;text-decoration:line-through}
 .sel.s-review{background:var(--yellow);color:#000}
 
-/* comment */
-.cmt{margin-top:10px}
-.cmt input{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-family:inherit;font-size:13px;background:var(--surface);color:var(--ink)}
-.cmt input:focus{outline:none;border-color:var(--orange);background:#fff}
-.note{font-size:12px;color:var(--text);background:var(--muted);padding:7px 10px;border-radius:8px;margin-top:9px;line-height:1.4}
-.note.dec{color:var(--green);background:#EEF6E8;font-weight:600}
+/* inline kind + qty */
+.kinp{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.kind-sel{font-family:inherit;font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:8px;padding:5px 8px;background:#fff;color:var(--ink);cursor:pointer}
+.kind-sel:focus{outline:none;border-color:var(--orange)}
+.qty-input{width:60px;font-family:inherit;font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:8px;padding:5px 7px;background:#fff;color:var(--ink);text-align:center}
+.qty-input:focus{outline:none;border-color:var(--orange)}
+
+/* editable note (was comment) */
+.nota{margin-top:10px}
+.nota input{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-family:inherit;font-size:13px;background:var(--surface);color:var(--ink)}
+.nota input:focus{outline:none;border-color:var(--orange);background:#fff}
+.nota input::placeholder{color:#b8b8b8}
 
 /* actions */
 .acts{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
@@ -274,7 +284,7 @@ const BASE_DEFAULT={req:'required',rev:'review',na:'na'};
 const LS='csp-curation-v2';
 let S=load();
 function blank(){return{fields:{},order:{fundacao:null,implantacao:null,montagem:null,acabamento:null},custom:{fundacao:[],implantacao:[],montagem:[],acabamento:[]},reviewer:''}}
-function load(){try{const s=JSON.parse(localStorage.getItem(LS));return s||blank()}catch(e){return blank()}}
+function load(){try{let s=JSON.parse(localStorage.getItem(LS));if(!s)return blank();if(s.fields){Object.keys(s.fields).forEach(id=>{const fd=s.fields[id];if(fd&&fd.comment!==undefined&&fd.note===undefined){fd.note=fd.comment;delete fd.comment}})}return s}catch(e){return blank()}}
 function save(){S.reviewer=document.getElementById('reviewer').value;localStorage.setItem(LS,JSON.stringify(S))}
 
 let F={asset:'all',status:'all',review:false};
@@ -293,6 +303,9 @@ function fieldsFor(p){
 function stOf(f,asset){const v=S.fields[f.id]&&S.fields[f.id][asset];return v||BASE_DEFAULT[f[asset==='abrigo'?'a':'t']];}
 function labelOf(f){return (S.fields[f.id]&&S.fields[f.id].label)||f.label}
 function commentOf(f){return (S.fields[f.id]&&S.fields[f.id].comment)||''}
+function kindOf(f){return (S.fields[f.id]&&S.fields[f.id].kind)||f.kind}
+function qtyOf(f){const v=S.fields[f.id];return (v&&v.qty!==undefined)?v.qty:(f.qty||'')}
+function noteOf(f){const v=S.fields[f.id];if(v&&v.note!==undefined)return v.note;return (v&&v.comment)||f.note||''}
 function isDone(f){return stOf(f,'abrigo')!=='review'&&stOf(f,'totem')!=='review'}
 function isPending(f){return!isDone(f)}
 
@@ -312,21 +325,23 @@ function selHTML(f,asset){
   let opts=STATUS.map(([v,l])=>'<option value="'+v+'"'+(v===cur?' selected':'')+'>'+l+'</option>').join('');
   return '<select class="sel s-'+cur+'" data-id="'+f.id+'" data-asset="'+asset+'">'+opts+'</select>';
 }
+function assetHTML(f,asset){
+  const st=stOf(f,asset);
+  const letter=asset==='abrigo'?'A':'T';
+  return '<div class="asset '+asset+'"><span class="badge b-'+st+'">'+letter+'</span>'+selHTML(f,asset)+'</div>';
+}
 function rowHTML(f,i,arr){
   const done=isDone(f);
   const cls='row'+(done?' done':' pending')+(visible(f)?'':' hide');
-  const cmt=commentOf(f);
-  const note=f.note?'<div class="note'+(f.dec?' dec':'')+'">'+(f.dec?'✓ ':'')+esc(f.note)+'</div>':'';
-  const propsmall=esc(f.prop)+' · '+KIND[f.kind]+(f.qty?' ×'+f.qty:'');
+  const k=kindOf(f);
+  const kinp='<span class="kinp"><select class="kind-sel" data-kind="'+f.id+'">'
+    +['foto','fotos','texto'].map(function(x){return '<option value="'+x+'"'+(x===k?' selected':'')+'>'+KIND[x]+'</option>'}).join('')
+    +'</select>'+(k==='fotos'?'<input class="qty-input" type="number" min="1" data-qty="'+f.id+'" value="'+esc(qtyOf(f))+'" placeholder="qtd" title="Quantidade de fotos">':'')+'</span>';
   return '<div class="'+cls+'" data-id="'+f.id+'" data-phase="'+f.phase+'">'
     +'<div class="body">'
-      +'<div class="topline"><span class="flabel" data-edit="'+f.id+'">'+esc(labelOf(f))+'</span><span class="propsmall">'+propsmall+'</span></div>'
-      +'<div class="assets">'
-        +'<div class="asset abrigo"><span class="badge">A</span>'+selHTML(f,'abrigo')+'</div>'
-        +'<div class="asset totem"><span class="badge">T</span>'+selHTML(f,'totem')+'</div>'
-      +'</div>'
-      +'<div class="cmt"><input data-cmt="'+f.id+'" placeholder="Comentário do Matheus..." value="'+esc(cmt)+'"></div>'
-      +note
+      +'<div class="topline"><span class="flabel" data-edit="'+f.id+'">'+esc(labelOf(f))+'</span><span class="propsmall">'+esc(f.prop)+'</span>'+kinp+'</div>'
+      +'<div class="assets">'+assetHTML(f,'abrigo')+assetHTML(f,'totem')+'</div>'
+      +'<div class="nota"><input data-nota="'+f.id+'" placeholder="Nota / dica (editável)..." value="'+esc(noteOf(f))+'"></div>'
     +'</div>'
     +'<div class="acts">'
       +'<button class="act" data-act="up" title="Mover para cima"'+(i===0?' disabled':'')+'>↑</button>'
@@ -385,7 +400,7 @@ document.addEventListener('click',function(e){
   if(t.dataset.addsave){saveAdd(t.dataset.addsave);return}
   const segBtn=t.closest('.seg button');
   if(segBtn){
-    const seg=segBtn.parentElement.parentElement;
+    const seg=segBtn.parentElement;
     if(seg.id==='segReview'){segBtn.classList.toggle('on');F.review=segBtn.classList.contains('on')}
     else{seg.querySelectorAll('button').forEach(b=>b.classList.remove('on'));segBtn.classList.add('on');if(seg.id==='segAsset')F.asset=segBtn.dataset.v;if(seg.id==='segStatus')F.status=segBtn.dataset.v}
     render();
@@ -397,11 +412,15 @@ function move(p,id,dir){
 }
 document.addEventListener('change',function(e){
   const sel=e.target.closest('.sel');
-  if(sel){const id=sel.dataset.id,asset=sel.dataset.asset,v=sel.value;ensure(id)[asset]=v;sel.className='sel s-'+v;save();updateProgress();/* update row pending/done class */const row=sel.closest('.row');const f=findField(id);row.classList.toggle('pending',isPending(f));row.classList.toggle('done',isDone(f));}
+  if(sel){const id=sel.dataset.id,asset=sel.dataset.asset,v=sel.value;ensure(id)[asset]=v;sel.className='sel s-'+v;save();updateProgress();const row=sel.closest('.row');const f=findField(id);row.classList.toggle('pending',isPending(f));row.classList.toggle('done',isDone(f));const b=sel.parentElement.querySelector('.badge');if(b)b.className='badge b-'+v;}
+  const ks=e.target.closest('.kind-sel');
+  if(ks){ensure(ks.dataset.kind).kind=ks.value;save();render();}
 });
 document.addEventListener('input',function(e){
-  const cmt=e.target.closest('[data-cmt]');
-  if(cmt){const id=cmt.dataset.cmt;ensure(id).comment=cmt.value;save();}
+  const nota=e.target.closest('[data-nota]');
+  if(nota){ensure(nota.dataset.nota).note=nota.value;save();return;}
+  const qty=e.target.closest('[data-qty]');
+  if(qty){ensure(qty.dataset.qty).qty=qty.value;save();return;}
   if(e.target.id==='reviewer'){S.reviewer=e.target.value;save();}
 });
 function startEdit(id){
@@ -436,11 +455,11 @@ function buildPrint(){
   PHASES.forEach(p=>{
     const fs=fieldsFor(p.id);
     h+='<div class="pd-phase"><h2>'+p.name+'</h2><div class="pd-alias">'+p.alias+' — '+p.desc+'</div>';
-    h+='<table class="pd"><thead><tr><th>Campo</th><th>Property</th><th>Tipo</th><th>Abrigo</th><th>Totem</th><th>Comentário</th></tr></thead><tbody>';
+    h+='<table class="pd"><thead><tr><th>Campo</th><th>Property</th><th>Tipo</th><th>Abrigo</th><th>Totem</th><th>Nota</th></tr></thead><tbody>';
     fs.forEach(f=>{
-      const lbl=labelOf(f),cmt=commentOf(f);
+      const lbl=labelOf(f),note=noteOf(f);
       const cell=v=>{const m={required:'<span class="req">Obrig</span>',optional:'<span class="opt">Opc</span>',na:'<span class="na">—</span>',review:'<span class="rv">Rev</span>'};return m[v]};
-      h+='<tr><td>'+esc(lbl)+(f.note?'<div class="pd-note">'+esc(f.note)+'</div>':'')+'</td><td>'+esc(f.prop)+'</td><td>'+KIND[f.kind]+(f.qty?' ×'+f.qty:'')+'</td><td>'+cell(stOf(f,'abrigo'))+'</td><td>'+cell(stOf(f,'totem'))+'</td><td>'+(cmt?esc(cmt):'')+'</td></tr>';
+      h+='<tr><td>'+esc(lbl)+'</td><td>'+esc(f.prop)+'</td><td>'+KIND[kindOf(f)]+(qtyOf(f)?' ×'+qtyOf(f):'')+'</td><td>'+cell(stOf(f,'abrigo'))+'</td><td>'+cell(stOf(f,'totem'))+'</td><td>'+(note?esc(note):'')+'</td></tr>';
     });
     h+='</tbody></table></div>';
   });
@@ -458,9 +477,9 @@ function manifest(){
     phases:PHASES.map(p=>({
       name:p.name,alias:p.alias,
       fields:fieldsFor(p.id).map(f=>({
-        label:labelOf(f),property:f.prop,kind:f.kind,qty:f.qty||null,
+        label:labelOf(f),property:f.prop,kind:kindOf(f),qty:qtyOf(f)||null,
         abrigo:stOf(f,'abrigo'),totem:stOf(f,'totem'),
-        comment:commentOf(f)||null,custom:!!f.custom
+        note:noteOf(f)||null,custom:!!f.custom
       }))
     }))
   };
