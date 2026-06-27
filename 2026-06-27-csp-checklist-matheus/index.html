@@ -125,6 +125,10 @@ section.phase{margin-top:24px}
 .addrow .g{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .addrow input,.addrow select{padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-family:inherit;font-size:14px;background:var(--surface)}
 .addrow input:focus,.addrow select:focus{outline:none;border-color:var(--orange)}
+.addrow input[data-k="note"]{width:100%;margin-top:2px}
+.chk{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.chk select{font-family:inherit;font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;color:var(--ink);cursor:pointer}
+.chk select:focus{outline:none;border-color:var(--orange)}
 .addrow .acts2{display:flex;gap:9px}
 
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -300,7 +304,7 @@ function fieldsFor(p){
   all.forEach(f=>{if(!ordered.includes(f))ordered.push(f)});
   return ordered;
 }
-function stOf(f,asset){const v=S.fields[f.id]&&S.fields[f.id][asset];return v||BASE_DEFAULT[f[asset==='abrigo'?'a':'t']];}
+function stOf(f,asset){const key=asset==='abrigo'?'a':'t';const set=S.fields[f.id]&&S.fields[f.id][asset];if(set)return set;const base=f[key];return BASE_DEFAULT[base]||base;}
 function labelOf(f){return (S.fields[f.id]&&S.fields[f.id].label)||f.label}
 function commentOf(f){return (S.fields[f.id]&&S.fields[f.id].comment)||''}
 function kindOf(f){return (S.fields[f.id]&&S.fields[f.id].kind)||f.kind}
@@ -319,6 +323,7 @@ function visible(f){
 }
 
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function slug(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_|_$/g,'')}
 
 function selHTML(f,asset){
   const cur=stOf(f,asset);
@@ -352,10 +357,16 @@ function rowHTML(f,i,arr){
   +'</div>';
 }
 function addFormHTML(p){
-  return '<div class="addrow" data-add="'+p+'">'
-    +'<div class="g"><input data-k="label" placeholder="Nome do campo"><input data-k="prop" placeholder="Property (XA_CSP_...)"></div>'
-    +'<div class="g"><select data-k="kind"><option value="foto">Foto</option><option value="fotos">Fotos (lista)</option><option value="texto">Texto</option></select><input data-k="qty" placeholder="Qtd (se fotos) ex.: 3"></div>'
-    +'<div class="g"><label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="a" checked> Abrigo</label><label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="t" checked> Totem</label></div>'
+  var PRE={fundacao:'FUND',implantacao:'IMP',montagem:'MON',acabamento:'ACA'};
+  var pre=PRE[p]||p.slice(0,4).toUpperCase();
+  function statSel(name,def){return '<select data-k="'+name+'">'
+    +[['required','Obrigatório'],['optional','Opcional'],['na','Não aplica']].map(function(v){return '<option value="'+v[0]+'"'+(v[0]===def?' selected':'')+'>'+v[1]+'</option>'}).join('')
+    +'</select>';}
+  return '<div class="addrow" data-add="'+p+'" data-pre="'+pre+'">'
+    +'<div class="g"><input data-k="label" placeholder="Nome do campo *"><input data-k="prop" placeholder="Property — auto-gerado ao digitar o nome"></div>'
+    +'<div class="g"><select data-k="kind"><option value="foto">Foto</option><option value="fotos">Fotos (lista)</option><option value="texto">Texto</option></select><input data-k="qty" type="number" min="1" placeholder="Qtd fotos"></div>'
+    +'<div class="g"><label class="chk">Abrigo '+statSel('a','required')+'</label><label class="chk">Totem '+statSel('t','required')+'</label></div>'
+    +'<input data-k="note" placeholder="Nota / dica (opcional)">'
     +'<div class="acts2"><button class="btn" data-addsave="'+p+'">Adicionar</button><button class="btn ghost" data-addcancel="'+p+'">Cancelar</button></div>'
   +'</div>';
 }
@@ -384,7 +395,7 @@ function updateProgress(){
 function findField(id){for(const p of PHASES){const f=fieldsFor(p.id).find(x=>x.id===id);if(f)return f}return null}
 function ensure(id){if(!S.fields[id])S.fields[id]={};return S.fields[id]}
 function setOrder(p,ids){S.order[p]=ids}
-function orderOf(p){return fieldsFor(p.id).map(f=>f.id)}
+function orderOf(p){return fieldsFor(p).map(f=>f.id)}
 
 document.addEventListener('click',function(e){
   const t=e.target;
@@ -417,11 +428,15 @@ document.addEventListener('change',function(e){
   if(ks){ensure(ks.dataset.kind).kind=ks.value;save();render();}
 });
 document.addEventListener('input',function(e){
-  const nota=e.target.closest('[data-nota]');
+  var nota=e.target.closest('[data-nota]');
   if(nota){ensure(nota.dataset.nota).note=nota.value;save();return;}
-  const qty=e.target.closest('[data-qty]');
+  var qty=e.target.closest('[data-qty]');
   if(qty){ensure(qty.dataset.qty).qty=qty.value;save();return;}
-  if(e.target.id==='reviewer'){S.reviewer=e.target.value;save();}
+  if(e.target.id==='reviewer'){S.reviewer=e.target.value;save();return;}
+  var al=e.target.closest('.addrow [data-k="label"]');
+  if(al){var box=al.closest('.addrow');var prop=box.querySelector('[data-k="prop"]');var pre=box.dataset.pre;if(pre){var auto='XA_CSP_'+pre+'_'+slug(al.value);if(!prop.dataset.touched){prop.value=auto;prop.dataset.lastauto=auto}}return;}
+  var ap=e.target.closest('.addrow [data-k="prop"]');
+  if(ap){ap.dataset.touched='1';}
 });
 function startEdit(id){
   const f=findField(id);const lbl=document.querySelector('.flabel[data-edit="'+id+'"]');if(!lbl)return;
@@ -432,15 +447,24 @@ function startEdit(id){
   inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inp.blur()}if(e.key==='Escape')render()});
 }
 function saveAdd(p){
-  const box=document.querySelector('[data-add="'+p+'"]');const k=x=>box.querySelector('[data-k="'+x+'"]');
-  const label=k('label').value.trim();if(!label){toast('Dê um nome ao campo');return}
-  const prop=k('prop').value.trim()||('XA_CSP_'+p.toUpperCase().slice(0,3)+'_CUSTOM');
-  const fld={label,prop,kind:k('kind').value,qty:k('qty').value.trim(),a:k('a').checked?'req':'na',t:k('t').checked?'req':'na'};
+  var box=document.querySelector('[data-add="'+p+'"]');var k=function(x){return box.querySelector('[data-k="'+x+'"]')};
+  var label=k('label').value.trim();
+  if(!label){toast('Dê um nome ao campo');k('label').focus();return}
+  var pre=box.dataset.pre;
+  var prop=k('prop').value.trim()||('XA_CSP_'+pre+'_'+slug(label));
+  if(!prop){toast('Property inválida');k('prop').focus();return}
+  var allProps=[];PHASES.forEach(function(pp){fieldsFor(pp.id).forEach(function(f){allProps.push(f.prop)})});
+  if(allProps.includes(prop)){toast('Property já existe: '+prop);k('prop').focus();return}
+  var fld={label:label,prop:prop,kind:k('kind').value,qty:k('qty').value.trim(),a:k('a').value,t:k('t').value,note:k('note').value.trim()};
   if(!S.custom[p])S.custom[p]=[];S.custom[p].push(fld);
-  const newId='c-'+p+'-'+(S.custom[p].length-1);
+  var newId='c-'+p+'-'+(S.custom[p].length-1);
   if(!S.order[p])S.order[p]=orderOf(p);S.order[p].push(newId);
-  save();box.classList.remove('open');box.querySelectorAll('input[type=text],input:not([type])').forEach(i=>{if(i.type!=='checkbox')i.value=''});
-  render();toast('Campo adicionado');
+  save();
+  box.querySelectorAll('input[type=text],input:not([type]),input[type=number]').forEach(function(i){i.value=''});
+  box.querySelectorAll('[data-touched]').forEach(function(i){delete i.dataset.touched});
+  box.querySelectorAll('[data-lastauto]').forEach(function(i){delete i.dataset.lastauto});
+  box.classList.remove('open');
+  render();toast('Campo adicionado: '+label);
 }
 
 /* reset */
