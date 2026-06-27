@@ -1,7 +1,7 @@
 {
   "title": "Checklist CSP Implantação — Aprovação Matheus",
   "date": "2026-06-27",
-  "description": "Visual interativo dos campos de evidência por fase da instalação CSP em São Paulo (Abrigo + Totem), com filtros por ativo, destaque para itens em revisão e aprovação por fase. Fonte: docs/checklists/csp-abrigo/totem-checklist-mock.md.",
-  "tags": ["csp", "implantacao", "checklist", "matheus", "eletromidia", "aprovacao"],
-  "sections": ["Fundação", "Implantação", "Montagem", "Acabamento", "Evidência de fase bloqueada", "Perguntas para o Matheus"]
+  "description": "Visual interativo dos campos de evidência por fase da instalação CSP em São Paulo (Abrigo + Totem + Elétrica Abrigo), com filtros por ativo, destaque para itens em revisão e aprovação por fase. Fonte: docs/checklists/csp-abrigo/totem-checklist-mock.md + ADR 0006.",
+  "tags": ["csp", "implantacao", "checklist", "matheus", "eletromidia", "aprovacao", "eletrica"],
+  "sections": ["Fundação", "Implantação", "Montagem", "Acabamento", "Elétrica CSP", "Evidência de fase bloqueada", "Perguntas para o Matheus"]
 }
