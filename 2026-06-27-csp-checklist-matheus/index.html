@@ -1,404 +1,523 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eletromidia | Checklist CSP — Aprovação Matheus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --orange:#FF4F00;--black:#000;--white:#FFF;--purple:#4E18FF;--yellow:#FECC14;
-      --pink:#F577ED;--green:#3D7700;--red:#DC2626;--blue:#2563EB;
-      --surface:#FAFAFA;--muted:#F5F5F5;--line:#E5E5E5;--text:#737373;
-      --radius:18px;--max:1180px;--review-bg:#FFFCEB;--review-line:#FECC14;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    ::selection{background:var(--orange);color:var(--white)}
-    ::-moz-selection{background:var(--orange);color:var(--white)}
-    body{background:var(--surface);color:var(--black);font-family:"Rethink Sans",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45;overflow-x:hidden}
-    main{width:min(var(--max),calc(100% - 32px));margin:0 auto;padding:24px 0 56px}
-    section{margin-top:22px}
-    h1,h2,h3{margin-top:0;font-weight:800}
-    h1{max-width:980px;margin-bottom:20px;font-size:clamp(38px,6.6vw,78px);line-height:.92}
-    h2{max-width:820px;font-size:clamp(26px,3.4vw,42px);line-height:1.04}
-    h3{font-size:20px;line-height:1.12}
-    p{margin-bottom:10px;color:var(--text);font-size:16px}
-    p:last-child{margin-bottom:0}
-    code{display:inline-block;padding:2px 6px;border-radius:5px;background:var(--white);color:var(--purple);font-family:Consolas,"Cascadia Mono",monospace;font-size:.84em;overflow-wrap:anywhere;word-break:break-word}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP — Revisão de Checklist · Matheus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#FF4F00;--black:#000;--white:#FFF;--purple:#4E18FF;--yellow:#FECC14;
+  --green:#3D7700;--red:#DC2626;--blue:#2563EB;
+  --surface:#FAFAFA;--muted:#F5F5F5;--line:#E5E5E5;--text:#737373;--ink:#171717;
+  --r:18px;--r-sm:12px;--max:980px;
+  --ok-bg:#F1F8EC;--ok-line:#3D7700;
+  --no-bg:#FBEDED;--no-line:#DC2626;
+  --rev-bg:#FFFCEB;--rev-line:#FECC14;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+::selection{background:var(--orange);color:#fff}
+body{background:var(--surface);color:var(--ink);font-family:"Rethink Sans",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+main{width:min(var(--max),calc(100% - 32px));margin:0 auto;padding:22px 0 80px}
+h1,h2,h3{font-weight:800;letter-spacing:-.01em}
+h1{font-size:clamp(34px,6vw,60px);line-height:.98;margin-bottom:14px}
+h2{font-size:clamp(22px,3vw,30px);line-height:1.05}
+h3{font-size:17px}
+p{color:var(--text);font-size:15px}
+.lede{max-width:640px;color:var(--text);font-size:clamp(15px,1.6vw,18px);line-height:1.5}
+code,.mono{font-family:Consolas,"Cascadia Mono",ui-monospace,monospace}
 
-    .hero{min-height:440px;padding:clamp(24px,4vw,52px);border-radius:var(--radius);background:var(--black);color:var(--white);display:grid;align-content:space-between;gap:32px;overflow:hidden;position:relative;isolation:isolate}
-    .hero::before,.hero::after{content:"";position:absolute;z-index:-1;aspect-ratio:1;border-radius:34px}
-    .hero::before{right:clamp(116px,15vw,220px);bottom:clamp(-150px,-10vw,-62px);width:min(42vw,420px);background:var(--orange);transform:rotate(10deg)}
-    .hero::after{right:clamp(-112px,-8vw,-48px);bottom:clamp(-120px,-7vw,-44px);width:min(34vw,340px);background:var(--purple);transform:rotate(-8deg)}
-    .hero p{max-width:760px;color:#E8E8E8;font-size:clamp(16px,1.8vw,21px)}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;padding:7px 11px;border-radius:999px;background:var(--yellow);color:var(--black);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.08em}
-    .hero-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .pill{display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;border-radius:999px;font-size:13px;font-weight:800;line-height:1}
-    .pill.orange{background:var(--orange);color:var(--white)}.pill.purple{background:var(--purple);color:var(--white)}.pill.yellow{background:var(--yellow);color:var(--black)}.pill.green{background:var(--green);color:var(--white)}.pill.black{background:#1f1f1f;color:var(--white);border:1px solid #444}
+/* Header */
+.header{padding:8px 0 6px}
+.tag{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:var(--yellow);color:#000;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px}
+.brandrow{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
 
-    .head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:14px;flex-wrap:wrap}
-    .head p{max-width:520px;margin-bottom:0}
+/* Progress */
+.progress-wrap{margin:22px 0 6px}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--text)}
+.progress-meta b{color:var(--ink);font-size:15px}
+.progress{height:10px;border-radius:999px;background:var(--muted);overflow:hidden;display:flex}
+.progress span{height:100%;transition:width .4s ease}
+.progress .ok{background:var(--green)}
+.progress .no{background:var(--red)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--text);font-weight:600}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:middle}
 
-    /* Filter bar */
-    .filter-bar{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 6px;padding:12px;border-radius:var(--radius);background:var(--white);border:1px solid var(--line)}
-    .chip{padding:9px 14px;border-radius:999px;border:2px solid var(--line);background:var(--white);font-weight:800;font-size:13px;cursor:pointer;transition:all .15s;user-select:none;font-family:inherit}
-    .chip:hover{border-color:var(--orange)}
-    .chip.active{background:var(--orange);color:var(--white);border-color:var(--orange)}
-    .chip.active:hover{background:var(--black);border-color:var(--black)}
-    .chip.review.active{background:var(--black);color:var(--yellow);border-color:var(--black)}
-    .spacer{flex:1}
-    .count{font-weight:800;font-size:13px;color:var(--text);display:flex;align-items:center;gap:8px}
-    .count b{color:var(--black);font-size:16px}
-    .btn-print{padding:9px 14px;border-radius:999px;border:2px solid var(--black);background:var(--black);color:var(--white);font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;transition:all .15s}
-    .btn-print:hover{background:var(--orange);border-color:var(--orange)}
+/* Toolbar */
+.toolbar{position:sticky;top:0;z-index:20;background:var(--surface);padding:14px 0;margin:0 0 6px;border-bottom:1px solid var(--line)}
+.toolbar-inner{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:none;background:transparent;font-family:inherit;font-weight:800;font-size:13px;color:var(--text);padding:8px 14px;border-radius:999px;cursor:pointer;transition:all .15s}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--black);color:#fff}
+.seg.amber button.on{background:var(--yellow);color:#000}
+.spacer{flex:1}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--black);background:var(--black);color:#fff;font-family:inherit;font-weight:800;font-size:13px;padding:9px 15px;border-radius:999px;cursor:pointer;transition:all .15s}
+.btn:hover{background:var(--orange);border-color:var(--orange)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-    /* Tabs */
-    .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
-    .tab-button{padding:11px 16px;border:1px solid var(--black);border-radius:999px;background:var(--white);color:var(--black);cursor:pointer;font:inherit;font-weight:800;font-size:14px;transition:background .15s,color .15s}
-    .tab-button:hover{background:var(--black);color:var(--white)}
-    .tab-button[aria-selected="true"]{background:var(--black);color:var(--white)}
-    .tab-button .tc{display:inline-block;margin-left:6px;font-size:11px;opacity:.7}
-    .tab-panel{display:none}
-    .tab-panel.active{display:block;animation:fadeIn .3s ease}
+/* Phase section */
+section.phase{margin-top:26px}
+.phase-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.phase-head .alias{font-family:Consolas,monospace;font-size:12px;color:var(--purple);background:var(--white);border:1px solid var(--line);padding:4px 9px;border-radius:999px}
+.phase-head .psum{margin-left:auto;font-size:12px;color:var(--text);font-weight:700;display:flex;gap:12px}
+.phase-head .psum b{color:var(--ink)}
+.phase-desc{color:var(--text);font-size:13px;margin:2px 0 14px}
 
-    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* Field row */
+.list{display:flex;flex-direction:column;gap:9px}
+.row{position:relative;display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;transition:border-color .18s,background .18s,transform .18s;overflow:hidden}
+.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:transparent;transition:background .18s}
+.row:hover{border-color:#cfcfcf}
+.row.approved::before{background:var(--ok-line)}
+.row.approved{background:var(--ok-bg)}
+.row.rejected::before{background:var(--no-line)}
+.row.rejected{background:var(--no-bg)}
+.row.review::before{background:var(--rev-line)}
+.row.dim{opacity:.5}
+.row.hide{display:none}
+.row .body{flex:1;min-width:0}
+.flabel{font-weight:800;font-size:16px;line-height:1.25;color:var(--ink);word-break:break-word}
+.flabel[contenteditable="true"]{outline:2px dashed var(--orange);outline-offset:3px;border-radius:6px;padding:0 3px}
+.fmeta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:7px}
+.apills{display:inline-flex;gap:3px}
+.ap{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:5px;font-size:10px;font-weight:800;font-family:Consolas,monospace}
+.ap.a{background:var(--orange);color:#fff}
+.ap.t{background:var(--blue);color:#fff}
+.ap.off{background:var(--muted);color:#bdbdbd;text-decoration:line-through}
+.kind{font-size:12px;font-weight:700;color:var(--text)}
+.prop{font-family:Consolas,monospace;font-size:11px;color:#9a9a9a;background:var(--muted);padding:2px 7px;border-radius:6px;max-width:100%;overflow-wrap:anywhere}
+.note{font-size:12px;color:var(--text);background:var(--muted);padding:7px 10px;border-radius:8px;margin-top:8px;line-height:1.4}
+.note.dec{color:var(--green);background:#EEF6E8;font-weight:600}
+.fcomment{font-size:13px;color:var(--ink);background:#FFF8E1;border:1px solid #F4E3A1;border-radius:8px;padding:8px 11px;margin-top:9px;line-height:1.4}
+.fcomment::before{content:"Comentário · ";font-weight:800;color:#8a6d00;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
 
-    /* Phase header */
-    .phase-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 14px}
-    .phase-head .alias{font-family:Consolas,monospace;font-size:13px;color:var(--purple);background:var(--white);padding:6px 10px;border-radius:999px;border:1px solid var(--line)}
-    .phase-head .meta{font-size:13px;color:var(--text);font-weight:700}
+/* Actions */
+.acts{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.act{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--white);cursor:pointer;font-size:15px;line-height:1;display:grid;place-items:center;transition:all .15s;font-family:inherit;color:var(--text)}
+.act:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-1px)}
+.act.ok:hover,.act.ok.on{background:var(--green);color:#fff;border-color:var(--green)}
+.act.no:hover,.act.no.on{background:var(--red);color:#fff;border-color:var(--red)}
+.act.cm.on{background:var(--yellow);color:#000;border-color:var(--yellow)}
 
-    /* Field grid */
-    .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;min-width:0}
-    .span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+/* comment editor */
+.cmt-edit{margin-top:9px}
+.cmt-edit textarea{width:100%;min-height:54px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13px;resize:vertical;background:var(--surface)}
+.cmt-edit textarea:focus{outline:none;border-color:var(--orange)}
 
-    .field-card{min-width:0;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--white);display:flex;flex-direction:column;gap:9px;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;opacity:0}
-    .field-card.in{animation:pop .35s ease forwards}
-    .field-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
-    .field-card.review{border-color:var(--review-line);background:var(--review-bg)}
-    .field-card.review::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--yellow);border-radius:14px 0 0 14px}
-    .field-card.hide{display:none}
-    .ftop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-    .fname{font-weight:800;font-size:15px;line-height:1.18}
-    .fprop{font-family:Consolas,"Cascadia Mono",monospace;font-size:10.5px;color:var(--purple);background:var(--surface);padding:3px 7px;border-radius:6px;word-break:break-all;line-height:1.3}
-    .fmeta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-    .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:800;line-height:1}
-    .badge.kind{background:var(--muted);color:var(--black)}
-    .badge.kind.fotos{background:var(--purple);color:var(--white)}
-    .badge.req{background:var(--green);color:var(--white)}
-    .badge.rev{background:var(--yellow);color:var(--black)}
-    .badge.opt{background:var(--muted);color:var(--text)}
-    .badge.app{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:20px;padding:0 6px;border-radius:6px;font-size:11px;font-weight:800}
-    .badge.app.a{background:var(--orange);color:var(--white)}
-    .badge.app.t{background:var(--blue);color:var(--white)}
-    .badge.app.both{background:var(--black);color:var(--white)}
-    .app-strike{opacity:.38;text-decoration:line-through}
-    .fqty{font-size:12px;color:var(--text);font-weight:700}
-    .fnote{font-size:12px;color:var(--text);background:var(--muted);padding:6px 9px;border-radius:8px;line-height:1.35}
-    .fnote.dec{color:var(--green);background:#EEF6E8}
+/* label editor */
+.fedit{width:100%;font-weight:800;font-size:16px;font-family:inherit;border:1px solid var(--orange);border-radius:7px;padding:3px 7px;background:#fff;color:var(--ink)}
 
-    /* Approve row */
-    .approve{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:18px;padding:16px;border:1px dashed var(--line);border-radius:14px;background:var(--muted)}
-    .approve label{display:flex;align-items:center;gap:9px;font-weight:800;font-size:14px;cursor:pointer}
-    .approve input[type=checkbox]{width:22px;height:22px;accent-color:var(--green);cursor:pointer}
-    .approve textarea{flex:1;min-width:220px;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;resize:vertical;background:var(--white)}
-    .approve textarea:focus{outline:none;border-color:var(--orange)}
+/* add field */
+.addrow{display:none;flex-direction:column;gap:9px;background:var(--white);border:1px dashed var(--orange);border-radius:var(--r-sm);padding:14px 16px;margin-top:9px}
+.addrow.open{display:flex;animation:fadeIn .2s ease}
+.addrow .f{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.addrow input,.addrow select{padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-family:inherit;font-size:14px;background:var(--surface)}
+.addrow input:focus,.addrow select:focus{outline:none;border-color:var(--orange)}
+.addrow .actions{display:flex;gap:9px;align-items:center}
+.addbtn{margin-top:11px}
 
-    .callout{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;padding:clamp(20px,3vw,32px);border-radius:var(--radius);background:var(--yellow)}
-    .callout h3{font-size:22px}
-    .callout p{color:rgba(0,0,0,.7);margin-bottom:0}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-    .toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:14px;background:var(--black);color:var(--white);font-weight:700;font-size:14px;z-index:100;opacity:0;transform:translateY(20px);transition:all .3s ease;pointer-events:none}
-    .toast.visible{opacity:1;transform:translateY(0)}
+/* empty filter */
+.empty{padding:40px 20px;text-align:center;color:var(--text);font-weight:600;display:none}
 
-    footer{margin-top:30px;padding:18px 0 0;color:var(--text);font-size:13px;border-top:1px solid var(--line)}
+/* callout */
+.callout{margin-top:30px;background:var(--yellow);border-radius:var(--r);padding:24px 26px}
+.callout h3{font-size:18px;margin-bottom:6px}
+.callout p{color:rgba(0,0,0,.68);font-size:14px;margin:0}
 
-    @media (max-width:920px){
-      .span-4,.span-6,.span-8{grid-column:span 12}
-      .head{display:grid}
-    }
-    @media print{
-      .filter-bar,.tabs,.approve,.btn-print,.toast{display:none !important}
-      .tab-panel{display:block !important}
-      .field-card{opacity:1 !important;animation:none !important;break-inside:avoid}
-      body{background:#fff}
-      .hero{min-height:auto;color:#000;background:#fff;border:2px solid #000}
-      .hero p{color:#444}
-    }
-  </style>
+footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:var(--text);font-size:12px}
+footer code{font-size:11px}
+
+/* ===== PRINT / PDF ===== */
+#print-doc{display:none}
+@media print{
+  body{background:#fff}
+  main,#app{display:none !important}
+  #print-doc{display:block;padding:0 4px;color:#000}
+  .pd-title{font-size:26px;font-weight:800;margin:0 0 4px}
+  .pd-sub{font-size:13px;color:#444;margin:0 0 14px}
+  .pd-sum{font-size:13px;margin:0 0 20px;padding:10px 14px;border:1px solid #ccc;border-radius:8px}
+  .pd-phase{margin:0 0 18px;break-inside:avoid}
+  .pd-phase h2{font-size:16px;margin:0 0 3px}
+  .pd-phase .pd-alias{font-family:monospace;font-size:11px;color:#555;margin:0 0 8px}
+  table.pd{width:100%;border-collapse:collapse;font-size:11.5px}
+  table.pd th{background:#000;color:#fff;text-align:left;padding:7px 9px;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+  table.pd td{border:1px solid #ddd;padding:7px 9px;vertical-align:top}
+  table.pd tr{break-inside:avoid}
+  .pd-dec{font-weight:800;text-transform:uppercase;font-size:10px;letter-spacing:.04em}
+  .pd-dec.approved{color:#3D7700}
+  .pd-dec.rejected{color:#DC2626}
+  .pd-dec.pending{color:#888}
+  .pd-note{color:#8a6d00;font-size:10px}
+}
+
+@media (max-width:680px){
+  .row{flex-wrap:wrap}
+  .acts{width:100%;justify-content:flex-start;margin-top:4px}
+  .addrow .f{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
-<main>
-  <section class="hero">
-    <div>
-      <span class="eyebrow">Checklist · Aprovação</span>
-      <h1>Checklist CSP Implantação</h1>
-      <p>Mock editável dos campos de evidência por fase da instalação CSP em São Paulo. Revisar, anotar e aprovar campo a campo. Itens em <strong>amarelo</strong> precisam de decisão do Matheus.</p>
-    </div>
-    <div class="hero-bar">
-      <span class="pill orange">4 fases</span>
-      <span class="pill purple">Abrigo + Totem</span>
-      <span class="pill yellow">Alias compartilhado</span>
-      <span class="pill green">Evidence-first</span>
-      <span class="pill black">Ruas · Instalação</span>
-    </div>
-  </section>
 
-  <div class="filter-bar">
-    <button class="chip active" data-asset="all">Todos</button>
-    <button class="chip" data-asset="abrigo">Abrigo</button>
-    <button class="chip" data-asset="totem">Totem</button>
-    <button class="chip review" id="reviewToggle">Só revisão</button>
-    <div class="spacer"></div>
-    <div class="count">Itens em revisão: <b id="revCount">0</b></div>
-    <button class="btn-print" id="printBtn">Imprimir / PDF</button>
+<div id="app">
+<main>
+  <header class="header">
+    <span class="tag">Revisão de Checklist · CSP</span>
+    <h1>Campos de evidência da instalação CSP</h1>
+    <p class="lede">Revise, aprove, rejeite e comente cada campo por fase. Você também pode editar nomes e adicionar campos novos. Tudo fica salvo no navegador. Ao terminar, exporte o PDF.</p>
+    <div class="brandrow">
+      <div class="legend" style="margin-top:14px">
+        <span><i style="background:var(--orange)"></i>Abrigo</span>
+        <span><i style="background:var(--blue)"></i>Totem</span>
+        <span><i style="background:var(--rev-line)"></i>Requer revisão</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-meta"><span>Progresso da revisão</span><span><b id="pOk">0</b> aprovados · <b id="pNo">0</b> rejeitados · <b id="pPend">0</b> pendentes</span></div>
+    <div class="progress"><span class="ok" id="barOk"></span><span class="no" id="barNo"></span></div>
   </div>
 
-  <div class="tabs" id="tabs"></div>
-  <div id="panels"></div>
-
-  <section>
-    <div class="callout">
-      <div>
-        <h3>Perguntas para o Matheus</h3>
-        <p style="margin-top:6px">Quais campos são obrigatórios em produção? As quantidades de fotos do branch antigo estão corretas? O Totem mantém itinerário/pictograma? A observação de conclusão basta, ou o relatório precisa de um campo estruturado de observação CSP?</p>
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <div class="seg" id="segAsset">
+        <button class="on" data-v="all">Tudo</button>
+        <button data-v="abrigo">Abrigo</button>
+        <button data-v="totem">Totem</button>
       </div>
-      <span class="pill black">Aprovar antes do seed</span>
+      <div class="seg" id="segStatus">
+        <button class="on" data-v="all">Todos</button>
+        <button data-v="pending">Pendentes</button>
+        <button data-v="approved">Aprovados</button>
+        <button data-v="rejected">Rejeitados</button>
+      </div>
+      <div class="seg amber" id="segReview">
+        <button data-v="review">Só revisão</button>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn ghost" id="resetBtn" title="Limpar toda a revisão">Limpar</button>
+      <button class="btn" id="pdfBtn">⤓ Exportar PDF</button>
     </div>
-  </section>
+  </div>
+
+  <div id="phases"></div>
+  <div class="empty" id="empty">Nenhum campo com esses filtros.</div>
+
+  <div class="callout">
+    <h3>Perguntas em aberto para o Matheus</h3>
+    <p>Quais campos são obrigatórios em produção? As quantidades de fotos (3–4) estão corretas? Totem mantém itinerário e pictograma? A observação de conclusão basta, ou o relatório precisa de um campo estruturado de observação CSP?</p>
+  </div>
 
   <footer>
-    Artefato de planejamento · fonte: <code>docs/checklists/csp-abrigo-checklist-mock.md</code> + <code>csp-totem-checklist-mock.md</code>. Decisão multi-foto (4 campos explícitos) e aliases compartilhados conforme ADR 0010 / ADR 0011.
+    Fonte: <code>docs/checklists/csp-abrigo-checklist-mock.md</code> + <code>csp-totem-checklist-mock.md</code>. Aliases compartilhados e multi-foto (campos explícitos) conforme ADR 0010 / ADR 0011. Decisões salvas localmente no navegador.
   </footer>
 </main>
-<div class="toast" id="toast"></div>
+</div>
+
+<!-- PRINT DOC -->
+<div id="print-doc"></div>
 
 <script>
-/* ---------- DATA MODEL (from the approved mocks) ----------
-   app: 'req' | 'rev' | 'hide'  for Abrigo(a) and Totem(t)
-   kind: 'foto' | 'fotos' | 'texto'
-*/
-const PHASES = [
- {id:'fundacao', name:'Fundação', alias:'csp-fundacao', meta:'N1 · Abrigo + Totem · 1ª fase'},
- {id:'implantacao', name:'Implantação', alias:'csp-implantacao', meta:'N1 · Abrigo + Totem · após Fundação'},
- {id:'montagem', name:'Montagem', alias:'csp-montagem', meta:'N1 · Só Abrigo · Totem pula'},
- {id:'acabamento', name:'Acabamento', alias:'csp-acabamento', meta:'N1 · terminal · habilita relatório'},
+/* ---------- BASE DATA (from approved mocks) ---------- */
+const PHASES=[
+ {id:'fundacao',name:'Fundação',alias:'csp-fundacao',desc:'1ª fase · N1 · Abrigo + Totem'},
+ {id:'implantacao',name:'Implantação',alias:'csp-implantacao',desc:'Após Fundação · N1 · Abrigo + Totem'},
+ {id:'montagem',name:'Montagem',alias:'csp-montagem',desc:'Só Abrigo · Totem pula esta fase'},
+ {id:'acabamento',name:'Acabamento',alias:'csp-acabamento',desc:'Terminal · habilita o relatório CSP'},
 ];
-const BLOCKED = [
- {label:'Morador não permitiu acesso', prop:'XA_CSP_NO_MORADOR', kind:'foto', a:'req', t:'req'},
- {label:'Infraestrutura de terceiros/concessionária', prop:'XA_CSP_NO_INFRA', kind:'foto', a:'req', t:'req'},
- {label:'Local incompatível', prop:'XA_CSP_NO_LOCAL', kind:'foto', a:'req', t:'req'},
- {label:'Espaço insuficiente', prop:'XA_CSP_NO_ESPACO', kind:'foto', a:'req', t:'req'},
- {label:'Interferência na fundação', prop:'XA_CSP_NO_INTERF', kind:'foto', a:'req', t:'req'},
- {label:'Outros', prop:'XA_CSP_NO_OUTROS', kind:'foto', a:'req', t:'req'},
- {label:'Observação de conclusão', prop:'XA_RUA_PRV_OBRS (convenção)', kind:'texto', a:'opt', t:'opt', note:'Não semear XA_CSP_NO_OBS salvo se o relatório exigir observação estruturada.'},
-];
-const FIELDS = {
+const BASE={
  fundacao:[
-  {label:'Fotos da fundação', prop:'XA_CSP_FUND_FOTOS_FUNDACAO_PHOTO_1..4', kind:'fotos', qty:'4 fotos', a:'req', t:'req', note:'Decisão ADR 0011: 4 campos explícitos (não lista única).', dec:true},
-  {label:'Fotos das medições', prop:'XA_CSP_FUND_MEDICOES_PHOTO_1..3', kind:'fotos', qty:'3 fotos', a:'req', t:'req', note:'Decisão ADR 0011: 3 campos explícitos.', dec:true},
-  {label:'Foto da haste de aterramento', prop:'XA_CSP_FUND_HASTE_ATERRAMENTO', kind:'foto', a:'req', t:'rev', note:'Totem: confirmar se precisa.'},
-  {label:'Foto do gabarito', prop:'XA_CSP_FUND_GABARITO', kind:'foto', a:'req', t:'req'},
-  {label:'Foto das diagonais finais', prop:'XA_CSP_FUND_DIAGONAIS_FINAIS', kind:'foto', a:'req', t:'rev', note:'Totem: pode ser só Abrigo.'},
-  {label:'Fotos dos JS', prop:'XA_CSP_FUND_JS', kind:'fotos', a:'rev', t:'rev', note:'Confirmar quantidade; pode ser só Abrigo.'},
-  {label:'Poste', prop:'XA_CSP_FUND_POSTE', kind:'foto', a:'req', t:'rev', note:'Totem: confirmar com Matheus.'},
-  {label:'Poste medido', prop:'XA_CSP_FUND_POSTE_MEDICAO', kind:'foto', a:'req', t:'rev', note:'Totem: confirmar com Matheus.'},
-  {label:'Piso', prop:'XA_CSP_FUND_PISO', kind:'foto', a:'req', t:'req'},
-  {label:'Piso medido', prop:'XA_CSP_FUND_PISO_MEDICAO', kind:'foto', a:'req', t:'req'},
-  {label:'Foto do totem / remanejamento', prop:'XA_CSP_FUND_TOTEM', kind:'foto', a:'hide', t:'req', note:'Específico de Totem.'},
+  {label:'Fotos da fundação',prop:'XA_CSP_FUND_FOTOS_FUNDACAO_PHOTO_1..4',kind:'fotos',qty:'4',a:'req',t:'req',note:'4 campos explícitos (ADR 0011).',dec:true},
+  {label:'Fotos das medições',prop:'XA_CSP_FUND_MEDICOES_PHOTO_1..3',kind:'fotos',qty:'3',a:'req',t:'req',note:'3 campos explícitos (ADR 0011).',dec:true},
+  {label:'Haste de aterramento',prop:'XA_CSP_FUND_HASTE_ATERRAMENTO',kind:'foto',a:'req',t:'rev',note:'Totem: confirmar se precisa.'},
+  {label:'Gabarito',prop:'XA_CSP_FUND_GABARITO',kind:'foto',a:'req',t:'req'},
+  {label:'Diagonais finais',prop:'XA_CSP_FUND_DIAGONAIS_FINAIS',kind:'foto',a:'req',t:'rev',note:'Totem: pode ser só Abrigo.'},
+  {label:'JS',prop:'XA_CSP_FUND_JS',kind:'fotos',a:'rev',t:'rev',note:'Confirmar quantidade; pode ser só Abrigo.'},
+  {label:'Poste',prop:'XA_CSP_FUND_POSTE',kind:'foto',a:'req',t:'rev'},
+  {label:'Poste medido',prop:'XA_CSP_FUND_POSTE_MEDICAO',kind:'foto',a:'req',t:'rev'},
+  {label:'Piso',prop:'XA_CSP_FUND_PISO',kind:'foto',a:'req',t:'req'},
+  {label:'Piso medido',prop:'XA_CSP_FUND_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
+  {label:'Totem / remanejamento',prop:'XA_CSP_FUND_TOTEM',kind:'foto',a:'hide',t:'req',note:'Específico de Totem.'},
  ],
  implantacao:[
-  {label:'Retirada do gabarito', prop:'XA_CSP_IMP_RETIRADA_GABARITO', kind:'foto', a:'req', t:'req'},
-  {label:'Implantação da estrutura / esqueleto', prop:'XA_CSP_IMP_ESTRUTURA', kind:'foto', a:'req', t:'req', note:'Totem: rótulo pode virar "instalação do totem".'},
-  {label:'Evidências da implantação', prop:'XA_CSP_IMP_EVIDENCIAS', kind:'foto', a:'req', t:'req'},
-  {label:'Poste', prop:'XA_CSP_IMP_POSTE', kind:'foto', a:'req', t:'rev', note:'Totem: confirmar.'},
-  {label:'Poste medido', prop:'XA_CSP_IMP_POSTE_MEDICAO', kind:'foto', a:'req', t:'rev', note:'Totem: confirmar.'},
-  {label:'Piso', prop:'XA_CSP_IMP_PISO', kind:'foto', a:'req', t:'req'},
-  {label:'Piso medido', prop:'XA_CSP_IMP_PISO_MEDICAO', kind:'foto', a:'req', t:'req'},
+  {label:'Retirada do gabarito',prop:'XA_CSP_IMP_RETIRADA_GABARITO',kind:'foto',a:'req',t:'req'},
+  {label:'Estrutura / esqueleto',prop:'XA_CSP_IMP_ESTRUTURA',kind:'foto',a:'req',t:'req',note:'Totem: rótulo pode virar "instalação do totem".'},
+  {label:'Evidências da implantação',prop:'XA_CSP_IMP_EVIDENCIAS',kind:'foto',a:'req',t:'req'},
+  {label:'Poste',prop:'XA_CSP_IMP_POSTE',kind:'foto',a:'req',t:'rev'},
+  {label:'Poste medido',prop:'XA_CSP_IMP_POSTE_MEDICAO',kind:'foto',a:'req',t:'rev'},
+  {label:'Piso',prop:'XA_CSP_IMP_PISO',kind:'foto',a:'req',t:'req'},
+  {label:'Piso medido',prop:'XA_CSP_IMP_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
  ],
  montagem:[
-  {label:'Banco', prop:'XA_CSP_MON_BANCO', kind:'foto', a:'req', t:'hide'},
-  {label:'Banco medido', prop:'XA_CSP_MON_BANCO_MEDICAO', kind:'foto', a:'req', t:'hide'},
-  {label:'Cobertura', prop:'XA_CSP_MON_COBERTURA', kind:'foto', a:'req', t:'hide'},
-  {label:'Cobertura / vedação', prop:'XA_CSP_MON_COBERTURA_VEDACAO', kind:'foto', a:'req', t:'hide'},
-  {label:'Vidros', prop:'XA_CSP_MON_VIDROS', kind:'foto', a:'req', t:'hide'},
-  {label:'Piso', prop:'XA_CSP_MON_PISO', kind:'foto', a:'req', t:'hide'},
-  {label:'Piso medido', prop:'XA_CSP_MON_PISO_MEDICAO', kind:'foto', a:'req', t:'hide'},
-  {label:'Totem', prop:'XA_CSP_MON_TOTEM', kind:'foto', a:'rev', t:'hide', note:'Verificar se pertence à Montagem Abrigo.'},
-  {label:'Totem medido', prop:'XA_CSP_MON_TOTEM_MEDICAO', kind:'foto', a:'rev', t:'hide', note:'Verificar se pertence à Montagem Abrigo.'},
+  {label:'Banco',prop:'XA_CSP_MON_BANCO',kind:'foto',a:'req',t:'hide'},
+  {label:'Banco medido',prop:'XA_CSP_MON_BANCO_MEDICAO',kind:'foto',a:'req',t:'hide'},
+  {label:'Cobertura',prop:'XA_CSP_MON_COBERTURA',kind:'foto',a:'req',t:'hide'},
+  {label:'Cobertura / vedação',prop:'XA_CSP_MON_COBERTURA_VEDACAO',kind:'foto',a:'req',t:'hide'},
+  {label:'Vidros',prop:'XA_CSP_MON_VIDROS',kind:'foto',a:'req',t:'hide'},
+  {label:'Piso',prop:'XA_CSP_MON_PISO',kind:'foto',a:'req',t:'hide'},
+  {label:'Piso medido',prop:'XA_CSP_MON_PISO_MEDICAO',kind:'foto',a:'req',t:'hide'},
+  {label:'Totem',prop:'XA_CSP_MON_TOTEM',kind:'foto',a:'rev',t:'hide',note:'Verificar se pertence à Montagem Abrigo.'},
+  {label:'Totem medido',prop:'XA_CSP_MON_TOTEM_MEDICAO',kind:'foto',a:'rev',t:'hide',note:'Verificar se pertence à Montagem Abrigo.'},
  ],
  acabamento:[
-  {label:'Arremate do pé do abrigo', prop:'XA_CSP_ACA_ARREMATE_PE', kind:'foto', a:'req', t:'hide'},
-  {label:'Colagem do itinerário', prop:'XA_CSP_ACA_COLAGEM_ITINERARIO', kind:'foto', a:'req', t:'rev', note:'Totem: manter só se tiver itinerário.'},
-  {label:'Pictograma', prop:'XA_CSP_ACA_PICTOGRAMA', kind:'foto', a:'req', t:'rev', note:'Totem: confirmar com Matheus.'},
-  {label:'Eletrodutos', prop:'XA_CSP_ACA_ELETRODUTOS', kind:'foto', a:'req', t:'hide', note:'Provavelmente elétrica/Abrigo; verificar.'},
-  {label:'Fotos finais — lado direito', prop:'XA_CSP_ACA_FOTOS_FINAIS_DIREITO', kind:'foto', a:'req', t:'req'},
-  {label:'Fotos finais — lado esquerdo', prop:'XA_CSP_ACA_FOTOS_FINAIS_ESQUERDO', kind:'foto', a:'req', t:'req'},
-  {label:'Fotos finais — frente', prop:'XA_CSP_ACA_FOTOS_FINAIS_FRENTE', kind:'foto', a:'req', t:'req'},
-  {label:'Piso', prop:'XA_CSP_ACA_PISO', kind:'foto', a:'req', t:'req'},
-  {label:'Piso medido', prop:'XA_CSP_ACA_PISO_MEDICAO', kind:'foto', a:'req', t:'req'},
+  {label:'Arremate do pé do abrigo',prop:'XA_CSP_ACA_ARREMATE_PE',kind:'foto',a:'req',t:'hide'},
+  {label:'Colagem do itinerário',prop:'XA_CSP_ACA_COLAGEM_ITINERARIO',kind:'foto',a:'req',t:'rev',note:'Totem: manter só se tiver itinerário.'},
+  {label:'Pictograma',prop:'XA_CSP_ACA_PICTOGRAMA',kind:'foto',a:'req',t:'rev'},
+  {label:'Eletrodutos',prop:'XA_CSP_ACA_ELETRODUTOS',kind:'foto',a:'req',t:'hide',note:'Provavelmente elétrica/Abrigo; verificar.'},
+  {label:'Fotos finais — lado direito',prop:'XA_CSP_ACA_FOTOS_FINAIS_DIREITO',kind:'foto',a:'req',t:'req'},
+  {label:'Fotos finais — lado esquerdo',prop:'XA_CSP_ACA_ESQUERDO',kind:'foto',a:'req',t:'req'},
+  {label:'Fotos finais — frente',prop:'XA_CSP_ACA_FOTOS_FINAIS_FRENTE',kind:'foto',a:'req',t:'req'},
+  {label:'Piso',prop:'XA_CSP_ACA_PISO',kind:'foto',a:'req',t:'req'},
+  {label:'Piso medido',prop:'XA_CSP_ACA_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
  ],
 };
-
-/* ---------- RENDER ---------- */
 const KIND_LABEL={foto:'Foto',fotos:'Fotos',texto:'Texto'};
-let asset='all', reviewOnly=false;
 
-function isReview(f){return f.a==='rev'||f.t==='rev'||f.review===true;}
-function appBadge(f){
-  // returns {a, t} status
-  return {a:f.a, t:f.t};
+/* ---------- STATE ---------- */
+const LS_KEY='csp-checklist-review-v1';
+let STATE=load();
+function load(){try{return JSON.parse(localStorage.getItem(LS_KEY))||blank()}catch(e){return blank()}}
+function blank(){return{decisions:{},comments:{},labels:{},custom:{fundacao:[],implantacao:[],montagem:[],acabamento:[]}}}
+function save(){localStorage.setItem(LS_KEY,JSON.stringify(STATE))}
+function reset(){if(confirm('Limpar toda a revisão, comentários e campos adicionados?')){STATE=blank();save();render();toast('Revisão limpa')}}
+
+let F={asset:'all',status:'all',review:false};
+
+/* ---------- BUILD FIELD LIST (base + custom) with stable ids ---------- */
+function fieldsFor(phase){
+  const base=BASE[phase].map((f,i)=>Object.assign({},f,{id:phase+'-'+i,custom:false}));
+  const cust=(STATE.custom[phase]||[]).map((f,i)=>Object.assign({},f,{id:'c-'+phase+'-'+i,custom:true}));
+  return base.concat(cust);
 }
-function statusBadge(s){
-  if(s==='req') return '<span class="badge req">Obrigatório</span>';
-  if(s==='rev') return '<span class="badge rev">⚠ Revisar</span>';
-  if(s==='opt') return '<span class="badge opt">Opcional</span>';
-  return '';
-}
-function assetBadges(f){
-  let aPart = f.a==='hide'
-    ? '<span class="badge app a app-strike">A</span>'
-    : '<span class="badge app a">A</span>';
-  let tPart = f.t==='hide'
-    ? '<span class="badge app t app-strike">T</span>'
-    : '<span class="badge app t">T</span>';
-  return '<span title="Abrigo / Totem">'+aPart+tPart+'</span>';
-}
-function cardHTML(f, idx){
-  const rev = isReview(f);
-  const classes = 'field-card'+(rev?' review':'')+(matchesFilter(f)?'':' hide');
-  const kind = '<span class="badge kind '+(f.kind==='fotos'?'fotos':'')+'">'+KIND_LABEL[f.kind]+(f.qty?' · '+f.qty:'')+'</span>';
-  const note = f.note ? '<div class="fnote'+(f.dec?' dec':'')+'">'+(f.dec?'✓ ':'')+f.note+'</div>' : '';
-  // for "all" show both statuses; for a specific asset, show that asset's status
-  let status;
-  if(asset==='all'){
-    status = '<span style="display:inline-flex;gap:6px;flex-wrap:wrap">'
-      +'<span class="badge app a">A</span>'+statusBadge(f.a)
-      +'<span class="badge app t">T</span>'+statusBadge(f.t)+'</span>';
-  } else {
-    const s = asset==='abrigo'?f.a:f.t;
-    status = statusBadge(s);
-  }
-  return '<div class="'+classes+'" data-rev="'+rev+'" style="animation-delay:'+(idx*45)+'ms">'
-    +'<div class="ftop"><span class="fname">'+f.label+'</span>'+assetBadges(f)+'</div>'
-    +'<div><span class="fprop">'+f.prop+'</span></div>'
-    +'<div class="fmeta">'+kind+status+'</div>'
-    +note
-    +'</div>';
-}
-function matchesFilter(f){
-  if(reviewOnly && !isReview(f)) return false;
-  if(asset==='abrigo' && f.a==='hide') return false;
-  if(asset==='totem' && f.t==='hide') return false;
+function allFields(){let a=[];PHASES.forEach(p=>a=a.concat(fieldsFor(p.id).map(f=>Object.assign(f,{phase:p.id}))));return a}
+function isReview(f){return f.a==='rev'||f.t==='rev'}
+function decOf(f){return STATE.decisions[f.id]||''} /* ''|approved|rejected */
+function labelOf(f){return STATE.labels[f.id]||f.label}
+function commentOf(f){return STATE.comments[f.id]||''}
+
+function visible(f){
+  if(F.review && !isReview(f)) return false;
+  if(F.asset==='abrigo' && f.a==='hide') return false;
+  if(F.asset==='totem' && f.t==='hide') return false;
+  const d=decOf(f);
+  if(F.status==='approved' && d!=='approved') return false;
+  if(F.status==='rejected' && d!=='rejected') return false;
+  if(F.status==='pending' && d!=='') return false;
   return true;
 }
-function reRenderPanel(id){
-  const panel = document.getElementById('panel-'+id);
-  if(!panel) return;
-  const grid = panel.querySelector('.field-grid');
-  const list = FIELDS[id];
-  grid.innerHTML = list.map((f,i)=>cardHTML(f,i)).join('');
-  // stagger reveal
-  requestAnimationFrame(()=>{
-    grid.querySelectorAll('.field-card').forEach(c=>c.classList.add('in'));
-  });
+
+/* ---------- RENDER ---------- */
+function apPills(f){
+  const A=f.a==='hide'?'<span class="ap a off">A</span>':'<span class="ap a">A</span>';
+  const T=f.t==='hide'?'<span class="ap t off">T</span>':'<span class="ap t">T</span>';
+  return '<span class="apills">'+A+T+'</span>';
+}
+function kindText(f){return KIND_LABEL[f.kind]+(f.qty?' ×'+f.qty:'')+(f.a==='rev'||f.t==='rev'?'':'');}
+
+function rowHTML(f){
+  const d=decOf(f);
+  const cls='row'+(d==='approved'?' approved':'')+(d==='rejected'?' rejected':'')+(isReview(f)&&d===''?' review':'')+(visible(f)?'':' hide');
+  const cmt=commentOf(f);
+  const note=f.note?'<div class="note'+(f.dec?' dec':'')+'">'+(f.dec?'✓ ':'')+f.note+'</div>':'';
+  const cmtBox=cmt?'<div class="fcomment">'+esc(cmt)+'</div>':'';
+  const del=f.custom?'<button class="act" data-act="del" title="Remover campo">🗑</button>':'';
+  return '<div class="'+cls+'" data-id="'+f.id+'" data-phase="'+f.phase+'">'
+    +'<div class="body">'
+      +'<div class="flabel" data-lbl="'+f.id+'">'+esc(labelOf(f))+'</div>'
+      +'<div class="fmeta">'+apPills(f)+'<span class="kind">'+kindText(f)+'</span><span class="prop">'+esc(f.prop)+'</span></div>'
+      +note+cmtBox+cmtEditHTML(f)
+    +'</div>'
+    +'<div class="acts">'
+      +'<button class="act ok'+(d==='approved'?' on':'')+'" data-act="ok" title="Aprovar">✓</button>'
+      +'<button class="act no'+(d==='rejected'?' on':'')+'" data-act="no" title="Rejeitar">✕</button>'
+      +'<button class="act cm'+(cmt?' on':'')+'" data-act="cmt" title="Comentar">💬</button>'
+      +'<button class="act" data-act="edit" title="Editar nome">✎</button>'
+      +del
+    +'</div>'
+  +'</div>';
+}
+function cmtEditHTML(f){return '<div class="cmt-edit" data-cmt="'+f.id+'" style="display:none"><textarea placeholder="Comentário do Matheus...">'+esc(commentOf(f))+'</textarea></div>'}
+
+function addFormHTML(p){
+  return '<div class="addrow" data-add="'+p+'">'
+    +'<div class="f">'
+      +'<input data-k="label" placeholder="Nome do campo (ex.: Foto do duto)">'
+      +'<input data-k="prop" placeholder="Property (ex.: XA_CSP_ACA_DUTO)">'
+    +'</div>'
+    +'<div class="f">'
+      +'<select data-k="kind"><option value="foto">Foto</option><option value="fotos">Fotos (lista)</option><option value="texto">Texto</option></select>'
+      +'<input data-k="qty" placeholder="Qtd (se fotos) ex.: 3">'
+    +'</div>'
+    +'<div class="f">'
+      +'<label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="a" checked> Abrigo</label>'
+      +'<label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="t" checked> Totem</label>'
+    +'</div>'
+    +'<div class="actions"><button class="btn" data-addsave="'+p+'">Adicionar</button> <button class="btn ghost" data-addcancel="'+p+'">Cancelar</button></div>'
+  +'</div>';
 }
 
-function buildPanels(){
-  const panels = document.getElementById('panels');
-  panels.innerHTML = PHASES.map((p,idx)=>{
-    const blocked = idx===0 ? blockedHTML() : ''; // show blocked evidence once, in fundacao
-    return '<section class="tab-panel" id="panel-'+p.id+'">'
-      +'<div class="phase-head"><h2>'+p.name+'</h2><span class="alias">'+p.alias+'</span><span class="meta">'+p.meta+'</span></div>'
-      +'<div class="grid field-grid" id="grid-'+p.id+'"></div>'
-      + blocked
-      + approveHTML(p)
+function render(){
+  const root=document.getElementById('phases');
+  root.innerHTML=PHASES.map(p=>{
+    const fs=fieldsFor(p.id).map(f=>Object.assign(f,{phase:p.id}));
+    const ap=fs.filter(f=>decOf(f)==='approved').length;
+    const re=fs.filter(f=>decOf(f)==='rejected').length;
+    const pe=fs.filter(f=>decOf(f)==='').length;
+    return '<section class="phase" id="ph-'+p.id+'">'
+      +'<div class="phase-head"><h2>'+p.name+'</h2><span class="alias">'+p.alias+'</span>'
+      +'<span class="psum"><span>✓ <b>'+ap+'</b></span><span>✕ <b>'+re+'</b></span><span>⏳ <b>'+pe+'</b></span></span></div>'
+      +'<p class="phase-desc">'+p.desc+'</p>'
+      +'<div class="list" id="list-'+p.id+'">'+fs.map(rowHTML).join('')+'</div>'
+      +'<button class="btn ghost addbtn" data-addopen="'+p.id+'">＋ Adicionar campo</button>'
+      +addFormHTML(p.id)
       +'</section>';
   }).join('');
+  updateProgress();
+  document.getElementById('empty').style.display = anyVisible()?'none':'block';
 }
-function blockedHTML(){
-  const cards = BLOCKED.map((f,i)=>cardHTML(f,i)).join('');
-  return '<div style="margin-top:26px"><div class="phase-head"><h3 style="font-size:18px">Evidência de fase bloqueada</h3><span class="meta">Comum a todas as fases · ramo "não foi possível executar"</span></div>'
-    +'<div class="grid field-grid" id="grid-blocked">'+cards+'</div></div>';
-}
-function approveHTML(p){
-  return '<div class="approve">'
-    +'<label><input type="checkbox" data-phase="'+p.id+'"> Aprovar fase '+p.name+'</label>'
-    +'<textarea placeholder="Anotações do Matheus para a fase '+p.name+'..." data-notes="'+p.id+'"></textarea>'
-    +'</div>';
+function anyVisible(){return allFields().some(visible)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function updateProgress(){
+  const fs=allFields();
+  const n=fs.length;
+  const ok=fs.filter(f=>decOf(f)==='approved').length;
+  const no=fs.filter(f=>decOf(f)==='rejected').length;
+  const pend=n-ok-no;
+  document.getElementById('pOk').textContent=ok;
+  document.getElementById('pNo').textContent=no;
+  document.getElementById('pPend').textContent=pend;
+  document.getElementById('barOk').style.width=(n?ok/n*100:0)+'%';
+  document.getElementById('barNo').style.width=(n?no/n*100:0)+'%';
 }
 
-function buildTabs(){
-  const tabs = document.getElementById('tabs');
-  tabs.innerHTML = PHASES.map((p,i)=>'<button class="tab-button'+(i===0?' active':'')+'" role="tab" data-tab="panel-'+p.id+'" aria-selected="'+(i===0)+'">'+p.name+'</button>').join('');
-  tabs.querySelectorAll('.tab-button').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      tabs.querySelectorAll('.tab-button').forEach(b=>{b.setAttribute('aria-selected',String(b===btn));b.classList.toggle('active',b===btn)});
-      document.querySelectorAll('.tab-panel').forEach(pn=>pn.classList.toggle('active', pn.id===btn.dataset.tab));
-      const id = btn.dataset.tab.replace('panel-','');
-      // re-render blocked grid too when fundacao active
-      if(id==='fundacao'){ const bg=document.getElementById('grid-blocked'); if(bg){ bg.querySelectorAll('.field-card').forEach(c=>c.classList.remove('in')); requestAnimationFrame(()=>bg.querySelectorAll('.field-card').forEach(c=>c.classList.add('in')));} }
-      reRenderAll();
+/* ---------- INTERACTION ---------- */
+function findField(id){
+  for(const p of PHASES){
+    const fs=fieldsFor(p.id);
+    const f=fs.find(x=>x.id===id);
+    if(f)return Object.assign(f,{phase:p.id});
+  }
+  return null;
+}
+function toggleDec(id,val){
+  const cur=STATE.decisions[id]||'';
+  STATE.decisions[id]=cur===val?'':val;
+  save();render();
+}
+function setComment(id,v){
+  if(v&&v.trim())STATE.comments[id]=v.trim();else delete STATE.comments[id];
+  save();
+}
+
+document.addEventListener('click',function(e){
+  const t=e.target;
+  // actions
+  const actBtn=t.closest('.act');
+  if(actBtn){
+    const row=actBtn.closest('.row');const id=row.dataset.id;const a=actBtn.dataset.act;
+    if(a==='ok'){toggleDec(id,'approved');return}
+    if(a==='no'){toggleDec(id,'rejected');return}
+    if(a==='del'){const f=findField(id);if(f&&f.custom&&confirm('Remover este campo?')){STATE.custom[f.phase]=STATE.custom[f.phase].filter(x=>x.id!==id);save();render()}return}
+    if(a==='cmt'){const box=row.querySelector('[data-cmt]');const open=box.style.display!=='none';box.style.display=open?'block':'none';if(!open){box.querySelector('textarea').focus()}return}
+    if(a==='edit'){startEdit(row,id);return}
+  }
+  // add open/close/save/cancel
+  if(t.dataset.addopen){document.querySelector('[data-add="'+t.dataset.addopen+'"]').classList.add('open');return}
+  if(t.dataset.addcancel){document.querySelector('[data-add="'+t.dataset.addcancel+'"]').classList.remove('open');return}
+  if(t.dataset.addsave){saveAdd(t.dataset.addsave);return}
+  // filter segments
+  const segBtn=t.closest('.seg button');
+  if(segBtn){
+    const seg=segBtn.parentElement.parentElement;
+    if(seg.id==='segReview'){
+      segBtn.classList.toggle('on');
+      F.review=segBtn.classList.contains('on');
+    }else{
+      seg.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+      segBtn.classList.add('on');
+      if(seg.id==='segAsset')F.asset=segBtn.dataset.v;
+      if(seg.id==='segStatus')F.status=segBtn.dataset.v;
+    }
+    render();
+  }
+});
+
+document.addEventListener('input',function(e){
+  const ta=e.target.closest('[data-cmt] textarea');
+  if(ta){const id=ta.closest('[data-cmt]').dataset.cmt;setComment(id,ta.value);}
+});
+
+function startEdit(row,id){
+  const lbl=row.querySelector('.flabel');
+  const f=findField(id);if(!f)return;
+  const input=document.createElement('input');
+  input.className='fedit';input.value=labelOf(f);
+  lbl.replaceWith(input);input.focus();input.select();
+  function commit(){STATE.labels[id]=input.value.trim()||f.label;save();render()}
+  input.addEventListener('blur',commit);
+  input.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();input.blur()}if(ev.key==='Escape'){render()}});
+}
+
+function saveAdd(phase){
+  const box=document.querySelector('[data-add="'+phase+'"]');
+  const get=k=>box.querySelector('[data-k="'+k+'"]');
+  const label=get('label').value.trim();
+  const prop=get('prop').value.trim()||('XA_CSP_'+phase.toUpperCase()+'_CUSTOM');
+  if(!label){toast('Dê um nome ao campo');return}
+  const kind=get('kind').value;
+  const qty=get('qty').value.trim();
+  const a=get('a').checked?'req':'hide';
+  const t=get('t').checked?'req':'hide';
+  if(!STATE.custom[phase])STATE.custom[phase]=[];
+  STATE.custom[phase].push({label,prop,kind,qty,a,t,custom:true});
+  save();
+  box.classList.remove('open');
+  box.querySelectorAll('input[type=text],input:not([type]),textarea').forEach(i=>{if(i.type!=='checkbox')i.value=''});
+  render();
+  toast('Campo adicionado');
+}
+
+/* ---------- PDF ---------- */
+function buildPrint(){
+  const fs=allFields();
+  const n=fs.length,ok=fs.filter(f=>decOf(f)==='approved').length,no=fs.filter(f=>decOf(f)==='rejected').length;
+  const d=new Date();const ds=d.toLocaleDateString('pt-BR');
+  let html='<div class="pd-title">Checklist CSP — Revisão</div>';
+  html+='<div class="pd-sub">Implantação CSP · Abrigo + Totem · '+ds+'</div>';
+  html+='<div class="pd-sum"><b>'+ok+'</b> aprovados · <b>'+no+'</b> rejeitados · <b>'+(n-ok-no)+'</b> pendentes · total <b>'+n+'</b> campos</div>';
+  PHASES.forEach(p=>{
+    const pf=fs.filter(f=>f.phase===p.id);
+    html+='<div class="pd-phase"><h2>'+p.name+'</h2><div class="pd-alias">'+p.alias+' — '+p.desc+'</div>';
+    html+='<table class="pd"><thead><tr><th>Campo</th><th>Apl.</th><th>Tipo</th><th>Decisão</th><th>Comentário</th></tr></thead><tbody>';
+    pf.forEach(f=>{
+      const d=decOf(f);const dec=d==='approved'?'Aprovado':d==='rejected'?'Rejeitado':'Pendente';
+      const apl=(f.a==='hide'?'':'A')+(f.a!=='hide'&&f.t!=='hide'?'/':'')+(f.t==='hide'?'':'T')||'—';
+      const cmt=commentOf(f);
+      html+='<tr><td>'+esc(labelOf(f))+(f.note?'<div class="pd-note">'+esc(f.note)+'</div>':'')+'</td>'
+        +'<td>'+apl+'</td><td>'+KIND_LABEL[f.kind]+(f.qty?' ×'+f.qty:'')+'</td>'
+        +'<td><span class="pd-dec '+d+'">'+dec+'</span></td>'
+        +'<td>'+(cmt?esc(cmt):'')+'</td></tr>';
     });
+    html+='</tbody></table></div>';
   });
+  document.getElementById('print-doc').innerHTML=html;
 }
+document.getElementById('pdfBtn').addEventListener('click',function(){buildPrint();setTimeout(()=>window.print(),60)});
+document.getElementById('resetBtn').addEventListener('click',reset);
 
-function reRenderAll(){
-  PHASES.forEach(p=>reRenderPanel(p.id));
-  // blocked grid re-filter
-  const bg=document.getElementById('grid-blocked');
-  if(bg){
-    bg.innerHTML = BLOCKED.map((f,i)=>cardHTML(f,i)).join('');
-    requestAnimationFrame(()=>bg.querySelectorAll('.field-card').forEach(c=>c.classList.add('in')));
-  }
-  updateCount();
-}
+/* ---------- toast ---------- */
+let _t;function toast(m){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.style.cssText='position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#000;color:#fff;padding:11px 18px;border-radius:10px;font-weight:700;font-size:13px;opacity:0;transition:.25s;z-index:99';document.body.appendChild(el)}el.textContent=m;el.style.opacity='1';el.style.transform='translateX(-50%) translateY(0)';clearTimeout(_t);_t=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(20px)'},1600)}
 
-function updateCount(){
-  let n=0;
-  Object.keys(FIELDS).forEach(k=>FIELDS[k].forEach(f=>{if(matchesFilter(f)&&isReview(f))n++}));
-  BLOCKED.forEach(f=>{if(matchesFilter(f)&&isReview(f))n++});
-  const el=document.getElementById('revCount');
-  el.textContent=n;
-  el.style.transition='transform .3s'; el.style.transform='scale(1.25)'; el.style.color='var(--orange)';
-  setTimeout(()=>{el.style.transform='scale(1)';el.style.color='var(--black)'},300);
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('visible');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('visible'),1600);
-}
-
-/* filters */
-document.querySelectorAll('.chip[data-asset]').forEach(c=>{
-  c.addEventListener('click',()=>{
-    document.querySelectorAll('.chip[data-asset]').forEach(x=>x.classList.remove('active'));
-    c.classList.add('active');asset=c.dataset.asset;reRenderAll();showToast('Filtro: '+c.textContent.trim());
-  });
-});
-document.getElementById('reviewToggle').addEventListener('click',function(){
-  reviewOnly=!reviewOnly;this.classList.toggle('active',reviewOnly);reRenderAll();
-  showToast(reviewOnly?'Mostrando só itens em revisão':'Mostrando todos');
-});
-document.getElementById('printBtn').addEventListener('click',()=>window.print());
-
-/* approve checkboxes */
-document.addEventListener('change',function(e){
-  if(e.target.matches('input[type=checkbox][data-phase]')){
-    const p=e.target.dataset.phase;
-    showToast(e.target.checked?('Fase marcada aprovada: '+p):('Aprovação removida: '+p));
-  }
-});
-
-/* init */
-buildPanels();
-buildTabs();
-document.getElementById('panel-fundacao').classList.add('active');
-reRenderAll();
+render();
 </script>
 </body>
 </html>
