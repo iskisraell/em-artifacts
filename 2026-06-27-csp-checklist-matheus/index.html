@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CSP — Revisão de Checklist · Matheus</title>
+<title>CSP — Curadoria de Checklist · Matheus</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,199 +12,188 @@
   --orange:#FF4F00;--black:#000;--white:#FFF;--purple:#4E18FF;--yellow:#FECC14;
   --green:#3D7700;--red:#DC2626;--blue:#2563EB;
   --surface:#FAFAFA;--muted:#F5F5F5;--line:#E5E5E5;--text:#737373;--ink:#171717;
-  --r:18px;--r-sm:12px;--max:980px;
-  --ok-bg:#F1F8EC;--ok-line:#3D7700;
-  --no-bg:#FBEDED;--no-line:#DC2626;
-  --rev-bg:#FFFCEB;--rev-line:#FECC14;
+  --r:18px;--r-sm:12px;--max:1000px;
+  --rev-bg:#FFFCEB;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 ::selection{background:var(--orange);color:#fff}
-body{background:var(--surface);color:var(--ink);font-family:"Rethink Sans",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
-main{width:min(var(--max),calc(100% - 32px));margin:0 auto;padding:22px 0 80px}
+body{background:var(--surface);color:var(--ink);font-family:"Rethink Sans",system-ui,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+main{width:min(var(--max),calc(100% - 32px));margin:0 auto;padding:22px 0 90px}
 h1,h2,h3{font-weight:800;letter-spacing:-.01em}
-h1{font-size:clamp(34px,6vw,60px);line-height:.98;margin-bottom:14px}
-h2{font-size:clamp(22px,3vw,30px);line-height:1.05}
-h3{font-size:17px}
-p{color:var(--text);font-size:15px}
-.lede{max-width:640px;color:var(--text);font-size:clamp(15px,1.6vw,18px);line-height:1.5}
-code,.mono{font-family:Consolas,"Cascadia Mono",ui-monospace,monospace}
+h1{font-size:clamp(32px,5.4vw,54px);line-height:1;margin-bottom:12px}
+h2{font-size:clamp(20px,2.8vw,28px)}
+.lede{max-width:680px;color:var(--text);font-size:clamp(14px,1.5vw,17px)}
+.mono,code{font-family:Consolas,"Cascadia Mono",ui-monospace,monospace}
 
-/* Header */
-.header{padding:8px 0 6px}
-.tag{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:var(--yellow);color:#000;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px}
-.brandrow{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:var(--yellow);color:#000;font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px}
+.header-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-top:18px}
+.reviewer{display:flex;align-items:center;gap:8px}
+.reviewer input{border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-family:inherit;font-size:13px;background:#fff;width:170px}
+.reviewer input:focus{outline:none;border-color:var(--orange)}
 
-/* Progress */
-.progress-wrap{margin:22px 0 6px}
-.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--text)}
-.progress-meta b{color:var(--ink);font-size:15px}
-.progress{height:10px;border-radius:999px;background:var(--muted);overflow:hidden;display:flex}
-.progress span{height:100%;transition:width .4s ease}
-.progress .ok{background:var(--green)}
-.progress .no{background:var(--red)}
-.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--text);font-weight:600}
-.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:middle}
+/* progress */
+.progress-wrap{margin:20px 0 4px}
+.pm{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:13px;font-weight:700;color:var(--text)}
+.pm b{color:var(--ink);font-size:15px}
+.bar{height:10px;border-radius:999px;background:var(--muted);overflow:hidden}
+.bar span{display:block;height:100%;background:var(--green);transition:width .4s ease}
 
-/* Toolbar */
-.toolbar{position:sticky;top:0;z-index:20;background:var(--surface);padding:14px 0;margin:0 0 6px;border-bottom:1px solid var(--line)}
+/* legend / help */
+.help{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--text);font-weight:600}
+.help b{font-weight:800}
+.sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:middle}
+
+/* toolbar */
+.toolbar{position:sticky;top:0;z-index:30;background:var(--surface);padding:13px 0;border-bottom:1px solid var(--line);margin-bottom:4px}
 .toolbar-inner{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.seg{display:inline-flex;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:3px}
-.seg button{border:none;background:transparent;font-family:inherit;font-weight:800;font-size:13px;color:var(--text);padding:8px 14px;border-radius:999px;cursor:pointer;transition:all .15s}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:none;background:transparent;font-family:inherit;font-weight:800;font-size:12.5px;color:var(--text);padding:8px 13px;border-radius:999px;cursor:pointer;transition:all .14s}
 .seg button:hover{color:var(--ink)}
 .seg button.on{background:var(--black);color:#fff}
 .seg.amber button.on{background:var(--yellow);color:#000}
 .spacer{flex:1}
-.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--black);background:var(--black);color:#fff;font-family:inherit;font-weight:800;font-size:13px;padding:9px 15px;border-radius:999px;cursor:pointer;transition:all .15s}
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--black);background:var(--black);color:#fff;font-family:inherit;font-weight:800;font-size:12.5px;padding:9px 14px;border-radius:999px;cursor:pointer;transition:all .14s}
 .btn:hover{background:var(--orange);border-color:var(--orange)}
 .btn.ghost{background:transparent;color:var(--ink)}
 .btn.ghost:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.pdf{background:var(--purple);border-color:var(--purple)}
+.btn.pdf:hover{background:var(--orange);border-color:var(--orange)}
 
-/* Phase section */
-section.phase{margin-top:26px}
-.phase-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
-.phase-head .alias{font-family:Consolas,monospace;font-size:12px;color:var(--purple);background:var(--white);border:1px solid var(--line);padding:4px 9px;border-radius:999px}
-.phase-head .psum{margin-left:auto;font-size:12px;color:var(--text);font-weight:700;display:flex;gap:12px}
+/* phase */
+section.phase{margin-top:24px}
+.phase-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.phase-head .alias{font-family:Consolas,monospace;font-size:12px;color:var(--purple);background:#fff;border:1px solid var(--line);padding:4px 9px;border-radius:999px}
+.phase-head .psum{margin-left:auto;font-size:12px;color:var(--text);font-weight:700;display:flex;gap:13px}
 .phase-head .psum b{color:var(--ink)}
-.phase-desc{color:var(--text);font-size:13px;margin:2px 0 14px}
+.phase-desc{color:var(--text);font-size:13px;margin:3px 0 13px}
 
-/* Field row */
+/* list + row */
 .list{display:flex;flex-direction:column;gap:9px}
-.row{position:relative;display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;transition:border-color .18s,background .18s,transform .18s;overflow:hidden}
-.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:transparent;transition:background .18s}
-.row:hover{border-color:#cfcfcf}
-.row.approved::before{background:var(--ok-line)}
-.row.approved{background:var(--ok-bg)}
-.row.rejected::before{background:var(--no-line)}
-.row.rejected{background:var(--no-bg)}
-.row.review::before{background:var(--rev-line)}
-.row.dim{opacity:.5}
+.row{position:relative;display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 15px;transition:border-color .16s,background .16s;overflow:hidden}
+.row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:transparent;transition:background .16s}
+.row.pending::before{background:var(--yellow)}
+.row.done::before{background:var(--green)}
 .row.hide{display:none}
 .row .body{flex:1;min-width:0}
-.flabel{font-weight:800;font-size:16px;line-height:1.25;color:var(--ink);word-break:break-word}
-.flabel[contenteditable="true"]{outline:2px dashed var(--orange);outline-offset:3px;border-radius:6px;padding:0 3px}
-.fmeta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:7px}
-.apills{display:inline-flex;gap:3px}
-.ap{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:5px;font-size:10px;font-weight:800;font-family:Consolas,monospace}
-.ap.a{background:var(--orange);color:#fff}
-.ap.t{background:var(--blue);color:#fff}
-.ap.off{background:var(--muted);color:#bdbdbd;text-decoration:line-through}
-.kind{font-size:12px;font-weight:700;color:var(--text)}
-.prop{font-family:Consolas,monospace;font-size:11px;color:#9a9a9a;background:var(--muted);padding:2px 7px;border-radius:6px;max-width:100%;overflow-wrap:anywhere}
-.note{font-size:12px;color:var(--text);background:var(--muted);padding:7px 10px;border-radius:8px;margin-top:8px;line-height:1.4}
+.topline{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.flabel{font-weight:800;font-size:16px;color:var(--ink);word-break:break-word;cursor:text;border-radius:5px;padding:0 2px}
+.flabel:hover{background:var(--muted)}
+.propsmall{font-size:12px;color:#9b9b9b;font-family:Consolas,monospace}
+.fedit{font-weight:800;font-size:16px;font-family:inherit;border:1px solid var(--orange);border-radius:7px;padding:2px 6px;background:#fff;color:var(--ink);width:100%;max-width:420px}
+
+/* asset decisions */
+.assets{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px}
+.asset{display:flex;align-items:center;gap:8px;background:var(--muted);border:1px solid var(--line);border-radius:10px;padding:6px 9px 6px 7px}
+.asset .badge{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;font-size:11px;font-weight:800;font-family:Consolas,monospace;color:#fff}
+.asset.abrigo .badge{background:var(--orange)}
+.asset.totem .badge{background:var(--blue)}
+.sel{font-family:inherit;font-size:12.5px;font-weight:700;border:none;border-radius:7px;padding:6px 8px;cursor:pointer;background:#fff;color:var(--ink);transition:background .14s,color .14s}
+.sel:focus{outline:2px solid var(--ink);outline-offset:1px}
+.sel.s-required{background:#3D7700;color:#fff}
+.sel.s-optional{background:#fff;color:var(--text)}
+.sel.s-na{background:#E5E5E5;color:#9b9b9b;text-decoration:line-through}
+.sel.s-review{background:var(--yellow);color:#000}
+
+/* comment */
+.cmt{margin-top:10px}
+.cmt input{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 11px;font-family:inherit;font-size:13px;background:var(--surface);color:var(--ink)}
+.cmt input:focus{outline:none;border-color:var(--orange);background:#fff}
+.note{font-size:12px;color:var(--text);background:var(--muted);padding:7px 10px;border-radius:8px;margin-top:9px;line-height:1.4}
 .note.dec{color:var(--green);background:#EEF6E8;font-weight:600}
-.fcomment{font-size:13px;color:var(--ink);background:#FFF8E1;border:1px solid #F4E3A1;border-radius:8px;padding:8px 11px;margin-top:9px;line-height:1.4}
-.fcomment::before{content:"Comentário · ";font-weight:800;color:#8a6d00;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
 
-/* Actions */
-.acts{display:flex;gap:6px;align-items:center;flex-shrink:0}
-.act{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--white);cursor:pointer;font-size:15px;line-height:1;display:grid;place-items:center;transition:all .15s;font-family:inherit;color:var(--text)}
-.act:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-1px)}
-.act.ok:hover,.act.ok.on{background:var(--green);color:#fff;border-color:var(--green)}
-.act.no:hover,.act.no.on{background:var(--red);color:#fff;border-color:var(--red)}
-.act.cm.on{background:var(--yellow);color:#000;border-color:var(--yellow)}
+/* actions */
+.acts{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.act{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:13px;line-height:1;display:grid;place-items:center;transition:all .14s;color:var(--text);font-family:inherit}
+.act:hover{border-color:var(--ink);color:var(--ink);background:var(--muted)}
+.act:disabled{opacity:.3;cursor:not-allowed}
 
-/* comment editor */
-.cmt-edit{margin-top:9px}
-.cmt-edit textarea{width:100%;min-height:54px;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-family:inherit;font-size:13px;resize:vertical;background:var(--surface)}
-.cmt-edit textarea:focus{outline:none;border-color:var(--orange)}
-
-/* label editor */
-.fedit{width:100%;font-weight:800;font-size:16px;font-family:inherit;border:1px solid var(--orange);border-radius:7px;padding:3px 7px;background:#fff;color:var(--ink)}
-
-/* add field */
-.addrow{display:none;flex-direction:column;gap:9px;background:var(--white);border:1px dashed var(--orange);border-radius:var(--r-sm);padding:14px 16px;margin-top:9px}
-.addrow.open{display:flex;animation:fadeIn .2s ease}
-.addrow .f{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+/* add */
+.addbtn{margin-top:11px}
+.addrow{display:none;flex-direction:column;gap:9px;background:#fff;border:1px dashed var(--orange);border-radius:var(--r-sm);padding:14px 15px;margin-top:9px}
+.addrow.open{display:flex;animation:fadeIn .18s ease}
+.addrow .g{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .addrow input,.addrow select{padding:9px 11px;border:1px solid var(--line);border-radius:9px;font-family:inherit;font-size:14px;background:var(--surface)}
 .addrow input:focus,.addrow select:focus{outline:none;border-color:var(--orange)}
-.addrow .actions{display:flex;gap:9px;align-items:center}
-.addbtn{margin-top:11px}
+.addrow .acts2{display:flex;gap:9px}
 
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* empty filter */
-.empty{padding:40px 20px;text-align:center;color:var(--text);font-weight:600;display:none}
+.empty{padding:42px 20px;text-align:center;color:var(--text);font-weight:600;display:none}
 
-/* callout */
 .callout{margin-top:30px;background:var(--yellow);border-radius:var(--r);padding:24px 26px}
-.callout h3{font-size:18px;margin-bottom:6px}
-.callout p{color:rgba(0,0,0,.68);font-size:14px;margin:0}
+.callout h3{font-size:17px;margin-bottom:5px}
+.callout p{color:rgba(0,0,0,.7);font-size:13.5px}
 
-footer{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);color:var(--text);font-size:12px}
+footer{margin-top:28px;padding-top:15px;border-top:1px solid var(--line);color:var(--text);font-size:12px}
 footer code{font-size:11px}
 
-/* ===== PRINT / PDF ===== */
+/* JSON modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;place-items:center;z-index:60;padding:20px}
+.modal.open{display:grid}
+.modal-box{background:#fff;border-radius:var(--r);padding:22px;max-width:680px;width:100%;max-height:84vh;overflow:auto}
+.modal-box h3{font-size:18px;margin-bottom:4px}
+.modal-box p{font-size:13px;margin-bottom:12px}
+.modal-box textarea{width:100%;height:300px;font-family:Consolas,monospace;font-size:11.5px;border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--muted);color:var(--ink)}
+.modal-box .acts2{display:flex;gap:9px;margin-top:12px}
+
+/* PRINT */
 #print-doc{display:none}
 @media print{
   body{background:#fff}
-  main,#app{display:none !important}
+  #app{display:none !important}
   #print-doc{display:block;padding:0 4px;color:#000}
-  .pd-title{font-size:26px;font-weight:800;margin:0 0 4px}
-  .pd-sub{font-size:13px;color:#444;margin:0 0 14px}
-  .pd-sum{font-size:13px;margin:0 0 20px;padding:10px 14px;border:1px solid #ccc;border-radius:8px}
-  .pd-phase{margin:0 0 18px;break-inside:avoid}
-  .pd-phase h2{font-size:16px;margin:0 0 3px}
-  .pd-phase .pd-alias{font-family:monospace;font-size:11px;color:#555;margin:0 0 8px}
-  table.pd{width:100%;border-collapse:collapse;font-size:11.5px}
-  table.pd th{background:#000;color:#fff;text-align:left;padding:7px 9px;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
-  table.pd td{border:1px solid #ddd;padding:7px 9px;vertical-align:top}
+  .pd-title{font-size:25px;font-weight:800;margin:0 0 3px}
+  .pd-sub{font-size:12.5px;color:#444;margin:0 0 12px}
+  .pd-sum{font-size:12.5px;margin:0 0 18px;padding:9px 13px;border:1px solid #ccc;border-radius:8px}
+  .pd-phase{margin:0 0 16px;break-inside:avoid}
+  .pd-phase h2{font-size:15px;margin:0 0 2px}
+  .pd-alias{font-family:monospace;font-size:10.5px;color:#555;margin:0 0 7px}
+  table.pd{width:100%;border-collapse:collapse;font-size:11px}
+  table.pd th{background:#000;color:#fff;text-align:left;padding:6px 8px;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em}
+  table.pd td{border:1px solid #ddd;padding:6px 8px;vertical-align:top}
   table.pd tr{break-inside:avoid}
-  .pd-dec{font-weight:800;text-transform:uppercase;font-size:10px;letter-spacing:.04em}
-  .pd-dec.approved{color:#3D7700}
-  .pd-dec.rejected{color:#DC2626}
-  .pd-dec.pending{color:#888}
-  .pd-note{color:#8a6d00;font-size:10px}
+  .req{color:#3D7700;font-weight:800}.opt{color:#777}.na{color:#bbb;text-decoration:line-through}.rv{color:#8a6d00;font-weight:700}
+  .pd-note{color:#8a6d00;font-size:9.5px}
 }
-
-@media (max-width:680px){
-  .row{flex-wrap:wrap}
-  .acts{width:100%;justify-content:flex-start;margin-top:4px}
-  .addrow .f{grid-template-columns:1fr}
+@media(max-width:680px){
+  .row{flex-wrap:wrap}.acts{flex-direction:row;width:100%;justify-content:flex-start;margin-top:6px}
+  .addrow .g{grid-template-columns:1fr}
+  .header-row{align-items:flex-start}
 }
 </style>
 </head>
 <body>
-
 <div id="app">
 <main>
-  <header class="header">
-    <span class="tag">Revisão de Checklist · CSP</span>
-    <h1>Campos de evidência da instalação CSP</h1>
-    <p class="lede">Revise, aprove, rejeite e comente cada campo por fase. Você também pode editar nomes e adicionar campos novos. Tudo fica salvo no navegador. Ao terminar, exporte o PDF.</p>
-    <div class="brandrow">
-      <div class="legend" style="margin-top:14px">
-        <span><i style="background:var(--orange)"></i>Abrigo</span>
-        <span><i style="background:var(--blue)"></i>Totem</span>
-        <span><i style="background:var(--rev-line)"></i>Requer revisão</span>
-      </div>
+  <span class="tag">Curadoria de Checklist · CSP</span>
+  <h1>Defina os campos da instalação CSP</h1>
+  <p class="lede">Para cada campo, decida o status no <b style="color:var(--orange)">Abrigo</b> e no <b style="color:var(--blue)">Totem</b> independentemente: <b>Obrigatório</b>, <b>Opcional</b>, <b>Não aplica</b>, ou mantenha <b>Revisar</b>. Edite nomes, comente, reordene e adicione campos. Ao terminar, exporte o PDF e o JSON.</p>
+
+  <div class="header-row">
+    <div class="help">
+      <span><b class="sw" style="background:var(--orange)"></b>Abrigo</span>
+      <span><b class="sw" style="background:var(--blue)"></b>Totem</span>
+      <span><b class="sw" style="background:var(--green)"></b>Decidido</span>
+      <span><b class="sw" style="background:var(--yellow)"></b>Pendente de revisão</span>
     </div>
-  </header>
+    <div class="reviewer"><input id="reviewer" placeholder="Seu nome (Matheus)"></div>
+  </div>
 
   <div class="progress-wrap">
-    <div class="progress-meta"><span>Progresso da revisão</span><span><b id="pOk">0</b> aprovados · <b id="pNo">0</b> rejeitados · <b id="pPend">0</b> pendentes</span></div>
-    <div class="progress"><span class="ok" id="barOk"></span><span class="no" id="barNo"></span></div>
+    <div class="pm"><span>Progresso da curadoria</span><span><b id="pDone">0</b> decididos · <b id="pPend">0</b> pendentes</span></div>
+    <div class="bar"><span id="barDone"></span></div>
   </div>
 
   <div class="toolbar">
     <div class="toolbar-inner">
-      <div class="seg" id="segAsset">
-        <button class="on" data-v="all">Tudo</button>
-        <button data-v="abrigo">Abrigo</button>
-        <button data-v="totem">Totem</button>
-      </div>
-      <div class="seg" id="segStatus">
-        <button class="on" data-v="all">Todos</button>
-        <button data-v="pending">Pendentes</button>
-        <button data-v="approved">Aprovados</button>
-        <button data-v="rejected">Rejeitados</button>
-      </div>
-      <div class="seg amber" id="segReview">
-        <button data-v="review">Só revisão</button>
-      </div>
+      <div class="seg" id="segAsset"><button class="on" data-v="all">Tudo</button><button data-v="abrigo">Abrigo</button><button data-v="totem">Totem</button></div>
+      <div class="seg" id="segStatus"><button class="on" data-v="all">Todos</button><button data-v="pending">Pendentes</button><button data-v="done">Decididos</button></div>
+      <div class="seg amber" id="segReview"><button data-v="review">Só revisão</button></div>
       <div class="spacer"></div>
-      <button class="btn ghost" id="resetBtn" title="Limpar toda a revisão">Limpar</button>
-      <button class="btn" id="pdfBtn">⤓ Exportar PDF</button>
+      <button class="btn ghost" id="resetBtn">Limpar</button>
+      <button class="btn pdf" id="pdfBtn">⤓ PDF</button>
+      <button class="btn" id="jsonBtn">⤓ JSON</button>
     </div>
   </div>
 
@@ -212,21 +201,19 @@ footer code{font-size:11px}
   <div class="empty" id="empty">Nenhum campo com esses filtros.</div>
 
   <div class="callout">
-    <h3>Perguntas em aberto para o Matheus</h3>
-    <p>Quais campos são obrigatórios em produção? As quantidades de fotos (3–4) estão corretas? Totem mantém itinerário e pictograma? A observação de conclusão basta, ou o relatório precisa de um campo estruturado de observação CSP?</p>
+    <h3>Lembre de decidir também</h3>
+    <p>As quantidades de fotos (3–4) estão corretas? Totem mantém itinerário e pictograma? A observação de conclusão (<span class="mono" style="font-size:12px">XA_RUA_PRV_OBRS</span>) basta, ou o relatório precisa de um campo estruturado de observação CSP?</p>
   </div>
 
-  <footer>
-    Fonte: <code>docs/checklists/csp-abrigo-checklist-mock.md</code> + <code>csp-totem-checklist-mock.md</code>. Aliases compartilhados e multi-foto (campos explícitos) conforme ADR 0010 / ADR 0011. Decisões salvas localmente no navegador.
-  </footer>
+  <footer>Fonte: <code>docs/checklists/csp-abrigo-checklist-mock.md</code> + <code>csp-totem-checklist-mock.md</code>. Aliases compartilhados; multi-foto = campos explícitos (ADR 0010/0011). Tudo salvo no navegador. O JSON alimenta direto o seeder da implementação.</footer>
 </main>
 </div>
 
-<!-- PRINT DOC -->
+<div class="modal" id="jsonModal"><div class="modal-box"><h3>Manifest do checklist (JSON)</h3><p>Copie ou baixe. É a fonte direta para o seeder idempotente da implementação.</p><textarea id="jsonArea" readonly></textarea><div class="acts2"><button class="btn" id="jsonCopy">Copiar</button><button class="btn pdf" id="jsonDl">Baixar .json</button><button class="btn ghost" id="jsonClose">Fechar</button></div></div></div>
+
 <div id="print-doc"></div>
 
 <script>
-/* ---------- BASE DATA (from approved mocks) ---------- */
 const PHASES=[
  {id:'fundacao',name:'Fundação',alias:'csp-fundacao',desc:'1ª fase · N1 · Abrigo + Totem'},
  {id:'implantacao',name:'Implantação',alias:'csp-implantacao',desc:'Após Fundação · N1 · Abrigo + Totem'},
@@ -245,7 +232,7 @@ const BASE={
   {label:'Poste medido',prop:'XA_CSP_FUND_POSTE_MEDICAO',kind:'foto',a:'req',t:'rev'},
   {label:'Piso',prop:'XA_CSP_FUND_PISO',kind:'foto',a:'req',t:'req'},
   {label:'Piso medido',prop:'XA_CSP_FUND_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
-  {label:'Totem / remanejamento',prop:'XA_CSP_FUND_TOTEM',kind:'foto',a:'hide',t:'req',note:'Específico de Totem.'},
+  {label:'Totem / remanejamento',prop:'XA_CSP_FUND_TOTEM',kind:'foto',a:'na',t:'req',note:'Específico de Totem.'},
  ],
  implantacao:[
   {label:'Retirada do gabarito',prop:'XA_CSP_IMP_RETIRADA_GABARITO',kind:'foto',a:'req',t:'req'},
@@ -257,265 +244,240 @@ const BASE={
   {label:'Piso medido',prop:'XA_CSP_IMP_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
  ],
  montagem:[
-  {label:'Banco',prop:'XA_CSP_MON_BANCO',kind:'foto',a:'req',t:'hide'},
-  {label:'Banco medido',prop:'XA_CSP_MON_BANCO_MEDICAO',kind:'foto',a:'req',t:'hide'},
-  {label:'Cobertura',prop:'XA_CSP_MON_COBERTURA',kind:'foto',a:'req',t:'hide'},
-  {label:'Cobertura / vedação',prop:'XA_CSP_MON_COBERTURA_VEDACAO',kind:'foto',a:'req',t:'hide'},
-  {label:'Vidros',prop:'XA_CSP_MON_VIDROS',kind:'foto',a:'req',t:'hide'},
-  {label:'Piso',prop:'XA_CSP_MON_PISO',kind:'foto',a:'req',t:'hide'},
-  {label:'Piso medido',prop:'XA_CSP_MON_PISO_MEDICAO',kind:'foto',a:'req',t:'hide'},
-  {label:'Totem',prop:'XA_CSP_MON_TOTEM',kind:'foto',a:'rev',t:'hide',note:'Verificar se pertence à Montagem Abrigo.'},
-  {label:'Totem medido',prop:'XA_CSP_MON_TOTEM_MEDICAO',kind:'foto',a:'rev',t:'hide',note:'Verificar se pertence à Montagem Abrigo.'},
+  {label:'Banco',prop:'XA_CSP_MON_BANCO',kind:'foto',a:'req',t:'na'},
+  {label:'Banco medido',prop:'XA_CSP_MON_BANCO_MEDICAO',kind:'foto',a:'req',t:'na'},
+  {label:'Cobertura',prop:'XA_CSP_MON_COBERTURA',kind:'foto',a:'req',t:'na'},
+  {label:'Cobertura / vedação',prop:'XA_CSP_MON_COBERTURA_VEDACAO',kind:'foto',a:'req',t:'na'},
+  {label:'Vidros',prop:'XA_CSP_MON_VIDROS',kind:'foto',a:'req',t:'na'},
+  {label:'Piso',prop:'XA_CSP_MON_PISO',kind:'foto',a:'req',t:'na'},
+  {label:'Piso medido',prop:'XA_CSP_MON_PISO_MEDICAO',kind:'foto',a:'req',t:'na'},
+  {label:'Totem',prop:'XA_CSP_MON_TOTEM',kind:'foto',a:'rev',t:'na',note:'Verificar se pertence à Montagem Abrigo.'},
+  {label:'Totem medido',prop:'XA_CSP_MON_TOTEM_MEDICAO',kind:'foto',a:'rev',t:'na',note:'Verificar se pertence à Montagem Abrigo.'},
  ],
  acabamento:[
-  {label:'Arremate do pé do abrigo',prop:'XA_CSP_ACA_ARREMATE_PE',kind:'foto',a:'req',t:'hide'},
+  {label:'Arremate do pé do abrigo',prop:'XA_CSP_ACA_ARREMATE_PE',kind:'foto',a:'req',t:'na'},
   {label:'Colagem do itinerário',prop:'XA_CSP_ACA_COLAGEM_ITINERARIO',kind:'foto',a:'req',t:'rev',note:'Totem: manter só se tiver itinerário.'},
   {label:'Pictograma',prop:'XA_CSP_ACA_PICTOGRAMA',kind:'foto',a:'req',t:'rev'},
-  {label:'Eletrodutos',prop:'XA_CSP_ACA_ELETRODUTOS',kind:'foto',a:'req',t:'hide',note:'Provavelmente elétrica/Abrigo; verificar.'},
-  {label:'Fotos finais — lado direito',prop:'XA_CSP_ACA_FOTOS_FINAIS_DIREITO',kind:'foto',a:'req',t:'req'},
-  {label:'Fotos finais — lado esquerdo',prop:'XA_CSP_ACA_ESQUERDO',kind:'foto',a:'req',t:'req'},
+  {label:'Eletrodutos',prop:'XA_CSP_ACA_ELETRODUTOS',kind:'foto',a:'req',t:'na',note:'Provavelmente elétrica/Abrigo; verificar.'},
+  {label:'Fotos finais — direito',prop:'XA_CSP_ACA_FOTOS_FINAIS_DIREITO',kind:'foto',a:'req',t:'req'},
+  {label:'Fotos finais — esquerdo',prop:'XA_CSP_ACA_FOTOS_FINAIS_ESQUERDO',kind:'foto',a:'req',t:'req'},
   {label:'Fotos finais — frente',prop:'XA_CSP_ACA_FOTOS_FINAIS_FRENTE',kind:'foto',a:'req',t:'req'},
   {label:'Piso',prop:'XA_CSP_ACA_PISO',kind:'foto',a:'req',t:'req'},
   {label:'Piso medido',prop:'XA_CSP_ACA_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
  ],
 };
-const KIND_LABEL={foto:'Foto',fotos:'Fotos',texto:'Texto'};
+const KIND={foto:'Foto',fotos:'Fotos',texto:'Texto'};
+const STATUS=[['required','Obrigatório'],['optional','Opcional'],['na','Não aplica'],['review','Revisar']];
+const BASE_DEFAULT={req:'required',rev:'review',na:'na'};
 
-/* ---------- STATE ---------- */
-const LS_KEY='csp-checklist-review-v1';
-let STATE=load();
-function load(){try{return JSON.parse(localStorage.getItem(LS_KEY))||blank()}catch(e){return blank()}}
-function blank(){return{decisions:{},comments:{},labels:{},custom:{fundacao:[],implantacao:[],montagem:[],acabamento:[]}}}
-function save(){localStorage.setItem(LS_KEY,JSON.stringify(STATE))}
-function reset(){if(confirm('Limpar toda a revisão, comentários e campos adicionados?')){STATE=blank();save();render();toast('Revisão limpa')}}
+/* STATE */
+const LS='csp-curation-v2';
+let S=load();
+function blank(){return{fields:{},order:{fundacao:null,implantacao:null,montagem:null,acabamento:null},custom:{fundacao:[],implantacao:[],montagem:[],acabamento:[]},reviewer:''}}
+function load(){try{const s=JSON.parse(localStorage.getItem(LS));return s||blank()}catch(e){return blank()}}
+function save(){S.reviewer=document.getElementById('reviewer').value;localStorage.setItem(LS,JSON.stringify(S))}
 
 let F={asset:'all',status:'all',review:false};
 
-/* ---------- BUILD FIELD LIST (base + custom) with stable ids ---------- */
-function fieldsFor(phase){
-  const base=BASE[phase].map((f,i)=>Object.assign({},f,{id:phase+'-'+i,custom:false}));
-  const cust=(STATE.custom[phase]||[]).map((f,i)=>Object.assign({},f,{id:'c-'+phase+'-'+i,custom:true}));
-  return base.concat(cust);
+function fieldsFor(p){
+  const base=BASE[p].map((f,i)=>({...f,id:p+'-'+i,custom:false,phase:p}));
+  const cust=(S.custom[p]||[]).map((f,i)=>({...f,id:'c-'+p+'-'+i,custom:true,phase:p}));
+  const all=base.concat(cust);
+  const order=S.order[p];
+  if(!order)return all;
+  const map={};all.forEach(f=>map[f.id]=f);
+  const ordered=order.map(id=>map[id]).filter(Boolean);
+  all.forEach(f=>{if(!ordered.includes(f))ordered.push(f)});
+  return ordered;
 }
-function allFields(){let a=[];PHASES.forEach(p=>a=a.concat(fieldsFor(p.id).map(f=>Object.assign(f,{phase:p.id}))));return a}
-function isReview(f){return f.a==='rev'||f.t==='rev'}
-function decOf(f){return STATE.decisions[f.id]||''} /* ''|approved|rejected */
-function labelOf(f){return STATE.labels[f.id]||f.label}
-function commentOf(f){return STATE.comments[f.id]||''}
+function stOf(f,asset){const v=S.fields[f.id]&&S.fields[f.id][asset];return v||BASE_DEFAULT[f[asset==='abrigo'?'a':'t']];}
+function labelOf(f){return (S.fields[f.id]&&S.fields[f.id].label)||f.label}
+function commentOf(f){return (S.fields[f.id]&&S.fields[f.id].comment)||''}
+function isDone(f){return stOf(f,'abrigo')!=='review'&&stOf(f,'totem')!=='review'}
+function isPending(f){return!isDone(f)}
 
 function visible(f){
-  if(F.review && !isReview(f)) return false;
-  if(F.asset==='abrigo' && f.a==='hide') return false;
-  if(F.asset==='totem' && f.t==='hide') return false;
-  const d=decOf(f);
-  if(F.status==='approved' && d!=='approved') return false;
-  if(F.status==='rejected' && d!=='rejected') return false;
-  if(F.status==='pending' && d!=='') return false;
+  if(F.review&&!isPending(f))return false;
+  if(F.asset==='abrigo'&&stOf(f,'abrigo')==='na')return false;
+  if(F.asset==='totem'&&stOf(f,'totem')==='na')return false;
+  if(F.status==='done'&&!isDone(f))return false;
+  if(F.status==='pending'&&!isPending(f))return false;
   return true;
 }
 
-/* ---------- RENDER ---------- */
-function apPills(f){
-  const A=f.a==='hide'?'<span class="ap a off">A</span>':'<span class="ap a">A</span>';
-  const T=f.t==='hide'?'<span class="ap t off">T</span>':'<span class="ap t">T</span>';
-  return '<span class="apills">'+A+T+'</span>';
-}
-function kindText(f){return KIND_LABEL[f.kind]+(f.qty?' ×'+f.qty:'')+(f.a==='rev'||f.t==='rev'?'':'');}
-
-function rowHTML(f){
-  const d=decOf(f);
-  const cls='row'+(d==='approved'?' approved':'')+(d==='rejected'?' rejected':'')+(isReview(f)&&d===''?' review':'')+(visible(f)?'':' hide');
-  const cmt=commentOf(f);
-  const note=f.note?'<div class="note'+(f.dec?' dec':'')+'">'+(f.dec?'✓ ':'')+f.note+'</div>':'';
-  const cmtBox=cmt?'<div class="fcomment">'+esc(cmt)+'</div>':'';
-  const del=f.custom?'<button class="act" data-act="del" title="Remover campo">🗑</button>':'';
-  return '<div class="'+cls+'" data-id="'+f.id+'" data-phase="'+f.phase+'">'
-    +'<div class="body">'
-      +'<div class="flabel" data-lbl="'+f.id+'">'+esc(labelOf(f))+'</div>'
-      +'<div class="fmeta">'+apPills(f)+'<span class="kind">'+kindText(f)+'</span><span class="prop">'+esc(f.prop)+'</span></div>'
-      +note+cmtBox+cmtEditHTML(f)
-    +'</div>'
-    +'<div class="acts">'
-      +'<button class="act ok'+(d==='approved'?' on':'')+'" data-act="ok" title="Aprovar">✓</button>'
-      +'<button class="act no'+(d==='rejected'?' on':'')+'" data-act="no" title="Rejeitar">✕</button>'
-      +'<button class="act cm'+(cmt?' on':'')+'" data-act="cmt" title="Comentar">💬</button>'
-      +'<button class="act" data-act="edit" title="Editar nome">✎</button>'
-      +del
-    +'</div>'
-  +'</div>';
-}
-function cmtEditHTML(f){return '<div class="cmt-edit" data-cmt="'+f.id+'" style="display:none"><textarea placeholder="Comentário do Matheus...">'+esc(commentOf(f))+'</textarea></div>'}
-
-function addFormHTML(p){
-  return '<div class="addrow" data-add="'+p+'">'
-    +'<div class="f">'
-      +'<input data-k="label" placeholder="Nome do campo (ex.: Foto do duto)">'
-      +'<input data-k="prop" placeholder="Property (ex.: XA_CSP_ACA_DUTO)">'
-    +'</div>'
-    +'<div class="f">'
-      +'<select data-k="kind"><option value="foto">Foto</option><option value="fotos">Fotos (lista)</option><option value="texto">Texto</option></select>'
-      +'<input data-k="qty" placeholder="Qtd (se fotos) ex.: 3">'
-    +'</div>'
-    +'<div class="f">'
-      +'<label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="a" checked> Abrigo</label>'
-      +'<label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="t" checked> Totem</label>'
-    +'</div>'
-    +'<div class="actions"><button class="btn" data-addsave="'+p+'">Adicionar</button> <button class="btn ghost" data-addcancel="'+p+'">Cancelar</button></div>'
-  +'</div>';
-}
-
-function render(){
-  const root=document.getElementById('phases');
-  root.innerHTML=PHASES.map(p=>{
-    const fs=fieldsFor(p.id).map(f=>Object.assign(f,{phase:p.id}));
-    const ap=fs.filter(f=>decOf(f)==='approved').length;
-    const re=fs.filter(f=>decOf(f)==='rejected').length;
-    const pe=fs.filter(f=>decOf(f)==='').length;
-    return '<section class="phase" id="ph-'+p.id+'">'
-      +'<div class="phase-head"><h2>'+p.name+'</h2><span class="alias">'+p.alias+'</span>'
-      +'<span class="psum"><span>✓ <b>'+ap+'</b></span><span>✕ <b>'+re+'</b></span><span>⏳ <b>'+pe+'</b></span></span></div>'
-      +'<p class="phase-desc">'+p.desc+'</p>'
-      +'<div class="list" id="list-'+p.id+'">'+fs.map(rowHTML).join('')+'</div>'
-      +'<button class="btn ghost addbtn" data-addopen="'+p.id+'">＋ Adicionar campo</button>'
-      +addFormHTML(p.id)
-      +'</section>';
-  }).join('');
-  updateProgress();
-  document.getElementById('empty').style.display = anyVisible()?'none':'block';
-}
-function anyVisible(){return allFields().some(visible)}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
+function selHTML(f,asset){
+  const cur=stOf(f,asset);
+  let opts=STATUS.map(([v,l])=>'<option value="'+v+'"'+(v===cur?' selected':'')+'>'+l+'</option>').join('');
+  return '<select class="sel s-'+cur+'" data-id="'+f.id+'" data-asset="'+asset+'">'+opts+'</select>';
+}
+function rowHTML(f,i,arr){
+  const done=isDone(f);
+  const cls='row'+(done?' done':' pending')+(visible(f)?'':' hide');
+  const cmt=commentOf(f);
+  const note=f.note?'<div class="note'+(f.dec?' dec':'')+'">'+(f.dec?'✓ ':'')+esc(f.note)+'</div>':'';
+  const propsmall=esc(f.prop)+' · '+KIND[f.kind]+(f.qty?' ×'+f.qty:'');
+  return '<div class="'+cls+'" data-id="'+f.id+'" data-phase="'+f.phase+'">'
+    +'<div class="body">'
+      +'<div class="topline"><span class="flabel" data-edit="'+f.id+'">'+esc(labelOf(f))+'</span><span class="propsmall">'+propsmall+'</span></div>'
+      +'<div class="assets">'
+        +'<div class="asset abrigo"><span class="badge">A</span>'+selHTML(f,'abrigo')+'</div>'
+        +'<div class="asset totem"><span class="badge">T</span>'+selHTML(f,'totem')+'</div>'
+      +'</div>'
+      +'<div class="cmt"><input data-cmt="'+f.id+'" placeholder="Comentário do Matheus..." value="'+esc(cmt)+'"></div>'
+      +note
+    +'</div>'
+    +'<div class="acts">'
+      +'<button class="act" data-act="up" title="Mover para cima"'+(i===0?' disabled':'')+'>↑</button>'
+      +'<button class="act" data-act="down" title="Mover para baixo"'+(i===arr.length-1?' disabled':'')+'>↓</button>'
+      +'<button class="act" data-act="edit" title="Editar nome">✎</button>'
+      +(f.custom?'<button class="act" data-act="del" title="Remover campo">🗑</button>':'')
+    +'</div>'
+  +'</div>';
+}
+function addFormHTML(p){
+  return '<div class="addrow" data-add="'+p+'">'
+    +'<div class="g"><input data-k="label" placeholder="Nome do campo"><input data-k="prop" placeholder="Property (XA_CSP_...)"></div>'
+    +'<div class="g"><select data-k="kind"><option value="foto">Foto</option><option value="fotos">Fotos (lista)</option><option value="texto">Texto</option></select><input data-k="qty" placeholder="Qtd (se fotos) ex.: 3"></div>'
+    +'<div class="g"><label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="a" checked> Abrigo</label><label style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><input type="checkbox" data-k="t" checked> Totem</label></div>'
+    +'<div class="acts2"><button class="btn" data-addsave="'+p+'">Adicionar</button><button class="btn ghost" data-addcancel="'+p+'">Cancelar</button></div>'
+  +'</div>';
+}
+function render(){
+  document.getElementById('reviewer').value=S.reviewer||'';
+  const root=document.getElementById('phases');
+  root.innerHTML=PHASES.map(p=>{
+    const fs=fieldsFor(p.id);
+    const done=fs.filter(isDone).length,pend=fs.length-done;
+    return '<section class="phase"><div class="phase-head"><h2>'+p.name+'</h2><span class="alias">'+p.alias+'</span><span class="psum"><span>Decididos <b>'+done+'</b></span><span>Pendentes <b>'+pend+'</b></span></span></div><p class="phase-desc">'+p.desc+'</p>'
+      +'<div class="list" id="list-'+p.id+'">'+fs.map((f,i)=>rowHTML(f,i,fs)).join('')+'</div>'
+      +'<button class="btn ghost addbtn" data-addopen="'+p.id+'">＋ Adicionar campo</button>'+addFormHTML(p.id)+'</section>';
+  }).join('');
+  updateProgress();
+  document.getElementById('empty').style.display=anyVisible()?'none':'block';
+}
+function anyVisible(){return PHASES.some(p=>fieldsFor(p.id).some(visible))}
 function updateProgress(){
-  const fs=allFields();
-  const n=fs.length;
-  const ok=fs.filter(f=>decOf(f)==='approved').length;
-  const no=fs.filter(f=>decOf(f)==='rejected').length;
-  const pend=n-ok-no;
-  document.getElementById('pOk').textContent=ok;
-  document.getElementById('pNo').textContent=no;
-  document.getElementById('pPend').textContent=pend;
-  document.getElementById('barOk').style.width=(n?ok/n*100:0)+'%';
-  document.getElementById('barNo').style.width=(n?no/n*100:0)+'%';
+  let n=0,done=0;PHASES.forEach(p=>fieldsFor(p.id).forEach(f=>{n++;if(isDone(f))done++}));
+  document.getElementById('pDone').textContent=done;
+  document.getElementById('pPend').textContent=n-done;
+  document.getElementById('barDone').style.width=(n?done/n*100:0)+'%';
 }
 
-/* ---------- INTERACTION ---------- */
-function findField(id){
-  for(const p of PHASES){
-    const fs=fieldsFor(p.id);
-    const f=fs.find(x=>x.id===id);
-    if(f)return Object.assign(f,{phase:p.id});
-  }
-  return null;
-}
-function toggleDec(id,val){
-  const cur=STATE.decisions[id]||'';
-  STATE.decisions[id]=cur===val?'':val;
-  save();render();
-}
-function setComment(id,v){
-  if(v&&v.trim())STATE.comments[id]=v.trim();else delete STATE.comments[id];
-  save();
-}
+/* interactions */
+function findField(id){for(const p of PHASES){const f=fieldsFor(p.id).find(x=>x.id===id);if(f)return f}return null}
+function ensure(id){if(!S.fields[id])S.fields[id]={};return S.fields[id]}
+function setOrder(p,ids){S.order[p]=ids}
+function orderOf(p){return fieldsFor(p.id).map(f=>f.id)}
 
 document.addEventListener('click',function(e){
   const t=e.target;
-  // actions
   const actBtn=t.closest('.act');
   if(actBtn){
-    const row=actBtn.closest('.row');const id=row.dataset.id;const a=actBtn.dataset.act;
-    if(a==='ok'){toggleDec(id,'approved');return}
-    if(a==='no'){toggleDec(id,'rejected');return}
-    if(a==='del'){const f=findField(id);if(f&&f.custom&&confirm('Remover este campo?')){STATE.custom[f.phase]=STATE.custom[f.phase].filter(x=>x.id!==id);save();render()}return}
-    if(a==='cmt'){const box=row.querySelector('[data-cmt]');const open=box.style.display!=='none';box.style.display=open?'block':'none';if(!open){box.querySelector('textarea').focus()}return}
-    if(a==='edit'){startEdit(row,id);return}
+    const row=actBtn.closest('.row');const id=row.dataset.id;const p=row.dataset.phase;const a=actBtn.dataset.act;
+    if(a==='del'){const f=findField(id);if(f&&f.custom){if(confirm('Remover este campo?')){S.custom[p]=(S.custom[p]||[]).filter((x,i)=>'c-'+p+'-'+i!==id);setOrder(p,orderOf(p).filter(x=>x!==id));save();render()}return}}
+    if(a==='up'||a==='down'){move(p,id,a==='up'?-1:1);return}
+    if(a==='edit'){startEdit(id);return}
   }
-  // add open/close/save/cancel
   if(t.dataset.addopen){document.querySelector('[data-add="'+t.dataset.addopen+'"]').classList.add('open');return}
   if(t.dataset.addcancel){document.querySelector('[data-add="'+t.dataset.addcancel+'"]').classList.remove('open');return}
   if(t.dataset.addsave){saveAdd(t.dataset.addsave);return}
-  // filter segments
   const segBtn=t.closest('.seg button');
   if(segBtn){
     const seg=segBtn.parentElement.parentElement;
-    if(seg.id==='segReview'){
-      segBtn.classList.toggle('on');
-      F.review=segBtn.classList.contains('on');
-    }else{
-      seg.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
-      segBtn.classList.add('on');
-      if(seg.id==='segAsset')F.asset=segBtn.dataset.v;
-      if(seg.id==='segStatus')F.status=segBtn.dataset.v;
-    }
+    if(seg.id==='segReview'){segBtn.classList.toggle('on');F.review=segBtn.classList.contains('on')}
+    else{seg.querySelectorAll('button').forEach(b=>b.classList.remove('on'));segBtn.classList.add('on');if(seg.id==='segAsset')F.asset=segBtn.dataset.v;if(seg.id==='segStatus')F.status=segBtn.dataset.v}
     render();
   }
 });
-
+function move(p,id,dir){
+  const ids=orderOf(p);const i=ids.indexOf(id);const j=i+dir;if(j<0||j>=ids.length)return;
+  [ids[i],ids[j]]=[ids[j],ids[i]];setOrder(p,ids);save();render();
+}
+document.addEventListener('change',function(e){
+  const sel=e.target.closest('.sel');
+  if(sel){const id=sel.dataset.id,asset=sel.dataset.asset,v=sel.value;ensure(id)[asset]=v;sel.className='sel s-'+v;save();updateProgress();/* update row pending/done class */const row=sel.closest('.row');const f=findField(id);row.classList.toggle('pending',isPending(f));row.classList.toggle('done',isDone(f));}
+});
 document.addEventListener('input',function(e){
-  const ta=e.target.closest('[data-cmt] textarea');
-  if(ta){const id=ta.closest('[data-cmt]').dataset.cmt;setComment(id,ta.value);}
+  const cmt=e.target.closest('[data-cmt]');
+  if(cmt){const id=cmt.dataset.cmt;ensure(id).comment=cmt.value;save();}
+  if(e.target.id==='reviewer'){S.reviewer=e.target.value;save();}
+});
+function startEdit(id){
+  const f=findField(id);const lbl=document.querySelector('.flabel[data-edit="'+id+'"]');if(!lbl)return;
+  const inp=document.createElement('input');inp.className='fedit';inp.value=labelOf(f);
+  lbl.replaceWith(inp);inp.focus();inp.select();
+  const commit=()=>{ensure(id).label=inp.value.trim()||f.label;save();render()};
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();inp.blur()}if(e.key==='Escape')render()});
+}
+function saveAdd(p){
+  const box=document.querySelector('[data-add="'+p+'"]');const k=x=>box.querySelector('[data-k="'+x+'"]');
+  const label=k('label').value.trim();if(!label){toast('Dê um nome ao campo');return}
+  const prop=k('prop').value.trim()||('XA_CSP_'+p.toUpperCase().slice(0,3)+'_CUSTOM');
+  const fld={label,prop,kind:k('kind').value,qty:k('qty').value.trim(),a:k('a').checked?'req':'na',t:k('t').checked?'req':'na'};
+  if(!S.custom[p])S.custom[p]=[];S.custom[p].push(fld);
+  const newId='c-'+p+'-'+(S.custom[p].length-1);
+  if(!S.order[p])S.order[p]=orderOf(p);S.order[p].push(newId);
+  save();box.classList.remove('open');box.querySelectorAll('input[type=text],input:not([type])').forEach(i=>{if(i.type!=='checkbox')i.value=''});
+  render();toast('Campo adicionado');
+}
+
+/* reset */
+document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Limpar toda a curadoria, comentários, nomes editados, ordem e campos adicionados?')){S=blank();save();render();toast('Curadoria limpa')}});
+
+/* PDF */
+function buildPrint(){
+  let n=0,done=0;PHASES.forEach(p=>fieldsFor(p.id).forEach(f=>{n++;if(isDone(f))done++}));
+  const ds=new Date().toLocaleDateString('pt-BR');
+  let h='<div class="pd-title">Checklist CSP — Curadoria</div><div class="pd-sub">Implantação CSP · Abrigo + Totem · revisão '+(S.reviewer||'—')+' · '+ds+'</div>';
+  h+='<div class="pd-sum"><b>'+done+'</b> decididos · <b>'+(n-done)+'</b> pendentes · <b>'+n+'</b> campos</div>';
+  PHASES.forEach(p=>{
+    const fs=fieldsFor(p.id);
+    h+='<div class="pd-phase"><h2>'+p.name+'</h2><div class="pd-alias">'+p.alias+' — '+p.desc+'</div>';
+    h+='<table class="pd"><thead><tr><th>Campo</th><th>Property</th><th>Tipo</th><th>Abrigo</th><th>Totem</th><th>Comentário</th></tr></thead><tbody>';
+    fs.forEach(f=>{
+      const lbl=labelOf(f),cmt=commentOf(f);
+      const cell=v=>{const m={required:'<span class="req">Obrig</span>',optional:'<span class="opt">Opc</span>',na:'<span class="na">—</span>',review:'<span class="rv">Rev</span>'};return m[v]};
+      h+='<tr><td>'+esc(lbl)+(f.note?'<div class="pd-note">'+esc(f.note)+'</div>':'')+'</td><td>'+esc(f.prop)+'</td><td>'+KIND[f.kind]+(f.qty?' ×'+f.qty:'')+'</td><td>'+cell(stOf(f,'abrigo'))+'</td><td>'+cell(stOf(f,'totem'))+'</td><td>'+(cmt?esc(cmt):'')+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+  });
+  document.getElementById('print-doc').innerHTML=h;
+}
+document.getElementById('pdfBtn').addEventListener('click',()=>{buildPrint();setTimeout(()=>window.print(),50)});
+
+/* JSON manifest */
+function manifest(){
+  return{
+    generated:new Date().toISOString(),
+    reviewer:S.reviewer||'',
+    source:['docs/checklists/csp-abrigo-checklist-mock.md','docs/checklists/csp-totem-checklist-mock.md'],
+    conventions:{sharedAliases:true,multiPhotoAsExplicitFields:true,activity:'Ruas - Instalacao (id 19)',scopeEstablishments:[383,384]},
+    phases:PHASES.map(p=>({
+      name:p.name,alias:p.alias,
+      fields:fieldsFor(p.id).map(f=>({
+        label:labelOf(f),property:f.prop,kind:f.kind,qty:f.qty||null,
+        abrigo:stOf(f,'abrigo'),totem:stOf(f,'totem'),
+        comment:commentOf(f)||null,custom:!!f.custom
+      }))
+    }))
+  };
+}
+document.getElementById('jsonBtn').addEventListener('click',()=>{
+  const m=manifest();document.getElementById('jsonArea').value=JSON.stringify(m,null,2);
+  document.getElementById('jsonModal').classList.add('open');
+});
+document.getElementById('jsonClose').addEventListener('click',()=>document.getElementById('jsonModal').classList.remove('open'));
+document.getElementById('jsonCopy').addEventListener('click',()=>{const ta=document.getElementById('jsonArea');ta.select();document.execCommand('copy');toast('JSON copiado')});
+document.getElementById('jsonDl').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(manifest(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='csp-checklist-manifest.json';a.click();toast('JSON baixado');
 });
 
-function startEdit(row,id){
-  const lbl=row.querySelector('.flabel');
-  const f=findField(id);if(!f)return;
-  const input=document.createElement('input');
-  input.className='fedit';input.value=labelOf(f);
-  lbl.replaceWith(input);input.focus();input.select();
-  function commit(){STATE.labels[id]=input.value.trim()||f.label;save();render()}
-  input.addEventListener('blur',commit);
-  input.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();input.blur()}if(ev.key==='Escape'){render()}});
-}
-
-function saveAdd(phase){
-  const box=document.querySelector('[data-add="'+phase+'"]');
-  const get=k=>box.querySelector('[data-k="'+k+'"]');
-  const label=get('label').value.trim();
-  const prop=get('prop').value.trim()||('XA_CSP_'+phase.toUpperCase()+'_CUSTOM');
-  if(!label){toast('Dê um nome ao campo');return}
-  const kind=get('kind').value;
-  const qty=get('qty').value.trim();
-  const a=get('a').checked?'req':'hide';
-  const t=get('t').checked?'req':'hide';
-  if(!STATE.custom[phase])STATE.custom[phase]=[];
-  STATE.custom[phase].push({label,prop,kind,qty,a,t,custom:true});
-  save();
-  box.classList.remove('open');
-  box.querySelectorAll('input[type=text],input:not([type]),textarea').forEach(i=>{if(i.type!=='checkbox')i.value=''});
-  render();
-  toast('Campo adicionado');
-}
-
-/* ---------- PDF ---------- */
-function buildPrint(){
-  const fs=allFields();
-  const n=fs.length,ok=fs.filter(f=>decOf(f)==='approved').length,no=fs.filter(f=>decOf(f)==='rejected').length;
-  const d=new Date();const ds=d.toLocaleDateString('pt-BR');
-  let html='<div class="pd-title">Checklist CSP — Revisão</div>';
-  html+='<div class="pd-sub">Implantação CSP · Abrigo + Totem · '+ds+'</div>';
-  html+='<div class="pd-sum"><b>'+ok+'</b> aprovados · <b>'+no+'</b> rejeitados · <b>'+(n-ok-no)+'</b> pendentes · total <b>'+n+'</b> campos</div>';
-  PHASES.forEach(p=>{
-    const pf=fs.filter(f=>f.phase===p.id);
-    html+='<div class="pd-phase"><h2>'+p.name+'</h2><div class="pd-alias">'+p.alias+' — '+p.desc+'</div>';
-    html+='<table class="pd"><thead><tr><th>Campo</th><th>Apl.</th><th>Tipo</th><th>Decisão</th><th>Comentário</th></tr></thead><tbody>';
-    pf.forEach(f=>{
-      const d=decOf(f);const dec=d==='approved'?'Aprovado':d==='rejected'?'Rejeitado':'Pendente';
-      const apl=(f.a==='hide'?'':'A')+(f.a!=='hide'&&f.t!=='hide'?'/':'')+(f.t==='hide'?'':'T')||'—';
-      const cmt=commentOf(f);
-      html+='<tr><td>'+esc(labelOf(f))+(f.note?'<div class="pd-note">'+esc(f.note)+'</div>':'')+'</td>'
-        +'<td>'+apl+'</td><td>'+KIND_LABEL[f.kind]+(f.qty?' ×'+f.qty:'')+'</td>'
-        +'<td><span class="pd-dec '+d+'">'+dec+'</span></td>'
-        +'<td>'+(cmt?esc(cmt):'')+'</td></tr>';
-    });
-    html+='</tbody></table></div>';
-  });
-  document.getElementById('print-doc').innerHTML=html;
-}
-document.getElementById('pdfBtn').addEventListener('click',function(){buildPrint();setTimeout(()=>window.print(),60)});
-document.getElementById('resetBtn').addEventListener('click',reset);
-
-/* ---------- toast ---------- */
-let _t;function toast(m){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.style.cssText='position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#000;color:#fff;padding:11px 18px;border-radius:10px;font-weight:700;font-size:13px;opacity:0;transition:.25s;z-index:99';document.body.appendChild(el)}el.textContent=m;el.style.opacity='1';el.style.transform='translateX(-50%) translateY(0)';clearTimeout(_t);_t=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(20px)'},1600)}
+/* toast */
+let _t;function toast(m){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.style.cssText='position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#000;color:#fff;padding:11px 18px;border-radius:10px;font-weight:700;font-size:13px;opacity:0;transition:.25s;z-index:99';document.body.appendChild(el)}el.textContent=m;el.style.opacity='1';el.style.transform='translateX(-50%) translateY(0)';clearTimeout(_t);_t=setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(-50%) translateY(20px)'},1500)}
 
 render();
 </script>
