@@ -92,12 +92,22 @@ section.phase{margin-top:24px}
 .asset .badge.b-optional{background:#9b9b9b;color:#fff}
 .asset .badge.b-na{background:#ededed;color:#b0b0b0;text-decoration:line-through}
 .asset .badge.b-review{background:var(--yellow);color:#000}
+.asset .badge.b-conditional{background:var(--purple);color:#fff}
 .sel{font-family:inherit;font-size:12.5px;font-weight:700;border:none;border-radius:7px;padding:6px 8px;cursor:pointer;background:#fff;color:var(--ink);transition:background .14s,color .14s}
 .sel:focus{outline:2px solid var(--ink);outline-offset:1px}
 .sel.s-required{background:#3D7700;color:#fff}
 .sel.s-optional{background:#fff;color:var(--text)}
 .sel.s-na{background:#E5E5E5;color:#9b9b9b;text-decoration:line-through}
 .sel.s-review{background:var(--yellow);color:#000}
+.sel.s-conditional{background:var(--purple);color:#fff}
+
+.totem-gate{margin-top:20px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--purple);border-radius:var(--r-sm);padding:16px 18px;display:grid;gap:8px}
+.totem-gate h3{font-size:16px;line-height:1.2}
+.totem-gate p{color:var(--text);font-size:13.5px;max-width:780px}
+.totem-gate .chips{display:flex;gap:8px;flex-wrap:wrap}
+.totem-gate .chip{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--muted);border-radius:999px;padding:5px 9px;font-weight:800;font-size:11px;color:var(--ink)}
+.row.gate::after{content:"gate";position:absolute;right:10px;top:8px;background:var(--purple);color:#fff;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.row.conditional::after{content:"depende do gate";position:absolute;right:10px;top:8px;background:var(--yellow);color:#000;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 
 /* inline kind + qty */
 .kinp{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -194,6 +204,17 @@ footer code{font-size:11px}
     <div class="reviewer"><input id="reviewer" placeholder="Seu nome (Matheus)"></div>
   </div>
 
+  <div class="totem-gate">
+    <h3>Novo ponto para validar: Totem dentro de Abrigo</h3>
+    <p>O áudio confirmou que Minimalista normalmente não precisa de Totem, mas casos TP / ponto final podem precisar. A proposta abaixo cria um gate por fase: se o técnico marcar que Totem aplica, as fotos de Totem ficam obrigatórias; se marcar que não aplica, elas ficam ocultas e não entram no relatório. Use as notas para ajustar a nomenclatura certa.</p>
+    <div class="chips">
+      <span class="chip">Gate por fase</span>
+      <span class="chip">Foto obrigatória quando sim</span>
+      <span class="chip">Sem nova fase ou alias</span>
+      <span class="chip">Modelo do abrigo só como contexto</span>
+    </div>
+  </div>
+
   <div class="progress-wrap">
     <div class="pm"><span>Progresso da curadoria</span><span><b id="pDone">0</b> decididos · <b id="pPend">0</b> pendentes</span></div>
     <div class="bar"><span id="barDone"></span></div>
@@ -216,7 +237,7 @@ footer code{font-size:11px}
 
   <div class="callout">
     <h3>Lembre de decidir também</h3>
-    <p>As quantidades de fotos (3–4) estão corretas? Totem mantém itinerário e pictograma? A observação de conclusão (<span class="mono" style="font-size:12px">XA_RUA_PRV_OBRS</span>) basta, ou o relatório precisa de um campo estruturado de observação CSP?</p>
+    <p>As quantidades de fotos (3–4) estão corretas? A pergunta deve ser "Totem aplica?", "Foi feita instalação do Totem?" ou outro termo operacional? Totem mantém itinerário e pictograma? A observação de conclusão (<span class="mono" style="font-size:12px">XA_RUA_PRV_OBRS</span>) basta, ou o relatório precisa de um campo estruturado de observação CSP?</p>
   </div>
 
   <footer>Fonte: <code>docs/checklists/csp-abrigo-checklist-mock.md</code> + <code>csp-totem-checklist-mock.md</code>. Aliases compartilhados; multi-foto = campos explícitos (ADR 0010/0011). Tudo salvo no navegador. O JSON alimenta direto o seeder da implementação.</footer>
@@ -247,7 +268,8 @@ const BASE={
   {label:'Poste medido',prop:'XA_CSP_FUND_POSTE_MEDICAO',kind:'foto',a:'req',t:'rev'},
   {label:'Piso',prop:'XA_CSP_FUND_PISO',kind:'foto',a:'req',t:'req'},
   {label:'Piso medido',prop:'XA_CSP_FUND_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
-  {label:'Totem / remanejamento',prop:'XA_CSP_FUND_TOTEM',kind:'foto',a:'na',t:'req',note:'Específico de Totem.'},
+  {label:'Totem aplica nesta fundação?',prop:'XA_CSP_FUND_TOTEM_APLICA',kind:'texto',a:'req',t:'na',gate:true,note:'Gate Abrigo: confirmar a nomenclatura. Se sim, a foto de fundação do Totem fica obrigatória; se não, não aparece.'},
+  {label:'Foto da fundação do Totem',prop:'XA_CSP_FUND_TOTEM_PHOTO',kind:'foto',a:'conditional',t:'req',conditionalOn:'XA_CSP_FUND_TOTEM_APLICA',note:'Abrigo condicional: obrigatória somente quando o gate de Totem for sim. Totem standalone continua obrigatório.'},
  ],
  implantacao:[
   {label:'Retirada do gabarito',prop:'XA_CSP_IMP_RETIRADA_GABARITO',kind:'foto',a:'req',t:'req'},
@@ -257,6 +279,8 @@ const BASE={
   {label:'Poste medido',prop:'XA_CSP_IMP_POSTE_MEDICAO',kind:'foto',a:'req',t:'rev'},
   {label:'Piso',prop:'XA_CSP_IMP_PISO',kind:'foto',a:'req',t:'req'},
   {label:'Piso medido',prop:'XA_CSP_IMP_PISO_MEDICAO',kind:'foto',a:'req',t:'req'},
+  {label:'Totem aplica nesta implantação?',prop:'XA_CSP_IMP_TOTEM_APLICA',kind:'texto',a:'req',t:'na',gate:true,note:'Gate Abrigo: confirmar se o termo correto é aplica, instalação, implantação ou remanejamento.'},
+  {label:'Foto da implantação do Totem',prop:'XA_CSP_IMP_TOTEM_PHOTO',kind:'foto',a:'conditional',t:'req',conditionalOn:'XA_CSP_IMP_TOTEM_APLICA',note:'Abrigo condicional: obrigatória somente quando o gate de Totem for sim.'},
  ],
  montagem:[
   {label:'Banco',prop:'XA_CSP_MON_BANCO',kind:'foto',a:'req',t:'na'},
@@ -266,8 +290,9 @@ const BASE={
   {label:'Vidros',prop:'XA_CSP_MON_VIDROS',kind:'foto',a:'req',t:'na'},
   {label:'Piso',prop:'XA_CSP_MON_PISO',kind:'foto',a:'req',t:'na'},
   {label:'Piso medido',prop:'XA_CSP_MON_PISO_MEDICAO',kind:'foto',a:'req',t:'na'},
-  {label:'Totem',prop:'XA_CSP_MON_TOTEM',kind:'foto',a:'rev',t:'na',note:'Verificar se pertence à Montagem Abrigo.'},
-  {label:'Totem medido',prop:'XA_CSP_MON_TOTEM_MEDICAO',kind:'foto',a:'rev',t:'na',note:'Verificar se pertence à Montagem Abrigo.'},
+  {label:'Totem aplica nesta montagem?',prop:'XA_CSP_MON_TOTEM_APLICA',kind:'texto',a:'req',t:'na',gate:true,note:'Gate Abrigo para exceções TP / ponto final. Confirmar se Montagem deve ter este gate ou se Totem fica só em Fundação/Implantação.'},
+  {label:'Foto do Totem',prop:'XA_CSP_MON_TOTEM_PHOTO',kind:'foto',a:'conditional',t:'na',conditionalOn:'XA_CSP_MON_TOTEM_APLICA',note:'Abrigo condicional: obrigatória somente quando o gate de Totem for sim.'},
+  {label:'Foto do Totem medido',prop:'XA_CSP_MON_TOTEM_MEDICAO_PHOTO',kind:'foto',a:'conditional',t:'na',conditionalOn:'XA_CSP_MON_TOTEM_APLICA',note:'Abrigo condicional: confirmar se medição de Totem pertence à Montagem Abrigo.'},
  ],
  acabamento:[
   {label:'Arremate do pé do abrigo',prop:'XA_CSP_ACA_ARREMATE_PE',kind:'foto',a:'req',t:'na'},
@@ -288,11 +313,11 @@ const BASE={
  ],
 };
 const KIND={foto:'Foto',fotos:'Fotos',texto:'Texto'};
-const STATUS=[['required','Obrigatório'],['optional','Opcional'],['na','Não aplica'],['review','Revisar']];
+const STATUS=[['required','Obrigatório'],['optional','Opcional'],['conditional','Condicional Totem'],['na','Não aplica'],['review','Revisar']];
 const BASE_DEFAULT={req:'required',rev:'review',na:'na'};
 
 /* STATE */
-const LS='csp-curation-v2';
+const LS='csp-curation-v3';
 let S=load();
 function blank(){return{fields:{},order:{fundacao:null,implantacao:null,montagem:null,acabamento:null,eletrica:null},custom:{fundacao:[],implantacao:[],montagem:[],acabamento:[],eletrica:[]},reviewer:''}}
 function load(){try{let s=JSON.parse(localStorage.getItem(LS));if(!s)return blank();if(s.fields){Object.keys(s.fields).forEach(id=>{const fd=s.fields[id];if(fd&&fd.comment!==undefined&&fd.note===undefined){fd.note=fd.comment;delete fd.comment}})}return s}catch(e){return blank()}}
@@ -344,7 +369,7 @@ function assetHTML(f,asset){
 }
 function rowHTML(f,i,arr){
   const done=isDone(f);
-  const cls='row'+(done?' done':' pending')+(visible(f)?'':' hide');
+  const cls='row'+(done?' done':' pending')+(f.gate?' gate':'')+(f.conditionalOn?' conditional':'')+(visible(f)?'':' hide');
   const k=kindOf(f);
   const kinp='<span class="kinp"><select class="kind-sel" data-kind="'+f.id+'">'
     +['foto','fotos','texto'].map(function(x){return '<option value="'+x+'"'+(x===k?' selected':'')+'>'+KIND[x]+'</option>'}).join('')
@@ -489,7 +514,7 @@ function buildPrint(){
     h+='<table class="pd"><thead><tr><th>Campo</th><th>Property</th><th>Tipo</th><th>Abrigo</th><th>Totem</th><th>Nota</th></tr></thead><tbody>';
     fs.forEach(f=>{
       const lbl=labelOf(f),note=noteOf(f);
-      const cell=v=>{const m={required:'<span class="req">Obrig</span>',optional:'<span class="opt">Opc</span>',na:'<span class="na">—</span>',review:'<span class="rv">Rev</span>'};return m[v]};
+      const cell=v=>{const m={required:'<span class="req">Obrig</span>',optional:'<span class="opt">Opc</span>',conditional:'<span class="rv">Cond.</span>',na:'<span class="na">—</span>',review:'<span class="rv">Rev</span>'};return m[v]};
       h+='<tr><td>'+esc(lbl)+'</td><td>'+esc(f.prop)+'</td><td>'+KIND[kindOf(f)]+(qtyOf(f)?' ×'+qtyOf(f):'')+'</td><td>'+cell(stOf(f,'abrigo'))+'</td><td>'+cell(stOf(f,'totem'))+'</td><td>'+(note?esc(note):'')+'</td></tr>';
     });
     h+='</tbody></table></div>';
@@ -505,12 +530,14 @@ function manifest(){
     reviewer:S.reviewer||'',
     source:['docs/checklists/csp-abrigo-checklist-mock.md','docs/checklists/csp-totem-checklist-mock.md'],
     conventions:{sharedAliases:true,multiPhotoAsExplicitFields:true,activity:'Ruas - Instalacao (id 19)',scopeEstablishments:[383,384],
+      abrigoTotemApplicability:{method:'per_phase_checklist_gate',implementationPattern:'radioButton + photoField + photoCondition',phaseProgression:false,authoritativeSource:'technician checklist answer',contextOnly:['shelter_model_id','stop_number','has_correct_totem_height']},
       electrical:{alias:'csp-corretiva-eletrica-abrigo',activityType:'Ruas - Corretiva - Eletrica (id 10)',level:'n2',separateElt:true,abrigoOnly:true,note:'After Abrigo Acabamento. Custom checklist, not the existing maintenance corretivaEletricaRuasAbrigosSp.'}},
     phases:PHASES.map(p=>({
       name:p.name,alias:p.alias,
       fields:fieldsFor(p.id).map(f=>({
         label:labelOf(f),property:f.prop,kind:kindOf(f),qty:qtyOf(f)||null,
         abrigo:stOf(f,'abrigo'),totem:stOf(f,'totem'),
+        gate:!!f.gate,conditionalOn:f.conditionalOn||null,
         note:noteOf(f)||null,custom:!!f.custom
       }))
     }))
