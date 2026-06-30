@@ -69,7 +69,9 @@ section.phase{margin-top:24px}
 .phase-desc{color:var(--text);font-size:13px;margin:3px 0 13px}
 
 /* list + row */
-.list{display:flex;flex-direction:column;gap:9px}
+.list{display:flex;flex-direction:column;gap:10px}
+.field-group{position:relative;display:flex;flex-direction:column;gap:7px}
+.field-group.hide{display:none}
 .row{position:relative;display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 15px;transition:border-color .16s,background .16s;overflow:hidden}
 .row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:transparent;transition:background .16s}
 .row.pending::before{background:var(--yellow)}
@@ -100,14 +102,21 @@ section.phase{margin-top:24px}
 .sel.s-na{background:#E5E5E5;color:#9b9b9b;text-decoration:line-through}
 .sel.s-review{background:var(--yellow);color:#000}
 .sel.s-conditional{background:var(--purple);color:#fff}
+.row-pill{display:inline-flex;align-items:center;align-self:center;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.row-pill.gate{background:var(--purple);color:#fff}
+.row-pill.conditional{background:var(--yellow);color:#000}
 
 .totem-gate{margin-top:20px;background:#fff;border:1px solid var(--line);border-left:5px solid var(--purple);border-radius:var(--r-sm);padding:16px 18px;display:grid;gap:8px}
 .totem-gate h3{font-size:16px;line-height:1.2}
 .totem-gate p{color:var(--text);font-size:13.5px;max-width:780px}
 .totem-gate .chips{display:flex;gap:8px;flex-wrap:wrap}
 .totem-gate .chip{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--muted);border-radius:999px;padding:5px 9px;font-weight:800;font-size:11px;color:var(--ink)}
-.row.gate::after{content:"gate";position:absolute;right:10px;top:8px;background:var(--purple);color:#fff;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
-.row.conditional::after{content:"depende do gate";position:absolute;right:10px;top:8px;background:var(--yellow);color:#000;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.field-group.has-deps .row.gate{border-color:#d8ccff;background:#fff}
+.field-group.has-deps .dependents{position:relative;display:flex;flex-direction:column;gap:7px;margin-left:22px;padding-left:17px}
+.field-group.has-deps .dependents::before{content:"";position:absolute;left:0;top:-7px;bottom:9px;width:2px;background:var(--purple);border-radius:999px;opacity:.55}
+.field-group.has-deps .row.conditional{background:#fff;border-color:#ece6ff}
+.field-group.has-deps .row.conditional::before{background:var(--purple);opacity:.65}
+.field-group.has-deps .row.conditional .topline::before{content:"";width:13px;height:2px;background:var(--purple);border-radius:999px;opacity:.55;margin-right:1px}
 
 /* inline kind + qty */
 .kinp{margin-left:auto;display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
@@ -137,6 +146,7 @@ section.phase{margin-top:24px}
 .addrow input:focus,.addrow select:focus{outline:none;border-color:var(--orange)}
 .addrow input[data-k="note"]{width:100%;margin-top:2px}
 .chk{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.chk input[type="checkbox"]{width:auto;margin:0;accent-color:var(--purple)}
 .chk select{font-family:inherit;font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;color:var(--ink);cursor:pointer}
 .chk select:focus{outline:none;border-color:var(--orange)}
 .addrow .acts2{display:flex;gap:9px}
@@ -182,6 +192,7 @@ footer code{font-size:11px}
 }
 @media(max-width:680px){
   .row{flex-wrap:wrap}.acts{flex-direction:row;width:100%;justify-content:flex-start;margin-top:6px}
+  .field-group.has-deps .dependents{margin-left:9px;padding-left:12px}
   .addrow .g{grid-template-columns:1fr}
   .header-row{align-items:flex-start}
 }
@@ -330,11 +341,38 @@ function fieldsFor(p){
   const cust=(S.custom[p]||[]).map((f,i)=>({...f,id:'c-'+p+'-'+i,custom:true,phase:p}));
   const all=base.concat(cust);
   const order=S.order[p];
-  if(!order)return all;
+  if(!order)return normalizeGateOrder(all);
   const map={};all.forEach(f=>map[f.id]=f);
   const ordered=order.map(id=>map[id]).filter(Boolean);
   all.forEach(f=>{if(!ordered.includes(f))ordered.push(f)});
-  return ordered;
+  return normalizeGateOrder(ordered);
+}
+function normalizeGateOrder(fields){
+  const byProp={};fields.forEach(f=>byProp[f.prop]=f);
+  const deps={};fields.forEach(f=>{if(f.conditionalOn&&byProp[f.conditionalOn]){(deps[f.conditionalOn]||(deps[f.conditionalOn]=[])).push(f)}});
+  const out=[],used=new Set();
+  fields.forEach(f=>{
+    if(used.has(f.id))return;
+    if(f.conditionalOn&&byProp[f.conditionalOn])return;
+    out.push(f);used.add(f.id);
+    (deps[f.prop]||[]).forEach(d=>{if(!used.has(d.id)){out.push(d);used.add(d.id)}});
+  });
+  fields.forEach(f=>{if(!used.has(f.id)){out.push(f);used.add(f.id)}});
+  return out;
+}
+function fieldGroups(fields){
+  const byProp={};fields.forEach(f=>byProp[f.prop]=f);
+  const deps={};fields.forEach(f=>{if(f.conditionalOn&&byProp[f.conditionalOn]){(deps[f.conditionalOn]||(deps[f.conditionalOn]=[])).push(f)}});
+  const groups=[],used=new Set();
+  fields.forEach(f=>{
+    if(used.has(f.id))return;
+    if(f.conditionalOn&&byProp[f.conditionalOn])return;
+    const group=[f];used.add(f.id);
+    (deps[f.prop]||[]).forEach(d=>{if(!used.has(d.id)){group.push(d);used.add(d.id)}});
+    groups.push(group);
+  });
+  fields.forEach(f=>{if(!used.has(f.id))groups.push([f])});
+  return groups;
 }
 function stOf(f,asset){const key=asset==='abrigo'?'a':'t';const set=S.fields[f.id]&&S.fields[f.id][asset];if(set)return set;const base=f[key];return BASE_DEFAULT[base]||base;}
 function labelOf(f){return (S.fields[f.id]&&S.fields[f.id].label)||f.label}
@@ -371,33 +409,48 @@ function rowHTML(f,i,arr){
   const done=isDone(f);
   const cls='row'+(done?' done':' pending')+(f.gate?' gate':'')+(f.conditionalOn?' conditional':'')+(visible(f)?'':' hide');
   const k=kindOf(f);
+  const pill=f.gate?'<span class="row-pill gate">gate</span>':(f.conditionalOn?'<span class="row-pill conditional">depende do gate</span>':'');
+  const lockMove=!!f.conditionalOn;
   const kinp='<span class="kinp"><select class="kind-sel" data-kind="'+f.id+'">'
     +['foto','fotos','texto'].map(function(x){return '<option value="'+x+'"'+(x===k?' selected':'')+'>'+KIND[x]+'</option>'}).join('')
     +'</select>'+(k==='fotos'?'<input class="qty-input" type="number" min="1" data-qty="'+f.id+'" value="'+esc(qtyOf(f))+'" placeholder="qtd" title="Quantidade de fotos">':'')+'</span>';
   return '<div class="'+cls+'" data-id="'+f.id+'" data-phase="'+f.phase+'">'
     +'<div class="body">'
-      +'<div class="topline"><span class="flabel" data-edit="'+f.id+'">'+esc(labelOf(f))+'</span><span class="propsmall">'+esc(f.prop)+'</span>'+kinp+'</div>'
+      +'<div class="topline"><span class="flabel" data-edit="'+f.id+'">'+esc(labelOf(f))+'</span><span class="propsmall">'+esc(f.prop)+'</span>'+pill+kinp+'</div>'
       +'<div class="assets">'+assetHTML(f,'abrigo')+assetHTML(f,'totem')+'</div>'
       +'<div class="nota"><input data-nota="'+f.id+'" placeholder="Nota / dica (editável)..." value="'+esc(noteOf(f))+'"></div>'
     +'</div>'
     +'<div class="acts">'
-      +'<button class="act" data-act="up" title="Mover para cima"'+(i===0?' disabled':'')+'>↑</button>'
-      +'<button class="act" data-act="down" title="Mover para baixo"'+(i===arr.length-1?' disabled':'')+'>↓</button>'
+      +'<button class="act" data-act="up" title="'+(lockMove?'Campo dependente acompanha o gate':'Mover para cima')+'"'+((i===0||lockMove)?' disabled':'')+'>↑</button>'
+      +'<button class="act" data-act="down" title="'+(lockMove?'Campo dependente acompanha o gate':'Mover para baixo')+'"'+((i===arr.length-1||lockMove)?' disabled':'')+'>↓</button>'
       +'<button class="act" data-act="edit" title="Editar nome">✎</button>'
       +(f.custom?'<button class="act" data-act="del" title="Remover campo">🗑</button>':'')
     +'</div>'
+  +'</div>';
+}
+function groupHTML(group,i,groups){
+  const gate=group[0],deps=group.slice(1),shown=group.some(visible);
+  if(!deps.length)return rowHTML(gate,i,groups);
+  return '<div class="field-group has-deps'+(shown?'':' hide')+'">'
+    +rowHTML(gate,i,groups)
+    +'<div class="dependents">'+deps.map(d=>rowHTML(d,i,groups)).join('')+'</div>'
   +'</div>';
 }
 function addFormHTML(p){
   var PRE={fundacao:'FUND',implantacao:'IMP',montagem:'MON',acabamento:'ACA',eletrica:'ELE'};
   var pre=PRE[p]||p.slice(0,4).toUpperCase();
   function statSel(name,def){return '<select data-k="'+name+'">'
-    +[['required','Obrigatório'],['optional','Opcional'],['na','Não aplica']].map(function(v){return '<option value="'+v[0]+'"'+(v[0]===def?' selected':'')+'>'+v[1]+'</option>'}).join('')
+    +[['required','Obrigatório'],['optional','Opcional'],['conditional','Condicional Totem'],['na','Não aplica']].map(function(v){return '<option value="'+v[0]+'"'+(v[0]===def?' selected':'')+'>'+v[1]+'</option>'}).join('')
     +'</select>';}
+  function gateSel(){
+    const gates=fieldsFor(p).filter(f=>f.gate).map(f=>'<option value="'+esc(f.prop)+'">'+esc(labelOf(f))+'</option>').join('');
+    return '<select data-k="conditionalOn"><option value="">Sem gate</option>'+gates+'</select>';
+  }
   return '<div class="addrow" data-add="'+p+'" data-pre="'+pre+'">'
     +'<div class="g"><input data-k="label" placeholder="Nome do campo *"><input data-k="prop" placeholder="Property — auto-gerado ao digitar o nome"></div>'
     +'<div class="g"><select data-k="kind"><option value="foto">Foto</option><option value="fotos">Fotos (lista)</option><option value="texto">Texto</option></select><input data-k="qty" type="number" min="1" placeholder="Qtd fotos"></div>'
     +'<div class="g"><label class="chk">Abrigo '+statSel('a','required')+'</label><label class="chk">Totem '+statSel('t','required')+'</label></div>'
+    +'<div class="g"><label class="chk"><input type="checkbox" data-k="gate"> Este campo é um gate</label><label class="chk">Depende do gate '+gateSel()+'</label></div>'
     +'<input data-k="note" placeholder="Nota / dica (opcional)">'
     +'<div class="acts2"><button class="btn" data-addsave="'+p+'">Adicionar</button><button class="btn ghost" data-addcancel="'+p+'">Cancelar</button></div>'
   +'</div>';
@@ -407,9 +460,10 @@ function render(){
   const root=document.getElementById('phases');
   root.innerHTML=PHASES.map(p=>{
     const fs=fieldsFor(p.id);
+    const groups=fieldGroups(fs);
     const done=fs.filter(isDone).length,pend=fs.length-done;
     return '<section class="phase"><div class="phase-head"><h2>'+p.name+'</h2><span class="alias">'+p.alias+'</span><span class="psum"><span>Decididos <b>'+done+'</b></span><span>Pendentes <b>'+pend+'</b></span></span></div><p class="phase-desc">'+p.desc+'</p>'
-      +'<div class="list" id="list-'+p.id+'">'+fs.map((f,i)=>rowHTML(f,i,fs)).join('')+'</div>'
+      +'<div class="list" id="list-'+p.id+'">'+groups.map((g,i)=>groupHTML(g,i,groups)).join('')+'</div>'
       +'<button class="btn ghost addbtn" data-addopen="'+p.id+'">＋ Adicionar campo</button>'+addFormHTML(p.id)+'</section>';
   }).join('');
   updateProgress();
@@ -434,7 +488,7 @@ document.addEventListener('click',function(e){
   const actBtn=t.closest('.act');
   if(actBtn){
     const row=actBtn.closest('.row');const id=row.dataset.id;const p=row.dataset.phase;const a=actBtn.dataset.act;
-    if(a==='del'){const f=findField(id);if(f&&f.custom){if(confirm('Remover este campo?')){S.custom[p]=(S.custom[p]||[]).filter((x,i)=>'c-'+p+'-'+i!==id);setOrder(p,orderOf(p).filter(x=>x!==id));save();render()}return}}
+    if(a==='del'){const f=findField(id);if(f&&f.custom){if(confirm('Remover este campo?')){const removed=f.prop;S.custom[p]=(S.custom[p]||[]).filter((x,i)=>'c-'+p+'-'+i!==id).map(x=>{if(x.conditionalOn===removed){delete x.conditionalOn;if(x.a==='conditional')x.a='review'}return x});setOrder(p,orderOf(p).filter(x=>x!==id));save();render()}return}}
     if(a==='up'||a==='down'){move(p,id,a==='up'?-1:1);return}
     if(a==='edit'){startEdit(id);return}
   }
@@ -450,8 +504,10 @@ document.addEventListener('click',function(e){
   }
 });
 function move(p,id,dir){
-  const ids=orderOf(p);const i=ids.indexOf(id);const j=i+dir;if(j<0||j>=ids.length)return;
-  [ids[i],ids[j]]=[ids[j],ids[i]];setOrder(p,ids);save();render();
+  const groups=fieldGroups(fieldsFor(p));
+  const i=groups.findIndex(g=>g.some(f=>f.id===id));const j=i+dir;if(i<0||j<0||j>=groups.length)return;
+  [groups[i],groups[j]]=[groups[j],groups[i]];
+  setOrder(p,groups.flat().map(f=>f.id));save();render();
 }
 document.addEventListener('change',function(e){
   const sel=e.target.closest('.sel');
@@ -487,7 +543,11 @@ function saveAdd(p){
   if(!prop){toast('Property inválida');k('prop').focus();return}
   var allProps=[];PHASES.forEach(function(pp){fieldsFor(pp.id).forEach(function(f){allProps.push(f.prop)})});
   if(allProps.includes(prop)){toast('Property já existe: '+prop);k('prop').focus();return}
+  var isGate=k('gate').checked,conditionalOn=k('conditionalOn').value;
+  if(isGate&&conditionalOn){toast('Escolha gate ou dependência, não os dois');return}
   var fld={label:label,prop:prop,kind:k('kind').value,qty:k('qty').value.trim(),a:k('a').value,t:k('t').value,note:k('note').value.trim()};
+  if(isGate){fld.gate=true;fld.kind='texto';fld.a='required';fld.t='na';if(!fld.note)fld.note='Gate: se sim, os campos dependentes ficam obrigatórios; se não, ficam ocultos.'}
+  if(conditionalOn){fld.conditionalOn=conditionalOn;fld.a='conditional';if(!fld.note)fld.note='Depende do gate selecionado: obrigatório somente quando o gate for sim.'}
   if(!S.custom[p])S.custom[p]=[];S.custom[p].push(fld);
   var newId='c-'+p+'-'+(S.custom[p].length-1);
   if(!S.order[p])S.order[p]=orderOf(p);S.order[p].push(newId);
