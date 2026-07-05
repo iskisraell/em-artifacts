@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | Termo de Arrolamento RJ: do Lens ao Operações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--orange); color: var(--white); }
+    ::-moz-selection { background: var(--orange); color: var(--white); }
+    body { background: var(--surface); color: var(--black); font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.45; overflow-x: hidden; }
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+    code { display: inline-block; max-width: 100%; padding: 2px 6px; border-radius: 5px; background: var(--white); color: var(--purple); font-family: Consolas, "Cascadia Mono", monospace; font-size: .86em; overflow-wrap: anywhere; word-break: break-word; vertical-align: baseline; }
+    main { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 24px 0 56px; }
+    section { margin-top: 22px; }
+    h1, h2, h3 { margin-top: 0; font-weight: 800; }
+    h1 { max-width: 980px; margin-bottom: 20px; font-size: clamp(42px, 7.5vw, 90px); line-height: .92; }
+    h2 { max-width: 820px; margin-bottom: 0; font-size: clamp(28px, 3.6vw, 46px); line-height: 1.04; }
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+    .hero { min-height: 480px; padding: clamp(24px, 4vw, 52px); border-radius: var(--radius); background: var(--black); color: var(--white); display: grid; align-content: space-between; gap: 48px; overflow: hidden; position: relative; isolation: isolate; }
+    .hero::before, .hero::after { content: ""; position: absolute; z-index: -1; aspect-ratio: 1; border-radius: 34px; }
+    .hero::before { right: clamp(116px, 15vw, 220px); bottom: clamp(-150px, -10vw, -62px); width: min(42vw, 420px); background: var(--orange); transform: rotate(10deg); }
+    .hero::after { right: clamp(-112px, -8vw, -48px); bottom: clamp(-120px, -7vw, -44px); width: min(34vw, 340px); background: var(--purple); transform: rotate(-8deg); }
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 22px; padding: 7px 11px; border-radius: 999px; background: var(--yellow); color: var(--black); font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: .08em; }
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .pill { display: inline-flex; align-items: center; min-height: 32px; padding: 7px 11px; border-radius: 999px; font-size: 13px; font-weight: 800; line-height: 1; white-space: normal; }
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+    .nav { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; padding: 10px 0; background: var(--surface); }
+    .nav a, .tab-button { border: 1px solid var(--black); border-radius: 999px; background: var(--white); color: var(--black); cursor: pointer; font: inherit; font-weight: 800; text-decoration: none; white-space: normal; text-align: center; transition: background .15s, color .15s; }
+    .nav a { padding: 10px 13px; font-size: 14px; }
+    .tab-button { padding: 11px 14px; font-size: 14px; }
+    .nav a:hover, .tab-button:hover, .tab-button[aria-selected="true"] { background: var(--black); color: var(--white); }
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; min-width: 0; }
+    .card { min-width: 0; min-height: 100%; padding: clamp(18px, 2.4vw, 28px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); overflow: hidden; transition: transform .18s, box-shadow .18s; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .card.black, .card.purple, .card.orange, .card.green { border-color: transparent; color: var(--white); }
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.pink { background: var(--pink); }
+    .card.green { background: var(--green); }
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code { color: var(--black); }
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+    .metric { margin-bottom: 6px; font-size: clamp(44px, 8vw, 86px); font-weight: 800; line-height: .86; }
+    .head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 14px; }
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .flow-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; align-items: stretch; min-width: 0; }
+    .flow-lane { min-width: 0; display: grid; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); transition: transform .15s; }
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.removed { border-color: var(--red); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.kept { border-color: var(--purple); }
+    .flow-node { min-width: 0; padding: 12px; border-radius: 12px; background: var(--muted); }
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+    .split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; min-width: 0; }
+    .compare { min-width: 0; min-height: 180px; padding: 18px; border-radius: 16px; border: 1px solid var(--line); background: var(--white); }
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+    details { border: 1px solid var(--line); border-radius: 14px; background: var(--white); overflow: hidden; }
+    details + details { margin-top: 8px; }
+    summary { cursor: pointer; padding: 16px 18px; font-weight: 800; list-style: none; }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { background: var(--black); color: var(--white); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; line-height: 1; }
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+    .badge.yellow { background: var(--yellow); color: var(--black); }
+    .callout { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius); background: var(--yellow); }
+    .rail { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; min-width: 0; }
+    .rail-step { min-width: 0; padding: 14px; border-radius: 14px; background: var(--black); color: var(--white); transition: transform .15s; }
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+    .filter-demo { display: grid; gap: 14px; padding: 20px; border-radius: 16px; background: var(--muted); border: 1px solid var(--line); }
+    .filter-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+    .filter-chip { padding: 8px 14px; border-radius: 999px; border: 2px solid var(--line); background: var(--white); font-weight: 700; font-size: 13px; cursor: pointer; transition: all .15s; user-select: none; }
+    .filter-chip:hover { border-color: var(--orange); }
+    .filter-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .filter-chip.active:hover { background: var(--black); border-color: var(--black); }
+    .filter-payload { padding: 14px; border-radius: 14px; background: var(--black); color: var(--yellow); font-family: Consolas, "Cascadia Mono", monospace; font-size: 13px; white-space: pre-wrap; overflow-x: auto; min-height: 56px; transition: all .2s; }
+    .filter-label { font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+    .counter { display: inline-block; transition: all .3s ease; }
+    .counter.bump { transform: scale(1.15); color: var(--orange); }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; border-radius: 14px; background: var(--black); color: var(--white); font-weight: 700; font-size: 14px; z-index: 100; opacity: 0; transform: translateY(20px); transition: all .3s ease; pointer-events: none; }
+    .toast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .problem-strip { display: grid; grid-template-columns: 1fr 92px 1fr 92px 1fr; gap: 12px; align-items: stretch; }
+    .problem-card { min-height: 172px; border-radius: var(--radius); padding: 20px; display: grid; align-content: space-between; border: 1px solid var(--line); background: var(--white); position: relative; overflow: hidden; }
+    .problem-card:before { content: ""; position: absolute; right: -34px; top: -34px; width: 96px; height: 96px; border-radius: 50%; background: var(--yellow); opacity: .7; }
+    .problem-card h3 { position: relative; z-index: 1; }
+    .problem-card p { position: relative; z-index: 1; margin-bottom: 0; }
+    .problem-card.bad { background: var(--black); color: var(--white); border-color: var(--black); }
+    .problem-card.bad p { color: #D4D4D4; }
+    .problem-card.fix { background: var(--orange); border-color: var(--orange); }
+    .problem-card.fix p { color: var(--black); }
+    .problem-card.fix::before { display: none; }
+    .problem-arrow { border-radius: var(--radius); background: var(--purple); color: var(--white); display: grid; place-items: center; font-size: 34px; font-weight: 800; }
+    .mini-label { width: fit-content; padding: 6px 10px; border-radius: 999px; background: var(--muted); color: var(--black); font-size: 11px; font-weight: 800; text-transform: uppercase; position: relative; z-index: 1; }
+    .bad .mini-label { background: var(--red); color: var(--white); }
+    .fix .mini-label { background: var(--black); color: var(--white); }
+    .matrix-cell { padding: 8px 10px; border-radius: 8px; font-size: 12px; font-weight: 800; text-align: center; }
+    .matrix-cell.yes { background: rgba(61,119,0,.16); color: var(--green); }
+    .matrix-cell.no { background: var(--muted); color: var(--text); }
+    .matrix-cell.may { background: rgba(255,79,0,.16); color: var(--orange); }
+    .matrix-row:hover td { background: var(--muted); }
+    footer { margin-top: 22px; padding: 20px 0 0; color: var(--text); font-size: 14px; }
+    @media (max-width: 920px) {
+      .head, .callout, .split, .problem-strip { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .problem-strip { grid-template-columns: 1fr 1fr; }
+      .problem-arrow { min-height: 54px; transform: rotate(90deg); }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .hero::before { right: 62px; width: 260px; }
+      .hero::after { width: 210px; }
+      .rail, .flow-board, .problem-strip { grid-template-columns: 1fr; }
+      .card, .flow-lane, .compare, details { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div>
+        <span class="eyebrow">Operacoes RJ | Lens -> Operacoes • Jul 2026</span>
+        <h1>Termo de Arrolamento RJ: do Lens ao Operacoes.</h1>
+        <p class="lead">De uma planilha que so documentava mobiliario urbano no Lens a um contrato de implementacao no Field Service do Operacoes. Por que a matriz virou backend, o que decide o checklist do RJ e como o prazo de 01/08 ainda cabe.</p>
+      </div>
+      <div class="hero-bar">
+        <span class="pill orange">Termo de Arrolamento</span>
+        <span class="pill purple">Eletromidia Lens</span>
+        <span class="pill yellow">my-route checklist</span>
+        <span class="pill green">JCDecaux seed</span>
+        <span class="pill pink">prazo 01/08</span>
+      </div>
+    </section>
+
+    <!-- NAV -->
+    <nav class="nav" aria-label="Navegacao">
+      <a href="#contexto">Contexto</a>
+      <a href="#virada">A virada</a>
+      <a href="#decisao">Decisao tecnica</a>
+      <a href="#seed">JCDecaux seed</a>
+      <a href="#matriz">Matriz</a>
+      <a href="#exemplos">Exemplos</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#riscos">Riscos</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+
+    <!-- CONTEXTO -->
+    <section id="contexto">
+      <div class="head">
+        <h2>Onde estavamos: a matriz nascia como vocabulario do Lens.</h2>
+        <p>O Lens era o prototipo/sistema inicial de inventario e documentacao de mobiliario urbano. Ele gerou uma planilha, mas carregava um campo fantasma.</p>
+      </div>
+      <div class="grid">
+        <article class="card span-6">
+          <span class="pill purple">Eletromidia Lens</span>
+          <h3>Prototipo de inventario e documentacao.</h3>
+          <p>Em 2026-06-05 o Lens gerou a matriz <code>rio-checklist-matrix-tipologias.xlsx</code> como source of truth de campos de checklist por tipologia do Rio. Tipologias iniciais: <strong>MUPI</strong> e <strong>Relogio</strong>, com 27 campos.</p>
+          <ul class="checklist">
+            <li>Derivada de codigo/schema/frontend/PDF, nao de dados vivos.</li>
+            <li>Servia para documentar e alinhar vocabulario entre Lens e time de operacoes.</li>
+            <li>Compartilhada em 06/06 com Pedro, Bahia, Prevedel, Natalia e Yuri.</li>
+          </ul>
+        </article>
+        <article class="card span-6">
+          <span class="pill red">atencao</span>
+          <h3>O fantasma <code>checklistC</code>.</h3>
+          <p>Durante a investigacao do Lens apareceu um <strong>campo morto</strong>: <code>checklistC</code> existia em schema/admin/PDF, mas o formulario tecnico nao criava nem enviava. Copiar o Lens literal reproduziria esse dead code no Operacoes.</p>
+          <ul class="checklist">
+            <li>Nao copiar cegamente a superficie do Lens.</li>
+            <li>A nova implementacao nasce do contrato validado, nao do prototipo.</li>
+            <li>Memoria源头 <code>2026-06-12T22-35-18</code> registra a descoberta.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- A VIRADA -->
+    <section id="virada">
+      <div class="head">
+        <h2>A virada: a matriz deixa de ser doc e vira contrato.</h2>
+        <p>Em junho o time parou de atualizar a planilha so para anotar e passou a trata-la como o contrato de campos que o Israel implementa.</p>
+      </div>
+      <div class="split">
+        <div class="compare before">
+          <span class="pill red">antes</span>
+          <h3>Matriz como documentacao do Lens.</h3>
+          <p>Vocabulario derivado de codigo e PDF, sem validacao formal. Servia para conversa interna. <code>checklistC</code> fantasma incluido.</p>
+        </div>
+        <div class="compare after">
+          <span class="pill green">agora</span>
+          <h3>Matriz como contrato de implementacao.</h3>
+          <p>Source of truth viva (<code>rio-checklist-matrix-tipologias</code>), com MUPI, Relogio e Abrigos, obrigatorios/opcionais/NAo aplicaveis por tipologia, e subtipos Clear Channel e JCDecaux.</p>
+        </div>
+      </div>
+      <div class="change-list" style="margin-top:14px">
+        <div class="change-item">
+          <div><strong>1. Prevedel pede checklists (08/06)</strong><br><small>Natalia e Bahia trabalham nos campos para entregar ao Israel.</small></div>
+          <span class="pill orange">coordenacao</span>
+        </div>
+        <div class="change-item">
+          <div><strong>2. Bahia inclui preventiva (15/06)</strong><br><small>Campos de manutencao preventiva que faltavam no Lens.</small></div>
+          <span class="pill purple">escopo</span>
+        </div>
+        <div class="change-item">
+          <div><strong>3. Natalia inclui Abrigos (15/06)</strong><br><small>Tipologia e campos de abrigos entram na matriz viva.</small></div>
+          <span class="pill yellow">tipologia</span>
+        </div>
+        <div class="change-item">
+          <div><strong>4. Reuniao 24/06 fixa direcao</strong><br><small>Usar esquema de checklist/manutencao existente no Field Service; sem modulo novo.</small></div>
+          <span class="pill green">decisao</span>
+        </div>
+        <div class="change-item">
+          <div><strong>5. Prevedel envia EFS JCDecaux (02/07)</strong><br><small>Anexo <code>EFS - JCDecaux.xlsx</code> com enderecos JC; no Drive os modelos Clear e JC.</small></div>
+          <span class="pink" style="display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;border-radius:999px;background:var(--pink);color:var(--black);font-size:13px;font-weight:800">insumo</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DECISAO TECNICA -->
+    <section id="decisao">
+      <div class="head">
+        <h2>Decisao tecnica: checklist de rota, nao modulo novo.</h2>
+        <p>A reuniao de 24/06 e a correcao arquitetural de 26/06 definiram onde o codigo vive no Operacoes.</p>
+      </div>
+      <div class="flow-board">
+        <article class="flow-lane removed">
+          <span class="pill red"> fora</span>
+          <h3>Project Ticket como modulo novo.</h3>
+          <div class="flow-node">
+            <strong>Nao fazer.</strong>
+            <p>Criar um modulo paralelo de Termo de Arrolamento duplicaria cadastro e regras ja existentes no Field Service.</p>
+          </div>
+        </article>
+        <article class="flow-lane kept">
+          <span class="pill purple"> onde</span>
+          <h3>street-route / my-route checklist.</h3>
+          <div class="flow-node">
+            <strong>Implementar aqui.</strong>
+            <p>Atividade de Termo de Arrolamento + RJ + tipos Abrigos/Relogio/Totem roda como checklist de rota de rua, persistindo em <code>route.checklist.ruas.*</code>.</p>
+          </div>
+        </article>
+        <article class="flow-lane added">
+          <span class="pill green"> superficies</span>
+          <h3>Reutilizar stores/rules existentes.</h3>
+          <div class="flow-node">
+            <strong>Arquivos-alvo.</strong>
+            <p><code>StreetPreventiveUniversal.vue</code>, <code>ChecklistActions.vue</code>, <code>ChecklistRules.js</code>, <code>ChecklistTemplate.js</code>, <code>PagesState.js</code>.</p>
+          </div>
+        </article>
+        <article class="flow-lane kept">
+          <span class="pill yellow black">saida</span>
+          <h3>PDF/Termo no backoffice.</h3>
+          <div class="flow-node">
+            <strong>Exemplo <code>TERMO-46</code>.</strong>
+            <p>PDF de referencia no Drive mapeia respostas/fotos/geolocalizacao para o Termo; layout polido depois da validacao Prevedel/RGov.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- JCDECAUX SEED -->
+    <section id="seed">
+      <div class="head">
+        <h2>O dado JCDecaux: endereco vira seed, campo completa coordenadas.</h2>
+        <p>Muitos ativos JCDecaux chegam sem latitude/longitude. A primeira visita tecnica captura o que falta.</p>
+      </div>
+      <div class="problem-strip">
+        <article class="problem-card">
+          <span class="mini-label">Problema</span>
+          <h3>Pontos sem coordenadas.</h3>
+          <p>Extrato de <code>EFS - JCDecaux.xlsx</code> (aba <code>Pontos nao SEP</code>) com ~1000 linhas: muitos registros RJ ativos sem lat/long.</p>
+        </article>
+        <div class="problem-arrow">&rarr;</div>
+        <article class="problem-card bad">
+          <span class="mini-label">Impacto</span>
+          <h3>Nao da pra plotar nem roteirizar.</h3>
+          <p>Sem geolocalizacao, mapa, rota e PDF ficam inconsistentes. Mapear manual seria inviavel para milhares de pontos.</p>
+        </article>
+        <div class="problem-arrow">&rarr;</div>
+        <article class="problem-card fix">
+          <span class="mini-label">Solucao</span>
+          <h3>Seed por endereco, captura em campo.</h3>
+          <p>Importar/normalizar pontos por endereco, cidade e praca; marcar lat/long pendente. A primeira vistoria captura lat, long, endereco corrigido, fotos e checklist.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- MATRIZ INTERATIVA -->
+    <section id="matriz">
+      <div class="head">
+        <h2>Matriz interativa: tipologia contra campo.</h2>
+        <p>Clique nas tipologias para ver quais blocos de campo se aplicam. Verde = obrigatoria, laranja = opcional, cinza = nao aplicavel.</p>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab-button" role="tab" aria-selected="true" data-tab="tab-mupi">MUPI</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="tab-relogio">Relogio</button>
+        <button class="tab-button" role="tab" aria-selected="false" data-tab="tab-abrigos">Abrigos</button>
+      </div>
+
+      <article class="tab-panel active" id="tab-mupi" role="tabpanel">
+        <div class="card" style="margin-top:4px">
+          <h3>MUPI: estrutura/vidro e eletrica basica.</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Campo</th><th>Grupo</th><th>MUPI</th></tr></thead>
+              <tbody>
+                <tr class="matrix-row"><td>Sem ocorrencia</td><td>Estrutura/Vidros</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Estrutura danificada</td><td>Estrutura/Vidros</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Ferrugem/Corrosao</td><td>Estrutura/Vidros</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Pintura riscada/danificada</td><td>Estrutura/Vidros</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Vidro quebrado/riscado/ausente</td><td>Estrutura/Vidros</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Serigrafia defeituosa</td><td>Estrutura/Vidros</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Equipamento energizado</td><td>Eletrica</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Energia 24h</td><td>Eletrica</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Quadro eletrico conforme</td><td>Eletrica</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Kit iluminacao conforme</td><td>Eletrica</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Display Publicitario / Painel LED</td><td>Relogio</td><td><span class="badge red">NA</span></td></tr>
+                <tr class="matrix-row"><td>Modem / GPS</td><td>Relogio</td><td><span class="badge red">NA</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="tab-relogio" role="tabpanel">
+        <div class="card" style="margin-top:4px">
+          <h3>Relogio: tudo de MUPI + display/LED/controladoras.</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Campo</th><th>Grupo</th><th>Relogio</th></tr></thead>
+              <tbody>
+                <tr class="matrix-row"><td>Display hora/temperatura</td><td>Relogio</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Display Publicitario</td><td>Relogio</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Painel de LED funcionando</td><td>Relogio</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Controladoras/Fontes/Receiver Card</td><td>Relogio</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>PC</td><td>Relogio</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Sistema de ventilacao conforme</td><td>Relogio</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Amortecedor / Difusor</td><td>Relogio</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Sensor de temperatura</td><td>Relogio</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Black Light/lampadas tubulares</td><td>Relogio</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Modem</td><td>Relogio</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>GPS</td><td>Relogio</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Banco instalado</td><td>Estrutura/Vidros</td><td><span class="badge red">NA</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+
+      <article class="tab-panel" id="tab-abrigos" role="tabpanel">
+        <div class="card" style="margin-top:4px">
+          <h3>Abrigos: estrutura + cobertura + subtipos Clear e JC.</h3>
+          <p>Subtipos Clear Channel: <code>Abrigo Narrow</code>, <code>Abrigo Standart</code>, <code>B Simples</code>. JCDecaux: <code>Modelo Grimshaw</code>, <code>Grimshaw Duplo</code>, <code>PAL-LI</code>, <code>PAL-LI 2.0</code>.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Campo</th><th>Grupo</th><th>Abrigos</th></tr></thead>
+              <tbody>
+                <tr class="matrix-row"><td>Banco instalado</td><td>Estrutura/Vidros</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Cobertura conforme</td><td>Estrutura/Vidros</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Iluminacao do teto</td><td>Eletrica</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Vidro riscado/ausente</td><td>Estrutura/Vidros</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Kit difusor conforme</td><td>Eletrica</td><td><span class="badge orange">opc</span></td></tr>
+                <tr class="matrix-row"><td>Fixacao de cartaz conforme</td><td>Eletrica</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Possui aterramento</td><td>Eletrica</td><td><span class="badge green">obrig</span></td></tr>
+                <tr class="matrix-row"><td>Display hora/temperatura</td><td>Relogio</td><td><span class="badge red">NA</span></td></tr>
+                <tr class="matrix-row"><td>Painel de LED</td><td>Relogio</td><td><span class="badge red">NA</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- EXEMPLOS JC DECAUX -->
+    <section id="exemplos">
+      <div class="head">
+        <h2>Exemplos JCDecaux filtraveis.</h2>
+        <p>Sete linhas reais do extrato de <code>EFS - JCDecaux.xlsx</code> (aba Pontos nao SEP). Use os filtros para ver o payload que o seed recebe.</p>
+      </div>
+      <div class="filter-demo">
+        <div>
+          <div class="filter-label">Filtros do seed</div>
+          <div class="filter-controls" id="seed-controls">
+            <button class="filter-chip active" data-filter="all">todos</button>
+            <button class="filter-chip" data-filter="totem">Totem</button>
+            <button class="filter-chip" data-filter="abrigo">Abrigo</button>
+            <button class="filter-chip" data-filter="ativo">status Ativo</button>
+          </div>
+        </div>
+        <div>
+          <div class="filter-label">Resultado (<span class="counter" id="seed-count">7</span> pontos)</div>
+          <div class="filter-payload" id="seed-payload">{ "filtros": ["all"] }</div>
+        </div>
+      </div>
+      <div class="table-wrap" style="margin-top:14px">
+        <table id="seed-table">
+          <thead>
+            <tr><th>Endereco</th><th>Cidade</th><th>Tipo</th><th>Modelo</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr data-row="totem"><td>R. Dias Da Cruz, 128</td><td>Rio de Janeiro</td><td>Totem [183]</td><td>Totem - Estatico [445]</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr data-row="totem"><td>R. Dias Da Cruz, 650</td><td>Rio de Janeiro</td><td>Totem [183]</td><td>Totem - Estatico [445]</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr data-row="totem"><td>Estrada Intendente Magalhaes 184</td><td>Rio de Janeiro</td><td>Totem [183]</td><td>Totem - Estatico [445]</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr data-row="totem"><td>Rua Dois De Fevereiro Fte Rua Daniel Carneiro</td><td>Rio de Janeiro</td><td>Totem [183]</td><td>Totem - Estatico [445]</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr data-row="abrigo"><td>Av. Dom Helder Camara, Jto Ao 5705</td><td>Rio de Janeiro</td><td>Abrigos [186]</td><td>Abrigo - Estatico [442]</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr data-row="abrigo"><td>Terminal Rodoviario Americo Aires Abrigo 1</td><td>Rio de Janeiro</td><td>Abrigos [186]</td><td>Abrigo - Estatico [442]</td><td><span class="badge green">Ativo</span></td></tr>
+            <tr data-row="abrigo"><td>Av. Brasil Fte 23165</td><td>Rio de Janeiro</td><td>Abrigos [186]</td><td>Abrigo - Estatico [442]</td><td><span class="badge green">Ativo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="timeline">
+      <div class="head">
+        <h2>Timeline navegavel: marco a marco de maio a julho.</h2>
+        <p>Da matriz nascendo no Lens ate o prazo contratual, em tres trilhas.</p>
+      </div>
+      <div class="grid">
+        <article class="card span-4">
+          <span class="pill purple">Maio</span>
+          <h3>Origem no Lens.</h3>
+          <ul class="checklist">
+            <li><strong>2026-05-18</strong>: PDF <code>TERMO-46</code> de referencia no Drive.</li>
+            <li><strong>2026-06-05</strong>: matriz <code>rio-checklist-matrix-tipologias</code> gerada no Lens.</li>
+          </ul>
+        </article>
+        <article class="card span-4">
+          <span class="pill orange">Junho</span>
+          <h3>Virada em direcao ao Operacoes.</h3>
+          <ul class="checklist">
+            <li><strong>06/06</strong>: matriz compartilhada com Pedro, Bahia, Prevedel, Natalia, Yuri.</li>
+            <li><strong>08/06</strong>: Prevedel pede checklists a Bahia e Natalia.</li>
+            <li><strong>15/06</strong>: Bahia inclui preventiva; Natalia inclui Abrigos.</li>
+            <li><strong>24/06</strong>: reuniao fixa Field Service, sem modulo novo; prazo 01/08.</li>
+            <li><strong>26/06</strong>: Obsidian corrige superficie: my-route, nao Project Ticket.</li>
+          </ul>
+        </article>
+        <article class="card span-4">
+          <span class="pink" style="display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;border-radius:999px;background:var(--pink);color:var(--black);font-size:13px;font-weight:800">Julho</span>
+          <h3>Seed e prazo apertado.</h3>
+          <ul class="checklist">
+            <li><strong>02/07</strong>: Prevedel envia <code>EFS - JCDecaux.xlsx</code>; Drive tem modelos Clear e JC.</li>
+            <li><strong>05/07</strong>: busca pos-02/07 nao encontra atualizacao substantiva.</li>
+            <li><strong>01/08</strong>: entrega contratual.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- RISCOS -->
+    <section id="riscos">
+      <div class="head">
+        <h2>Riscos ativos em 05/07.</h2>
+        <p>O que ainda pode quebrar o prazo de 01/08 se nao for resolvido agora.</p>
+      </div>
+      <div class="grid">
+        <article class="card black span-3">
+          <div class="metric">01</div>
+          <h3>Validacao RGov ausente.</h3>
+          <p>Nada confirma que a matriz foi validada pela RGov depois de 02/07. Sem assinatura, voce implementa requisitos moveis.</p>
+        </article>
+        <article class="card orange span-3">
+          <div class="metric">02</div>
+          <h3>Seed sem coordenadas.</h3>
+          <p>Lacunas de lat/long precisam virar comportamento explicito de captura em campo, nao downstream de import.</p>
+        </article>
+        <article class="card purple span-3">
+          <div class="metric">03</div>
+          <h3>Fantasma <code>checklistC</code>.</h3>
+          <p>Copiar o Lens literal ressuscitaria o dead code. Contrato validado e superficie my-route sao obrigatorios.</p>
+        </article>
+        <article class="card green span-3">
+          <div class="metric">04</div>
+          <h3>Prazo apertado.</h3>
+          <p>Sem fechar seed e PDF cedo, o caminho ate 01/08 fica em modo apenas-correcao.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap">
+      <div class="head">
+        <h2>Roadmap ate 01/08 por marcos semanais.</h2>
+        <p>Cada marco destrava o proximo. Se um atrasa, o UAT começa a comer o buffer da entrega.</p>
+      </div>
+      <div class="rail">
+        <div class="rail-step">
+          <strong>10/07 - Contrato de campos/seed</strong>
+          <p>Congelar matriz v1 (comum + relogio + abrigos + totens) e importar/normalizar EFS JCDecaux.</p>
+        </div>
+        <div class="rail-step">
+          <strong>17/07 - Checklist em dev</strong>
+          <p>Implementar em <code>StreetPreventiveUniversal.vue</code> e surfaces <code>ChecklistActions/Rules/Template</code>.</p>
+        </div>
+        <div class="rail-step">
+          <strong>24/07 - PDF e teste de rota</strong>
+          <p>Termo/PDF contra <code>TERMO-46</code>; teste de rota real com seed.</p>
+        </div>
+        <div class="rail-step">
+          <strong>31/07 - UAT e correcoes</strong>
+          <p>Validacao Prevedel e RGov; ajustar campos/layout do PDF.</p>
+        </div>
+        <div class="rail-step">
+          <strong>01/08 - Entrega</strong>
+          <p>Entrega contratual Termo de Arrolamento RJ.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALLOUT -->
+    <section>
+      <div class="callout">
+        <div>
+          <h3>Posicao final.</h3>
+          <p>A matriz parou de ser documentacao e virou contrato. Implementar no my-route checklist do Operacoes, com JCDecaux entrando por seed de endereco e geolocalizacao capturada em campo. Fechar contrato de campos e seed ate 10/07 e validar com RGov antes de polir o PDF.</p>
+        </div>
+        <span class="pill black">recomendacao</span>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Termo de Arrolamento RJ: do Lens ao Operacoes | Eletromidia Artifact</strong>
+      <p>Fontes: matriz <code>rio-checklist-matrix-tipologias</code>, <code>EFS - JCDecaux.xlsx</code>, ata da reuniao 24/06, memorias Obsidian/Lens, PDF <code>TERMO-46</code>. Sintese cruzada em 2026-07-05.</p>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script>
+    // Toast
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(function() { toast.classList.remove('visible'); }, 1800);
+    }
+
+    // Tabs
+    document.querySelectorAll('.tab-button[role="tab"]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.dataset.tab;
+        document.querySelectorAll('.tab-button[role="tab"]').forEach(function(b) {
+          b.setAttribute('aria-selected', String(b === btn));
+        });
+        document.querySelectorAll('.tab-panel').forEach(function(p) {
+          p.classList.toggle('active', p.id === target);
+        });
+      });
+    });
+
+    // Bump counter helper
+    function bumpCounter(el) {
+      if (!el) return;
+      el.classList.add('bump');
+      setTimeout(function() { el.classList.remove('bump'); }, 300);
+    }
+
+    // Seed filter demo
+    (function() {
+      var controls = document.getElementById('seed-controls');
+      var payload = document.getElementById('seed-payload');
+      var countEl = document.getElementById('seed-count');
+      var rows = document.querySelectorAll('#seed-table tbody tr');
+      var active = ['all'];
+
+      function render() {
+        var visible = 0;
+        rows.forEach(function(r) {
+          var rowKind = r.getAttribute('data-row');
+          var show = (active.indexOf('all') !== -1) ||
+                     (active.indexOf(rowKind) !== -1) ||
+                     (active.indexOf('ativo') !== -1 && r.querySelector('.badge.green'));
+          r.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        countEl.textContent = visible;
+        bumpCounter(countEl);
+        payload.textContent = '{ "filtros": [' + active.map(function(f){ return '"' + f + '"'; }).join(', ') + '], "visiveis": ' + visible + ' }';
+      }
+
+      controls.addEventListener('click', function(e) {
+        var chip = e.target.closest('.filter-chip');
+        if (!chip) return;
+        var f = chip.dataset.filter;
+        if (f === 'all') {
+          active = ['all'];
+        } else {
+          // remove 'all' when picking a specific
+          active = active.filter(function(x){ return x !== 'all'; });
+          var idx = active.indexOf(f);
+          if (idx === -1) active.push(f); else active.splice(idx, 1);
+          if (active.length === 0) active = ['all'];
+        }
+        controls.querySelectorAll('.filter-chip').forEach(function(c) {
+          var cf = c.dataset.filter;
+          var on = (cf === 'all' && active.length === 1 && active[0] === 'all') || active.indexOf(cf) !== -1;
+          c.classList.toggle('active', on && cf !== 'all' ? true : (cf === 'all' && active[0] === 'all'));
+        });
+        render();
+        showToast('Filtro: ' + (active[0] === 'all' ? 'todos' : active.join(' + ')));
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
