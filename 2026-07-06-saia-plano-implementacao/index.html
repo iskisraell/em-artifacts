@@ -12,7 +12,7 @@
       --orange: #FF4F00; --black: #000000; --white: #FFFFFF; --purple: #4E18FF;
       --yellow: #FECC14; --pink: #F577ED; --green: #3D7700; --red: #DC2626;
       --blue: #2563EB; --surface: #FAFAFA; --muted: #F5F5F5; --line: #E5E5E5;
-      --text: #737373; --radius: 18px; --max: 1180px;
+      --text: #404040; --radius: 18px; --max: 1180px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -117,12 +117,16 @@
     @media (max-width: 920px) {
       .head, .callout { display: grid; } .head p { max-width: none; }
       .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
-      .rail, .problem-strip { grid-template-columns: 1fr 1fr; }
+      .rail { grid-template-columns: 1fr 1fr; }
+      .problem-strip { grid-template-columns: 1fr; }
       .problem-arrow { min-height: 54px; transform: rotate(90deg); }
     }
     @media (max-width: 560px) {
       main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
-      .hero { min-height: 590px; border-radius: 14px; } h1 { font-size: clamp(40px, 13vw, 56px); }
+      .hero { min-height: 460px; border-radius: 14px; }
+      .hero::before { width: 140px; right: 80px; bottom: -50px; }
+      .hero::after { width: 110px; right: -30px; bottom: -40px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
       h2 { font-size: clamp(30px, 9.5vw, 40px); } .rail, .problem-strip { grid-template-columns: 1fr; }
     }
   </style>
@@ -228,7 +232,7 @@
         <p>A referencia boa do Apps Script nao e o backend: e o padrao de interface que renderiza JSON por ocorrencia e evidencia lado a lado.</p>
       </div>
       <div class="grid">
-        <article class="card span-6">
+        <article class="card blue span-6">
           <h3>Contrato da ocorrencia</h3>
           <div class="syntax-box">
             <code>{
@@ -242,7 +246,7 @@
 }</code>
           </div>
         </article>
-        <article class="card span-6">
+        <article class="card pink span-6">
           <h3>Primeira tela esperada</h3>
           <ul>
             <li>Fila de itens <code>needs_review</code> com filtros por estabelecimento, atividade e confianca.</li>
@@ -309,7 +313,7 @@
           <h3>3. Escopo</h3>
           <p>Decidir SP apenas ou incluir RJ, ja que <code>StreetRepository</code> permite auto-resolve em RJ e SP.</p>
         </article>
-        <article class="card span-6">
+        <article class="card blue span-6">
           <h3>Perguntas objetivas</h3>
           <ul>
             <li>Quais aliases entram no MVP 383/384?</li>
