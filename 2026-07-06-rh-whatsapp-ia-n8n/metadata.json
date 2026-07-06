@@ -1,0 +1,19 @@
+{
+  "title": "Triagem de RH no WhatsApp com IA: arquitetura e decisões para o MVP",
+  "date": "2026-07-06",
+  "description": "Artefato Eletromidia que explica a arquitetura de triagem pelo WhatsApp usando n8n, Gemini e Gupy. Inclui decisões de design, baseline MVP, riscos, demonstração interativa do fluxo e próximos passos.",
+  "tags": ["RH", "WhatsApp", "n8n", "Gemini", "Gupy", "IA", "triagem", "LGPD", "MVP"],
+  "sections": [
+    "Hero e tags",
+    "O que mudou depois da pesquisa",
+    "Tabs: Visão executiva, Arquitetura, Riscos e Próximos passos",
+    "Demonstração interativa do fluxo Gupy para n8n, WhatsApp, Gemini e Gupy",
+    "Baseline MVP",
+    "Por que a hipótese de provedor de testes externo está bloqueada",
+    "O que RH deve decidir",
+    "O que Tech deve decidir",
+    "Padrões reusáveis de Helen/SMB e elt-n8n",
+    "Podcast e notebook de acompanhamento",
+    "Callout final e footer"
+  ]
+}
