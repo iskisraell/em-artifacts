@@ -1,0 +1,7 @@
+{
+  "title": "saIA — Slice 1: Fundação do Pipeline de Análise Inteligente",
+  "date": "2026-07-07",
+  "description": "Implementação da fundação do saIA no Operacoes: config, migrations e models para o pipeline de análise de chamados de manutenção. Agent loop de 3 camadas com validação adversarial.",
+  "tags": ["saia", "operacoes", "laravel", "ai", "manutencao", "phase-0"],
+  "sections": ["hero", "construido", "arquitetura", "validacao", "proximos-passos"]
+}
