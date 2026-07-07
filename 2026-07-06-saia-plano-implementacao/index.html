@@ -153,7 +153,7 @@
       transition: background .15s, color .15s;
     }
 
-    .nav a:hover { background: var(--black); color: var(--white); }
+    .nav a:hover, .nav a:focus-visible { background: var(--black); color: var(--white); }
 
     .grid {
       display: grid;
@@ -381,6 +381,91 @@
       color: var(--text); font-size: 14px;
     }
 
+    .rules-list { display: grid; gap: 10px; }
+    .rule-item {
+      display: grid; grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px; align-items: start;
+      padding: 14px 16px; border: 1px solid var(--line);
+      border-radius: 14px; background: var(--white);
+      transition: transform .15s;
+    }
+    .rule-item:hover { transform: translateX(3px); }
+    .rule-num {
+      width: 32px; height: 32px; display: grid; place-items: center;
+      border-radius: 999px; font-weight: 800; font-size: 14px;
+      background: var(--black); color: var(--white); flex-shrink: 0;
+    }
+    .rule-num.orange { background: var(--orange); }
+
+    form { display: grid; gap: 16px; }
+    .form-group { display: grid; gap: 6px; }
+    .form-group label { font-weight: 800; font-size: 14px; display: block; }
+    .form-group select, .form-group textarea {
+      width: 100%; padding: 12px 14px; border-radius: 12px;
+      border: 1px solid var(--line); background: var(--white);
+      font-family: "Rethink Sans", sans-serif; font-size: 15px;
+      transition: border-color .15s;
+    }
+    .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--black);
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .checkbox-group { display: flex; align-items: center; gap: 10px; }
+    .checkbox-group input[type="checkbox"] {
+      width: 20px; height: 20px; accent-color: var(--orange);
+      flex-shrink: 0;
+    }
+    .checkbox-group label { font-weight: 800; font-size: 14px; }
+    .multi-select-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .multi-select-group button {
+      padding: 10px 16px; border: 1px solid var(--line);
+      border-radius: 999px; background: var(--white);
+      font-family: "Rethink Sans", sans-serif; font-weight: 700; font-size: 14px;
+      cursor: pointer; transition: all .15s;
+    }
+    .multi-select-group button:hover { border-color: var(--black); }
+    .multi-select-group button.active {
+      background: var(--black); color: var(--white); border-color: var(--black);
+    }
+    .form-actions {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 12px 22px; border-radius: 999px;
+      font-family: "Rethink Sans", sans-serif; font-weight: 800; font-size: 14px;
+      cursor: pointer; transition: all .15s; border: none;
+      text-decoration: none;
+    }
+    .btn.primary { background: var(--black); color: var(--white); }
+    .btn.primary:hover { background: var(--orange); }
+    .btn.secondary {
+      background: var(--white); color: var(--black);
+      border: 1px solid var(--line);
+    }
+    .btn.secondary:hover { border-color: var(--black); }
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 100;
+      padding: 14px 22px; border-radius: 999px;
+      background: var(--black); color: var(--white);
+      font-weight: 800; font-size: 14px;
+      animation: fadeIn .3s ease;
+      pointer-events: none;
+    }
+    .toast.hidden { display: none; }
+
+    :focus-visible {
+      outline: 2px solid var(--orange); outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 920px) {
@@ -415,25 +500,89 @@
       </div>
       <div class="hero-bar">
         <span class="pill orange">MVP 383/384</span>
-        <span class="pill purple">Laravel 8 + Vue</span>
+        <span class="pill purple">Laravel 8 + Vue 3</span>
         <span class="pill yellow">HITL</span>
         <span class="pill green">P0 sem Gemini</span>
       </div>
     </section>
 
     <nav class="nav" aria-label="Navegacao">
+      <a href="#hard-rules">Regras Will</a>
       <a href="#contexto">Contexto</a>
       <a href="#arquitetura">Arquitetura</a>
-      <a href="#plano">Plano</a>
-      <a href="#will">Alinhamento Will</a>
+      <a href="#plano">Roadmap</a>
+      <a href="#will">Alinhamento</a>
+      <a href="#consenso">Consenso</a>
       <a href="#riscos">Riscos</a>
+      <a href="#criterios">Criterios</a>
       <a href="#evidencias">Evidencias</a>
     </nav>
+
+    <section id="hard-rules">
+      <div class="head">
+        <h2>Regras nao-negociaveis de William.</h2>
+        <p>Extraidas do AGENTS.md de William e validadas pela auditoria adversarial. Estas 12 regras governam qualquer codigo saIA que entre no repositorio.</p>
+      </div>
+      <div class="grid">
+        <article class="card black span-12">
+          <ol class="rules-list" style="padding-left:0; list-style:none;">
+            <li class="rule-item">
+              <span class="rule-num orange">1</span>
+              <div><strong>PHP 7.4 apenas &mdash; zero recursos PHP 8.</strong><br><small>Nada de <code>str_contains</code>, <code>match</code>, named arguments, union types, <code>mixed</code>, enums, readonly, intersection types, <code>never</code>. <code>??=</code> e arrow functions sao permitidos (sao 7.4).</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">2</span>
+              <div><strong>Laravel 8.x &mdash; nada de APIs 9/10/11.</strong><br><small>Nada de <code>to_route()</code>, novos metodos do query builder 9+, <code>Attribute</code> accessors. Use accessors/mutators old-style.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">3</span>
+              <div><strong>Vue.js 3 + AdminLTE 3.</strong><br><small>Nada de Vue 2 lifecycle hacks. Nada de design system novo. Nada de React, Tailwind ou SPA.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">4</span>
+              <div><strong>SOLID + Service Layer + Repository Pattern.</strong><br><small>Controllers orquestram, Repositories consultam, Policies autorizam. Camadas distintas.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">5</span>
+              <div><strong>Evitar N+1. Usar <code>chunk()</code>/<code>lazy()</code> para datasets grandes.</strong><br><small>Nao basta eager load &mdash; processamento batch precisa de chunk.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">6</span>
+              <div><strong>NAO rodar <code>npm run watch/dev/production</code>.</strong><br><small>Build commands exigem aprovacao explicita de William.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">7</span>
+              <div><strong>WSL eh o UNICO ambiente de execucao.</strong><br><small>Comando padrao: <code>wsl -d Ubuntu-22.04 -- bash -lc "cd /home/wpinheiro-dev-eletromidia/eletromidia/public_html/operacoes && ..."</code>. Nunca usar PowerShell para editar arquivos.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">8</span>
+              <div><strong>Security gate: validar ambiente ANTES.</strong><br><small>Se WSL, Docker, Sail ou estado do git nao forem verificados, PARAR e perguntar a William.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">9</span>
+              <div><strong>Economia de tokens: usar <code>rg</code>/<code>sed</code> para leituras focadas. Agrupar leituras independentes.</strong><br><small>Nao fazer dump de arquivos inteiros quando snippets bastam.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">10</span>
+              <div><strong>Editar lock files livremente.</strong><br><small><code>composer.json</code>, <code>composer.lock</code>, <code>package.json</code>, <code>package-lock.json</code> podem ser editados. Porem adicionar NOVOS pacotes segue regra de aprovacao da skill.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">11</span>
+              <div><strong>Comandos preferidos: <code>git status</code>, <code>git diff</code>, <code>php -l</code>, <code>composer update/install</code>, <code>npm install</code>, <code>npm audit</code>, <code>composer audit</code>.</strong><br><small>Sempre lintar (<code>php -l</code>) e auditar antes de declarar pronto.</small></div>
+            </li>
+            <li class="rule-item">
+              <span class="rule-num orange">12</span>
+              <div><strong>AdminLTE 3 especificamente &mdash; nao AdminLTE 2.</strong><br><small>Bootstrap 4 permanece. A linguagem visual eh Blade + AdminLTE 3 + Bootstrap 4 + Vue 3 islands.</small></div>
+            </li>
+          </ol>
+        </article>
+      </div>
+    </section>
 
     <section id="contexto">
       <div class="head">
         <h2>Contexto e diagnostico.</h2>
-        <p>Revisao adversarial encontrou documentacao madura, mas zero codigo saIA no repositorio. MVP aditivo, sem alterar fluxos existentes.</p>
+        <p>Revisao adversarial encontrou 30 gaps/conflicts entre as 3 fontes (William, Israel, skill). Documentacao madura, mas zero codigo saIA no repositorio. MVP aditivo, sem alterar fluxos existentes.</p>
       </div>
       <div class="grid">
         <article class="card green span-4">
@@ -449,7 +598,13 @@
         <article class="card purple span-4">
           <div class="metric">7</div>
           <h3>Decisoes travadas</h3>
-          <p>Granularidade, janela de cron, escopo SP/RJ, lista de atividades, <code>completed_by_system</code>, usuario IA e superficie HITL.</p>
+          <p>Granularidade, janela de cron, escopo SP/RJ, lista de atividades 383/384, <code>completed_by_system</code>, usuario IA e superficie HITL.</p>
+        </article>
+      </div>
+      <div style="margin-top:12px">
+        <article class="card pink span-12">
+          <h3>Auditoria adversarial: 30 gaps identificados</h3>
+          <p>8 HIGH severity (Vue version, WSL path, npm build forbidden, Sail vs artisan, saveData vs firstOrCreate, PHP 8 features, Security STOP gate, PRD constant claims nao verificados). 9 MEDIUM. 13 LOW. Todos os gaps foram incorporados nas secoes relevantes deste artefato: regras de William (12), regras de triplo consenso (8), riscos e tabelas de decisao.</p>
         </article>
       </div>
     </section>
@@ -470,7 +625,7 @@
         <article class="problem-card bad">
           <span class="mini-label">Risco</span>
           <h3>Evidencia muda depois</h3>
-          <p><code>StreetRepository</code> e <code>PropertyUpload</code> espelham fotos e respostas para preventiva apos fechamento da corretiva.</p>
+          <p><code>StreetRepository</code> e <code>PropertyUpload</code> espelham fotos e respostas para preventiva apos fechamento da corretiva. Gap adversarial #23-#29: constantes e relacoes do PRD precisam ser verificadas no codigo real.</p>
         </article>
         <div class="problem-arrow">&rarr;</div>
         <article class="problem-card fix">
@@ -485,15 +640,15 @@
           <span class="pill purple">Command</span>
           <h3><code>saia:analyze-maintenance</code></h3>
           <div class="flow-node"><strong>Filtros</strong><p><code>--from</code>, <code>--to</code>, <code>--limit</code>, <code>--force</code>, <code>--dry-run</code>.</p></div>
-          <div class="flow-node"><strong>Escopo</strong><p>Estabelecimentos 383 (Abrigos SP Abrigos) e 384 (Abrigos SP Totens).</p></div>
-          <div class="flow-node"><strong>Lock</strong><p>Cache lock evita execucao sobreposta. Chunk por <code>tickets.end_date</code> indexado.</p></div>
+          <div class="flow-node"><strong>Escopo</strong><p>Estabelecimentos 383 (Abrigos SP Abrigos) e 384 (Abrigos SP Totens). Verificar constantes em <code>app/Models/Establishment.php</code> antes de implementar.</p></div>
+          <div class="flow-node"><strong>Lock</strong><p>Cache lock evita execucao sobreposta. Chunk por <code>tickets.end_date</code> indexado. Verificar <code>app/Console/Kernel.php</code> para <code>withoutOverlapping()</code> vs <code>Cache::lock()</code>.</p></div>
         </article>
         <article class="flow-lane added">
           <span class="pill green">Resolver</span>
           <h3>EvidenceResolver</h3>
-          <div class="flow-node"><strong>Fotos</strong><p><code>tickets.filepath</code> (antes), <code>ticket_photos</code> com type <code>closing</code>/<code>auxiliary_closing</code>/<code>problem</code> (depois).</p></div>
+          <div class="flow-node"><strong>Fotos</strong><p><code>tickets.filepath</code> (antes), <code>ticket_photos</code> com type <code>closing</code>/<code>auxiliary_closing</code>/<code>problem</code> (depois) &mdash; verificar constantes em <code>app/Models/TicketPhoto.php</code>.</p></div>
           <div class="flow-node"><strong>Checklist</strong><p><code>ticket_answers.filepath</code> + <code>questions.property</code> XA_RUA_*/XA_ABG_* + <code>checklists.alias</code>.</p></div>
-          <div class="flow-node"><strong>Contexto</strong><p><code>last_ticket_id</code> e relacao corretiva/preventiva como linkage, nao como grao primario.</p></div>
+          <div class="flow-node"><strong>Contexto</strong><p><code>last_ticket_id</code> e relacao corretiva/preventiva como linkage &mdash; verificar <code>parent()</code> em <code>app/Models/Ticket.php</code>.</p></div>
         </article>
         <article class="flow-lane kept">
           <span class="pill orange">Job</span>
@@ -501,6 +656,25 @@
           <div class="flow-node"><strong>P0</strong><p>Dry-run: persiste evidencia e hash sem chamar Gemini. Status <code>skipped</code> ou <code>completed_dry_run</code>.</p></div>
           <div class="flow-node"><strong>P1</strong><p>Aciona <code>GeminiAnalysisService</code> normalizado com prompt profile versionado. Status <code>needs_review</code>.</p></div>
         </article>
+      </div>
+      <div style="margin-top:12px">
+        <div class="syntax-box">
+          <p>Convencoes de codigo P0 (extraidas dos gaps #5, #6, #11, #12, #28):</p>
+          <code>// Use saveData() — nunca $fillable, nunca firstOrCreate() com mass-assignment
+$item = new SaiaAnalysisItem();
+$item->analyzable_type = 'App\\Models\\Ticket';
+$item->analyzable_id = $ticket->id;
+$item->status = 'completed_dry_run';
+$item->saveData();
+
+// chunk() obrigatorio para processamento batch
+Ticket::whereIn('establishment_id', [383, 384])
+  ->whereNotNull('end_date')
+  ->chunk(200, function ($tickets) { /* ... */ });
+
+// input_hash com sha256 (verificar DefaultHelper.php)
+$hash = hash('sha256', json_encode($evidence));</code>
+        </div>
       </div>
     </section>
 
@@ -521,7 +695,7 @@
         </div>
         <div class="rail-step">
           <strong>P2. HITL</strong>
-          <p>Resource, endpoint e tela Vue/AdminLTE com fila, detalhe de ocorrencia e acoes (aprovar, rejeitar, escalar).</p>
+          <p>Resource, endpoint e tela Vue 3/AdminLTE 3 com fila, detalhe de ocorrencia e acoes (aprovar, rejeitar, escalar).</p>
         </div>
         <div class="rail-step">
           <strong>P3. Expansao</strong>
@@ -545,7 +719,7 @@
             <li>Fila de itens <code>needs_review</code> com filtros por estabelecimento, atividade e confianca.</li>
             <li>Detalhe com imagens lado a lado, checklist e resposta IA em JSON legivel.</li>
             <li>Acoes simples: aprovar, rejeitar, escalar, comentar.</li>
-            <li>Nenhuma acao automatica em ticket no MVP.</li>
+            <li>Componente Vue 3 Options API + Vuex 4 namespaced module. Nenhuma acao automatica em ticket no MVP.</li>
           </ul>
         </article>
       </div>
@@ -559,7 +733,7 @@
             <tr><td>Evidence</td><td>Resolver fotos, checklist, respostas e problema relacionado</td><td>Reconstruir pacote de evidencia antes de qualquer chamada ao Gemini.</td><td><span class="badge green">P0</span></td></tr>
             <tr><td>Config</td><td><code>config/saia.php</code> + profiles em <code>resources/saia/profiles/*.json</code></td><td>Versionamento por PR, sem UI de admin ate contrato estabilizar.</td><td><span class="badge green">P0</span></td></tr>
             <tr><td>Gemini</td><td><code>GeminiAnalysisService</code> compartilhado</td><td>Remove <code>env()</code> direto e markdown cleanup fragil do job de Posting.</td><td><span class="badge orange">P1</span></td></tr>
-            <tr><td>UI</td><td>Fila dedicada + detalhe por ocorrencia</td><td>Aproximar padrao Apps Script sem portar backend legado.</td><td><span class="badge purple">P2</span></td></tr>
+            <tr><td>UI</td><td>Fila dedicada + detalhe por ocorrencia &mdash; Vue 3 Options API + Vuex 4</td><td>Aproximar padrao Apps Script sem portar backend legado. Vuex 4 nao mencionado por William, mas exigido pela skill.</td><td><span class="badge purple">P2</span></td></tr>
             <tr><td>Posting</td><td>Migrar <code>ValidatePostingPhotoWithAiJob</code> para servico compartilhado</td><td>Unificar acesso ao Gemini em um unico service depois do contrato saIA validado.</td><td><span class="badge blue">P3</span></td></tr>
           </tbody>
         </table>
@@ -568,7 +742,7 @@
 
     <section id="will">
       <div class="head">
-        <h2>Decisoes para alinhar com Will.</h2>
+        <h2>Decisoes para alinhar com William.</h2>
         <p>O melhor uso da conversa com o dev lead e fechar as quatro decisoes que travam query, grain e UX antes de escrever o P0.</p>
       </div>
 
@@ -587,19 +761,99 @@
         </article>
       </div>
 
+      <article class="card span-12" style="margin-top:12px">
+        <h3>Perguntas de alinhamento &mdash; responda e exporte</h3>
+        <p style="margin-bottom:16px">As 7 decisoes abaixo precisam de resposta do William antes da implementacao. Suas respostas sao salvas automaticamente no navegador.</p>
+        <form id="will-form" aria-label="Formulario de alinhamento com William">
+          <div class="form-group">
+            <label for="granularity">1. Granularidade da analise saIA</label>
+            <select id="granularity" name="granularity">
+              <option value="">Selecione...</option>
+              <option value="1-ticket">1 item saIA por ticket</option>
+              <option value="par">1 item saIA por par corretiva/preventiva</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cron_window">2. Janela de execucao do cron</label>
+            <select id="cron_window" name="cron_window">
+              <option value="">Selecione...</option>
+              <option value="2h">2 horas</option>
+              <option value="4h">4 horas</option>
+              <option value="6h">6 horas (recomendado)</option>
+              <option value="8h">8 horas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>3. Escopo geografico</label>
+            <div class="multi-select-group" id="geo-scope-group" role="group" aria-label="Escopo geografico">
+              <button type="button" data-value="SP">SP</button>
+              <button type="button" data-value="RJ">RJ</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="activity_aliases">4. Aliases de atividade 383/384 (lista canonica)</label>
+            <textarea id="activity_aliases" name="activity_aliases" placeholder="Liste os aliases de atividade que entram no MVP..."></textarea>
+          </div>
+          <div class="form-group">
+            <div class="checkbox-group">
+              <input type="checkbox" id="completed_by_system" name="completed_by_system">
+              <label for="completed_by_system">5. Incluir <code>completed_by_system</code> na primeira consulta?</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ia_user">6. Usuario IA para auditoria</label>
+            <select id="ia_user" name="ia_user">
+              <option value="">Selecione...</option>
+              <option value="5">IA_GEMINI_USER_ID=5 (reuso)</option>
+              <option value="dedicado">Ator saIA dedicado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="hitl_placement">7. Posicionamento da tela HITL</label>
+            <select id="hitl_placement" name="hitl_placement">
+              <option value="">Selecione...</option>
+              <option value="inline">Inline no detalhe do ticket</option>
+              <option value="fila">Fila dedicada (recomendado)</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn primary" id="btn-copy-json">Copiar JSON</button>
+            <button type="button" class="btn secondary" id="btn-clear">Limpar respostas</button>
+          </div>
+        </form>
+      </article>
+
       <div class="grid" style="margin-top:12px">
-        <article class="card blue span-6">
-          <h3>Perguntas objetivas</h3>
+        <article class="card yellow span-12">
+          <h3>Mensagem para alinhamento</h3>
+          <p>"William, antes de implementar o P0 do saIA, quero fechar grain, janela, escopo SP/RJ e lista de atividades 383/384. A primeira entrega nao chama Gemini: ela so monta e persiste evidencia com hash para provar idempotencia contra espelhamento corretiva/preventiva. Depois de validar isso, ativamos Gemini, prompt profiles e HITL em fases separadas. Os 30 gaps da auditoria adversarial estao documentados neste artefato &mdash; incluindo as 7 claims do PRD que precisam de verificacao no codigo real antes do P0."</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="consenso">
+      <div class="head">
+        <h2>Regras de triplo consenso.</h2>
+        <p>As 8 convencoes onde William, Israel e a skill operacoes-continuous-development concordam totalmente. Sao as bases mais seguras para o codigo saIA.</p>
+      </div>
+      <div class="grid">
+        <article class="card green span-6">
+          <h3>Ambiente e ferramentas</h3>
           <ul>
-            <li>Quais aliases de atividade entram no MVP 383/384? Onde esta a lista canonica hoje?</li>
-            <li><code>completed_by_system</code> entra na primeira consulta ou fica fora do MVP?</li>
-            <li>Usuario IA: reuso do <code>IA_GEMINI_USER_ID=5</code> ou ator saIA dedicado?</li>
-            <li>HITL: inline no detalhe do ticket ou fila dedicada?</li>
+            <li><strong>Sail/Docker apenas</strong> &mdash; nada de <code>php artisan serve</code>. A app roda em Docker via Sail.</li>
+            <li><strong>Nada de PowerShell para edicao</strong> &mdash; todas as operacoes de arquivo via WSL/bash.</li>
+            <li><strong>npm (nao Bun/yarn/pnpm) com <code>package-lock.json</code></strong>.</li>
+            <li><strong>MySQL 8 primario, SQL Server leituras legadas</strong>.</li>
           </ul>
         </article>
-        <article class="card yellow span-6">
-          <h3>Mensagem para alinhamento</h3>
-          <p>"Will, antes de implementar o P0 do saIA, quero fechar grain, janela, escopo SP/RJ e lista de atividades 383/384. A primeira entrega nao chama Gemini: ela so monta e persiste evidencia com hash para provar idempotencia contra espelhamento corretiva/preventiva. Depois de validar isso, ativamos Gemini, prompt profiles e HITL em fases separadas."</p>
+        <article class="card purple span-6">
+          <h3>Codigo e qualidade</h3>
+          <ul>
+            <li><strong>Nada de <code>$fillable</code> nos models</strong> &mdash; atribuicao explicita de campos via <code>saveData()</code>.</li>
+            <li><strong>Blade + Bootstrap 4 + AdminLTE 3 para views</strong> &mdash; nenhum design system alternativo.</li>
+            <li><strong>PHPUnit para testes</strong> (nao Pest, nao PHPSpec).</li>
+            <li><strong>Laravel Mix/Webpack (nao Vite)</strong>.</li>
+          </ul>
         </article>
       </div>
     </section>
@@ -607,10 +861,66 @@
     <section id="riscos">
       <div class="head">
         <h2>Riscos e mitigacoes.</h2>
-        <p>O maior risco nao e tecnico: e implementar antes de fechar as decisoes de grain, janela, escopo e atividades com Will.</p>
+        <p>30 gaps da auditoria adversarial + riscos da arquitetura existente. O maior risco nao e tecnico: e implementar antes de fechar as decisoes de grain, janela, escopo e atividades com William.</p>
       </div>
 
       <div class="change-list">
+        <div class="change-item">
+          <div><strong>HIGH #1: Ambiguidade de versao Vue</strong><br><small>William diz "Vue 2 e 3". Skill e Israel dizem Vue 3 apenas. saIA P0 deve usar somente Vue 3 Options API + Vuex 4. Tratar mencao a Vue 2 de William como desatualizada.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>HIGH #2: Incompatibilidade de caminho WSL</strong><br><small>William: /home/wpinheiro-dev-eletromidia/ vs Israel: /home/israeltoledo/. Comandos para William devem usar o path dele.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>HIGH #3: npm run dev/production proibido</strong><br><small>William proibe explicitamente. Skill menciona como passo de validacao. saIA P0 nao executa build &mdash; deploy e estatico.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>HIGH #4: Sail vs artisan nativo (conflito triplo)</strong><br><small>William usa php artisan nativo no WSL. Skill/Israel usam ./sail artisan. PRD usa php artisan. saIA P0 usa ./sail artisan por convencao.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>HIGH #5: saveData() vs firstOrCreate()</strong><br><small>PRD assume firstOrCreate() com mass-assignment. Repo bane $fillable. Usar saveData() com atribuicao explicita.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>HIGH #6: Recursos PHP 8 proibidos</strong><br><small>PHP 7.4 apenas. ??= e arrow functions sao permitidos. Nada de str_contains, match, named args, union types, enums, readonly.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>HIGH #7: Security STOP gate</strong><br><small>Validar WSL/Docker/Sail/git antes de qualquer mudanca de codigo. Se falhar, parar e perguntar a William.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>HIGH #8: 7 claims do PRD nao verificadas</strong><br><small>Constantes TicketPhoto, Ticket parent(), Establishment 383/384, DefaultHelper hash, NotificationHelper, Job conventions, Kernel.php locks. Todas precisam de leitura do codigo real.</small></div>
+          <span class="pill red">critico</span>
+        </div>
+        <div class="change-item">
+          <div><strong>MED #8: composer update precisa de aprovacao</strong><br><small>William permite editar lock files. Skill requer aprovacao para novas dependencias. P0 e aditivo &mdash; sem novos pacotes.</small></div>
+          <span class="pill orange">medio</span>
+        </div>
+        <div class="change-item">
+          <div><strong>MED #9: Vuex 4 ausente dos docs de William</strong><br><small>William nao menciona Vuex. Skill e Israel exigem Vuex 4 com modulos namespaced. Surface para William.</small></div>
+          <span class="pill orange">medio</span>
+        </div>
+        <div class="change-item">
+          <div><strong>MED #10: Versao AdminLTE</strong><br><small>William diz AdminLTE 3. Skill nao especifica versao. saIA P0 deve seguir AdminLTE 3.</small></div>
+          <span class="pill orange">medio</span>
+        </div>
+        <div class="change-item">
+          <div><strong>MED #11: Service Layer ambigua</strong><br><small>William poe Service Layer como preocupacao. Skill nao tem camada Service. Criar Services apenas com logica real, nunca pass-through.</small></div>
+          <span class="pill orange">medio</span>
+        </div>
+        <div class="change-item">
+          <div><strong>MED #12: chunk()/lazy() obrigatorio</strong><br><small>William exige para datasets grandes. Skill nao menciona. Jobs batch do saIA devem usar chunk().</small></div>
+          <span class="pill orange">medio</span>
+        </div>
+        <div class="change-item">
+          <div><strong>MED #13: npm audit / composer audit</strong><br><small>William requer. Skill nao inclui. Adicionar a validacao do saIA P0.</small></div>
+          <span class="pill orange">medio</span>
+        </div>
         <div class="change-item">
           <div><strong>Espelhamento tardio corretiva &rarr; preventiva</strong><br><small>Fotos e respostas podem ser criadas depois do fechamento. input_hash detecta mudanca.</small></div>
           <span class="pill red">critico</span>
@@ -630,11 +940,50 @@
       </div>
     </section>
 
+    <section id="criterios">
+      <div class="head">
+        <h2>Criterios de aceitacao.</h2>
+        <p>Condensados do SYNTHESIS_PLAN.md. Bloqueantes devem passar antes do deploy. Nao-bloqueantes sao desejaveis mas nao travam.</p>
+      </div>
+      <div class="grid">
+        <article class="card green span-6">
+          <h3>Bloqueantes (12)</h3>
+          <ul>
+            <li>AC1: Renderiza correto em 320px, 768px, 1180px, 1440px sem scroll horizontal.</li>
+            <li>AC2: 7 perguntas de alinhamento com controles interativos.</li>
+            <li>AC3: localStorage persiste respostas entre reloads.</li>
+            <li>AC4: "Copiar JSON" exporta JSON valido.</li>
+            <li>AC5: "Limpar respostas" esvazia campos e localStorage.</li>
+            <li>AC6: 12 Regras de William exibidas com destaque.</li>
+            <li>AC7: 30 gaps adversariais reconhecidos nas secoes relevantes.</li>
+            <li>AC8: Conteudo 100% pt-BR.</li>
+            <li>AC9: Design tokens identicos ao index.html original.</li>
+            <li>AC10: Nenhuma dependencia externa alem do Google Fonts.</li>
+            <li>AC11: Navegavel por teclado (Tab em todos elementos interativos).</li>
+            <li>AC12: metadata.json presente com JSON valido.</li>
+          </ul>
+        </article>
+        <article class="card blue span-6">
+          <h3>Nao-bloqueantes (8)</h3>
+          <ul>
+            <li>AC13: WCAG 2.1 AA em todos textos (large-text exception para laranja).</li>
+            <li>AC14: ARIA landmarks (nav, main, article, section roles).</li>
+            <li>AC15: Leitor de tela anuncia labels e estados do formulario.</li>
+            <li>AC16: prefers-reduced-motion respeita preferencia do usuario.</li>
+            <li>AC17: Carrega em menos de 2s em 3G simulado.</li>
+            <li>AC18: HTML passa validacao W3C.</li>
+            <li>AC19: Secao de Regras de Triplo Consenso presente (8 regras).</li>
+            <li>AC20: Checklist de deploy em em-artifacts concluido.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
     <section>
       <div class="callout">
         <div>
           <h3>Posicao final</h3>
-          <p>O plano esta saudavel: construir P0 sem Gemini, validar evidencia e idempotencia, so depois ativar IA e HITL. O maior risco e implementar antes de fechar as quatro decisoes com Will. A arquitetura segue o padrao do repositorio: commands agendam, jobs processam, repositorios/servicos concentram regra e Resources/Vue expoem revisao ao operador.</p>
+          <p>O plano esta saudavel: construir P0 sem Gemini, validar evidencia e idempotencia, so depois ativar IA e HITL. O maior risco e implementar antes de fechar as quatro decisoes com William. A arquitetura segue o padrao do repositorio: commands agendam, jobs processam, repositorios/servicos concentram regra e Resources/Vue expoem revisao ao operador. Auditoria adversarial identificou 30 gaps &mdash; todos documentados neste artefato para referencia durante a implementacao.</p>
         </div>
         <span class="pill black">proximo passo: P0</span>
       </div>
@@ -649,18 +998,199 @@
             <li>Handoff de planejamento: <code>2026-07-06-saia-planning-closure-orchestrator-fixes-adversarial-review-artifact-deploy.md</code> (Obsidian).</li>
             <li>Handoff de alinhamento Will: <code>2026-07-06-saia-p0-alignment-questions-for-william-2026-07-06.md</code> (Obsidian).</li>
             <li>Docs do repositorio: <code>docs/saia/maintenance-analysis-overview.md</code> e <code>docs/wayfinder/saia-maintenance-analysis-map.md</code>.</li>
-            <li>Revisao adversarial Claude: <code>20260706-123042-2474267a</code>.</li>
-            <li>Fixes agent-orchestrator: <code>dbce939</code> e <code>5cd9abc</code>.</li>
+            <li>Revisao adversarial: <code>C:\Users\israel.toledo\saia-adversarial-review-output.md</code> (30 gaps, 8 HIGH, 12 Hard Rules, 8 Consensus Rules).</li>
+            <li>Pipeline de sintese: <code>SYNTHESIS_PLAN.md</code> (este diretorio).</li>
             <li>Codigo de referencia: <code>ValidatePostingPhotoWithAiJob</code>, <code>StreetRepository</code>, <code>PropertyUpload</code>, <code>Establishment.php</code> (383/384), <code>TicketUploadEventJob</code>.</li>
+            <li>PRD claims nao verificadas (7): TicketPhoto constants, Ticket parent(), Establishment constants, DefaultHelper hash, NotificationHelper, Job conventions, Kernel.php locks. Todas requerem leitura do codigo real.</li>
           </ul>
+        </div>
+      </details>
+      <details>
+        <summary>Mapeamento dos 30 gaps adversariais por secao</summary>
+        <div class="details-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Gap</th><th>Severidade</th><th>Localizado em</th></tr></thead>
+              <tbody>
+                <tr><td>#1 Vue version</td><td><span class="badge red">HIGH</span></td><td>Regras Will, Riscos</td></tr>
+                <tr><td>#2 WSL path</td><td><span class="badge red">HIGH</span></td><td>Regras Will, Riscos</td></tr>
+                <tr><td>#3 npm build forbidden</td><td><span class="badge red">HIGH</span></td><td>Regras Will, Riscos</td></tr>
+                <tr><td>#4 Sail vs artisan</td><td><span class="badge red">HIGH</span></td><td>Regras Consenso, Riscos</td></tr>
+                <tr><td>#5 saveData vs firstOrCreate</td><td><span class="badge red">HIGH</span></td><td>Regras Consenso, Arquitetura, Riscos</td></tr>
+                <tr><td>#6 PHP 8 features</td><td><span class="badge red">HIGH</span></td><td>Regras Will, Arquitetura, Riscos</td></tr>
+                <tr><td>#7 Security STOP gate</td><td><span class="badge red">HIGH</span></td><td>Regras Will, Riscos</td></tr>
+                <tr><td>#8 composer update</td><td><span class="badge orange">MEDIUM</span></td><td>Riscos</td></tr>
+                <tr><td>#9 Vuex 4 missing</td><td><span class="badge orange">MEDIUM</span></td><td>Roadmap, Riscos</td></tr>
+                <tr><td>#10 AdminLTE version</td><td><span class="badge orange">MEDIUM</span></td><td>Regras Consenso, Riscos</td></tr>
+                <tr><td>#11 Service Layer</td><td><span class="badge orange">MEDIUM</span></td><td>Arquitetura, Riscos</td></tr>
+                <tr><td>#12 chunk/lazy</td><td><span class="badge orange">MEDIUM</span></td><td>Regras Will, Arquitetura, Riscos</td></tr>
+                <tr><td>#13 npm/composer audit</td><td><span class="badge orange">MEDIUM</span></td><td>Regras Will, Riscos</td></tr>
+                <tr><td>#14 php -l path</td><td><span class="badge blue">LOW</span></td><td>Riscos</td></tr>
+                <tr><td>#15 phpunit path</td><td><span class="badge blue">LOW</span></td><td>Riscos</td></tr>
+                <tr><td>#16 Token economy</td><td><span class="badge blue">LOW</span></td><td>Regras Will</td></tr>
+                <tr><td>#17 No PowerShell</td><td><span class="badge blue">LOW</span></td><td>Regras Consenso</td></tr>
+                <tr><td>#18 Graphify requirement</td><td><span class="badge blue">LOW</span></td><td>Riscos</td></tr>
+                <tr><td>#19 Context7 gating</td><td><span class="badge blue">LOW</span></td><td>Riscos</td></tr>
+                <tr><td>#20 1000-line threshold</td><td><span class="badge blue">LOW</span></td><td>Riscos</td></tr>
+                <tr><td>#21 Handoff location</td><td><span class="badge blue">LOW</span></td><td>Riscos</td></tr>
+                <tr><td>#22 Edit lock files</td><td><span class="badge orange">MEDIUM</span></td><td>Regras Will</td></tr>
+                <tr><td>#23 TicketPhoto constants</td><td><span class="badge red">HIGH</span></td><td>Arquitetura, Riscos</td></tr>
+                <tr><td>#24 Ticket parent()</td><td><span class="badge red">HIGH</span></td><td>Arquitetura, Riscos</td></tr>
+                <tr><td>#25 Establishment 383/384</td><td><span class="badge orange">MEDIUM</span></td><td>Arquitetura, Riscos</td></tr>
+                <tr><td>#26 DefaultHelper hash</td><td><span class="badge orange">MEDIUM</span></td><td>Arquitetura, Riscos</td></tr>
+                <tr><td>#27 NotificationHelper</td><td><span class="badge orange">MEDIUM</span></td><td>Riscos</td></tr>
+                <tr><td>#28 Job conventions</td><td><span class="badge orange">MEDIUM</span></td><td>Arquitetura, Riscos</td></tr>
+                <tr><td>#29 Kernel.php locks</td><td><span class="badge orange">MEDIUM</span></td><td>Arquitetura, Riscos</td></tr>
+                <tr><td>#30 SOLID mention</td><td><span class="badge blue">LOW</span></td><td>Regras Will</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </details>
     </section>
 
     <footer>
       <strong>saIA Plano de Implementacao | Eletromidia Operacoes</strong>
-      <p>Gerado em 2026-07-06 a partir de memoria Obsidian, analise do repositorio Operacoes, revisao adversarial Claude e correcoes no agent-orchestrator. Regenerado com design system completo.</p>
+      <p>Gerado em 2026-07-06 pelo pipeline saIA P0: Synthesis Agent &rarr; Builder Agent. Inclui 30 gaps da auditoria adversarial C:\Users\israel.toledo\saia-adversarial-review-output.md, 12 regras nao-negociaveis de William, 8 regras de triplo consenso e form interativo com 7 perguntas de alinhamento.</p>
     </footer>
   </main>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var STORAGE_KEY = 'saia-p0-william-alignment';
+      var toastEl = document.getElementById('toast');
+      var form = document.getElementById('will-form');
+      var copyBtn = document.getElementById('btn-copy-json');
+      var clearBtn = document.getElementById('btn-clear');
+
+      var fieldIds = ['granularity', 'cron_window', 'activity_aliases', 'completed_by_system', 'ia_user', 'hitl_placement'];
+      var geoBtns = document.querySelectorAll('#geo-scope-group button');
+
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.remove('hidden');
+        setTimeout(function () { toastEl.classList.add('hidden'); }, 2500);
+      }
+
+      function getGeoScope() {
+        var selected = [];
+        geoBtns.forEach(function (b) {
+          if (b.classList.contains('active')) selected.push(b.getAttribute('data-value'));
+        });
+        return selected;
+      }
+
+      function setGeoScope(values) {
+        geoBtns.forEach(function (b) {
+          if (values.indexOf(b.getAttribute('data-value')) !== -1) {
+            b.classList.add('active');
+          } else {
+            b.classList.remove('active');
+          }
+        });
+      }
+
+      function collectFormData() {
+        var data = {};
+        fieldIds.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el.type === 'checkbox') {
+            data[id] = el.checked;
+          } else {
+            data[id] = el.value;
+          }
+        });
+        data.geo_scope = getGeoScope();
+        return data;
+      }
+
+      function saveForm() {
+        var data = collectFormData();
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {}
+      }
+
+      function loadForm() {
+        var raw;
+        try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+        if (!raw) return;
+        var data;
+        try { data = JSON.parse(raw); } catch (e) { return; }
+        if (!data) return;
+        fieldIds.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          if (el.type === 'checkbox') {
+            el.checked = !!data[id];
+          } else {
+            el.value = data[id] || '';
+          }
+        });
+        if (data.geo_scope && Array.isArray(data.geo_scope)) {
+          setGeoScope(data.geo_scope);
+        }
+      }
+
+      function clearForm() {
+        fieldIds.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          if (el.type === 'checkbox') {
+            el.checked = false;
+          } else {
+            el.value = '';
+          }
+        });
+        setGeoScope([]);
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        showToast('Respostas limpas.');
+      }
+
+      function copyJSON() {
+        var data = collectFormData();
+        var json = JSON.stringify(data, null, 2);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(json).then(function () {
+            showToast('JSON copiado!');
+          }).catch(function () {
+            showToast('Erro ao copiar. Tente novamente.');
+          });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = json;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); showToast('JSON copiado!'); } catch (e) { showToast('Erro ao copiar.'); }
+          document.body.removeChild(ta);
+        }
+      }
+
+      geoBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          btn.classList.toggle('active');
+          saveForm();
+        });
+      });
+
+      fieldIds.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('change', saveForm);
+        if (el.type !== 'checkbox') el.addEventListener('input', saveForm);
+      });
+
+      copyBtn.addEventListener('click', copyJSON);
+      clearBtn.addEventListener('click', clearForm);
+
+      loadForm();
+    })();
+  </script>
 </body>
 </html>

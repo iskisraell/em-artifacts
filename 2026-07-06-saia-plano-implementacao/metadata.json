@@ -1,7 +1,21 @@
 {
   "title": "saIA: plano de implementacao auditavel",
   "date": "2026-07-06",
-  "description": "Artefato Eletromidia com contexto, decisoes de negocio, arquitetura, HITL e roteiro de alinhamento com Will para o MVP saIA nos estabelecimentos 383 e 384.",
-  "tags": ["saIA", "Operacoes", "HITL", "Laravel", "Eletromidia"],
-  "sections": ["Estado atual", "Arquitetura", "HITL", "Roadmap", "Alinhamento Will"]
+  "description": "Artefato Eletromidia com 13 secoes: regras nao-negociaveis de William (12), contexto e diagnostico, arquitetura proposta, roadmap P0-P3, alinhamento interativo com William (7 perguntas com localStorage), regras de triplo consenso (8), riscos e mitigacoes (30 gaps adversariais), criterios de aceitacao, posicao final e evidencias.",
+  "tags": ["saIA", "Operacoes", "HITL", "Laravel 8", "PHP 7.4", "Vue 3", "Eletromidia", "P0"],
+  "sections": [
+    "Hero",
+    "Regras nao-negociaveis de William (12)",
+    "Contexto e Diagnostico",
+    "Arquitetura Proposta",
+    "Roadmap de Implementacao P0-P3",
+    "Alinhamento com William (form interativo 7 perguntas)",
+    "Regras de Triplo Consenso (8)",
+    "Riscos e Mitigacoes (30 gaps adversariais)",
+    "Criterios de Aceitacao",
+    "Posicao Final",
+    "Evidencias e Handles",
+    "Mapeamento de Gaps por Secao",
+    "Footer"
+  ]
 }
