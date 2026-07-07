@@ -690,13 +690,15 @@
           <span class="pill purple">Command</span>
           <h3><code>saia:analyze-maintenance</code></h3>
           <div class="flow-node"><strong>Filtros</strong><p><code>--from</code>, <code>--to</code>, <code>--limit</code>, <code>--force</code>, <code>--dry-run</code>.</p></div>
-          <div class="flow-node"><strong>Escopo</strong><p>Estabelecimentos 383 (Abrigos SP Abrigos) e 384 (Abrigos SP Totens). Verificar constantes em <code>app/Models/Establishment.php</code> antes de implementar.</p></div>
+          <div class="flow-node"><strong>Escopo</strong><p>Estabelecimentos 383 e 384 com <code>system = 'street'</code>. Atividades MVP: <code>27, 28, 11, 32</code> (mapeadas em <code>config/saia.php</code>). Verificar constantes em <code>app/Models/Establishment.php</code> antes de implementar.</p></div>
+          <div class="flow-node"><strong>system='street'</strong><p>Confirmado no schema: <code>system enum('chamados','street')</code> com indice <code>idx_tickets_system_deleted</code>. O filtro <code>WHERE system = 'street'</code> eh correto e performatico.</p></div>
           <div class="flow-node"><strong>Lock</strong><p>Cache lock evita execucao sobreposta. Chunk por <code>tickets.end_date</code> indexado. Verificar <code>app/Console/Kernel.php</code> para <code>withoutOverlapping()</code> vs <code>Cache::lock()</code>.</p></div>
         </article>
         <article class="flow-lane added">
           <span class="pill green">Resolver</span>
           <h3>EvidenceResolver</h3>
-          <div class="flow-node"><strong>Fotos</strong><p><code>tickets.filepath</code> (antes), <code>ticket_photos</code> com type <code>closing</code>/<code>auxiliary_closing</code>/<code>problem</code> (depois) &mdash; verificar constantes em <code>app/Models/TicketPhoto.php</code>.</p></div>
+          <div class="flow-node"><strong>Foto de abertura</strong><p>Fonte canonica: <code>$ticket->filepath</code> (enviada pelo app via <code>XA_FILE_FADE_PHOO</code>). Fallback: <code>$ticket->photos()->where('type', TicketPhoto::TYPE_OPENING)</code>.</p></div>
+          <div class="flow-node"><strong>Fotos de fechamento/auxiliares</strong><p><code>ticket_photos</code> com type <code>closing</code>, <code>auxiliary_closing</code> ou <code>problem</code> &mdash; verificar constantes em <code>app/Models/TicketPhoto.php</code>.</p></div>
           <div class="flow-node"><strong>Checklist</strong><p><code>ticket_answers.filepath</code> + <code>questions.property</code> XA_RUA_*/XA_ABG_* + <code>checklists.alias</code>.</p></div>
           <div class="flow-node"><strong>Contexto</strong><p><code>last_ticket_id</code> e relacao corretiva/preventiva como linkage &mdash; verificar <code>parent()</code> em <code>app/Models/Ticket.php</code>.</p></div>
         </article>
@@ -723,7 +725,13 @@ Ticket::whereIn('establishment_id', [383, 384])
   ->chunk(200, function ($tickets) { /* ... */ });
 
 // input_hash com sha256 (verificar DefaultHelper.php)
-$hash = hash('sha256', json_encode($evidence));</code>
+$hash = hash('sha256', json_encode($evidence));
+
+// config/saia.php
+'analysis_activity_ids' => [27, 28, 11, 32],
+'analysis_safety_window_minutes' => 120,
+'feature_saia_sp_enabled' => false,
+'feature_saia_rj_enabled' => false,</code>
         </div>
       </div>
     </section>
@@ -793,27 +801,31 @@ $hash = hash('sha256', json_encode($evidence));</code>
     <section id="will">
       <div class="head">
         <h2>Decisoes para alinhar com William.</h2>
-        <p>O melhor uso da conversa com o dev lead e fechar as quatro decisoes que travam query, grain e UX antes de escrever o P0.</p>
+        <p>O melhor uso da conversa com o dev lead e fechar as tres decisoes que ainda travam grain e UX antes de escrever o P0. Janela, escopo geografico, atividades e foto de abertura ja foram resolvidas com base no codigo do repositorio.</p>
       </div>
 
       <div class="grid">
-        <article class="card orange span-4">
+        <article class="card orange span-3">
           <h3>1. Granularidade</h3>
           <p>1 item saIA por ticket ou por par corretiva/preventiva?<br><br>Recomendacao: <strong>1 ticket</strong>, par como contexto. Evita dupla contagem e simplifica idempotencia.</p>
         </article>
-        <article class="card black span-4">
+        <article class="card black span-3">
           <h3>2. Janela de cron</h3>
-          <p>6h por seguranca de upload/espelhamento ou 2h por velocidade operacional?<br><br>Recomendacao: <strong>6h</strong> como default, configuravel em <code>config/saia.php</code>.</p>
+          <p>Decisao: <strong>2h</strong> de lookahead de seguranca entre analises, configuravel em <code>config/saia.php</code> como <code>analysis_safety_window_minutes = 120</code>.</p>
         </article>
-        <article class="card purple span-4">
+        <article class="card purple span-3">
           <h3>3. Escopo geografico</h3>
-          <p>SP apenas ou SP + RJ, ja que <code>StreetRepository</code> permite auto-resolve nos dois?<br><br>Recomendacao: <strong>SP + RJ</strong> com feature flag.</p>
+          <p>Decisao: <strong>SP + RJ</strong>, protegido por feature flags <code>feature_saia_sp_enabled</code> e <code>feature_saia_rj_enabled</code>, ambas <code>false</code> por padrao.</p>
+        </article>
+        <article class="card green span-3">
+          <h3>4. Atividades 383/384</h3>
+          <p>Lista canonica para <code>system='street'</code>: <strong>28</strong> (Preventiva, ~133k), <strong>32</strong> (Corretiva Prefeitura, ~67k), <strong>27</strong> (Corretiva, ~12k), <strong>11</strong> (Preventiva Eletrica, ~1,7k). O tipo corretiva/preventiva vem de <code>activity_types.type</code> e o <code>StreetRepository</code> ja resolve o encerramento automatico em SP/RJ. Configuraveis em <code>analysis_activity_ids</code>.</p>
         </article>
       </div>
 
       <article class="card span-12" style="margin-top:12px">
         <h3>Perguntas de alinhamento &mdash; responda e exporte</h3>
-        <p style="margin-bottom:16px">As 7 decisoes abaixo precisam de resposta do William antes da implementacao. Suas respostas sao salvas automaticamente no navegador.</p>
+        <p style="margin-bottom:16px">As 3 decisoes abaixo ainda precisam de confirmacao do William antes da implementacao. As demais (janela de 2h, escopo SP+RJ, atividades 383/384 e foto de abertura) ja foram resolvidas com base no codigo do repositorio. Suas respostas sao salvas automaticamente no navegador.</p>
         <form id="will-form" aria-label="Formulario de alinhamento com William">
           <div class="form-group">
             <label for="granularity">1. Granularidade da analise saIA</label>
@@ -824,42 +836,13 @@ $hash = hash('sha256', json_encode($evidence));</code>
             </select>
           </div>
           <div class="form-group">
-            <label for="cron_window">2. Janela de execucao do cron</label>
-            <select id="cron_window" name="cron_window">
-              <option value="">Selecione...</option>
-              <option value="2h">2 horas</option>
-              <option value="4h">4 horas</option>
-              <option value="6h">6 horas (recomendado)</option>
-              <option value="8h">8 horas</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>3. Escopo geografico</label>
-            <div class="multi-select-group" id="geo-scope-group" role="group" aria-label="Escopo geografico">
-              <button type="button" data-value="SP">SP</button>
-              <button type="button" data-value="RJ">RJ</button>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="activity_aliases">4. Aliases de atividade 383/384 (lista canonica)</label>
-            <textarea id="activity_aliases" name="activity_aliases" placeholder="Liste os aliases de atividade que entram no MVP..."></textarea>
-          </div>
-          <div class="form-group">
             <div class="checkbox-group">
               <input type="checkbox" id="completed_by_system" name="completed_by_system">
-              <label for="completed_by_system">5. Incluir <code>completed_by_system</code> na primeira consulta?</label>
+              <label for="completed_by_system">2. Incluir <code>completed_by_system</code> na primeira consulta do command?</label>
             </div>
           </div>
           <div class="form-group">
-            <label for="ia_user">6. Usuario IA para auditoria</label>
-            <select id="ia_user" name="ia_user">
-              <option value="">Selecione...</option>
-              <option value="5">IA_GEMINI_USER_ID=5 (reuso)</option>
-              <option value="dedicado">Ator saIA dedicado</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="hitl_placement">7. Posicionamento da tela HITL</label>
+            <label for="hitl_placement">3. Posicionamento da tela HITL</label>
             <select id="hitl_placement" name="hitl_placement">
               <option value="">Selecione...</option>
               <option value="inline">Inline no detalhe do ticket</option>
@@ -876,7 +859,7 @@ $hash = hash('sha256', json_encode($evidence));</code>
       <div class="grid" style="margin-top:12px">
         <article class="card yellow span-12">
           <h3>Mensagem para alinhamento</h3>
-          <p>"William, antes de implementar o P0 do saIA, quero fechar grain, janela, escopo SP/RJ e lista de atividades 383/384. A primeira entrega nao chama Gemini: ela so monta e persiste evidencia com hash para provar idempotencia contra espelhamento corretiva/preventiva. Depois de validar isso, ativamos Gemini, prompt profiles e HITL em fases separadas. Os 30 gaps da auditoria adversarial estao documentados neste artefato &mdash; incluindo as 7 claims do PRD que precisam de verificacao no codigo real antes do P0."</p>
+          <p>"William, antes de implementar o P0 do saIA, restam 3 decisoes abertas: grain (1 ticket vs par corretiva/preventiva), inclusao de <code>completed_by_system</code> na consulta inicial e posicionamento da tela HITL. As outras ja foram resolvidas: janela de 2h, escopo SP+RJ com feature flags, atividades 383/384 (27, 28, 11, 32), filtro <code>system='street'</code> e foto de abertura canonica vinda de <code>$ticket->filepath</code>. A primeira entrega nao chama Gemini: ela so monta e persiste evidencia com hash para provar idempotencia contra espelhamento corretiva/preventiva."</p>
         </article>
       </div>
     </section>
@@ -911,7 +894,7 @@ $hash = hash('sha256', json_encode($evidence));</code>
     <section id="riscos">
       <div class="head">
         <h2>Riscos e mitigacoes.</h2>
-        <p>30 gaps da auditoria adversarial + riscos da arquitetura existente. O maior risco nao e tecnico: e implementar antes de fechar as decisoes de grain, janela, escopo e atividades com William.</p>
+        <p>30 gaps da auditoria adversarial + riscos da arquitetura existente. O maior risco nao e tecnico: e implementar antes de fechar as decisoes de grain e UX que ainda estao abertas com William.</p>
       </div>
 
       <div class="change-list">
@@ -1000,7 +983,7 @@ $hash = hash('sha256', json_encode($evidence));</code>
           <h3>Bloqueantes (12)</h3>
           <ul>
             <li>AC1: Renderiza correto em 320px, 768px, 1180px, 1440px sem scroll horizontal.</li>
-            <li>AC2: 7 perguntas de alinhamento com controles interativos.</li>
+            <li>AC2: 3 perguntas de alinhamento com controles interativos.</li>
             <li>AC3: localStorage persiste respostas entre reloads.</li>
             <li>AC4: "Copiar JSON" exporta JSON valido.</li>
             <li>AC5: "Limpar respostas" esvazia campos e localStorage.</li>
@@ -1101,7 +1084,7 @@ $hash = hash('sha256', json_encode($evidence));</code>
 
     <footer>
       <strong>saIA Plano de Implementacao | Eletromidia Operacoes</strong>
-      <p>Gerado em 2026-07-06 pelo pipeline saIA P0: Synthesis Agent &rarr; Builder Agent. Inclui 30 gaps da auditoria adversarial C:\Users\israel.toledo\saia-adversarial-review-output.md, 12 regras nao-negociaveis de William, 8 regras de triplo consenso e form interativo com 7 perguntas de alinhamento.</p>
+      <p>Gerado em 2026-07-06 pelo pipeline saIA P0: Synthesis Agent &rarr; Builder Agent. Inclui 30 gaps da auditoria adversarial C:\Users\israel.toledo\saia-adversarial-review-output.md, 12 regras nao-negociaveis de William, 8 regras de triplo consenso e form interativo com 3 perguntas de alinhamento pendentes.</p>
     </footer>
   </main>
 
@@ -1117,7 +1100,7 @@ $hash = hash('sha256', json_encode($evidence));</code>
       var copyBtn = document.getElementById('btn-copy-json');
       var clearBtn = document.getElementById('btn-clear');
 
-      var fieldIds = ['granularity', 'cron_window', 'activity_aliases', 'completed_by_system', 'ia_user', 'hitl_placement'];
+      var fieldIds = ['granularity', 'completed_by_system', 'hitl_placement'];
       var geoBtns = document.querySelectorAll('#geo-scope-group button');
 
       function showToast(msg) {
