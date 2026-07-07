@@ -312,7 +312,7 @@
     <section id="construido">
       <div class="head">
         <h2>O que foi construído.</h2>
-        <p>5 arquivos criados: 1 config, 2 migrations e 2 modelos Eloquent. Esta é a fundação sobre a qual todo o pipeline de análise será construído.</p>
+        <p>7 arquivos criados: 1 config, 2 migrations, 2 modelos Eloquent, 1 serviço de IA e 1 suite de testes. Esta é a fundação sobre a qual todo o pipeline de análise será construído.</p>
       </div>
 
       <div class="table-wrap">
@@ -329,6 +329,16 @@
               <td><code>config/saia.php</code></td>
               <td><span class="badge purple">config</span></td>
               <td>Feature flags (SP), provider (Google Gemini), safety window, batch size</td>
+            </tr>
+            <tr>
+              <td><code>app/Services/AI/GeminiService.php</code></td>
+              <td><span class="badge purple">IA</span></td>
+              <td>Integração REST com Gemini via Laravel Http, autenticação por <code>x-goog-api-key</code> e parsing do contrato de resposta</td>
+            </tr>
+            <tr>
+              <td><code>tests/Feature/Saia/GeminiServiceTest.php</code></td>
+              <td><span class="badge green">teste</span></td>
+              <td>Cobre parsing com <code>Http::fake()</code>, envio do header de autenticação e erro de chave inválida</td>
             </tr>
             <tr>
               <td><code>2025_01_01_create_saia_analysis_runs</code></td>
