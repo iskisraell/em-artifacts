@@ -405,7 +405,24 @@
       border-radius: 999px; font-weight: 800; font-size: 14px;
       background: var(--black); color: var(--white); flex-shrink: 0;
     }
-    .rule-num.orange { background: var(--orange); }
+    .rule-num.orange { background: var(--orange); color: var(--black); }
+
+    /* Hard-rules mobile contrast: force rule-item text to inherit the card color
+       and make each item transparent so it sits on the card background. */
+    .rule-item { color: inherit; }
+    .rule-item > div { color: inherit; }
+    .rule-item strong { color: inherit; }
+    .rule-item small { color: inherit; }
+    .rule-item code { color: inherit; background: transparent; }
+
+    .card.black .rule-item,
+    .card.purple .rule-item,
+    .card.green .rule-item,
+    .card.blue .rule-item,
+    .card.red .rule-item { background: transparent; border-color: rgba(255,255,255,.18); color: var(--white); }
+    .card.orange .rule-item { background: transparent; border-color: rgba(0,0,0,.12); color: var(--black); }
+    .card.yellow .rule-item,
+    .card.pink .rule-item { background: transparent; border-color: rgba(0,0,0,.08); color: rgba(0,0,0,.72); }
 
     form { display: grid; gap: 16px; }
     .form-group { display: grid; gap: 6px; }
