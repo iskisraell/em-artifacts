@@ -27,7 +27,15 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+
+    .skip-link {
+      position: absolute; top: -100%; left: 16px;
+      padding: 8px 16px; background: var(--black); color: var(--white);
+      border-radius: var(--radius); z-index: 10000;
+      font-weight: 800; text-decoration: none;
+    }
+    .skip-link:focus { top: 16px; }
 
     ::selection { background: var(--orange); color: var(--white); }
     ::-moz-selection { background: var(--orange); color: var(--white); }
@@ -129,7 +137,7 @@
       font-weight: 800; line-height: 1; white-space: normal;
     }
 
-    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.orange { background: var(--orange); color: var(--black); }
     .pill.purple { background: var(--purple); color: var(--white); }
     .pill.yellow { background: var(--yellow); color: var(--black); }
     .pill.green { background: var(--green); color: var(--white); }
@@ -160,6 +168,7 @@
       grid-template-columns: repeat(12, minmax(0, 1fr));
       gap: 12px; min-width: 0;
     }
+    .grid > * { min-width: 0; }
 
     .card {
       min-width: 0; min-height: 100%;
@@ -184,7 +193,8 @@
     .card.blue { background: var(--blue); }
     .card.red { background: var(--red); }
 
-    .card.black p, .card.purple p, .card.orange p, .card.green p, .card.blue p, .card.red p { color: #FFFFFF; }
+    .card.black p, .card.purple p, .card.green p, .card.blue p, .card.red p { color: #FFFFFF; }
+    .card.orange p { color: var(--black); }
     .card.black li, .card.purple li, .card.orange li, .card.green li, .card.blue li, .card.red li { color: #FFFFFF; }
     .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
     .card.black code, .card.purple code, .card.orange code, .card.green code, .card.blue code, .card.red code { background: rgba(255,255,255,.15); color: var(--white); }
@@ -251,7 +261,7 @@
 
     .problem-strip {
       display: grid;
-      grid-template-columns: 1fr 92px 1fr 92px 1fr;
+      grid-template-columns: minmax(0, 1fr) 92px minmax(0, 1fr) 92px minmax(0, 1fr);
       gap: 12px; align-items: stretch;
     }
 
@@ -310,9 +320,9 @@
 
     .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
 
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
 
-    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th, td { min-width: 0; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; word-break: break-word; }
 
     th {
       background: var(--black); color: var(--white);
@@ -332,7 +342,7 @@
     }
 
     .badge.green { background: var(--green); color: var(--white); }
-    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--black); }
     .badge.red { background: var(--red); color: var(--white); }
     .badge.purple { background: var(--purple); color: var(--white); }
     .badge.black { background: var(--black); color: var(--white); }
@@ -457,6 +467,8 @@
     :focus-visible {
       outline: 2px solid var(--orange); outline-offset: 2px;
     }
+    .btn:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+    .btn.primary:hover:focus-visible { outline-color: var(--black); }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -473,7 +485,7 @@
       .head p { max-width: none; }
       .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
       .rail, .flow-board { grid-template-columns: 1fr 1fr; }
-      .problem-strip { display: grid; }
+      .problem-strip { display: grid; grid-template-columns: minmax(0, 1fr); }
       .problem-arrow { min-height: 54px; transform: rotate(90deg); }
       .change-item { grid-template-columns: 1fr; }
     }
@@ -483,15 +495,16 @@
       .hero { min-height: 580px; border-radius: 14px; }
       h1 { font-size: clamp(40px, 13vw, 56px); }
       h2 { font-size: clamp(30px, 9.5vw, 40px); }
-      .hero::before { right: 62px; width: 260px; }
-      .hero::after { width: 210px; }
+      .hero::before { right: 34px; width: 160px; }
+      .hero::after { right: -28px; width: 130px; }
       .rail, .flow-board { grid-template-columns: 1fr; }
       .card, .flow-lane, .compare, details { border-radius: 12px; }
     }
   </style>
 </head>
 <body>
-  <main>
+  <a href="#main-content" class="skip-link">Pular para o conteudo principal</a>
+  <main id="main-content">
     <section class="hero" id="top">
       <div>
         <span class="eyebrow">Operacoes | saIA | plano de implementacao</span>
