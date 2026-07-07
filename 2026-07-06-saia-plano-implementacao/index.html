@@ -415,6 +415,26 @@
     .rule-item small { color: inherit; }
     .rule-item code { color: inherit; background: transparent; }
 
+    /* Override rule-item white background when inside dark cards */
+    .card.black .rule-item,
+    .card.purple .rule-item,
+    .card.green .rule-item,
+    .card.blue .rule-item,
+    .card.red .rule-item {
+      background: transparent;
+      border-color: rgba(255,255,255,.15);
+    }
+    .card.black .rule-item:hover,
+    .card.purple .rule-item:hover,
+    .card.green .rule-item:hover,
+    .card.blue .rule-item:hover,
+    .card.red .rule-item:hover {
+      background: rgba(255,255,255,.05);
+    }
+    .rule-item strong { color: inherit; }
+    .rule-item small { color: inherit; }
+    .rule-item code { color: inherit; background: transparent; }
+
     .card.black .rule-item,
     .card.purple .rule-item,
     .card.green .rule-item,
