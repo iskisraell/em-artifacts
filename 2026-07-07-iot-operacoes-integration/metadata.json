@@ -1,0 +1,20 @@
+{
+  "title": "IoT Hub v2 ↔ Operações: alertas que viram tickets",
+  "date": "2026-07-07",
+  "description": "Arquitetura de integração entre IoT Hub v2 e Operações — como conectar telemetria rica de 30+ campos a tickets de manutenção via webhook com outbox e idempotência. Norte técnico para William Pinheiro e Thomas Melo.",
+  "tags": ["iot", "operacoes", "integracao", "arquitetura", "webhook", "alertas", "eletromidia"],
+  "sections": [
+    "Hero",
+    "O Problema",
+    "Os Dois Sistemas",
+    "Antes vs Agora",
+    "Decisão de Arquitetura",
+    "Matriz de Decisão",
+    "Mapeamento de Dispositivos",
+    "Severidade → Prioridade",
+    "Fases de Implementação",
+    "Tabela de Atribuições",
+    "Top 5 Riscos",
+    "Conclusão"
+  ]
+}
