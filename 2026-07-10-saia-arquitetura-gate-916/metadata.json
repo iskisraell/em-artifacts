@@ -1,0 +1,7 @@
+{
+  "title": "saIA Gate #916 — Arquitetura que conecta Gemini ao chão de fábrica",
+  "date": "2026-07-10",
+  "description": "Decisão de arquitetura para o pipeline live Gemini multimodal + HITL humana no Operações. O que está validado, o que falta, contrato seguro proposto e decisões que o Israel precisa aprovar antes de codar live.",
+  "tags": ["saIA", "Gemini", "arquitetura", "HITL", "dry-run", "Operações", "manutenção", "SP"],
+  "sections": ["Resumo executivo", "Profile JSON", "Evidências e imagens", "Fluxo dry-run vs live", "Contrato seguro", "Prós e Contras", "Decisões pendentes", "Próximos gates"]
+}

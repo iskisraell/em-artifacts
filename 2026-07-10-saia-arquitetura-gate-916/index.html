@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | saIA Gate #916 — Arquitetura Gemini + HITL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    ::selection { background: var(--orange); color: var(--white); }
+    ::-moz-selection { background: var(--orange); color: var(--white); }
+
+    body {
+      background: var(--surface); color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45; overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--white); color: var(--purple);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word; vertical-align: baseline;
+    }
+
+    main {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto; padding: 24px 0 56px;
+    }
+
+    section { margin-top: 22px; }
+
+    h1, h2, h3 { margin-top: 0; font-weight: 800; }
+
+    h1 {
+      max-width: 980px; margin-bottom: 20px;
+      font-size: clamp(42px, 7.5vw, 90px); line-height: .92; letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 820px; margin-bottom: 0;
+      font-size: clamp(28px, 3.6vw, 46px); line-height: 1.04;
+    }
+
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius); background: var(--black); color: var(--white);
+      display: grid; align-content: space-between; gap: 48px;
+      overflow: hidden; position: relative; isolation: isolate;
+    }
+
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1; aspect-ratio: 1; border-radius: 34px;
+    }
+
+    .hero::before {
+      right: clamp(116px, 15vw, 220px); bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px); background: var(--orange); transform: rotate(10deg);
+    }
+
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px); bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px); background: var(--purple); transform: rotate(-8deg);
+    }
+
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 22px; padding: 7px 11px; border-radius: 999px;
+      background: var(--yellow); color: var(--black);
+      font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: .08em;
+    }
+
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    .pill {
+      display: inline-flex; align-items: center; min-height: 32px;
+      padding: 7px 11px; border-radius: 999px; font-size: 13px;
+      font-weight: 800; line-height: 1; white-space: normal;
+    }
+
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+
+    .nav {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; padding: 10px 0;
+      background: var(--surface);
+    }
+
+    .nav a, .tab-button {
+      border: 1px solid var(--black); border-radius: 999px;
+      background: var(--white); color: var(--black);
+      cursor: pointer; font: inherit; font-weight: 800;
+      text-decoration: none; white-space: normal; text-align: center;
+      transition: background .15s, color .15s;
+    }
+
+    .nav a { padding: 10px 13px; font-size: 14px; }
+    .tab-button { padding: 11px 14px; font-size: 14px; }
+
+    .nav a:hover, .tab-button:hover, .tab-button[aria-selected="true"] {
+      background: var(--black); color: var(--white);
+    }
+
+    .grid {
+      display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+
+    .card {
+      min-width: 0; min-height: 100%;
+      padding: clamp(18px, 2.4vw, 28px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--white); overflow: hidden;
+      transition: transform .18s, box-shadow .18s;
+    }
+
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+
+    .card.black, .card.purple, .card.orange, .card.green { border-color: transparent; color: var(--white); }
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.pink { background: var(--pink); }
+    .card.green { background: var(--green); }
+
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code { color: var(--black); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      margin-bottom: 6px;
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800; line-height: .86;
+    }
+
+    .head {
+      display: flex; justify-content: space-between; align-items: end;
+      gap: 18px; margin-bottom: 14px;
+    }
+
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .flow-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 12px; align-items: stretch; min-width: 0;
+    }
+
+    .flow-lane {
+      min-width: 0; display: grid; gap: 10px; padding: 16px;
+      border: 1px solid var(--line); border-radius: 16px; background: var(--white);
+      transition: transform .15s;
+    }
+
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.removed { border-color: var(--red); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.kept { border-color: var(--purple); }
+
+    .flow-node {
+      min-width: 0; padding: 12px; border-radius: 12px; background: var(--muted);
+    }
+
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+
+    .split {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+
+    .compare {
+      min-width: 0; min-height: 180px; padding: 18px; border-radius: 16px;
+      border: 1px solid var(--line); background: var(--white);
+    }
+
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+
+    .syntax-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px; margin-top: 12px; min-width: 0;
+    }
+
+    .syntax-box {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white); overflow: hidden;
+    }
+
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code {
+      display: block; width: 100%; max-width: 100%;
+      white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
+      background: transparent; color: var(--yellow); padding: 0;
+    }
+
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+
+    details {
+      border: 1px solid var(--line); border-radius: 14px; background: var(--white); overflow: hidden;
+    }
+
+    details + details { margin-top: 8px; }
+
+    summary {
+      cursor: pointer; padding: 16px 18px; font-weight: 800; list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    .change-list { display: grid; gap: 8px; }
+
+    .change-item {
+      min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px; align-items: center; padding: 12px 14px;
+      border: 1px solid var(--line); border-radius: 12px; background: var(--white);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+
+    th {
+      background: var(--black); color: var(--white);
+      font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .04em;
+    }
+
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+
+    .badge {
+      display: inline-block; padding: 3px 8px; border-radius: 999px;
+      font-size: 11px; font-weight: 800; line-height: 1;
+    }
+
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+
+    .callout {
+      display: flex; justify-content: space-between; gap: 16px; align-items: center;
+      padding: clamp(20px, 3vw, 32px); border-radius: var(--radius); background: var(--yellow);
+    }
+
+    .rail {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px; min-width: 0;
+    }
+
+    .rail-step {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white); transition: transform .15s;
+    }
+
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+
+    footer {
+      margin-top: 22px; padding: 20px 0 0; color: var(--text); font-size: 14px;
+    }
+
+    @media (max-width: 920px) {
+      .head, .callout, .split, .stamp-row { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr 1fr; }
+      .change-item { grid-template-columns: 1fr; }
+      .problem-arrow { min-height: 54px; transform: rotate(90deg); }
+    }
+
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .hero::before { right: 62px; width: 260px; }
+      .hero::after { width: 210px; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr; }
+      .card, .flow-lane, .compare, details { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div>
+      <span class="eyebrow">Operacoes &middot; saIA &middot; 10 Jul 2026</span>
+      <h1>saIA Gate #916. A arquitetura que conecta Gemini ao chao de fabrica.</h1>
+      <p class="lead">Decisao de arquitetura para o pipeline live Gemini multimodal + HITL humana. O que esta validado, o que falta, contrato seguro proposto e decisoes que o Israel precisa aprovar antes de codar live.</p>
+    </div>
+    <div class="hero-bar">
+      <span class="pill orange">saIA</span>
+      <span class="pill purple">Gemini</span>
+      <span class="pill yellow">arquitetura</span>
+      <span class="pill green">dry-run</span>
+      <span class="pill pink">HITL</span>
+    </div>
+  </section>
+
+  <!-- NAV -->
+  <nav class="nav" aria-label="Navegacao">
+    <a href="#resumo">Resumo</a>
+    <a href="#profile">Profile JSON</a>
+    <a href="#evidencias">Evidencias</a>
+    <a href="#fluxo">Fluxo</a>
+    <a href="#contrato">Contrato seguro</a>
+    <a href="#pros-contras">Pros &amp; Contras</a>
+    <a href="#decisoes">Decisoes</a>
+    <a href="#gates">Proximos gates</a>
+  </nav>
+
+  <!-- SECAO 1: RESUMO EXECUTIVO -->
+  <section id="resumo">
+    <div class="head">
+      <h2>O que esta validado e o que ainda nao foi implementado.</h2>
+      <p>Fundacao dry-run entregue em <code>codex/saia-maintenance-analysis-foundation</code>. Contrato Gemini testado em smoke isolado. Pipeline live ainda e desenho proposto.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card green span-6">
+        <span class="pill yellow" style="margin-bottom:14px">validado</span>
+        <h3>Fundacao dry-run completa.</h3>
+        <ul class="checklist">
+          <li><strong>Config</strong> <code>config/saia.php</code> com provider, mode, safety window, feature flags, establishment/activity scope, profile key/version.</li>
+          <li><strong>Migrations</strong> 4 tabelas: <code>saia_analysis_runs</code>, <code>saia_ticket_analyses</code>, <code>saia_analysis_run_items</code> (ledger), mais coluna <code>dispatched_count</code>.</li>
+          <li><strong>Models</strong> <code>SaiaAnalysisRun</code>, <code>SaiaTicketAnalysis</code> com casts JSON, relationships e <code>finalizeIfComplete()</code>.</li>
+          <li><strong>Evidence Resolver</strong> <code>MaintenanceTicketEvidenceResolver</code>: opening, closing, problem photos com fontes documentadas.</li>
+          <li><strong>Profile</strong> <code>maintenance_dry_run.json</code> v1 com 21 termos de glossario, 8 regras, schema esperado.</li>
+          <li><strong>Prompt Builder</strong> <code>ProfilePromptBuilder</code> — carrega profile, valida, monta prompt PT-BR com placeholders de evidencia.</li>
+          <li><strong>Hash idempotencia</strong> SHA-256 canonico sobre evidencia ordenada.</li>
+          <li><strong>Command</strong> <code>saia:analyze-maintenance</code> com cache lock, query de candidatos, dispatch por chunk.</li>
+          <li><strong>Job</strong> <code>SaiaAnalyzeMaintenanceTicketJob</code> com <code>tries=3</code>, <code>backoff=[60,120,300]</code>, persistencia dry-run.</li>
+          <li><strong>Schedule</strong> <code>Kernel.php</code>: <code>hourlyAt(13)</code> com <code>withoutOverlapping(120)</code>.</li>
+          <li><strong>Smoke Gemini</strong> REST isolado no container: <code>SAIA_SMOKE_OK</code>, <code>finishReason=STOP</code>, modelo confirmado.</li>
+          <li><strong>Testes</strong> 23 testes Feature cobrindo idempotencia, hash, contagem de run, config, backfill de prompt.</li>
+        </ul>
+      </article>
+
+      <article class="card span-6">
+        <span class="pill orange" style="margin-bottom:14px">pendente</span>
+        <h3>Pipeline live + HITL nao implementados.</h3>
+        <ul class="checklist">
+          <li><strong>Gemini multimodal</strong> — envio de imagem do ticket junto com prompt textual. API Gemini Vision nao testada.</li>
+          <li><strong>Normalizacao da resposta</strong> — parser do JSON bruto do Gemini para o <code>expected_output_schema</code> do profile.</li>
+          <li><strong>Persistencia raw/normalized</strong> — colunas <code>raw_response</code> e <code>normalized_response</code> existem mas nunca sao populadas.</li>
+          <li><strong>Confidence scoring</strong> — coluna <code>confidence</code> existe mas nunca e calculada.</li>
+          <li><strong>UI HITL</strong> (#919) — zero codigo Vue. Nao existe tela de revisao, fila, acoes humanas.</li>
+          <li><strong>Checklist answers no evidence</strong> — resolver so coleta fotos. Respostas de checklist (<code>ticket_answers</code>) nao entram no pacote de evidencia.</li>
+          <li><strong>Conclusion photos multiplas</strong> — resolver pega apenas a primeira closing photo. Demais closing + auxiliary closing nao sao incluidas.</li>
+          <li><strong>Geographic scope RJ</strong> — config tem <code>feature_saia_rj_enabled</code> mas nao ha establishment IDs do RJ.</li>
+          <li><strong>Eligibility pre-Gemini</strong> — nao existe validacao se o ticket tem evidencia suficiente antes de chamar Gemini (custo).</li>
+          <li><strong>Politica de retry live</strong> — backoff do job cobre falha de infra, mas nao ha estrategia para falha do modelo (timeout, rate limit, resposta invalida).</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- SECAO 2: MAPA DO PROFILE JSON -->
+  <section id="profile">
+    <div class="head">
+      <h2>Mapa dos campos do profile e como entram no prompt.</h2>
+      <p>Profile <code>resources/saia/profiles/maintenance_dry_run.json</code> v1. Consumido exclusivamente pelo <code>ProfilePromptBuilder</code>.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card span-6">
+        <h3>Estrutura do profile.</h3>
+        <div class="table-wrap" style="margin-top:10px">
+          <table>
+            <thead><tr><th>Campo</th><th>Tipo</th><th>Funcao no prompt</th></tr></thead>
+            <tbody>
+              <tr><td><code>profile_key</code></td><td>string</td><td>Identificador unico; validado contra o nome do arquivo.</td></tr>
+              <tr><td><code>profile_version</code></td><td>int</td><td>Controle de versionamento; mismatch com config = excecao.</td></tr>
+              <tr><td><code>equipment_types</code></td><td>string[]</td><td>Tipos de mobiliario que o modelo deve reconhecer (<code>Abrigo</code>, <code>Totem</code>).</td></tr>
+              <tr><td><code>glossary</code></td><td>object[]</td><td>21 termos tecnicos com <code>term</code>, <code>definition</code>, <code>equipment_type</code>, <code>category</code>, <code>severity</code>. Define o que o modelo deve procurar.</td></tr>
+              <tr><td><code>rules</code></td><td>object[]</td><td>8 regras de inferencia (consistencia temporal, foco mobiliario, anti-alucinacao, etc.).</td></tr>
+              <tr><td><code>expected_output_schema</code></td><td>object</td><td>Schema JSON que o Gemini deve respeitar na resposta.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card span-6">
+        <h3>Glossario: sinais de manutencao definidos.</h3>
+        <div class="table-wrap" style="margin-top:10px">
+          <table>
+            <thead><tr><th>Categoria</th><th>Termos (Abrigo)</th><th>Termos (Totem)</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge red">Estrutural</span></td><td>estrutura abalroada, vidro quebrado/trincado/riscado/ausente, banco quebrado, ferrugem severa</td><td>estrutura abalroada</td></tr>
+              <tr><td><span class="badge orange">Limpeza</span></td><td>pichacao, pintura, cobertura suja, calcada suja</td><td>pichacao, calcada suja</td></tr>
+              <tr><td><span class="badge purple">Eletrico</span></td><td>problema eletrico, fiacao exposta, aterramento</td><td>&mdash;</td></tr>
+              <tr><td><span class="badge black">Informacao</span></td><td>itinerario, pictogramas</td><td>itinerario, pictogramas</td></tr>
+              <tr><td><span class="badge green">Acessibilidade</span></td><td>piso podotatil</td><td>piso podotatil</td></tr>
+              <tr><td><span class="badge">Outros</span></td><td>componente ausente, supressao, obras</td><td>componente ausente</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:12px"><strong>Nao coberto pelo profile atual:</strong> componentes internos do display digital, audio, conectividade, iluminacao LED, camera, sensores. Esses itens exigiriam expansao do profile.</p>
+      </article>
+    </div>
+
+    <div class="syntax-grid" style="margin-top:12px">
+      <div class="syntax-box">
+        <h3>Como o profile entra no prompt.</h3>
+        <code>ProfilePromptBuilder::build() monta um prompt PT-BR com:
+{equipment} = lista de equipment_types
+{glossary}  = tabela termo | definicao | severidade
+{rules}     = regras numeradas
+{schema}    = expected_output_schema como JSON
+{evidence}  = ticket_id + paths das fotos
+
+Prompt pronto e salvo em generated_prompt
+no campo evidence do SaiaTicketAnalysis.</code>
+      </div>
+      <div class="syntax-box">
+        <h3>Exemplo de entrada de glossario.</h3>
+        <code>{
+  "term": "pichacao",
+  "definition": "Presenca de grafite, tags ou
+    pintura nao autorizada sobre a superficie
+    do mobiliario.",
+  "equipment_type": "Abrigo",
+  "category": "limpeza",
+  "severity": "media"
+}</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECAO 3: EVIDENCIAS E ORIGEM DAS FOTOS -->
+  <section id="evidencias">
+    <div class="head">
+      <h2>Como a imagem do ticket e localizada e o que o profile cobre.</h2>
+      <p>Evidencias resolvidas pelo <code>MaintenanceTicketEvidenceResolver</code>. Fonte primaria: <code>tickets.filepath</code> e <code>ticket_photos</code>.</p>
+    </div>
+
+    <div class="flow-board">
+      <article class="flow-lane kept">
+        <span class="pill purple">foto de abertura</span>
+        <h3>Opening photo.</h3>
+        <div class="flow-node">
+          <strong>Ordem de fallback</strong>
+          <p>1. <code>tickets.filepath</code> (campo direto na tabela tickets).<br>2. <code>ticket_photos</code> com <code>type = 'opening'</code> (primeiro por ID).</p>
+        </div>
+        <div class="flow-node">
+          <strong>Fonte</strong>
+          <p><code>TicketPhoto::TYPE_OPENING</code>. Armazenada no disco; path registrado em <code>TicketPhoto.filepath</code>.</p>
+        </div>
+      </article>
+
+      <article class="flow-lane kept">
+        <span class="pill purple">foto de fechamento</span>
+        <h3>Closing photo.</h3>
+        <div class="flow-node">
+          <strong>Selecao</strong>
+          <p>Primeira foto com <code>type = 'closing'</code> ordenada por ID ASC.</p>
+        </div>
+        <div class="flow-node">
+          <strong>Limitacao conhecida</strong>
+          <p>Apenas 1 closing photo e usada. Demais closing + auxiliary closing nao entram no prompt. <span class="badge orange">a definir no gate #916</span></p>
+        </div>
+      </article>
+
+      <article class="flow-lane kept">
+        <span class="pill purple">fotos de problema</span>
+        <h3>Problem photos.</h3>
+        <div class="flow-node">
+          <strong>Selecao</strong>
+          <p>Todas as fotos com <code>type = 'problem'</code>.</p>
+        </div>
+        <div class="flow-node">
+          <strong>Uso no prompt</strong>
+          <p>Entram como array <code>problem_photo_paths</code> no bloco de evidencia do prompt.</p>
+        </div>
+      </article>
+
+      <article class="flow-lane removed">
+        <span class="pill red">nao implementado</span>
+        <h3>Checklist answers.</h3>
+        <div class="flow-node">
+          <strong>Pendencia</strong>
+          <p><code>ticket_answers</code> com checklists e propriedades como <code>XA_RUA_*</code>, <code>XA_ABG_*</code> nao sao coletadas pelo resolver atual.</p>
+        </div>
+        <div class="flow-node">
+          <strong>Impacto</strong>
+          <p>Respostas textuais do tecnico sobre o estado do abrigo nao chegam ao Gemini. <span class="badge orange">a definir no gate #916</span></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- SECAO 4: FLUXO DETALHADO -->
+  <section id="fluxo">
+    <div class="head">
+      <h2>Fluxo Ticket ate HITL, distinguindo dry-run atual do live proposto.</h2>
+      <p>Use as abas para alternar entre o estado atual (100% codado) e o desenho proposto para o pipeline live.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-button" role="tab" aria-selected="true" data-tab="fluxo-dry">Dry-run atual</button>
+      <button class="tab-button" role="tab" aria-selected="false" data-tab="fluxo-live">Live proposto</button>
+    </div>
+
+    <article class="tab-panel active" id="fluxo-dry" role="tabpanel">
+      <div class="rail">
+        <div class="rail-step">
+          <strong>1. Query tickets</strong>
+          <p>Command seleciona tickets SP, <code>status IN (completed, completed_by_system)</code>, activities [27,28,11,32], estab [383,384], safety window 6h.</p>
+        </div>
+        <div class="rail-step">
+          <strong>2. Evidence resolve</strong>
+          <p>Resolver coleta opening, closing, problem photos. Monta pacote de evidencia deterministico.</p>
+        </div>
+        <div class="rail-step">
+          <strong>3. Hash + Prompt build</strong>
+          <p>SHA-256 canonico da evidencia. ProfilePromptBuilder monta prompt PT-BR com profile v1. Prompt salvo em <code>evidence.generated_prompt</code>.</p>
+        </div>
+        <div class="rail-step">
+          <strong>4. Persist dry-run</strong>
+          <p><code>SaiaTicketAnalysis</code> com <code>status=completed_dry_run</code>. Ledger em <code>saia_analysis_run_items</code>. Run finalizado quando todos processados.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <article class="card black span-12">
+          <span class="pill yellow" style="margin-bottom:12px">estado atual</span>
+          <h3>O que roda hoje.</h3>
+          <p>O job <strong>nao chama Gemini</strong>. Todo o fluxo para na persistencia dry-run. O prompt e gerado e salvo, mas nunca enviado. Nao ha consumo de creditos, nao ha risco de resposta invalida. A fundacao prova que o pipeline de evidencias funciona e que o hash de idempotencia detecta late mirroring.</p>
+        </article>
+      </div>
+    </article>
+
+    <article class="tab-panel" id="fluxo-live" role="tabpanel">
+      <div class="rail">
+        <div class="rail-step">
+          <strong>1. Query tickets</strong>
+          <p>Igual dry-run. Candidate tickets com verificação de eligibility (evidencia suficiente?).</p>
+        </div>
+        <div class="rail-step">
+          <strong>2. Evidence resolve</strong>
+          <p>Ampliado com checklist answers, todas as closing photos. Hash de idempotencia.</p>
+        </div>
+        <div class="rail-step">
+          <strong>3. Prompt build + Gemini</strong>
+          <p>Prompt com imagem via Gemini Vision API. Modelo <code>gemini-flash-lite-latest</code>. Timeout, retry, rate limit.</p>
+        </div>
+        <div class="rail-step">
+          <strong>4. Validate + Normalize</strong>
+          <p>Parser do JSON bruto contra <code>expected_output_schema</code>. Fallback para resposta invalida.</p>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <article class="card span-4">
+          <span class="pill purple" style="margin-bottom:10px">etapa 5</span>
+          <h3>Persist dual.</h3>
+          <p><code>raw_response</code> (JSON bruto do Gemini) + <code>normalized_response</code> (schema validado) + <code>confidence</code>. <code>status</code> = <code>analyzed</code> ou <code>needs_review</code>.</p>
+        </article>
+        <article class="card span-4">
+          <span class="pill pink" style="margin-bottom:10px">etapa 6</span>
+          <h3>Ledger + Run finalize.</h3>
+          <p>Igual dry-run: <code>saia_analysis_run_items</code> atualizado. Run counters incrementados. Run finalizado quando batch completo.</p>
+        </article>
+        <article class="card span-4">
+          <span class="pill orange" style="margin-bottom:10px">etapa 7</span>
+          <h3>UI HITL #919.</h3>
+          <p>Tela de revisao humana: foto lado a lado com diagnostico do Gemini. Acao humana: confirmar, rejeitar, solicitar reanalise. <strong>Zero codigo hoje.</strong></p>
+        </article>
+      </div>
+
+      <div class="grid" style="margin-top:12px">
+        <article class="card purple span-12">
+          <span class="pill yellow" style="margin-bottom:12px">proposto</span>
+          <h3>Diferencas criticas do live.</h3>
+          <p>O live troca <code>completed_dry_run</code> por chamada real ao Gemini, com imagem + prompt. Todo o resto (hash, persistencia, ledger, finalizacao de run) e reutilizado. A separacao dry-run/live e controlada por <code>config('saia.analysis_mode')</code> — default <code>dry_run</code>, live via env <code>SAIA_ANALYSIS_MODE=live</code>. Nenhuma decisao automatica: o sistema nunca altera status de ticket. Revisao humana e obrigatoria antes de qualquer acao.</p>
+        </article>
+      </div>
+    </article>
+  </section>
+
+  <!-- SECAO 5: CONTRATO SEGURO -->
+  <section id="contrato">
+    <div class="head">
+      <h2>Contrato seguro proposto para o pipeline live.</h2>
+      <p>Principios de design que protegem contra gasto desnecessario, corrupcao de dados e decisoes automaticas.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card span-4">
+        <h3>Idempotencia por hash.</h3>
+        <p>SHA-256 sobre evidencia canonica ordenada com <code>recursiveKsort</code>. Unique constraint em <code>(ticket_id, profile_key, profile_version, input_hash)</code>. Ticket com mesma evidencia = nunca reanalisado (sem <code>--force</code>).</p>
+        <p style="margin-top:8px"><span class="badge green">implementado</span> <span class="badge purple">SHA 441f2ca85</span></p>
+      </article>
+      <article class="card span-4">
+        <h3>Dry-run / Live separation.</h3>
+        <p><code>analysis_mode</code> em <code>config/saia.php</code>. Default <code>dry_run</code>. Live so ativado com env <code>SAIA_ANALYSIS_MODE=live</code>. Impossivel chamar Gemini acidentalmente em producao.</p>
+        <p style="margin-top:8px"><span class="badge green">implementado</span> <span class="badge purple">SHA 6be6d3a9b</span></p>
+      </article>
+      <article class="card span-4">
+        <h3>Raw + Normalized dual.</h3>
+        <p><code>raw_response</code> preserva o JSON exato do Gemini (auditavel). <code>normalized_response</code> e o parsing validado contra <code>expected_output_schema</code>. Separacao permite re-parse sem re-chamar Gemini.</p>
+        <p style="margin-top:8px"><span class="badge orange">schema existe, logica pendente</span></p>
+      </article>
+    </div>
+
+    <div class="grid" style="margin-top:0">
+      <article class="card span-6">
+        <h3>Fail &amp; Retry.</h3>
+        <ul class="checklist">
+          <li><strong>Job retry:</strong> <code>tries=3</code>, <code>backoff=[60, 120, 300]</code> no queue <code>scripts</code>.</li>
+          <li><strong>Timeout Gemini:</strong> <code>config('saia.gemini_timeout')</code> = 30s default.</li>
+          <li><strong>Falha de modelo:</strong> resposta invalida, timeout, rate limit — job falha, <code>failed()</code> notifica Slack.</li>
+          <li><strong>Pendencia:</strong> estrategia de retry para Rate Limit (429) e resposta JSON invalida ainda nao existe. <span class="badge orange">gate #916</span></li>
+        </ul>
+      </article>
+      <article class="card span-6">
+        <h3>Confidence &amp; Limits.</h3>
+        <ul class="checklist">
+          <li><strong>Threshold:</strong> <code>confidence_threshold_needs_review</code> (0.7 default). Abaixo = <code>status=needs_review</code>.</li>
+          <li><strong>Safety window:</strong> 6h apos <code>end_date</code> antes de analisar. Evidencia incompleta = ticket excluido.</li>
+          <li><strong>Batch limit:</strong> <code>analysis_batch_size</code> = 50 tickets por run. Evita sobrecarga.</li>
+          <li><strong>Photo limit:</strong> <code>evidence_photo_limit</code> = 10. Protege prompt de estourar token limit.</li>
+          <li><strong>Nenhuma decisao automatica:</strong> saIA nunca altera <code>tickets.status</code>. Revisao humana obrigatoria.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="grid" style="margin-top:0">
+      <article class="card black span-12">
+        <span class="pill yellow" style="margin-bottom:12px">regra de ouro</span>
+        <h3>O sistema diagnostica; o humano decide.</h3>
+        <p>saIA produz um diagnostico estruturado com confianca. Nenhum ticket e fechado, reaberto, reclassificado ou alterado automaticamente. O HITL (#919) e o unico caminho para acao. Esse principio e irrevogavel e deve ser mantido em todas as fases.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- SECAO 6: PROS E CONTRAS -->
+  <section id="pros-contras">
+    <div class="head">
+      <h2>Por que esta arquitetura e boa — e por que ainda nao e suficiente.</h2>
+      <p>Avaliacao honesta dos trade-offs com recomendacao condicionada aos gates.</p>
+    </div>
+
+    <div class="split">
+      <div class="compare after">
+        <span class="pill green">pontos fortes</span>
+        <h3>O que funciona bem.</h3>
+        <ul class="checklist">
+          <li><strong>Hash idempotency</strong> — protege contra reanalise e late mirroring. Testado com 20+ cenarios.</li>
+          <li><strong>Profile versionado</strong> — prompt e revisado em PR. Glossario e regras evoluem sem deploy de codigo.</li>
+          <li><strong>Dry-run default</strong> — impossivel gastar creditos sem explicitamente ativar <code>SAIA_ANALYSIS_MODE=live</code>.</li>
+          <li><strong>Reuso de padrao Gemini</strong> — mesmo <code>GeminiService</code> usado pelo Posting AI. Smoke confirmado.</li>
+          <li><strong>Ledger independente</strong> — <code>saia_analysis_run_items</code> sem FK em ticket. Audit trail preservado.</li>
+          <li><strong>Separacao raw/normalized</strong> — permite evoluir o parser sem re-chamar Gemini.</li>
+          <li><strong>Nao altera tickets</strong> — zero risco de corrupcao de dados de producao.</li>
+        </ul>
+      </div>
+      <div class="compare before">
+        <span class="pill red">riscos &amp; limitacoes</span>
+        <h3>O que preocupa.</h3>
+        <ul class="checklist">
+          <li><strong>Multimodal nao testado</strong> — Gemini Vision com foto de abrigo nunca rodou. Nao sabemos qualidade, latencia ou custo.</li>
+          <li><strong>Modelo unico</strong> — <code>gemini-flash-lite-latest</code> e fixo no codigo. Mudanca exige deploy. Sem fallback para outro provider.</li>
+          <li><strong>Evidencia incompleta</strong> — sem checklist answers, sem todas as closing photos. Diagnostico pode perder contexto.</li>
+          <li><strong>Normalizacao fragil</strong> — parser de JSON de LLM e notoriamente instavel. Precisa de validacao + fallback.</li>
+          <li><strong>Sem eligibility gate</strong> — ticket sem foto de abertura ainda sera dispatcheado. Custo desperdicado.</li>
+          <li><strong>HITL e futuro distante</strong> — sem UI, o pipeline live gera dados que ninguem ve. Valor de negocio zero ate #919.</li>
+          <li><strong>Custo invisivel</strong> — sem monitoramento de tokens/gastos por run. Orcamento nao controlado.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:12px">
+      <div>
+        <h3>Recomendacao condicionada.</h3>
+        <p>Prosseguir com #916 (Gemini live) somente apos: (1) teste multimodal com 10 tickets reais e metrica de qualidade, (2) parser de normalizacao com fallback, (3) eligibility gate que pula tickets sem foto de abertura. Adiar HITL #919 ate que o diagnostico tenha qualidade minima validada — nao faz sentido construir UI para dados ruins.</p>
+      </div>
+      <span class="pill black">condicional</span>
+    </div>
+  </section>
+
+  <!-- SECAO 7: DECISOES PARA O ISRAEL -->
+  <section id="decisoes">
+    <div class="head">
+      <h2>Decisoes que o Israel precisa aprovar antes de codar live.</h2>
+      <p>Cada decisao abaixo bloqueia o proximo passo. Ordenadas por precedencia.</p>
+    </div>
+
+    <div class="change-list">
+      <div class="change-item">
+        <div><strong>1. Multimodal — Gemini Vision ou outro provider?</strong><br><small>O Gemini suporta imagem inline via API <code>generateContent</code> com <code>inlineData</code>. Alternativa: enviar so texto, depender de descricao previa. Custo e latencia da abordagem multimodal precisam ser medidos.</small></div>
+        <span class="pill orange">#916</span>
+      </div>
+      <div class="change-item">
+        <div><strong>2. Contrato de normalizacao — schema fixo ou flexivel?</strong><br><small>O <code>expected_output_schema</code> do profile define a estrutura esperada. O parser deve ser estrito (rejeitar JSON fora do schema) ou leniente (extrair o que conseguir)? Estrito = mais seguro, leniente = mais dados.</small></div>
+        <span class="pill purple">#916</span>
+      </div>
+      <div class="change-item">
+        <div><strong>3. Eligibility — quais tickets merecem analise?</strong><br><small>Sem foto de abertura = skip? Sem closing = skip? So opening = analisar so com abertura? Cada cenario tem trade-off de cobertura vs custo.</small></div>
+        <span class="pill orange">#916</span>
+      </div>
+      <div class="change-item">
+        <div><strong>4. Ampliar evidence — checklist answers e mais fotos?</strong><br><small>Incluir <code>ticket_answers</code> aumenta custo do prompt mas da contexto valioso. Incluir todas as closing photos melhora diagnostico pos-manutencao. Escopo deve ser decidido.</small></div>
+        <span class="pill purple">#916</span>
+      </div>
+      <div class="change-item">
+        <div><strong>5. Retry policy para falha de modelo — quando desistir?</strong><br><small>Rate limit (429) deve ter retry com backoff. JSON invalido do modelo deve tentar re-prompt ou so logar? Timeout deve tentar com modelo mais leve?</small></div>
+        <span class="pill orange">#916</span>
+      </div>
+      <div class="change-item">
+        <div><strong>6. Monitoramento de custo — como rastrear gastos?</strong><br><small>Sem <code>usageMetadata</code> no ledger, nao sabemos quanto cada run custa. Adicionar <code>prompt_tokens</code>, <code>completion_tokens</code>, <code>cost_estimate</code> ao <code>SaiaAnalysisRun</code> ou ao <code>SaiaTicketAnalysis</code>?</small></div>
+        <span class="pill green">#908</span>
+      </div>
+      <div class="change-item">
+        <div><strong>7. RJ scope — quando ativar?</strong><br><small><code>feature_saia_rj_enabled</code> existe mas nao ha establishment IDs. SP precisa estar estavel primeiro. Definir gate de qualidade minima para expandir.</small></div>
+        <span class="pill black">futuro</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECAO 8: PROXIMOS GATES -->
+  <section id="gates">
+    <div class="head">
+      <h2>Plano curto dos proximos gates, testes e smoke.</h2>
+      <p>Sequencia proposa ate o merge da foundation e inicio do live.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Gate</th><th>Issue</th><th>O que faz</th><th>Dependencia</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Accounting review</strong></td>
+            <td>PR #912</td>
+            <td>Revisar diff do Kimi, decidir contrato de accounting, isolar <code>operacoes_testing</code>.</td>
+            <td>&mdash;</td>
+            <td><span class="badge orange">em revisao</span></td>
+          </tr>
+          <tr>
+            <td><strong>Merge foundation</strong></td>
+            <td>PR #912</td>
+            <td>Suite verde, merge da foundation dry-run. Base para todos os gates seguintes.</td>
+            <td>Accounting review</td>
+            <td><span class="badge red">bloqueado</span></td>
+          </tr>
+          <tr>
+            <td><strong>Gemini live</strong></td>
+            <td>#916</td>
+            <td>Multimodal, normalizacao, persistencia raw/normalized, eligibility, retry policy.</td>
+            <td>Merge #912 + decisoes Israel</td>
+            <td><span class="badge red">bloqueado</span></td>
+          </tr>
+          <tr>
+            <td><strong>Prompt Builder v2</strong></td>
+            <td>#917</td>
+            <td>Publicado. Ajustes so se o perfil mudar com as decisoes acima.</td>
+            <td>&mdash;</td>
+            <td><span class="badge green">concluido</span></td>
+          </tr>
+          <tr>
+            <td><strong>QA + E2E</strong></td>
+            <td>#907/#908</td>
+            <td>Testes de qualidade do diagnostico, smoke com tickets reais, monitoramento de custo.</td>
+            <td>#916 funcional</td>
+            <td><span class="badge red">bloqueado</span></td>
+          </tr>
+          <tr>
+            <td><strong>UI HITL</strong></td>
+            <td>#919</td>
+            <td>Tela de revisao humana com foto + diagnostico + acoes.</td>
+            <td>#916 qualidade minima</td>
+            <td><span class="badge red">bloqueado</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rail" style="margin-top:12px">
+      <div class="rail-step">
+        <strong>Agora</strong>
+        <p>Revisar accounting do PR #912. Decidir isolamento de teste.</p>
+      </div>
+      <div class="rail-step">
+        <strong>Curto prazo</strong>
+        <p>Merge foundation. Smoke multimodal com 10 tickets. Decisoes do Israel.</p>
+      </div>
+      <div class="rail-step">
+        <strong>Medio prazo</strong>
+        <p>Pipeline live funcional. Suite de qualidade. Monitoramento de custo.</p>
+      </div>
+      <div class="rail-step">
+        <strong>Longo prazo</strong>
+        <p>UI HITL. Expansao RJ. Auto-priorizacao de fila de revisao.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <strong>saIA Gate #916 &middot; Arquitetura Gemini + HITL</strong>
+    <p>
+      Fontes: codigo em <code>app/Services/AI/GeminiService.php:78</code>,
+      <code>app/Services/Saia/ProfilePromptBuilder.php:241</code>,
+      <code>app/Services/Saia/MaintenanceTicketEvidenceResolver.php:148</code>,
+      <code>app/Jobs/Scripts/SaiaAnalyzeMaintenanceTicketJob.php:252</code>,
+      <code>app/Console/Commands/Saia/AnalyzeMaintenanceCommand.php:213</code>,
+      <code>resources/saia/profiles/maintenance_dry_run.json:273</code>,
+      <code>config/saia.php:156</code>.
+      Evidencias Obsidian:
+      <code>10-Projects/operacoes/Decisions/2026-07-10-saia-917-contrato-do-profilepromptbuilder-congelado.md</code>,
+      <code>10-Projects/operacoes/Decisions/2026-07-10-saia-916-modelo-gemini-fixado-no-servico-e-smoke-confirmado.md</code>,
+      <code>20-Knowledge/2026-07-06-saia-p0-prd-and-user-stories-2026-07-06.md</code>.
+      Branch: <code>codex/saia-maintenance-analysis-foundation</code>.
+    </p>
+    <p style="margin-top:6px">
+      SHAs relevantes: <code>2d469d259</code> (ProfilePromptBuilder), <code>0008dc384</code> (Gemini model contract),
+      <code>441f2ca85</code> (async run accounting), <code>6be6d3a9b</code> (analysis_mode flag),
+      <code>43bfbadd3</code> (profile json + schedule), <code>17385236f</code> (dry-run job + hash).
+    </p>
+    <p style="margin-top:6px; color: var(--text); font-size:13px">
+      Gerado em 10 Jul 2026 &middot; Artefato Eletromidia &middot; <a href="https://github.com/iskisraell/em-artifacts">iskisraell/em-artifacts</a>
+    </p>
+  </footer>
+
+</main>
+<div class="toast" id="toast"></div>
+<script>
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('visible');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function() { toast.classList.remove('visible'); }, 1800);
+  }
+
+  document.querySelectorAll('.tab-button[role="tab"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var target = btn.dataset.tab;
+      document.querySelectorAll('.tab-button[role="tab"]').forEach(function(b) {
+        b.setAttribute('aria-selected', String(b === btn));
+      });
+      document.querySelectorAll('.tab-panel').forEach(function(p) {
+        p.classList.toggle('active', p.id === target);
+      });
+    });
+  });
+</script>
+</body>
+</html>
