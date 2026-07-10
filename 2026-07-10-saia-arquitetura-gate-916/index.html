@@ -81,6 +81,14 @@
       overflow: hidden; position: relative; isolation: isolate;
     }
 
+    .hero > * { min-width: 0; }
+
+    h1, h2, h3, p, li, .card, .flow-lane, .compare, .rail-step, .syntax-box, td, th, .change-item > div {
+      overflow-wrap: break-word;
+    }
+
+    .compare, .rail-step, .flow-lane, .syntax-box, .tab-panel, .callout > *, .head > * { min-width: 0; }
+
     .hero::before, .hero::after {
       content: ""; position: absolute; z-index: -1; aspect-ratio: 1; border-radius: 34px;
     }
@@ -278,9 +286,9 @@
     .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
     .change-item small { color: var(--text); font-weight: 700; }
 
-    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+    .table-wrap { overflow-x: auto; max-width: 100%; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
 
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    table { width: 100%; max-width: 100%; border-collapse: collapse; font-size: 14px; }
 
     th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
 
@@ -338,11 +346,12 @@
 
     @media (max-width: 560px) {
       main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
-      .hero { min-height: 580px; border-radius: 14px; }
-      h1 { font-size: clamp(40px, 13vw, 56px); }
-      h2 { font-size: clamp(30px, 9.5vw, 40px); }
-      .hero::before { right: 62px; width: 260px; }
-      .hero::after { width: 210px; }
+      .hero { min-height: 520px; border-radius: 14px; }
+      h1 { font-size: clamp(32px, 11vw, 48px); }
+      h2 { font-size: clamp(26px, 8vw, 36px); }
+      .hero::before { right: 42px; width: min(42vw, 200px); }
+      .hero::after { right: -48px; width: min(34vw, 160px); }
+      .nav a, .tab-button { padding: 9px 11px; font-size: 13px; }
       .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr; }
       .card, .flow-lane, .compare, details { border-radius: 12px; }
     }
@@ -402,7 +411,7 @@
           <li><strong>Job</strong> <code>SaiaAnalyzeMaintenanceTicketJob</code> com <code>tries=3</code>, <code>backoff=[60,120,300]</code>, persistencia dry-run.</li>
           <li><strong>Schedule</strong> <code>Kernel.php</code>: <code>hourlyAt(13)</code> com <code>withoutOverlapping(120)</code>.</li>
           <li><strong>Smoke Gemini</strong> REST isolado no container: <code>SAIA_SMOKE_OK</code>, <code>finishReason=STOP</code>, modelo confirmado.</li>
-          <li><strong>Testes</strong> 23 testes Feature cobrindo idempotencia, hash, contagem de run, config, backfill de prompt.</li>
+          <li><strong>Testes</strong> Suite Feature/Saia: 42 tests, 173 assertions cobrindo idempotencia, hash, contagem de run, config, backfill de prompt e accounting assincrono.</li>
         </ul>
       </article>
 
