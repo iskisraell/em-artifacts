@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | Termo de Arrolamento RJ - cockpit de reunião</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    ::selection { background: var(--orange); color: var(--white); }
+    ::-moz-selection { background: var(--orange); color: var(--white); }
+
+    body {
+      background: var(--surface);
+      color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--white); color: var(--purple);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+
+    main {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto; padding: 24px 0 56px;
+    }
+
+    section { margin-top: 22px; }
+
+    h1, h2, h3 { margin-top: 0; font-weight: 800; }
+
+    h1 {
+      max-width: 980px; margin-bottom: 20px;
+      font-size: clamp(42px, 7.5vw, 90px);
+      line-height: .92; letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 820px; margin-bottom: 0;
+      font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 1.04;
+    }
+
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+
+    /* Hero */
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius);
+      background: var(--black); color: var(--white);
+      display: grid; align-content: space-between;
+      gap: 48px; overflow: hidden;
+      position: relative; isolation: isolate;
+    }
+
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 34px;
+    }
+
+    .hero::before {
+      right: clamp(116px, 15vw, 220px);
+      bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px);
+      background: var(--orange);
+      transform: rotate(10deg);
+    }
+
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px);
+      bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px);
+      background: var(--purple);
+      transform: rotate(-8deg);
+    }
+
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+
+    .hero.alt {
+      background: var(--purple);
+    }
+
+    .hero.alt::before {
+      content: none;
+    }
+
+    .hero.alt::after {
+      right: -80px; bottom: -110px;
+      width: 300px; height: 300px;
+      border: 34px solid rgba(255,255,255,.18);
+      border-radius: 50%;
+      background: transparent;
+      transform: none;
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 22px; padding: 7px 11px;
+      border-radius: 999px; background: var(--yellow);
+      color: var(--black); font-weight: 800;
+      text-transform: uppercase; font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* Pills */
+    .pill {
+      display: inline-flex; align-items: center;
+      min-height: 32px; padding: 7px 11px;
+      border-radius: 999px; font-size: 13px;
+      font-weight: 800; line-height: 1; white-space: normal;
+    }
+
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0 18px; padding: 10px 0;
+      background: var(--surface);
+    }
+
+    .nav a, .tab-button {
+      border: 1px solid var(--black); border-radius: 999px;
+      background: var(--white); color: var(--black);
+      cursor: pointer; font: inherit; font-weight: 800;
+      text-decoration: none; white-space: normal; text-align: center;
+      transition: background .15s, color .15s;
+    }
+
+    .nav a { padding: 10px 13px; font-size: 14px; }
+    .tab-button { padding: 11px 14px; font-size: 14px; }
+
+    .nav a:hover, .tab-button:hover, .tab-button[aria-selected="true"] {
+      background: var(--black); color: var(--white);
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+
+    .card {
+      min-width: 0; min-height: 100%;
+      padding: clamp(18px, 2.4vw, 28px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--white); overflow: hidden;
+      transition: transform .18s, box-shadow .18s;
+    }
+
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+
+    .card.black, .card.purple, .card.orange, .card.green {
+      border-color: transparent; color: var(--white);
+    }
+
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.pink { background: var(--pink); }
+    .card.green { background: var(--green); }
+
+    .card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code { color: var(--black); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      margin-bottom: 6px;
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800; line-height: .86;
+    }
+
+    /* Head */
+    .head {
+      display: flex; justify-content: space-between;
+      align-items: end; gap: 18px; margin-bottom: 14px;
+    }
+
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    /* Tabs */
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Flow board */
+    .flow-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 12px; align-items: stretch; min-width: 0;
+    }
+
+    .flow-lane {
+      min-width: 0; display: grid; gap: 10px;
+      padding: 16px; border: 1px solid var(--line);
+      border-radius: 16px; background: var(--white);
+      transition: transform .15s;
+    }
+
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.removed { border-color: var(--red); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.kept { border-color: var(--purple); }
+
+    .flow-node {
+      min-width: 0; padding: 12px; border-radius: 12px;
+      background: var(--muted);
+    }
+
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+
+    /* Split / Compare */
+    .split {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+
+    .compare {
+      min-width: 0; min-height: 180px; padding: 18px;
+      border-radius: 16px; border: 1px solid var(--line);
+      background: var(--white);
+    }
+
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+
+    /* Syntax box */
+    .syntax-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px; margin-top: 12px; min-width: 0;
+    }
+
+    .syntax-box {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white); overflow: hidden;
+    }
+
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code {
+      display: block; width: 100%; max-width: 100%;
+      white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
+      background: transparent; color: var(--yellow); padding: 0;
+    }
+
+    /* Checklist */
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+
+    /* Details */
+    details {
+      border: 1px solid var(--line); border-radius: 14px;
+      background: var(--white); overflow: hidden;
+    }
+
+    details + details { margin-top: 8px; }
+
+    summary {
+      cursor: pointer; padding: 16px 18px;
+      font-weight: 800; list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    /* Change list */
+    .change-list { display: grid; gap: 8px; }
+
+    .change-item {
+      min-width: 0; display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px; align-items: center;
+      padding: 12px 14px; border: 1px solid var(--line);
+      border-radius: 12px; background: var(--white);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+
+    th {
+      background: var(--black); color: var(--white);
+      font-weight: 800; font-size: 13px;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+
+    .badge {
+      display: inline-block; padding: 3px 8px;
+      border-radius: 999px; font-size: 11px;
+      font-weight: 800; line-height: 1;
+    }
+
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+
+    /* Callout */
+    .callout {
+      display: flex; justify-content: space-between;
+      gap: 16px; align-items: center;
+      padding: clamp(20px, 3vw, 32px);
+      border-radius: var(--radius);
+      background: var(--yellow);
+    }
+
+    /* Rail */
+    .rail {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px; min-width: 0;
+    }
+
+    .rail-step {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white);
+      transition: transform .15s;
+    }
+
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+
+    /* Interactive filter demo */
+    .filter-demo {
+      display: grid; gap: 14px; padding: 20px;
+      border-radius: 16px; background: var(--muted);
+      border: 1px solid var(--line);
+    }
+
+    .filter-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .filter-chip {
+      padding: 8px 14px; border-radius: 999px;
+      border: 2px solid var(--line); background: var(--white);
+      font-weight: 700; font-size: 13px; cursor: pointer;
+      transition: all .15s; user-select: none;
+    }
+
+    .filter-chip:hover { border-color: var(--orange); }
+    .filter-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .filter-chip.active:hover { background: var(--black); border-color: var(--black); }
+
+    .filter-payload {
+      padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--yellow);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 13px; white-space: pre-wrap;
+      overflow-x: auto; min-height: 80px;
+      transition: all .2s;
+    }
+
+    .filter-label { font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+
+    /* Counter */
+    .counter { display: inline-block; transition: all .3s ease; }
+    .counter.bump { transform: scale(1.15); color: var(--orange); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      padding: 14px 20px; border-radius: 14px;
+      background: var(--black); color: var(--white);
+      font-weight: 700; font-size: 14px; z-index: 100;
+      opacity: 0; transform: translateY(20px);
+      transition: all .3s ease; pointer-events: none;
+    }
+
+    .toast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* Problem strip */
+    .problem-strip {
+      display: grid;
+      grid-template-columns: 1fr 92px 1fr 92px 1fr;
+      gap: 12px; align-items: stretch;
+    }
+
+    .problem-card {
+      min-height: 172px; border-radius: var(--radius);
+      padding: 20px; display: grid; align-content: space-between;
+      border: 1px solid var(--line); background: var(--white);
+      position: relative; overflow: hidden;
+    }
+
+    .problem-card:before {
+      content: ""; position: absolute;
+      right: -34px; top: -34px;
+      width: 96px; height: 96px;
+      border-radius: 50%; background: var(--yellow); opacity: .7;
+    }
+
+    .problem-card h3 { position: relative; z-index: 1; }
+    .problem-card p { position: relative; z-index: 1; margin-bottom: 0; }
+
+    .problem-card.bad { background: var(--black); color: var(--white); border-color: var(--black); }
+    .problem-card.bad p { color: #D4D4D4; }
+    .problem-card.fix { background: var(--orange); border-color: var(--orange); }
+    .problem-card.fix p { color: var(--black); }
+    .problem-card.fix::before { display: none; }
+
+    .problem-arrow {
+      border-radius: var(--radius);
+      background: var(--purple); color: var(--white);
+      display: grid; place-items: center;
+      font-size: 34px; font-weight: 800;
+    }
+
+    .mini-label {
+      width: fit-content; padding: 6px 10px;
+      border-radius: 999px; background: var(--muted);
+      color: var(--black); font-size: 11px;
+      font-weight: 800; text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+
+    .bad .mini-label { background: var(--red); color: var(--white); }
+    .fix .mini-label { background: var(--black); color: var(--white); }
+
+    /* Stamp */
+    .stamp-row {
+      display: grid; grid-template-columns: 170px 1fr 180px;
+      gap: 12px; align-items: center;
+      padding: 14px; border-radius: 14px;
+      background: var(--white); border: 1px solid var(--line);
+    }
+
+    .stamps { display: flex; flex-wrap: wrap; gap: 8px; }
+    .stamp {
+      border-radius: 10px; padding: 8px 10px;
+      background: var(--yellow); color: var(--black);
+      font-weight: 800; font-size: 13px;
+    }
+    .stamp.global { background: var(--black); color: var(--white); }
+    .stamp.changed { background: var(--orange); }
+    .result { color: var(--green); font-weight: 800; }
+
+    /* TODO items */
+    .todo { display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: start; }
+    .num {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--orange); display: grid;
+      place-items: center; font-weight: 800;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 22px; padding: 20px 0 0;
+      color: var(--text); font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .head, .callout, .split, .stamp-row { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr 1fr; }
+      .change-item { grid-template-columns: 1fr; }
+      .problem-arrow { min-height: 54px; transform: rotate(90deg); }
+    }
+
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .hero::before { right: 62px; width: 260px; }
+      .hero::after { width: 210px; }
+      .rail, .flow-board, .syntax-grid, .problem-strip { grid-template-columns: 1fr; }
+      .card, .flow-lane, .compare, details { border-radius: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero" id="top">
+  <div>
+    <span class="eyebrow">Operações RJ | Reunião de alinhamento • 13/07/2026</span>
+    <h1>De planilha ambígua a contrato implementável.</h1>
+    <p class="lead">Cockpit de 15 minutos para Israel conduzir Prevedel e William até três decisões objetivas. O foco é homologar registro e exportação do Termo para MUPIs, Relógios e Abrigos em 24/07.</p>
+  </div>
+  <div class="hero-bar">
+    <span class="pill orange">Homologação 24/07</span>
+    <span class="pill purple">Place + my-route</span>
+    <span class="pill yellow">31 campos</span>
+    <span class="pill green">Abrigos JCDecaux</span>
+    <span class="pill red">Placas fora</span>
+  </div>
+</section>
+
+<nav class="nav" aria-label="Navegação">
+  <a href="#fala">Sua fala</a>
+  <a href="#fatos">Fatos</a>
+  <a href="#decisoes">3 decisões</a>
+  <a href="#fluxo">Fatia 24/07</a>
+  <a href="#qa">Q&amp;A</a>
+  <a href="#fechamento">Fechamento</a>
+</nav>
+
+<section id="fala">
+  <div class="head">
+    <h2>Abra com segurança, não com arquitetura.</h2>
+    <p>Você é a ponte. Mostre o que está provado e converta incerteza em três decisões com dono.</p>
+  </div>
+  <div class="grid">
+    <article class="card black span-8">
+      <span class="pill yellow">fala de 90 segundos</span>
+      <h3>“A fundação já existe. O que falta são três decisões.”</h3>
+      <p>“Eu revisei a matriz inteira, a base JCDecaux e o encaixe no Operações. A boa notícia é que a fundação já existe: Place, Minha Rota, checklists configuráveis, fotos e PDF. Não precisamos criar outro Lens dentro do Operações.</p>
+      <p>O que impede a gente de prometer 24 de julho com segurança são três decisões, não arquitetura: o aceite de homologação, como a correção de endereço ou GPS vira verdade no Place e quais regras fecham checklist e evidências.</p>
+      <p>A matriz tinha 31 campos, o catálogo tinha 24, a capa falava em 27 e nem citava Abrigos. A cópia revisada reconcilia os 31 e marca em vermelho tudo que é proposta. A JCDecaux tem 1.546 Abrigos, mas sem identificador e sem coordenadas. Endereço não pode ser nossa única chave.</p>
+      <p>Minha recomendação é homologar uma fatia ponta a ponta com ativo real, começando por Abrigo JCDecaux, preservar o Termo aprovado e só então escalar a carga.”</p>
+    </article>
+    <article class="card yellow span-4">
+      <span class="pill black">não negociar</span>
+      <h3>Proteja o recorte.</h3>
+      <ul class="checklist">
+        <li>MUPIs, Relógios e Abrigos.</li>
+        <li>Placas ficam fora.</li>
+        <li>Termo aprovado é o golden master.</li>
+        <li>Estética não bloqueia 24/07.</li>
+        <li>Carga em massa não vem antes do matching.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section id="fatos">
+  <div class="head">
+    <h2>Quatro números explicam o problema.</h2>
+    <p>Use-os para impedir que a conversa vire opinião ou estimativa sem base.</p>
+  </div>
+  <div class="grid">
+    <article class="card orange span-3"><div class="metric">31</div><h3>campos na matriz.</h3><p>É o contrato funcional mais completo disponível.</p></article>
+    <article class="card purple span-3"><div class="metric">24</div><h3>chaves no catálogo original.</h3><p>Sete campos faltavam de verdade.</p></article>
+    <article class="card black span-3"><div class="metric">1.546</div><h3>Abrigos na planilha.</h3><p>Dentro de 2.108 linhas totais.</p></article>
+    <article class="card yellow span-3"><div class="metric">156</div><h3>repetições de endereço.</h3><p>Além da primeira ocorrência.</p></article>
+  </div>
+  <div class="problem-strip">
+    <article class="problem-card">
+      <span class="mini-label">Problema</span>
+      <h3>Seed sem identidade.</h3>
+      <p>A base não tem código externo, ID do local, GPS, bairro, CEP ou modelo.</p>
+    </article>
+    <div class="problem-arrow">→</div>
+    <article class="problem-card bad">
+      <span class="mini-label">Impacto</span>
+      <h3>Carga cega duplica Place.</h3>
+      <p>Endereço varia, repete e não é uma chave estável.</p>
+    </article>
+    <div class="problem-arrow">→</div>
+    <article class="problem-card fix">
+      <span class="mini-label">Decisão</span>
+      <h3>Matching antes da carga.</h3>
+      <p>Chave de origem + reconciliação + aprovação de divergências.</p>
+    </article>
+  </div>
+</section>
+
+<section id="decisoes">
+  <div class="head">
+    <h2>Três decisões. Sem pauta infinita.</h2>
+    <p>Use as abas para conduzir a pergunta, dar sua recomendação e registrar a saída.</p>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab-button" role="tab" aria-selected="true" data-tab="d1">1. Aceite 24/07</button>
+    <button class="tab-button" role="tab" aria-selected="false" data-tab="d2">2. Fonte de verdade</button>
+    <button class="tab-button" role="tab" aria-selected="false" data-tab="d3">3. Checklist e fotos</button>
+  </div>
+  <article class="tab-panel active" id="d1" role="tabpanel">
+    <div class="split">
+      <div class="compare before">
+        <span class="pill red">pergunta</span>
+        <h3>O que “entregue em homolog” significa?</h3>
+        <p>Trilha ponta a ponta com ativos reais ou carga completa das três tipologias?</p>
+      </div>
+      <div class="compare after">
+        <span class="pill green">recomendação</span>
+        <h3>Vertical slice validada.</h3>
+        <p>Um ativo real por tipologia, começando por Abrigo JCDecaux, com PDF e read-back. Carga em massa só depois do matching.</p>
+      </div>
+    </div>
+  </article>
+  <article class="tab-panel" id="d2" role="tabpanel">
+    <div class="split">
+      <div class="compare before">
+        <span class="pill red">pergunta</span>
+        <h3>Quem pode alterar Place?</h3>
+        <p>O técnico atualiza endereço/GPS na hora ou envia uma correção para aprovação?</p>
+      </div>
+      <div class="compare after">
+        <span class="pill green">recomendação</span>
+        <h3>Proposta auditável.</h3>
+        <p>Guardar antes/depois, GPS, técnico e data. O PDF usa o campo confirmado. O Place muda após aprovação simples de backoffice.</p>
+      </div>
+    </div>
+  </article>
+  <article class="tab-panel" id="d3" role="tabpanel">
+    <div class="split">
+      <div class="compare before">
+        <span class="pill red">pergunta</span>
+        <h3>Qual evidência é obrigatória?</h3>
+        <p>“Sem ocorrência” exclui defeitos? Toda não conformidade exige foto? Quais imagens mínimas cabem nas 14?</p>
+      </div>
+      <div class="compare after">
+        <span class="pill green">recomendação</span>
+        <h3>Regra simples e configurável.</h3>
+        <p>31 campos com aplicabilidade por tipologia, foto obrigatória em não conformidade e perguntas digitais condicionais pelo atributo do Abrigo.</p>
+      </div>
+    </div>
+  </article>
+
+  <div class="filter-demo">
+    <div class="filter-label">Marque as decisões conforme forem fechadas na reunião.</div>
+    <div class="filter-controls" id="decision-controls">
+      <button class="filter-chip" data-decision="Aceite 24/07">Aceite 24/07</button>
+      <button class="filter-chip" data-decision="Aprovação de endereço/GPS">Endereço/GPS</button>
+      <button class="filter-chip" data-decision="Regras de checklist/fotos">Checklist/fotos</button>
+      <button class="filter-chip" data-decision="Chave de matching">Chave de matching</button>
+      <button class="filter-chip" data-decision="Golden master PDF">Golden master</button>
+    </div>
+    <div class="filter-payload" id="decision-payload">0 de 5 decisões registradas. Não encerre a reunião sem donos e datas.</div>
+  </div>
+</section>
+
+<section id="fluxo">
+  <div class="head">
+    <h2>A fatia que cabe no prazo.</h2>
+    <p>Uma trilha verificável vale mais do que uma carga volumosa sem identidade ou aceite.</p>
+  </div>
+  <div class="flow-board">
+    <article class="flow-lane kept">
+      <span class="pill purple">1. reutiliza</span>
+      <h3>Place + my-route.</h3>
+      <div class="flow-node"><strong>Ativo real.</strong><p>RJ, tipologia e classificação validadas.</p></div>
+      <div class="flow-node"><strong>Ticket de vistoria.</strong><p>Execução no fluxo operacional existente.</p></div>
+    </article>
+    <article class="flow-lane added">
+      <span class="pill green">2. configura</span>
+      <h3>Checklist por tipologia.</h3>
+      <div class="flow-node"><strong>31 campos.</strong><p>Obrigatório, opcional ou não aplicável.</p></div>
+      <div class="flow-node"><strong>Fotos condicionais.</strong><p>Até 14 evidências, com regra definida.</p></div>
+    </article>
+    <article class="flow-lane added">
+      <span class="pill orange">3. completa</span>
+      <h3>Local + PDF.</h3>
+      <div class="flow-node"><strong>Correção auditada.</strong><p>Endereço e coordenada antes/depois.</p></div>
+      <div class="flow-node"><strong>Termo exportado.</strong><p>Local, conformidade, imagens e mapa satélite.</p></div>
+    </article>
+  </div>
+  <div class="rail">
+    <div class="rail-step"><strong>1. Abrigo</strong><p>Primeiro ativo JCDecaux real.</p></div>
+    <div class="rail-step"><strong>2. Relógio</strong><p>Validação de campos internos.</p></div>
+    <div class="rail-step"><strong>3. MUPI</strong><p>Validação das regras restantes.</p></div>
+    <div class="rail-step"><strong>4. Escala</strong><p>Matching e carga depois do aceite.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <h2>O que entrou na matriz revisada.</h2>
+    <p>As células alteradas aparecem em vermelho-claro e duas abas novas tornam a revisão auditável.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Gap</th><th>Correção proposta</th><th>Gate humano</th></tr></thead>
+      <tbody>
+        <tr><td>31 × 24 × 27</td><td>Catálogo completo com 31 campos e capa corrigida.</td><td><span class="badge green">validar keys</span></td></tr>
+        <tr><td>7 campos ausentes</td><td>Pixação, banco, cobertura, teto, Black Light, modem e GPS.</td><td><span class="badge orange">William</span></td></tr>
+        <tr><td>3 labels divergentes</td><td>Regime 24h, kit de iluminação e controladoras/fontes.</td><td><span class="badge purple">reconciliado</span></td></tr>
+        <tr><td>Foto indefinida</td><td>Proposta: obrigatória em não conformidade.</td><td><span class="badge red">Prevedel</span></td></tr>
+        <tr><td>Abrigo digital</td><td>Perguntas digitais condicionais por atributo.</td><td><span class="badge orange">ambos</span></td></tr>
+        <tr><td>Sem ocorrência</td><td>Mutuamente exclusivo das ocorrências da seção.</td><td><span class="badge red">ambos</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">
+    <div>
+      <h3>Leve a planilha como proposta, não como verdade inventada.</h3>
+      <p>Vermelho-claro significa “mudança sugerida para validação”. O “Mapa de Alterações” mostra célula, valor anterior, novo valor e motivo.</p>
+    </div>
+    <a class="pill black" href="rio-checklist-matrix-tipologias-revisada-reuniao.xlsx">Baixar matriz revisada</a>
+  </div>
+</section>
+
+<section id="qa">
+  <div class="head">
+    <h2>Respostas sem rodeio.</h2>
+    <p>Use o accordion só se a objeção aparecer. Não abra novas frentes por conta própria.</p>
+  </div>
+  <details>
+    <summary>“Por que não importar os 1.546 Abrigos agora?”</summary>
+    <div class="details-body"><p>Porque não há chave externa nem coordenada e existem endereços repetidos. Podemos preparar matching, mas não criar duplicatas silenciosas.</p></div>
+  </details>
+  <details>
+    <summary>“Por que não copiar o Eletromidia Lens?”</summary>
+    <div class="details-body"><p>O Operações já tem Place, Minha Rota, checklist, fotos e PDF. Reaproveitamos a UX útil, não criamos um segundo cadastro concorrente.</p></div>
+  </details>
+  <details>
+    <summary>“Mapa satélite cabe até 24/07?”</summary>
+    <div class="details-body"><p>Cabe tecnicamente se a API server-side estiver habilitada. William precisa validar chave, billing e fallback. Não prometa antes desse gate.</p></div>
+  </details>
+  <details>
+    <summary>“Uma checklist ou três?”</summary>
+    <div class="details-body"><p>Um catálogo funcional com aplicabilidade por tipologia. A divisão técnica em aliases/configs é decisão de implementação, sem duplicar regra de negócio.</p></div>
+  </details>
+  <details>
+    <summary>“E as placas?”</summary>
+    <div class="details-body"><p>Placas são outra família. Incluí-las muda matriz, nomenclatura, carga e aceite. Para proteger 24/07, ficam em fatia separada.</p></div>
+  </details>
+  <details>
+    <summary>“24/07 está garantido?”</summary>
+    <div class="details-body"><p>A vertical slice é plausível porque a fundação existe. Carga completa não está garantida sem matching, PDF golden master, ambiente e decisões humanas.</p></div>
+  </details>
+</section>
+
+<section id="fechamento">
+  <div class="head">
+    <h2>Feche com espaços preenchidos.</h2>
+    <p>Não aceite “vamos vendo” como ata. Repita o acordo e nomeie o próximo gate.</p>
+  </div>
+  <article class="card purple span-12">
+    <span class="pill yellow">palavra por palavra</span>
+    <h3>“Só para eu registrar...”</h3>
+    <p>“Em 24/07 vamos aceitar __; a correção de endereço/GPS passa por __; a chave de matching dos Abrigos será __; a matriz oficial é a versão revisada depois de validar __; o golden master do Termo é __; e o primeiro ativo do teste é __. William fica com __, Prevedel com __ e eu consolido isso no plano e acompanho os gates.”</p>
+  </article>
+  <div class="grid">
+    <article class="card span-4"><div class="todo"><div class="num">W</div><div><h3>William.</h3><p>Encaixe técnico, chave de matching, API do mapa, atividade/alias e mecanismo de aprovação.</p></div></div></article>
+    <article class="card span-4"><div class="todo"><div class="num">P</div><div><h3>Prevedel.</h3><p>Golden master, evidências mínimas, ativo real e aceite operacional.</p></div></div></article>
+    <article class="card span-4"><div class="todo"><div class="num">I</div><div><h3>Israel.</h3><p>Registrar decisões, atualizar matriz/plano e coordenar os gates até homologação.</p></div></div></article>
+  </div>
+  <div class="callout">
+    <div>
+      <h3>A reunião só vence se remover hipóteses.</h3>
+      <p>O objetivo não é convencer os dois de uma arquitetura. É dar ao William um contrato implementável e ao Prevedel um critério de aceite verificável.</p>
+    </div>
+    <a class="pill black" href="brief-final-reuniao.md">Baixar brief completo</a>
+  </div>
+</section>
+
+<footer>
+  <strong>Termo de Arrolamento RJ | Cockpit de reunião</strong>
+  <p>Fontes: memória canônica do Operações, matriz integral, perfil factual da EFS JCDecaux, código real de Place/my-route/checklist/PDF e notas de Israel. Preparado em 13/07/2026.</p>
+</footer>
+
+<script>
+  (function() {
+    var buttons = document.querySelectorAll('#decision-controls .filter-chip');
+    var payload = document.getElementById('decision-payload');
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        button.classList.toggle('active');
+        var selected = Array.from(buttons).filter(function(b) { return b.classList.contains('active'); }).map(function(b) { return b.dataset.decision; });
+        payload.textContent = selected.length + ' de 5 decisões registradas.' + (selected.length ? '\nFechadas: ' + selected.join(', ') + '.' : '') + (selected.length === 5 ? '\nAgora repita donos e datas antes de encerrar.' : '\nAinda falta fechar: ' + Array.from(buttons).filter(function(b) { return !b.classList.contains('active'); }).map(function(b) { return b.dataset.decision; }).join(', ') + '.');
+        showToast(selected.length + ' de 5 fechadas');
+      });
+    });
+  })();
+</script>
+
+  </main>
+  <div class="toast" id="toast"></div>
+  <script>
+    // Toast helper
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(function() { toast.classList.remove('visible'); }, 1800);
+    }
+
+    // Tab system
+    document.querySelectorAll('.tab-button[role="tab"]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.dataset.tab;
+        document.querySelectorAll('.tab-button[role="tab"]').forEach(function(b) {
+          b.setAttribute('aria-selected', String(b === btn));
+        });
+        document.querySelectorAll('.tab-panel').forEach(function(p) {
+          p.classList.toggle('active', p.id === target);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
