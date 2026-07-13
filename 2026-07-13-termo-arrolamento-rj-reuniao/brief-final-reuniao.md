@@ -19,11 +19,11 @@ Sua função é:
 
 > “Eu revisei a matriz inteira, a base JCDecaux e o encaixe no Operações. A boa notícia é que a fundação já existe: Place, Minha Rota, checklists configuráveis, fotos e PDF. Não precisamos criar outro Lens dentro do Operações.
 >
-> O que impede a gente de prometer 24 de julho com segurança são três decisões, não arquitetura. Primeiro, o que exatamente será aceito em homologação. Segundo, como uma correção de endereço ou GPS feita em campo vira verdade no Place. Terceiro, quais regras fecham o checklist e as evidências.
+> A fundação reutilizável existe, mas matching, correção auditável do Place e PDF/mapa ainda precisam de validação técnica. Para confirmar o corte de 24 de julho, precisamos fechar três decisões: o aceite de homologação, como uma correção de endereço ou GPS vira verdade no Place e quais regras fecham o checklist e as evidências.
 >
 > Também corrigi a planilha para expor os gaps. A matriz tinha 31 campos, o catálogo tinha 24, a capa falava em 27 e nem citava Abrigos. A cópia revisada reconcilia os 31 e marca em vermelho tudo que é proposta. Na JCDecaux há 1.546 Abrigos, mas sem identificador e sem coordenadas, então endereço não pode ser nossa única chave.
 >
-> Minha recomendação é homologar uma fatia ponta a ponta com ativo real, começando por Abrigo JCDecaux, preservar o Termo aprovado, e só então escalar a carga.”
+> Minha recomendação é homologar um Abrigo JCDecaux real ponta a ponta, com regras parametrizadas para MUPIs e Relógios. O PDF que Prevedel indicar como aprovado será o golden master. A carga em massa fica fora do aceite de 24/07.”
 
 ## O fato que muda o risco da JCDecaux
 
@@ -41,8 +41,9 @@ Pergunte:
 
 Recomende:
 
-- um ativo real de cada tipologia;
-- começar por um Abrigo JCDecaux;
+- um Abrigo JCDecaux real ponta a ponta;
+- regras parametrizadas para MUPIs e Relógios, sem exigir um exemplar de cada tipologia no aceite inicial;
+- ampliar para um ativo real de cada tipologia somente se William confirmar viabilidade e Prevedel exigir isso como aceite;
 - checklist, fotos, persistência, proposta de correção e PDF;
 - read-back no banco/tela;
 - carga em massa depois da regra de matching.
@@ -96,7 +97,7 @@ Também confirme:
 5. até 14 imagens;
 6. endereço/GPS confirmados em campo como correção proposta;
 7. conclusão e persistência;
-8. PDF com local, conformidade, imagens e mapa satélite;
+8. PDF conforme o golden master a ser fornecido, com imagens dentro do limite aprovado e mapa se confirmado e tecnicamente validado;
 9. read-back;
 10. validação de Prevedel e William.
 
@@ -110,7 +111,7 @@ Diga:
 
 Diga:
 
-> “O Termo aprovado é o golden master. A gente preserva estrutura e conteúdo. Estética não entra como bloqueador para 24/07.”
+> “O PDF que você indicar como aprovado será o golden master. Até recebê-lo, layout e conteúdo final permanecem pendentes. Estética não entra como bloqueador para 24/07.”
 
 ## Se alguém recolocar placas no escopo
 
