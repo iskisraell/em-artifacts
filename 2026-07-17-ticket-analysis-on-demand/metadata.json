@@ -1,0 +1,7 @@
+{
+  "title": "Ticket Analysis on-demand: uma segunda leitura, quando a operação precisa.",
+  "date": "2026-07-17",
+  "description": "A PR #912 transforma inspeções dispersas em uma análise consultiva sob demanda: checklist estruturado, até 10 evidências visuais e decisão humana preservada, com segurança por escopo e execução confiável.",
+  "tags": ["saIA", "Ticket Analysis", "Gemini", "Operações", "PR #912", "SP Ruas", "auditoria assistida"],
+  "sections": ["O que mudou", "Como funciona", "Segurança", "Evidências reais", "Confiabilidade", "O que ainda falta"]
+}
