@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | saIA · Estado na volta ao trabalho — 2026-07-18</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    ::selection { background: var(--orange); color: var(--white); }
+    ::-moz-selection { background: var(--orange); color: var(--white); }
+
+    body {
+      background: var(--surface);
+      color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--white); color: var(--purple);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+
+    main {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto; padding: 24px 0 56px;
+    }
+
+    section { margin-top: 22px; }
+
+    h1, h2, h3, h4 { margin-top: 0; font-weight: 800; }
+    h1 {
+      max-width: 980px; margin-bottom: 20px;
+      font-size: clamp(42px, 7.5vw, 90px);
+      line-height: .92; letter-spacing: 0;
+    }
+    h2 {
+      max-width: 820px; margin-bottom: 0;
+      font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 1.04;
+    }
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+    h4 { margin-bottom: 6px; font-size: 17px; line-height: 1.2; }
+
+    /* Hero */
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius);
+      background: var(--black); color: var(--white);
+      display: grid; align-content: space-between;
+      gap: 48px; overflow: hidden;
+      position: relative; isolation: isolate;
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 34px;
+    }
+    .hero::before {
+      right: clamp(116px, 15vw, 220px);
+      bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px);
+      background: var(--orange);
+      transform: rotate(10deg);
+    }
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px);
+      bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px);
+      background: var(--purple);
+      transform: rotate(-8deg);
+    }
+    .hero p { max-width: 760px; color: #E8E8E8; font-size: clamp(17px, 2vw, 23px); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 22px; padding: 7px 11px;
+      border-radius: 999px; background: var(--yellow);
+      color: var(--black); font-weight: 800;
+      text-transform: uppercase; font-size: 12px;
+      letter-spacing: .08em;
+    }
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* Pills */
+    .pill {
+      display: inline-flex; align-items: center;
+      min-height: 32px; padding: 7px 11px;
+      border-radius: 999px; font-size: 13px;
+      font-weight: 800; line-height: 1; white-space: normal;
+    }
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+    .pill.outline {
+      background: transparent; color: var(--white);
+      border: 1px solid rgba(255,255,255,.35);
+    }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0 18px; padding: 10px 0;
+      background: var(--surface);
+    }
+    .nav a {
+      padding: 10px 13px;
+      border: 1px solid var(--black); border-radius: 999px;
+      background: var(--white); color: var(--black);
+      font-weight: 800; font-size: 14px; text-decoration: none;
+      transition: background .15s, color .15s;
+    }
+    .nav a:hover { background: var(--black); color: var(--white); }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+    .card {
+      min-width: 0; min-height: 100%;
+      padding: clamp(18px, 2.4vw, 28px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--white); overflow: hidden;
+      transition: transform .18s, box-shadow .18s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .card.black, .card.purple, .card.orange, .card.green {
+      border-color: transparent; color: var(--white);
+    }
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); }
+    .card.pink { background: var(--pink); }
+    .card.green { background: var(--green); }
+    .card.red { background: var(--red); }
+    .card.black p, .card.purple p, .card.orange p, .card.green p, .card.red p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li, .card.red li { color: #FFFFFF; }
+    .card.yellow p, .card.pink p { color: rgba(0,0,0,.72); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code { color: var(--black); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      margin-bottom: 6px;
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800; line-height: .86;
+    }
+    .metric-label {
+      font-size: 13px; text-transform: uppercase;
+      letter-spacing: .08em; font-weight: 800;
+      color: var(--white); opacity: .85;
+    }
+    .card:not(.black):not(.purple):not(.orange):not(.green):not(.red) .metric-label { color: var(--text); }
+
+    /* Head */
+    .head {
+      display: flex; justify-content: space-between;
+      align-items: end; gap: 18px; margin-bottom: 14px;
+    }
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+
+    /* Tabs */
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .tab-button {
+      padding: 11px 14px; font-size: 14px; font-weight: 800;
+      border: 1px solid var(--black); border-radius: 999px;
+      background: var(--white); color: var(--black);
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .tab-button:hover, .tab-button[aria-selected="true"] {
+      background: var(--black); color: var(--white);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Flow board */
+    .flow-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+      gap: 12px; align-items: stretch; min-width: 0;
+    }
+    .flow-lane {
+      min-width: 0; display: grid; gap: 10px;
+      padding: 16px; border: 1px solid var(--line);
+      border-radius: 16px; background: var(--white);
+      transition: transform .15s;
+    }
+    .flow-lane:hover { transform: translateY(-2px); }
+    .flow-lane.removed { border-color: var(--red); }
+    .flow-lane.added { border-color: var(--green); }
+    .flow-lane.kept { border-color: var(--purple); }
+    .flow-lane.blocked { border-color: var(--red); background: rgba(220,38,38,.04); }
+    .flow-lane.ready { border-color: var(--green); }
+    .flow-node {
+      min-width: 0; padding: 12px; border-radius: 12px;
+      background: var(--muted);
+    }
+    .flow-node strong { display: block; margin-bottom: 4px; line-height: 1.15; }
+
+    /* Split */
+    .split {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+    .compare {
+      min-width: 0; min-height: 180px; padding: 18px;
+      border-radius: 16px; border: 1px solid var(--line);
+      background: var(--white);
+    }
+    .compare.before { border-color: var(--red); }
+    .compare.after { border-color: var(--green); }
+
+    /* Syntax */
+    .syntax-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px; margin-top: 12px; min-width: 0;
+    }
+    .syntax-box {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white); overflow: hidden;
+    }
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code {
+      display: block; width: 100%; max-width: 100%;
+      white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
+      background: transparent; color: var(--yellow); padding: 0;
+      font-size: 13px;
+    }
+
+    /* Checklist */
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+    .checklist.done li::marker { color: var(--green); }
+    .checklist.todo li::marker { color: var(--orange); }
+    .checklist.skip li { color: var(--text); opacity: .55; text-decoration: line-through; }
+
+    /* Details */
+    details {
+      border: 1px solid var(--line); border-radius: 14px;
+      background: var(--white); overflow: hidden;
+    }
+    details + details { margin-top: 8px; }
+    summary {
+      cursor: pointer; padding: 16px 18px;
+      font-weight: 800; list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    /* Change list */
+    .change-list { display: grid; gap: 8px; }
+    .change-item {
+      min-width: 0; display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px; align-items: center;
+      padding: 12px 14px; border: 1px solid var(--line);
+      border-radius: 12px; background: var(--white);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+    .change-item small { color: var(--text); font-weight: 700; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th {
+      background: var(--black); color: var(--white);
+      font-weight: 800; font-size: 13px;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--muted); }
+
+    .badge {
+      display: inline-block; padding: 3px 8px;
+      border-radius: 999px; font-size: 11px;
+      font-weight: 800; line-height: 1;
+    }
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+    .badge.yellow { background: var(--yellow); color: var(--black); }
+    .badge.muted { background: var(--muted); color: var(--text); }
+
+    /* Callout */
+    .callout {
+      display: flex; justify-content: space-between;
+      gap: 16px; align-items: center;
+      padding: clamp(20px, 3vw, 32px);
+      border-radius: var(--radius);
+      background: var(--yellow);
+    }
+    .callout h3 { margin-bottom: 4px; }
+
+    /* Rail */
+    .rail {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px; min-width: 0;
+    }
+    .rail-step {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white);
+      transition: transform .15s;
+    }
+    .rail-step:hover { transform: scale(1.03); }
+    .rail-step p { color: rgba(255,255,255,.78); }
+    .rail-step .num-rail {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--orange); color: var(--white);
+      font-weight: 800; font-size: 14px; margin-bottom: 8px;
+    }
+
+    /* Filter demo */
+    .filter-demo {
+      display: grid; gap: 14px; padding: 20px;
+      border-radius: 16px; background: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .filter-controls { display: flex; flex-wrap: wrap; gap: 10px; }
+    .filter-chip {
+      padding: 8px 14px; border-radius: 999px;
+      border: 2px solid var(--line); background: var(--white);
+      font-weight: 700; font-size: 13px; cursor: pointer;
+      transition: all .15s; user-select: none;
+    }
+    .filter-chip:hover { border-color: var(--orange); }
+    .filter-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .filter-chip.active:hover { background: var(--black); border-color: var(--black); }
+    .filter-payload {
+      padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--yellow);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 13px; white-space: pre-wrap;
+      overflow-x: auto; min-height: 80px;
+    }
+    .filter-label { font-weight: 800; font-size: 14px; margin-bottom: 6px; }
+
+    /* Counter */
+    .counter { display: inline-block; transition: all .3s ease; }
+    .counter.bump { transform: scale(1.15); color: var(--orange); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      padding: 14px 20px; border-radius: 14px;
+      background: var(--black); color: var(--white);
+      font-weight: 700; font-size: 14px; z-index: 100;
+      opacity: 0; transform: translateY(20px);
+      transition: all .3s ease; pointer-events: none;
+    }
+    .toast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+    /* Progress bar */
+    .progress {
+      display: grid; grid-template-columns: 1fr; gap: 4px;
+      padding: 14px; border-radius: 14px; background: var(--white);
+      border: 1px solid var(--line);
+    }
+    .progress-track {
+      height: 10px; border-radius: 999px; background: var(--muted);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: var(--green); border-radius: 999px;
+      transition: width .6s ease;
+    }
+    .progress-fill.warn { background: var(--orange); }
+    .progress-fill.danger { background: var(--red); }
+    .progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: var(--text); font-weight: 700;
+    }
+    .progress-meta strong { color: var(--black); }
+
+    /* Project cell */
+    .project-cell {
+      padding: 16px; border-radius: 14px;
+      border: 1px solid var(--line); background: var(--white);
+    }
+    .project-cell .head-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px;
+    }
+    .project-cell h4 { margin-bottom: 0; }
+    .project-cell ul { margin-top: 8px; }
+
+    /* Stale bar */
+    .stale {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 8px; align-items: center; padding: 8px 10px;
+      border-radius: 10px; background: rgba(220,38,38,.06);
+      border: 1px dashed var(--red);
+    }
+    .stale small { color: var(--red); font-weight: 700; }
+
+    /* Footer */
+    footer {
+      margin-top: 22px; padding: 20px 0 0;
+      color: var(--text); font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .head, .callout, .split, .stamp-row { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .rail, .flow-board, .syntax-grid { grid-template-columns: 1fr 1fr; }
+      .change-item { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .hero::before { right: 62px; width: 260px; }
+      .hero::after { width: 210px; }
+      .rail, .flow-board, .syntax-grid { grid-template-columns: 1fr; }
+      .card, .flow-lane, .compare, details { border-radius: 12px; }
+      .callout { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div>
+      <span class="eyebrow">saIA · Ticket Analysis · Volta ao trabalho · 2026-07-18</span>
+      <h1>A PR #912 está a um empurrão da produção.</h1>
+      <p class="lead">Visão executiva do estado do saIA/Ticket Analysis, do que ainda precisa ser feito para fechar a umbrella, e de tudo o que está em backlog nos outros projetos. Lido em 5 minutos, cobre a semana de 10/07 a 17/07 e o que está esperando você no próximo turno.</p>
+    </div>
+    <div class="hero-bar">
+      <span class="pill orange">PR #912 DRAFT</span>
+      <span class="pill purple">Operacoes</span>
+      <span class="pill yellow">saIA / Ticket Analysis</span>
+      <span class="pill green">98/98 saIA tests</span>
+      <span class="pill red">0 CI checks</span>
+      <span class="pill outline">Revisão 18/07</span>
+    </div>
+  </section>
+
+  <nav class="nav" aria-label="Navegação">
+    <a href="#resumo">Resumo</a>
+    <a href="#pr912">PR #912</a>
+    <a href="#sprint">Sprint grounded</a>
+    <a href="#issues">Issues</a>
+    <a href="#friday">Friday</a>
+    <a href="#outros">Outros projetos</a>
+    <a href="#precedentes">Precedentes</a>
+    <a href="#volta">Plano de volta</a>
+  </nav>
+
+  <!-- RESUMO -->
+  <section id="resumo">
+    <div class="head">
+      <h2>Onde estamos hoje.</h2>
+      <p>Três projetos ativos, uma PR gigante no fim do caminho, e duas reuniões da semana 15/07 que ainda não viraram decisão executável.</p>
+    </div>
+    <div class="grid">
+      <article class="card black span-3">
+        <span class="metric-label">PR</span>
+        <div class="metric counter" data-target="912">#912</div>
+        <p>Umbrella do Ticket Analysis. DRAFT, MERGEABLE, REVIEW_REQUIRED, 0 checks, 0 reviews. 46 arquivos, +7.251/-12. <strong>Fase 6 fechada</strong>.</p>
+      </article>
+      <article class="card orange span-3">
+        <span class="metric-label">Testes saIA</span>
+        <div class="metric counter" data-target="98">98/98</div>
+        <p>Pass. 443 assertions. Suíte verde e isolada em <code>operacoes_testing</code>. <strong>0 errors, 0 failures</strong>.</p>
+      </article>
+      <article class="card purple span-3">
+        <span class="metric-label">Análises live</span>
+        <div class="metric counter" data-target="3">3/3</div>
+        <p>Tickets controlados 1750678, 1708721, 1736168. Confiança 1.0, 0.95, 0.95. 30 imagens, zero base64, idempotência validada.</p>
+      </article>
+      <article class="card yellow span-3">
+        <span class="metric-label">Friday items</span>
+        <div class="metric counter" data-target="15">15</div>
+        <p>Itens do board 49 / group 94. <strong>14 done</strong>, <strong>3 working</strong>, <strong>1 stuck</strong>, <strong>1 backlog</strong>. A última entrada (FRY-1578) está marcada como <em>stuck</em> — staging e habilitação.</p>
+      </article>
+    </div>
+    <div class="grid" style="margin-top:12px;">
+      <article class="card span-6">
+        <h3>Veredito macro</h3>
+        <p>A fundação técnica do Ticket Analysis está feita e validada localmente. O que trava a entrega não é mais código, é <strong>cadeia de gates</strong>: seed de teste, CI remoto, thermonuclear review, staging, validação humana da UI, e a decisão consciente de merge da umbrella.</p>
+        <p>Tudo isso é curto — o sprint grounded abaixo cabe em 2 a 3 dias úteis se você conseguir travar e abrir as reuniões certas.</p>
+      </article>
+      <article class="card span-6">
+        <h3>Fora da PR #912 (paralelo, menor)</h3>
+        <ul class="checklist">
+          <li><strong>RH WhatsApp Triage (n8n)</strong>: fundação merged (PR #1), mas em <code>active:false</code>. Falta Gupy-first vs PandaPé-second e inventário de provedores.</li>
+          <li><strong>RH Unificado</strong>: <span class="badge red">FAIL</span> na revisão adversarial. Sem projeto canônico no vault, sem repo, sem stack confirmada.</li>
+          <li><strong>agent-orchestrator / browser-lab</strong>: PR #11 merged, 14 ferramentas MCP ativas. Resta limpar drift de websockify e estabilizar foco real de click no X11.</li>
+          <li><strong>Subagentes WSL + VM Linux computer-use</strong>: backlog de infraestrutura. <em>Não imediato.</em></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- PR #912 -->
+  <section id="pr912">
+    <div class="head">
+      <h2>O estado da PR #912.</h2>
+      <p>A umbrella contém 11 issues implementadas (foundation + M1). Falta rodar a esteira de aceitação e fechar consciente.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card span-8">
+        <h3>Resumo verificado em 2026-07-17 (Fase 6 fechada)</h3>
+        <div class="grid" style="margin-top:8px;">
+          <div class="span-6 project-cell">
+            <h4>Suíte saIA</h4>
+            <p>98 testes, 443 assertions, <span class="badge green">PASS</span>. Default <code>live</code> continua versionado no config.</p>
+          </div>
+          <div class="span-6 project-cell">
+            <h4>Baseline global</h4>
+            <p>+11 tests, +11 passed, zero delta em errors/failures. <span class="badge green">0</span> erros atribuíveis à feature.</p>
+          </div>
+          <div class="span-6 project-cell">
+            <h4>Gates estáticos</h4>
+            <p><span class="badge green">git diff --check</span> <span class="badge green">PHP 7.4 lint</span> <span class="badge green">Secrets 0</span> <span class="badge green">base64 0</span></p>
+          </div>
+          <div class="span-6 project-cell">
+            <h4>Scanners runtime</h4>
+            <p>Nome <code>Saia</code>, <code>config('saia.*')</code>, fallback <code>analysis_mode=dry_run</code>: <span class="badge green">0 cada</span>.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card orange span-4">
+        <span class="metric-label">A fazer antes do merge</span>
+        <div class="metric" style="font-size: clamp(38px, 6vw, 64px);">5/8</div>
+        <p>PR #912 ainda tem <strong>3 pendências críticas</strong> no caminho da produção. Detalhes na próxima seção.</p>
+      </article>
+    </div>
+
+    <div class="head" style="margin-top: 18px;">
+      <h3>Decisões canônicas já gravadas.</h3>
+      <p>Estas decisões são vinculantes e não devem ser reabertas sem evidência nova.</p>
+    </div>
+    <div class="grid">
+      <article class="card span-4">
+        <h4>Default <code>live</code> versionado</h4>
+        <p>Config canônico em <code>config/ticket-analysis.php</code>. Dry-run apenas para gates técnicos. <code>.env.example</code> permanece byte-identical a <code>origin/main</code>.</p>
+      </article>
+      <article class="card span-4">
+        <h4>Idempotência por existência</h4>
+        <p><code>UNIQUE(ticket_id)</code>, reserva pré-dispatch, CAS por geração. Retry manual só para <code>failed</code>/<code>dispatch_failed</code>.</p>
+      </article>
+      <article class="card span-4">
+        <h4>Fonte Before = <code>tickets.filepath</code></h4>
+        <p>Primário, com <code>ticket_photos</code> como complemento/fallback. Zero base64 persistido. UI read-only só para <code>completed_live</code>.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- SPRINT GROUNDED -->
+  <section id="sprint">
+    <div class="head">
+      <h2>Sprint grounded para destravar a PR #912.</h2>
+      <p>Sequência curta, executável em 2 a 3 dias úteis com William, Kimi e Codex adversarial review.</p>
+    </div>
+
+    <div class="rail">
+      <div class="rail-step">
+        <div class="num-rail">1</div>
+        <strong>Popular <code>operacoes_testing</code></strong>
+        <p>Seed mínimo: 1 place, 1 user, 1 ticket SP com checklist válido. Rodar <code>phpunit</code> até 97/97 PASS.</p>
+      </div>
+      <div class="rail-step">
+        <div class="num-rail">2</div>
+        <strong>Thermonuclear review</strong>
+        <p>Codex <code>gpt-5.6-sol</code> com <code>reasoning_effort: low</code>. Já falhou 2× (WSL bloqueado, bundle Windows timeout). Forçar caminho WSL limpo.</p>
+      </div>
+      <div class="rail-step">
+        <div class="num-rail">3</div>
+        <strong>Stage seletivo</strong>
+        <p>Sem resíduos alheios (<code>.docs/</code>, <code>auth-bypass.php</code>, <code>storage/saia_*</code>). Conventional Commit. Push + read-back do SHA remoto.</p>
+      </div>
+      <div class="rail-step">
+        <div class="num-rail">4</div>
+        <strong>CI remoto + merge</strong>
+        <p>CI verde, marcar PR <em>ready for review</em>, atualização do corpo da PR, merge consciente. Fechar issues da foundation <em>após</em> merge.</p>
+      </div>
+    </div>
+
+    <div class="head" style="margin-top: 18px;">
+      <h3>Gates restantes com cores.</h3>
+      <p>Cada card é um gate que precisa virar verde antes do merge. Clique para detalhes.</p>
+    </div>
+
+    <details>
+      <summary>1. <code>operacoes_testing</code> precisa de seed mínimo</summary>
+      <div class="details-body">
+        <p>16 testes saIA falham porque a tabela está vazia (0 tickets, 0 users, 0 places). Não há regressão de código: é ambiente. Popular com 1 place, 1 user e 1 ticket SP com checklist válido. Validar que <code>phpunit --testsuite=TicketAnalysis</code> fica 100% verde.</p>
+        <p><strong>Quem:</strong> Kimi K2.7 Code, escopo fechado, com receipt da contagem <em>antes/depois</em> e do <code>phpunit</code> final.</p>
+      </div>
+    </details>
+    <details>
+      <summary>2. Thermonuclear review (#3 tentativa) via WSL limpo</summary>
+      <div class="details-body">
+        <p>Codex <code>gpt-5.6-sol</code> com <code>reasoning_effort: low</code> precisa rodar em caminho WSL funcional. Diagnóstico do MCP browser de 2026-07-17 confirmou <code>wsl_runtime_status</code> e screenshot funcionando depois de ampliar o allowlist. Reabrir o processo MCP e tentar review de novo.</p>
+        <p><strong>Quem:</strong> OpenCode <code>deepseek-v4-pro</code> orquestra, Codex <code>gpt-5.6-sol</code> revisa.</p>
+      </div>
+    </details>
+    <details>
+      <summary>3. Stage seletivo + CI remoto + merge</summary>
+      <div class="details-body">
+        <p>Push seletivo sem os 4 resíduos alheios já mapeados. CI remoto ainda não reporta (branch sem checks). Após CI verde, marcar PR <em>ready for review</em>, atualizar corpo e <em>Closes</em> mapeado (902, 903, 904, 905, 906, 909, 914, 917, 918, 916, 919, 907 — só após merge).</p>
+        <p><strong>Quem:</strong> Israel autoriza; Kimi executa stage; você faz o push final.</p>
+      </div>
+    </details>
+    <details>
+      <summary>4. Validação humana da UI em staging</summary>
+      <div class="details-body">
+        <p>A UI AdminLTE já está validada em 3 tickets locais e mobile (390×844). Falta William rodar em staging real com dados SP: <em>Executar análise</em>, <em>Abrir checklist e imagens</em>, render de confiança, leitura operacional, contexto temporal/equipamento.</p>
+        <p><strong>Quem:</strong> William. <strong>Quando:</strong> imediatamente após o stage 3.</p>
+      </div>
+    </details>
+    <details>
+      <summary>5. Smoke dry_run 1 → 2 → 5 em staging</summary>
+      <div class="details-body">
+        <p>Mesmo padrão do PR: lotar 1, depois 2, depois 5 tickets. Confirmar idempotência, ledger, retry manual. Registrar receipts em <code>/home/israeltoledo/backups/ticket-analysis/&lt;data&gt;/</code>.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ISSUES -->
+  <section id="issues">
+    <div class="head">
+      <h2>Issues do Operacoes (saia label).</h2>
+      <p>Use os filtros para abrir apenas o que importa hoje.</p>
+    </div>
+
+    <div class="filter-demo">
+      <div class="filter-label">Filtre por estado</div>
+      <div class="filter-controls" id="issueControls">
+        <button class="filter-chip active" data-filter="all">Tudo</button>
+        <button class="filter-chip" data-filter="merged">Fechar pós-merge</button>
+        <button class="filter-chip" data-filter="paralelo">Paralelo</button>
+        <button class="filter-chip" data-filter="pos-mvp">Pós-MVP</button>
+        <button class="filter-chip" data-filter="wayfinder">Wayfinder</button>
+        <button class="filter-chip" data-filter="ready">ready-for-agent</button>
+      </div>
+      <div class="filter-payload" id="issuePayload">carregando…</div>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 18px;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Título</th>
+            <th>Estado real</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="issueTable">
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/902" target="_blank" rel="noopener">#902</a></td><td>Configuração do pipeline</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/903" target="_blank" rel="noopener">#903</a></td><td>Schema ticket-centric inicial</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/904" target="_blank" rel="noopener">#904</a></td><td>Resolução de evidências do chamado</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/905" target="_blank" rel="noopener">#905</a></td><td>Seleção e orquestração de chamados</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/906" target="_blank" rel="noopener">#906</a></td><td>Job dry-run e persistência</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/907" target="_blank" rel="noopener">#907</a></td><td>Reserva pré-dispatch e idempotência por existência</td><td><span class="badge green">no PR #912</span> <span class="badge yellow">ready-for-agent</span></td><td>Fechar pós-merge (única com ready-for-agent)</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/908" target="_blank" rel="noopener">#908</a></td><td>E2E live, mídia remota e smoke controlado</td><td><span class="badge green">validado local</span></td><td>Fechar pós-staging E2E</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/909" target="_blank" rel="noopener">#909</a></td><td>Agendamento do pipeline</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/910" target="_blank" rel="noopener">#910</a></td><td>PRD Master e rollout até produção</td><td><span class="badge orange">aberta até produção</span></td><td>Manter aberta até habilitação</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/914" target="_blank" rel="noopener">#914</a></td><td>Schema ticket-centric definitivo</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/916" target="_blank" rel="noopener">#916</a></td><td>Modo live e Job Gemini</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/917" target="_blank" rel="noopener">#917</a></td><td>Prompt builder versionado</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/918" target="_blank" rel="noopener">#918</a></td><td>Modo live e modelo Gemini</td><td><span class="badge green">no PR #912</span></td><td>Fechar pós-merge</td></tr>
+          <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/919" target="_blank" rel="noopener">#919</a></td><td>Aba Análise inline na liberação do chamado</td><td><span class="badge orange">validar em staging</span></td><td>Fechar pós-validação humana</td></tr>
+          <tr data-cat="paralelo"><td><a href="https://github.com/eletromidia/operacoes/issues/920" target="_blank" rel="noopener">#920</a></td><td>Corpus Drive para calibração (não-produto)</td><td><span class="badge purple">paralelo</span></td><td>Pós-produção, fora do PR #912</td></tr>
+          <tr data-cat="pos-mvp"><td><a href="https://github.com/eletromidia/operacoes/issues/913" target="_blank" rel="noopener">#913</a></td><td>Evolução pós-MVP: fila HITL e automações</td><td><span class="badge purple">placeholder</span></td><td>Pós-produção</td></tr>
+          <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/926" target="_blank" rel="noopener">#926</a></td><td>Wayfinder: prompt, execução assíncrona e feedback</td><td><span class="badge purple">wayfinder:map</span></td><td>Mapa canônico de investigação</td></tr>
+          <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/927" target="_blank" rel="noopener">#927</a></td><td>Reconstruir prompt efetivo e contrato de elegibilidade</td><td><span class="badge purple">wayfinder:research</span></td><td>Investigação</td></tr>
+          <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/928" target="_blank" rel="noopener">#928</a></td><td>Alinhar disparo manual com run, ledger e worker</td><td><span class="badge purple">wayfinder:research</span></td><td>Investigação</td></tr>
+          <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/929" target="_blank" rel="noopener">#929</a></td><td>Prototipar loading, polling e recuperação da análise</td><td><span class="badge purple">wayfinder:prototype</span> <span class="badge yellow">human-review</span></td><td>Aguarda review humana</td></tr>
+          <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/930" target="_blank" rel="noopener">#930</a></td><td>Avaliar fotos de checklist como evidência Before/After</td><td><span class="badge purple">wayfinder:research</span></td><td>Investigação</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FRIDAY -->
+  <section id="friday">
+    <div class="head">
+      <h2>Friday · board 49 · group 94.</h2>
+      <p>Backlog operacional do Ticket Analysis. 14 done, 3 working, 1 stuck, 1 backlog.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card green span-6">
+        <h3>Working — em andamento</h3>
+        <ul class="checklist todo">
+          <li><strong>FRY-1327</strong> · Ticket Analysis | PRD Master e rollout até produção.</li>
+          <li><strong>FRY-1379</strong> · Idempotência, E2E e gates de qualidade (issues <a href="https://github.com/eletromidia/operacoes/issues/907" target="_blank" rel="noopener">#907</a> + <a href="https://github.com/eletromidia/operacoes/issues/908" target="_blank" rel="noopener">#908</a>).</li>
+          <li><strong>FRY-1380</strong> · UI inline de análise no chamado (issue <a href="https://github.com/eletromidia/operacoes/issues/919" target="_blank" rel="noopener">#919</a>).</li>
+          <li><strong>FRY-1577</strong> · Gate final da PR #912, CI e merge. <em>É a próxima tarefa concreta da fila.</em></li>
+        </ul>
+      </article>
+      <article class="card red span-6">
+        <h3>Stuck — exige William/operacional</h3>
+        <ul class="checklist todo">
+          <li><strong>FRY-1578</strong> · Staging, aceite humano e ativação controlada (issues <a href="https://github.com/eletromidia/operacoes/issues/908" target="_blank" rel="noopener">#908</a>, <a href="https://github.com/eletromidia/operacoes/issues/919" target="_blank" rel="noopener">#919</a>, <a href="https://github.com/eletromidia/operacoes/issues/910" target="_blank" rel="noopener">#910</a>). <em>Bloqueada por ambiente staging + decisão de habilitação.</em></li>
+        </ul>
+        <h3 style="margin-top: 14px;">Backlog — sem dono ainda</h3>
+        <ul class="checklist todo">
+          <li><strong>FRY-1326</strong> · Métricas e observabilidade pós-MVP.</li>
+          <li><strong>FRY-1352</strong> · Expansão pós-MVP (outras atividades, regiões, infra de IA).</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="head" style="margin-top: 18px;">
+      <h3>Já entregues (14 itens done)</h3>
+      <p>Fundação, schema, evidências, integração REST, scheduler, profile prompt, modelo Gemini, migração, UI, etc.</p>
+    </div>
+    <div class="grid">
+      <article class="card span-4">
+        <h4>FRY-1318 → 1325</h4>
+        <p>Configuração canônica, schema, REST Gemini, evidências, seleção/orquestração, Job live, scheduler, experiência humana inline, experiência pós-MVP, PRD Master, NotebookLM e alinhamento com William.</p>
+        <p><span class="badge green">done</span></p>
+      </article>
+      <article class="card span-4">
+        <h4>FRY-1328, 1329, 1363, 1376, 1377, 1378</h4>
+        <p>NotebookLM onboarding, decisões de produto, migração ticket-centric, pipeline Gemini live, prompt versionado, modelo e modo de execução.</p>
+        <p><span class="badge green">done</span></p>
+      </article>
+      <article class="card span-4">
+        <h4>Quem responde hoje</h4>
+        <p><strong>FRY-1327, 1329, 1578</strong> têm William (id 59) ao lado de Israel. <strong>FRY-1577</strong> está sem responsável — primeira tarefa sua ao voltar.</p>
+        <p><span class="badge yellow">atribuir 1577</span></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- OUTROS PROJETOS -->
+  <section id="outros">
+    <div class="head">
+      <h2>Outros projetos ativos.</h2>
+      <p>RH WhatsApp Triage, RH Unificado, agent-orchestrator. Cada um com sua fila e seus gates.</p>
+    </div>
+
+    <div class="flow-board">
+      <article class="flow-lane kept">
+        <span class="pill purple">eletromidia-agent-harness</span>
+        <h3>Agent Orchestrator / browser-lab</h3>
+        <p>14 ferramentas MCP ativas. PR #11 merged. Diagnóstico do MCP browser de 2026-07-17 corrigiu allowlist. Receipt visual em <code>C:\Users\israel.toledo\Documents\agent-browser-proofs\browser-20260717-022926.png</code>.</p>
+        <div class="flow-node">
+          <strong>Pendências pequenas</strong>
+          <p>Limpar drift de websockify (processo duplicado para um listener), estabilizar foco real de click no X11, refresh de smoke diário.</p>
+        </div>
+        <div class="flow-node">
+          <strong>MCP safe usage</strong>
+          <p>Reforçar uso do <code>friday-mcp-safe-usage</code> antes de qualquer write. Cross-workspace 2026-07-08 já foi mitigado.</p>
+        </div>
+      </article>
+
+      <article class="flow-lane blocked">
+        <span class="pill red">eletromidia/rh-whatsapp-triage-n8n</span>
+        <h3>RH WhatsApp Triage (n8n)</h3>
+        <p>Fundação n8n merged (PR #1, 2026-07-13). Cinco exports <em>inativos</em>: Gupy trigger, WhatsApp inbound provider-neutral, writeback, LLM consultivo, LGPD. Revisão adversarial da reunião 15/07 veredito: <strong>FAIL com base existente</strong>.</p>
+        <div class="flow-node">
+          <strong>Gates a abrir</strong>
+          <p>1. Decidir Gupy-first vs PandaPé-second. 2. Inventário de provedores/contas/números/templates/webhooks. 3. Ativar workflow só após os dois anteriores. 4. Reunião com implementadora (próxima semana 20–24/07).</p>
+        </div>
+        <div class="flow-node">
+          <strong>LGPD &amp; HITL</strong>
+          <p>Confirmar consentimento, retenção, explicabilidade, exclusão. HITL humana no recrutador — IA é consultiva.</p>
+        </div>
+      </article>
+
+      <article class="flow-lane blocked">
+        <span class="pill red">rh-unificado (sem projeto canônico)</span>
+        <h3>RH Unificado</h3>
+        <p>Revisão adversarial: <strong>FAIL</strong>. Sem projeto canônico no vault. Stack e intenção definidas, mas repo, runtime, migração, permissões e aceite de ambientes indefinidos.</p>
+        <div class="flow-node">
+          <strong>Pendências críticas</strong>
+          <p>1. Criar <code>10-Projects/rh-unificado/Project.md</code>. 2. Decidir PHP 8.5 ou downgrade compatível. 3. Mapear migração dos dois projetos RH legados. 4. Inventariar 6 perfis com capacidades/escopo/testes de negação.</p>
+        </div>
+        <div class="flow-node">
+          <strong>Recomendação</strong>
+          <p>Não aceitar scaffold <em>"criado via Codex"</em> sem threat model + testes. Tratar como gate de risco até repo/dev rodarem.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="head" style="margin-top: 18px;">
+      <h3>Repos monitorados sem PRs abertas.</h3>
+      <p>Estado limpo — só dependabot, sem decisões humanas pendentes.</p>
+    </div>
+    <div class="grid">
+      <article class="card span-3">
+        <h4>elt-n8n</h4>
+        <p><span class="badge green">limpo</span></p>
+        <p>Apenas dependabot. Sem PRs humanas abertas.</p>
+      </article>
+      <article class="card span-3">
+        <h4>operacoes (dependabot)</h4>
+        <p><span class="badge green">limpo</span></p>
+        <p><a href="https://github.com/eletromidia/operacoes/pull/923" target="_blank" rel="noopener">PR #923</a> (websocket-driver 0.7.5) — dependabot. Sem código humano.</p>
+      </article>
+      <article class="card span-3">
+        <h4>em-artifacts (hub)</h4>
+        <p><span class="badge green">auto-index</span></p>
+        <p>Este artefato entra no hub via push + Action <code>index-hub</code>. Sem PR manual.</p>
+      </article>
+      <article class="card span-3">
+        <h4>Hermes Cron (israeltoledo)</h4>
+        <p><span class="badge green">ativo</span></p>
+        <p>Codex automations descomissionadas. Única scheduler ativa: Hermes. 3 ciclos de execução em produção por rotina.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRECEDENTES STALE -->
+  <section id="precedentes">
+    <div class="head">
+      <h2>Precedentes que já não valem.</h2>
+      <p>Premissas e decisões marcadas como stale pela auditoria de 2026-07-09. Não reviver.</p>
+    </div>
+
+    <div class="grid">
+      <div class="span-6">
+        <div class="stale">
+          <div>
+            <strong>“DB vazio” / “MVP sem UI”</strong>
+            <div><small>Superadas — banco real com 1.742.568 tickets e UI inline já entregue.</small></div>
+          </div>
+          <span class="pill red">stale</span>
+        </div>
+        <div class="stale" style="margin-top:8px;">
+          <div>
+            <strong>“UI opcional”</strong>
+            <div><small>Superada — UI HITL (#919) é MVP obrigatório.</small></div>
+          </div>
+          <span class="pill red">stale</span>
+        </div>
+        <div class="stale" style="margin-top:8px;">
+          <div>
+            <strong>“M1 / #918 pendente”</strong>
+            <div><small>Superada — implementada no HEAD <code>ff93ab98</code>. Fechar pós-merge.</small></div>
+          </div>
+          <span class="pill red">stale</span>
+        </div>
+      </div>
+      <div class="span-6">
+        <div class="stale">
+          <div>
+            <strong>Schema polimórfico <code>saia_analysis_items</code></strong>
+            <div><small>Superado pelo modelo ticket-centric <code>ticket_analyses</code>.</small></div>
+          </div>
+          <span class="pill red">stale</span>
+        </div>
+        <div class="stale" style="margin-top:8px;">
+          <div>
+            <strong>“Radar / Lens / CSP Slice 5-6”</strong>
+            <div><small>Não reviver. Fora do escopo atual.</small></div>
+          </div>
+          <span class="pill red">stale</span>
+        </div>
+        <div class="stale" style="margin-top:8px;">
+          <div>
+            <strong>“saIA-2.0 scaffold”</strong>
+            <div><small>Não reviver. Refactor distinto, fora do sprint grounded.</small></div>
+          </div>
+          <span class="pill red">stale</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANO DE VOLTA -->
+  <section id="volta">
+    <div class="head">
+      <h2>Plano de volta ao trabalho (D+1).</h2>
+      <p>Quatro blocos curtos, em ordem. Marque cada um conforme fecha.</p>
+    </div>
+
+    <div class="change-list">
+      <div class="change-item">
+        <div>
+          <strong>Bloco A — PR #912 destrava</strong><br>
+          <small>Atribuir FRY-1577; popular <code>operacoes_testing</code>; rodar thermonuclear review em WSL limpo; stage seletivo; CI verde; atualizar corpo; merge.</small>
+        </div>
+        <span class="pill orange">P0</span>
+      </div>
+      <div class="change-item">
+        <div>
+          <strong>Bloco B — Friday e issues sincronizados</strong><br>
+          <small>Verificar <code>workspace_id=11</code> e <code>board/49</code> antes de qualquer write. Mover FRY-1577 para <em>done</em> ao fechar o Bloco A. Fechar issues 902/903/904/905/906/909/914/916/917/918 e 919 (após validação humana) e 907.</small>
+        </div>
+        <span class="pill orange">P0</span>
+      </div>
+      <div class="change-item">
+        <div>
+          <strong>Bloco C — Staging e habilitação</strong><br>
+          <small>FRY-1578. Smoke dry_run 1→2→5. Validação humana de William em staging. Decisão de habilitação e rollout progressivo.</small>
+        </div>
+        <span class="pill yellow">P1</span>
+      </div>
+      <div class="change-item">
+        <div>
+          <strong>Bloco D — Paralelo que não pode esperar</strong><br>
+          <small>RH WhatsApp Triage: definir Gupy-first vs PandaPé-second, agendar reunião com implementadora, inventário de provedores/templates/webhooks. RH Unificado: criar <code>10-Projects/rh-unificado/Project.md</code> e decidir PHP/Laravel.</small>
+        </div>
+        <span class="pill yellow">P1</span>
+      </div>
+      <div class="change-item">
+        <div>
+          <strong>Bloco E — Limpezas e higiene</strong><br>
+          <small>Agent-orchestrator: limpar drift do websockify; smoke diário do MCP browser. Memória: rodar <code>freshness --include-reviews</code> e registrar decisões pendentes; arquivar <code>00-Inbox/2026-07-15-corrigir-foco-e-click-real-no-mcp-browser-wsl</code> (resolvido em 2026-07-17).</small>
+        </div>
+        <span class="pill purple">P2</span>
+      </div>
+      <div class="change-item">
+        <div>
+          <strong>Bloco F — Backlog de pesquisa</strong><br>
+          <small>Subagentes WSL e VM Linux com computer-use; visão local via Ollama + Gemma; sync de skills e MCPs. Não imediato.</small>
+        </div>
+        <span class="pill black">P3</span>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top: 18px;">
+      <article class="card span-6">
+        <h3>O que a sua memória já registra</h3>
+        <ul class="checklist done">
+          <li><strong>Auditoria 2026-07-09</strong>: <code>20-Knowledge/2026-07-10-saia-current-state-auditoria-2026-07-09</code></li>
+          <li><strong>Framework agent-loop</strong>: <code>20-Knowledge/2026-07-10-framework-de-execucao-saia-com-agent-loop-e-checkpoints</code></li>
+          <li><strong>Decisões canônicas</strong> em <code>10-Projects/operacoes/Decisions/</code> (rename, default live, idempotência, on-demand = mesmo gate SP)</li>
+          <li><strong>Handoffs operacionais</strong> Fase 6 e revisão adversarial William 15/07</li>
+        </ul>
+      </article>
+      <article class="card black span-6">
+        <h3>Como ler este artefato</h3>
+        <p>Use a navegação superior para saltar entre seções. As tabs/filtros são interativas: clique em “Fechar pós-merge” para limpar a tabela de issues, ou “P0/P1/P2” (futuro) para filtrar o plano de volta.</p>
+        <p>Cada card escuro é uma chamada de atenção. Cada pill verde é entregável verificado. Cada pill vermelha é stale ou bloqueado.</p>
+      </article>
+    </div>
+
+    <div class="callout" style="margin-top: 18px;">
+      <div>
+        <h3>Posição final.</h3>
+        <p>O saIA/Ticket Analysis não é mais problema de código. É problema de execução de gates: seed, CI, review, staging, validação humana, merge. Tratar como sprint de 2 a 3 dias úteis, com William no loop, e a umbrella fecha. O resto é paralelo e pode ser roteado sem travar a entrega.</p>
+      </div>
+      <span class="pill black">recomendação</span>
+    </div>
+  </section>
+
+  <footer>
+    <strong>Eletromidia · saIA / Ticket Analysis · Estado na volta ao trabalho</strong>
+    <p>Fontes: PR <a href="https://github.com/eletromidia/operacoes/pull/912" target="_blank" rel="noopener">#912</a> · issues <a href="https://github.com/eletromidia/operacoes/issues" target="_blank" rel="noopener">operacoes</a> · Friday board 49 group 94 · Obsidian memory layer (knowledge, decisions, handoffs) · revisão adversarial 2026-07-17. Gerado em 2026-07-18.</p>
+  </footer>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // Toast helper
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('visible');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(function() { toast.classList.remove('visible'); }, 1800);
+  }
+
+  // Counter bump on first paint
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.counter').forEach(function(el) {
+      el.classList.add('bump');
+      setTimeout(function() { el.classList.remove('bump'); }, 600);
+    });
+  });
+
+  // Issue filter
+  (function() {
+    var chips = document.querySelectorAll('#issueControls .filter-chip');
+    var rows = document.querySelectorAll('#issueTable tr');
+    var payload = document.getElementById('issuePayload');
+
+    function update() {
+      var active = document.querySelector('#issueControls .filter-chip.active');
+      var filter = active ? active.dataset.filter : 'all';
+      var visible = 0;
+      var total = rows.length;
+      rows.forEach(function(r) {
+        var cat = r.dataset.cat || '';
+        var match = (filter === 'all') || (cat === filter);
+        r.style.display = match ? '' : 'none';
+        if (match) visible++;
+      });
+      var label = active ? active.textContent : 'Tudo';
+      payload.textContent = 'filtro: ' + label + '\nvisíveis: ' + visible + ' de ' + total + ' issues\n' +
+        (filter === 'all' ? 'todas as categorias, incluindo Wayfinder e pós-MVP.' :
+         filter === 'merged' ? 'fechar estas issues após o merge consciente da PR #912.' :
+         filter === 'paralelo' ? 'fora da umbrella — não bloqueia entrega.' :
+         filter === 'pos-mvp' ? 'placeholder pós-MVP, sem urgência.' :
+         filter === 'wayfinder' ? 'mapa de investigação criado em 17/07. Decidir ordem com William.' :
+         filter === 'ready' ? 'apenas #907 mantém ready-for-agent. Demais saíram após revisão adversarial.' :
+         '');
+    }
+
+    chips.forEach(function(c) {
+      c.addEventListener('click', function() {
+        chips.forEach(function(b) { b.classList.remove('active'); });
+        c.classList.add('active');
+        update();
+        showToast('Filtro: ' + c.textContent);
+      });
+    });
+    update();
+  })();
+</script>
+
+</body>
+</html>
