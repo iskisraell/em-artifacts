@@ -1,0 +1,32 @@
+{
+  "title": "saIA / Ticket Analysis · Estado na volta ao trabalho — v2 experimental",
+  "date": "2026-07-18",
+  "description": "Versão experimental do overview: dark mode global, sidebar TOC, gauge animado no hero, timeline vertical para o sprint, kanban para o Friday, copy mais enxuta, reveal on scroll, FABs, scroll progress. Proposta de patch visual para o skill eletromidia-artifact — antes de embedar no skill.",
+  "tags": [
+    "saia",
+    "ticket-analysis",
+    "operacoes",
+    "pr-912",
+    "volta-ao-trabalho",
+    "experimental",
+    "dark-mode",
+    "sidebar-toc",
+    "gauge",
+    "kanban",
+    "timeline",
+    "v2",
+    "skill-patch-proposal"
+  ],
+  "sections": [
+    "Hero (com gauge)",
+    "TL;DR strip",
+    "Onde paramos",
+    "PR #912 / Por que travou",
+    "O caminho (timeline vertical)",
+    "Issues na fila (filtro interativo)",
+    "Board do Friday (kanban)",
+    "Paralelo",
+    "O que não fazer",
+    "Amanhã cedo (path com você está aqui)"
+  ]
+}

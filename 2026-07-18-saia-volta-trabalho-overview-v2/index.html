@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | saIA · Estado na volta ao trabalho — 2026-07-18</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function() {
+      var saved = localStorage.getItem('em-theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+
+      --bg: #FAFAFA;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --heading: #000000;
+      --card: #FFFFFF;
+      --card-hover: #FFFFFF;
+      --code-bg: #FFFFFF;
+      --hero-line: #FFFFFF;
+      --hero-text: #E8E8E8;
+
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B0B0B;
+      --surface: #0B0B0B;
+      --muted: #161616;
+      --line: #262626;
+      --text: #A3A3A3;
+      --heading: #FAFAFA;
+      --card: #141414;
+      --card-hover: #1A1A1A;
+      --code-bg: #141414;
+      --hero-line: #141414;
+      --hero-text: #C7C7C7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--heading);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+      transition: background .25s ease, color .25s ease;
+    }
+    ::selection { background: var(--orange); color: var(--white); }
+    ::-moz-selection { background: var(--orange); color: var(--white); }
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; color: var(--text); }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+    h1, h2, h3, h4 { margin-top: 0; font-weight: 800; color: var(--heading); }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--code-bg); color: var(--purple);
+      border: 1px solid var(--line);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+    [data-theme="dark"] code { color: #B5A0FF; }
+
+    /* Scroll progress */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--orange); z-index: 50;
+      width: 0; transition: width .1s linear;
+    }
+
+    /* Layout: sidebar + main */
+    .layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      gap: 32px;
+    }
+    main { min-width: 0; padding: 24px 0 100px; }
+    section { margin-top: 44px; }
+    section:first-of-type { margin-top: 0; }
+
+    /* Sidebar TOC */
+    .toc {
+      position: sticky; top: 70px;
+      align-self: start;
+      padding: 18px 0 18px 0;
+      border-left: 1px solid var(--line);
+      padding-left: 14px;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+      font-size: 13px;
+    }
+    .toc-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+      color: var(--text); font-weight: 800; margin-bottom: 14px;
+    }
+    .toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+    .toc li { margin: 0 0 4px; counter-increment: toc; }
+    .toc a {
+      display: flex; gap: 8px; padding: 6px 8px;
+      border-radius: 8px; text-decoration: none;
+      color: var(--text); font-weight: 700; font-size: 13px;
+      transition: background .15s, color .15s;
+      line-height: 1.2;
+    }
+    .toc a::before { content: counter(toc, decimal-leading-zero); color: var(--text); font-variant-numeric: tabular-nums; opacity: .6; }
+    .toc a:hover { background: var(--muted); color: var(--heading); }
+    .toc a.active { background: var(--orange); color: var(--white); }
+    .toc a.active::before { color: var(--white); opacity: 1; }
+
+    /* Top nav */
+    .nav {
+      position: sticky; top: 3px; z-index: 40;
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0 0; padding: 12px 16px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+    }
+    .nav-brand { font-weight: 800; font-size: 14px; margin-right: auto; color: var(--heading); }
+    .nav a {
+      padding: 8px 12px;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: var(--card); color: var(--heading);
+      font-weight: 800; font-size: 13px; text-decoration: none;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .nav a:hover { background: var(--heading); color: var(--bg); border-color: var(--heading); }
+
+    .theme-toggle {
+      width: 38px; height: 38px; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--card);
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      transition: background .15s, transform .2s, border-color .15s;
+      color: var(--heading);
+    }
+    .theme-toggle:hover { background: var(--muted); border-color: var(--heading); transform: rotate(15deg); }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="light"] .icon-sun { display: none; }
+    [data-theme="light"] .icon-moon { display: block; }
+
+    /* Hero */
+    .hero {
+      position: relative; isolation: isolate; overflow: hidden;
+      min-height: 520px; padding: clamp(28px, 4vw, 56px);
+      border-radius: var(--radius);
+      background: var(--black); color: var(--white);
+      display: grid; grid-template-columns: 1.6fr 1fr;
+      gap: 36px; align-items: center;
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1; aspect-ratio: 1; border-radius: 34px;
+    }
+    .hero::before {
+      right: clamp(180px, 22vw, 320px); bottom: clamp(-160px, -10vw, -80px);
+      width: min(36vw, 380px); background: var(--orange); transform: rotate(10deg);
+    }
+    .hero::after {
+      right: clamp(-110px, -8vw, -50px); bottom: clamp(-130px, -7vw, -50px);
+      width: min(30vw, 320px); background: var(--purple); transform: rotate(-8deg);
+    }
+    .hero h1 {
+      max-width: 760px; margin-bottom: 18px;
+      font-size: clamp(40px, 6.8vw, 84px);
+      line-height: .92; letter-spacing: 0; color: var(--white);
+    }
+    .hero p { max-width: 620px; color: var(--hero-text); font-size: clamp(16px, 1.8vw, 21px); }
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 22px; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 18px; padding: 7px 11px;
+      border-radius: 999px; background: var(--yellow);
+      color: var(--black); font-weight: 800;
+      text-transform: uppercase; font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    /* Gauge */
+    .gauge {
+      position: relative; width: 100%; max-width: 280px;
+      aspect-ratio: 1; margin: 0 auto;
+    }
+    .gauge svg { width: 100%; height: 100%; display: block; }
+    .gauge-track { stroke: rgba(255,255,255,.16); }
+    .gauge-fill { stroke: var(--orange); transition: stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1); }
+    .gauge-center {
+      position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+    }
+    .gauge-pct { font-size: clamp(48px, 7vw, 78px); font-weight: 800; line-height: 1; color: var(--white); letter-spacing: -.02em; }
+    .gauge-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,.7); font-weight: 800; margin-top: 6px; }
+    .gauge-sub { font-size: 12px; color: rgba(255,255,255,.7); margin-top: 14px; }
+
+    /* TL;DR strip */
+    .tldr {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--line);
+      border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+      margin-top: 22px;
+    }
+    .tldr > div {
+      background: var(--card); padding: 18px 20px;
+    }
+    .tldr strong { display: block; font-size: 22px; color: var(--heading); font-weight: 800; margin-bottom: 4px; line-height: 1; }
+    .tldr span { font-size: 12px; color: var(--text); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* Pills */
+    .pill {
+      display: inline-flex; align-items: center;
+      min-height: 30px; padding: 6px 11px;
+      border-radius: 999px; font-size: 12px;
+      font-weight: 800; line-height: 1; white-space: normal;
+    }
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+    .pill.outline {
+      background: transparent; color: var(--white);
+      border: 1px solid rgba(255,255,255,.35);
+    }
+
+    /* Section head */
+    .head {
+      display: flex; justify-content: space-between; align-items: end; gap: 18px;
+      margin-bottom: 18px;
+    }
+    .head h2 {
+      max-width: 720px;
+      font-size: clamp(26px, 3.4vw, 42px);
+      line-height: 1.04;
+    }
+    .head p { max-width: 380px; margin-bottom: 0; font-size: 15px; }
+    .head .num { font-size: 12px; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 6px; display: block; }
+
+    /* Grid + cards */
+    .grid {
+      display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+    .card {
+      min-width: 0; min-height: 100%;
+      padding: clamp(18px, 2.4vw, 28px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--card); overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s, background .25s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); border-color: rgba(0,0,0,.12); }
+    [data-theme="dark"] .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.4); border-color: rgba(255,255,255,.18); }
+
+    .card.black, .card.purple, .card.orange, .card.green, .card.red {
+      border-color: transparent; color: var(--white);
+    }
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); color: var(--black); }
+    .card.pink { background: var(--pink); color: var(--black); }
+    .card.green { background: var(--green); }
+    .card.red { background: var(--red); }
+    .card.black p, .card.purple p, .card.orange p, .card.green p, .card.red p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li, .card.red li { color: #FFFFFF; }
+    .card.yellow p, .card.yellow li, .card.pink p, .card.pink li { color: rgba(0,0,0,.75); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code, .card.red code { color: var(--black); border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.18); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-9 { grid-column: span 9; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      margin-bottom: 4px;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800; line-height: .9; letter-spacing: -.02em;
+    }
+    .metric-label {
+      font-size: 12px; text-transform: uppercase;
+      letter-spacing: .1em; font-weight: 800;
+      color: var(--text); margin-bottom: 4px; display: block;
+    }
+    .card.black .metric-label, .card.purple .metric-label, .card.orange .metric-label, .card.green .metric-label, .card.red .metric-label { color: rgba(255,255,255,.7); }
+    .card.yellow .metric-label, .card.pink .metric-label { color: rgba(0,0,0,.7); }
+
+    /* Timeline (vertical) */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: ""; position: absolute; left: 11px; top: 8px; bottom: 8px;
+      width: 2px; background: var(--line);
+    }
+    .tl-step { position: relative; margin-bottom: 18px; }
+    .tl-step:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -28px; top: 4px; width: 24px; height: 24px;
+      border-radius: 50%; background: var(--bg); border: 2px solid var(--line);
+      display: grid; place-items: center; font-size: 11px; font-weight: 800; color: var(--text);
+    }
+    .tl-step.done .tl-dot { background: var(--green); border-color: var(--green); color: var(--white); }
+    .tl-step.now .tl-dot { background: var(--orange); border-color: var(--orange); color: var(--white); box-shadow: 0 0 0 4px rgba(255,79,0,.18); }
+    .tl-step.next .tl-dot { background: var(--bg); border-color: var(--text); color: var(--text); }
+    .tl-step .tl-title { font-weight: 800; color: var(--heading); font-size: 15px; line-height: 1.2; margin-bottom: 4px; }
+    .tl-step .tl-meta { font-size: 12px; color: var(--text); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+    .tl-step p { margin: 0; font-size: 14px; }
+
+    /* Kanban */
+    .kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; min-width: 0; }
+    .lane { background: var(--muted); border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+    .lane-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    }
+    .lane-head h3 { font-size: 14px; font-weight: 800; color: var(--heading); text-transform: uppercase; letter-spacing: .06em; margin: 0; }
+    .lane-head .count {
+      display: inline-flex; min-width: 24px; height: 24px; padding: 0 8px;
+      border-radius: 999px; background: var(--card); color: var(--heading);
+      font-size: 12px; font-weight: 800; align-items: center; justify-content: center;
+      border: 1px solid var(--line);
+    }
+    .lane.working .lane-head h3 { color: var(--orange); }
+    .lane.stuck .lane-head h3 { color: var(--red); }
+    .lane.backlog .lane-head h3 { color: var(--purple); }
+
+    .card-job {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
+      transition: transform .15s, box-shadow .15s, border-color .15s;
+    }
+    .card-job:last-child { margin-bottom: 0; }
+    .card-job:hover { transform: translateX(2px); border-color: var(--orange); }
+    .card-job strong { display: block; font-size: 13px; color: var(--heading); line-height: 1.25; margin-bottom: 4px; }
+    .card-job small { color: var(--text); font-weight: 700; font-size: 12px; }
+    .card-job .tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+
+    /* Filter demo */
+    .filter-demo {
+      display: grid; gap: 12px; padding: 18px;
+      border-radius: 14px; background: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .filter-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter-chip {
+      padding: 7px 12px; border-radius: 999px;
+      border: 2px solid var(--line); background: var(--card);
+      font-weight: 700; font-size: 12px; cursor: pointer; color: var(--heading);
+      transition: all .15s;
+    }
+    .filter-chip:hover { border-color: var(--orange); }
+    .filter-chip.active { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .filter-payload {
+      padding: 14px; border-radius: 12px;
+      background: var(--black); color: var(--yellow);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 12px; white-space: pre-wrap; min-height: 70px;
+    }
+    .filter-label { font-weight: 800; font-size: 13px; margin-bottom: 4px; color: var(--heading); }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { background: var(--black); color: var(--white); font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    [data-theme="dark"] th { background: #FAFAFA; color: var(--black); }
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background .15s, opacity .25s; }
+    tbody tr.hidden { display: none; }
+    tbody tr:hover td { background: var(--muted); }
+    td { color: var(--heading); }
+
+    .badge {
+      display: inline-block; padding: 3px 8px;
+      border-radius: 999px; font-size: 11px;
+      font-weight: 800; line-height: 1;
+    }
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+    .badge.yellow { background: var(--yellow); color: var(--black); }
+    .badge.muted { background: var(--muted); color: var(--text); border: 1px solid var(--line); }
+
+    /* Callout */
+    .callout {
+      display: flex; justify-content: space-between;
+      gap: 16px; align-items: center;
+      padding: clamp(20px, 3vw, 32px);
+      border-radius: var(--radius);
+      background: var(--yellow); color: var(--black);
+    }
+    .callout h3 { margin-bottom: 4px; color: var(--black); }
+    .callout p { color: rgba(0,0,0,.75); }
+
+    /* Path (numbered plano de volta) */
+    .path { display: grid; gap: 0; }
+    .path-step {
+      display: grid; grid-template-columns: 48px 1fr;
+      gap: 16px; padding: 18px 0;
+      border-top: 1px solid var(--line);
+    }
+    .path-step:first-child { border-top: none; padding-top: 4px; }
+    .path-step:last-child { padding-bottom: 4px; }
+    .path-num {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: grid; place-items: center; font-weight: 800; font-size: 18px;
+      background: var(--card); color: var(--heading);
+      border: 1px solid var(--line);
+    }
+    .path-step.priority-p0 .path-num { background: var(--orange); color: var(--white); border-color: var(--orange); }
+    .path-step.priority-p1 .path-num { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .path-step.priority-p2 .path-num { background: var(--purple); color: var(--white); border-color: var(--purple); }
+    .path-step.priority-p3 .path-num { background: var(--card); color: var(--text); }
+    .path-step.here {
+      background: linear-gradient(90deg, rgba(255,79,0,.10), transparent 70%);
+      border-radius: 14px;
+      padding: 18px 16px;
+      border-top-color: transparent;
+      position: relative;
+    }
+    .path-here-tag {
+      display: inline-block; font-size: 11px; font-weight: 800;
+      color: var(--orange); text-transform: uppercase; letter-spacing: .12em;
+      margin-bottom: 4px;
+    }
+    .path-body h4 { font-size: 15px; line-height: 1.25; margin-bottom: 4px; color: var(--heading); }
+    .path-body p { font-size: 14px; color: var(--text); margin: 0; }
+
+    /* Precedentes - one liner */
+    .dont { display: grid; grid-template-columns: auto 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+    .dont:first-child { border-top: none; }
+    .dont .x { font-size: 14px; font-weight: 800; color: var(--red); padding-top: 2px; }
+    .dont strong { color: var(--heading); font-size: 14px; }
+    .dont small { color: var(--text); font-weight: 700; font-size: 13px; }
+
+    /* Floating action buttons */
+    .fab-stack {
+      position: fixed; right: 18px; bottom: 18px; z-index: 30;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .fab {
+      width: 44px; height: 44px; border-radius: 14px;
+      border: 1px solid var(--line); background: var(--card);
+      color: var(--heading); cursor: pointer;
+      display: grid; place-items: center; font-weight: 800;
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
+      transition: transform .15s, box-shadow .15s, background .15s;
+    }
+    .fab:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+    [data-theme="dark"] .fab { box-shadow: 0 4px 14px rgba(0,0,0,.5); }
+    [data-theme="dark"] .fab:hover { box-shadow: 0 6px 18px rgba(0,0,0,.6); }
+    .fab svg { width: 18px; height: 18px; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 78px; right: 18px;
+      padding: 12px 16px; border-radius: 12px;
+      background: var(--black); color: var(--white);
+      font-weight: 700; font-size: 13px; z-index: 60;
+      opacity: 0; transform: translateY(8px);
+      transition: all .25s ease; pointer-events: none;
+    }
+    .toast.visible { opacity: 1; transform: translateY(0); }
+
+    /* Reveal */
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Footer */
+    footer {
+      margin-top: 60px; padding: 28px 0 0;
+      border-top: 1px solid var(--line);
+      color: var(--text); font-size: 13px;
+    }
+    footer strong { color: var(--heading); }
+    footer p { font-size: 13px; }
+
+    /* Skip nav for accessibility */
+    .skip-link {
+      position: absolute; top: -100px; left: 0;
+      background: var(--black); color: var(--white);
+      padding: 8px 14px; font-weight: 800; font-size: 13px;
+      text-decoration: none; border-radius: 0 0 8px 0;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .layout { grid-template-columns: 1fr; padding: 0 20px; }
+      .toc { display: none; }
+    }
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding: 32px 24px; }
+      .gauge { max-width: 200px; margin-top: 12px; }
+      .kanban { grid-template-columns: 1fr; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8, .span-9 { grid-column: span 12; }
+      .head { display: grid; }
+      .head p { max-width: none; }
+    }
+    @media (max-width: 560px) {
+      .layout { padding: 0 14px; }
+      main { padding-bottom: 80px; }
+      .hero { border-radius: 14px; padding: 28px 20px; }
+      .hero h1 { font-size: clamp(36px, 11vw, 56px); }
+      .nav { padding: 10px 12px; }
+      .nav a { padding: 7px 10px; font-size: 12px; }
+      .tldr { grid-template-columns: 1fr; }
+      .card { border-radius: 14px; }
+      .fab-stack { right: 12px; bottom: 12px; }
+    }
+
+    /* Print */
+    @media print {
+      .scroll-progress, .nav, .toc, .fab-stack, .theme-toggle { display: none; }
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<a class="skip-link" href="#resumo">Pular para conteúdo</a>
+
+<div class="layout">
+  <aside class="toc" aria-label="Sumário">
+    <div class="toc-label">Nesta página</div>
+    <ol>
+      <li><a href="#resumo" data-toc>Onde paramos</a></li>
+      <li><a href="#pr912" data-toc>PR #912</a></li>
+      <li><a href="#sprint" data-toc>O caminho</a></li>
+      <li><a href="#issues" data-toc>Issues na fila</a></li>
+      <li><a href="#friday" data-toc>Board do Friday</a></li>
+      <li><a href="#outros" data-toc>Paralelo</a></li>
+      <li><a href="#precedentes" data-toc>O que não fazer</a></li>
+      <li><a href="#volta" data-toc>Amanhã cedo</a></li>
+    </ol>
+  </aside>
+
+  <main>
+    <nav class="nav" aria-label="Navegação">
+      <span class="nav-brand">saIA · Ticket Analysis</span>
+      <a href="#resumo">Resumo</a>
+      <a href="#pr912">PR #912</a>
+      <a href="#sprint">Sprint</a>
+      <a href="#issues">Issues</a>
+      <a href="#friday">Friday</a>
+      <a href="#outros">Paralelo</a>
+      <a href="#volta">Amanhã</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div>
+        <span class="eyebrow">Volta ao trabalho · 2026-07-18</span>
+        <h1>A PR #912 está a um empurrão da produção.</h1>
+        <p>Status do Ticket Analysis em 5 minutos. Spoiler: não é mais problema de código. É cadeia de gates — e o sprint grounded cabe em 2 a 3 dias úteis com William no loop.</p>
+        <div class="hero-bar">
+          <span class="pill orange">PR #912 DRAFT</span>
+          <span class="pill purple">Operacoes</span>
+          <span class="pill yellow">saIA</span>
+          <span class="pill green">98/98 tests</span>
+          <span class="pill red">0 CI checks</span>
+          <span class="pill outline">3 ações</span>
+        </div>
+      </div>
+      <div>
+        <div class="gauge" id="gauge">
+          <svg viewBox="0 0 200 200" aria-label="Progresso PR 912">
+            <circle class="gauge-track" cx="100" cy="100" r="84" fill="none" stroke-width="16"/>
+            <circle class="gauge-fill" id="gaugeFill" cx="100" cy="100" r="84" fill="none" stroke-width="16" stroke-linecap="round" transform="rotate(-90 100 100)" stroke-dasharray="527.79" stroke-dashoffset="527.79"/>
+          </svg>
+          <div class="gauge-center">
+            <div>
+              <div class="gauge-pct" id="gaugePct">0%</div>
+              <div class="gauge-lbl">PR #912 ready</div>
+            </div>
+          </div>
+        </div>
+        <p class="gauge-sub" style="text-align:center; color: rgba(255,255,255,.7); font-size: 12px; margin-top: 8px;">5 de 8 gates verdes — falta seed, review, CI, staging, humano</p>
+      </div>
+    </section>
+
+    <!-- TL;DR -->
+    <div class="tldr reveal">
+      <div>
+        <span>Onde</span>
+        <strong>PR #912 DRAFT</strong>
+        <p style="font-size:13px; color: var(--text); margin-top:6px;">46 arquivos, +7.251/-12, 19 commits ahead, 0 checks.</p>
+      </div>
+      <div>
+        <span>Status</span>
+        <strong>5/8 gates</strong>
+        <p style="font-size:13px; color: var(--text); margin-top:6px;">Fundação verde. Cadeia de aceitação aberta.</p>
+      </div>
+      <div>
+        <span>Próximo</span>
+        <strong>2-3 dias</strong>
+        <p style="font-size:13px; color: var(--text); margin-top:6px;">Sprint grounded cabe numa semana se William entrar.</p>
+      </div>
+    </div>
+
+    <!-- 1. RESUMO -->
+    <section id="resumo">
+      <div class="head">
+        <div>
+          <span class="num">01 / Resumo</span>
+          <h2>Onde paramos.</h2>
+        </div>
+        <p>Três projetos ativos. Uma PR gigante no fim do caminho. Duas reuniões da semana 15/07 que ainda não viraram contrato executável.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card black span-3 reveal">
+          <span class="metric-label">PR</span>
+          <div class="metric">#912</div>
+          <p>Umbrella Ticket Analysis. Fase 6 fechada. <span class="pill green" style="margin-left:4px;">mergeable</span></p>
+        </article>
+        <article class="card orange span-3 reveal">
+          <span class="metric-label">Testes saIA</span>
+          <div class="metric">98/98</div>
+          <p>Pass. <code>operacoes_testing</code> isolado, 0 errors, 0 failures.</p>
+        </article>
+        <article class="card purple span-3 reveal">
+          <span class="metric-label">Análises live</span>
+          <div class="metric">3/3</div>
+          <p>Tickets 1750678, 1708721, 1736168. Confiança ≥ 0.95. Zero base64.</p>
+        </article>
+        <article class="card yellow span-3 reveal">
+          <span class="metric-label">Friday</span>
+          <div class="metric">15</div>
+          <p>Itens no board 49. 14 done, 3 working, 1 <strong>stuck</strong>, 1 backlog.</p>
+        </article>
+      </div>
+
+      <div class="grid" style="margin-top: 12px;">
+        <article class="card span-7 reveal">
+          <h3 style="font-size: 18px;">O veredito, em uma linha.</h3>
+          <p>A fundação técnica está feita e validada localmente. O que trava a entrega não é código — é cadeia de gates: seed de teste, CI remoto, thermonuclear review, staging, validação humana da UI por William, e merge consciente da umbrella.</p>
+          <p>Tudo isso cabe em 2 a 3 dias úteis se você travar e abrir as reuniões certas. Kimi K2.7 Code implementa. Codex <code>gpt-5.6-sol</code> revisa.</p>
+        </article>
+        <article class="card black span-5 reveal">
+          <span class="metric-label" style="color: rgba(255,255,255,.7);">O que NÃO trava</span>
+          <h3 style="font-size: 18px; color: var(--white); margin-top: 6px;">Três itens já validados.</h3>
+          <ul style="margin-top: 10px; color: rgba(255,255,255,.9);">
+            <li>Idempotência por <code>UNIQUE(ticket_id)</code></li>
+            <li>Default <code>live</code> versionado em <code>config/ticket-analysis.php</code></li>
+            <li>UI AdminLTE inline (desktop + mobile 390×844)</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- 2. PR #912 -->
+    <section id="pr912">
+      <div class="head">
+        <div>
+          <span class="num">02 / PR #912</span>
+          <h2>Por que travou.</h2>
+        </div>
+        <p>Não travou. Está esperando a fila rodar. Estado verificado em 17/07 (Fase 6 fechada).</p>
+      </div>
+
+      <div class="grid">
+        <article class="card span-8 reveal">
+          <h3 style="font-size: 18px;">Gates estáticos verdes.</h3>
+          <div class="grid" style="margin-top: 12px;">
+            <div class="span-6" style="background: var(--muted); border-radius: 12px; padding: 14px;">
+              <span class="badge green" style="margin-bottom: 6px;">pass</span>
+              <h4 style="font-size: 14px; margin-bottom: 2px;">Suíte saIA</h4>
+              <p style="font-size: 13px;">98 testes, 443 assertions. Default <code>live</code> intacto.</p>
+            </div>
+            <div class="span-6" style="background: var(--muted); border-radius: 12px; padding: 14px;">
+              <span class="badge green" style="margin-bottom: 6px;">+11</span>
+              <h4 style="font-size: 14px; margin-bottom: 2px;">Baseline global</h4>
+              <p style="font-size: 13px;">+11 passed, zero delta em errors/failures. 0 erros da feature.</p>
+            </div>
+            <div class="span-6" style="background: var(--muted); border-radius: 12px; padding: 14px;">
+              <span class="badge green" style="margin-bottom: 6px;">clean</span>
+              <h4 style="font-size: 14px; margin-bottom: 2px;">Scanners</h4>
+              <p style="font-size: 13px;">Saia namespace, base64, secrets, fallback <code>dry_run</code>: tudo zero.</p>
+            </div>
+            <div class="span-6" style="background: var(--muted); border-radius: 12px; padding: 14px;">
+              <span class="badge green" style="margin-bottom: 6px;">byte-equal</span>
+              <h4 style="font-size: 14px; margin-bottom: 2px;">.env.example</h4>
+              <p style="font-size: 13px;">Idêntico a <code>origin/main</code>. Nenhuma flag exposta.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card orange span-4 reveal">
+          <span class="metric-label" style="color: rgba(255,255,255,.7);">A fazer antes do merge</span>
+          <div class="metric" style="font-size: clamp(40px, 6vw, 64px);">3 críticos</div>
+          <p>Seed de <code>operacoes_testing</code>, thermonuclear review (#3), CI remoto. Detalhes na próxima seção.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. SPRINT GROUNDED -->
+    <section id="sprint">
+      <div class="head">
+        <div>
+          <span class="num">03 / Sprint</span>
+          <h2>O caminho.</h2>
+        </div>
+        <p>Quatro estações conectadas. Cada uma destrava a próxima. Estimativa honesta: 2 a 3 dias úteis.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card span-7 reveal">
+          <div class="timeline">
+            <div class="tl-step done">
+              <div class="tl-dot">✓</div>
+              <div class="tl-meta">Concluído · 15-17/07</div>
+              <div class="tl-title">Fase 6 — gates estáticos verdes</div>
+              <p>98/98 tests, scanners limpos, 3 análises live validadas, PR #912 empurrada para <code>ff93ab98</code>. Pronto para o próximo elo.</p>
+            </div>
+            <div class="tl-step now">
+              <div class="tl-dot">1</div>
+              <div class="tl-meta">Hoje · Kimi K2.7 Code</div>
+              <div class="tl-title">Popular <code>operacoes_testing</code></div>
+              <p>Seed mínimo: 1 place, 1 user, 1 ticket SP com checklist válido. Suite precisa fechar 97/97. Receipt antes/depois.</p>
+            </div>
+            <div class="tl-step next">
+              <div class="tl-dot">2</div>
+              <div class="tl-meta">Hoje · OpenCode + Codex gpt-5.6-sol</div>
+              <div class="tl-title">Thermonuclear review (#3 tentativa)</div>
+              <p>Falhou 2x (WSL bloqueado, bundle Windows timeout). MCP browser voltou no 17/07. Reabrir processo MCP e tentar de novo.</p>
+            </div>
+            <div class="tl-step next">
+              <div class="tl-dot">3</div>
+              <div class="tl-meta">Amanhã · Kimi + Israel</div>
+              <div class="tl-title">Stage seletivo, CI verde, merge</div>
+              <p>Sem resíduos alheios. Conventional Commit. Push + read-back. Marcar PR <em>ready for review</em>, atualizar corpo, fechar issues da foundation em lote.</p>
+            </div>
+            <div class="tl-step next">
+              <div class="tl-dot">4</div>
+              <div class="tl-meta">Amanhã · William</div>
+              <div class="tl-title">Staging e validação humana</div>
+              <p>Smoke dry_run 1 → 2 → 5. William roda a UI com dados SP reais. Decisão de habilitação. Rollout progressivo.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card black span-5 reveal">
+          <span class="metric-label" style="color: rgba(255,255,255,.7);">Quem faz o quê</span>
+          <h3 style="font-size: 18px; margin-top: 6px; color: var(--white);">Timescope por papel.</h3>
+          <div style="display: grid; gap: 12px; margin-top: 14px;">
+            <div style="background: rgba(255,255,255,.06); border-radius: 12px; padding: 12px 14px;">
+              <strong style="color: var(--white); display: block; font-size: 13px;">Israel</strong>
+              <small style="color: rgba(255,255,255,.7); font-weight: 700; font-size: 12px;">autoriza pushes, decide habilitação, valida o merge.</small>
+            </div>
+            <div style="background: rgba(255,255,255,.06); border-radius: 12px; padding: 12px 14px;">
+              <strong style="color: var(--white); display: block; font-size: 13px;">William</strong>
+              <small style="color: rgba(255,255,255,.7); font-weight: 700; font-size: 12px;">dono do produto. Valida a UI, decide rollout, fecha 919/910.</small>
+            </div>
+            <div style="background: rgba(255,255,255,.06); border-radius: 12px; padding: 12px 14px;">
+              <strong style="color: var(--white); display: block; font-size: 13px;">Kimi K2.7 Code</strong>
+              <small style="color: rgba(255,255,255,.7); font-weight: 700; font-size: 12px;">implementa seed, migrations, stage, conventional commit.</small>
+            </div>
+            <div style="background: rgba(255,255,255,.06); border-radius: 12px; padding: 12px 14px;">
+              <strong style="color: var(--white); display: block; font-size: 13px;">Codex gpt-5.6-sol</strong>
+              <small style="color: rgba(255,255,255,.7); font-weight: 700; font-size: 12px;">review termonuclear, read-only. Effort: low. WSL limpo.</small>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. ISSUES -->
+    <section id="issues">
+      <div class="head">
+        <div>
+          <span class="num">04 / Issues</span>
+          <h2>21 na fila.</h2>
+        </div>
+        <p>Filtra pelo que importa. Quatorze fecham no merge consciente. Cinco são paralelo ou wayfinder.</p>
+      </div>
+
+      <div class="filter-demo reveal">
+        <div class="filter-label">Filtra pelo que você quer ver</div>
+        <div class="filter-controls" id="issueControls">
+          <button class="filter-chip active" data-filter="all">Tudo</button>
+          <button class="filter-chip" data-filter="merged">Fechar pós-merge</button>
+          <button class="filter-chip" data-filter="paralelo">Paralelo</button>
+          <button class="filter-chip" data-filter="pos-mvp">Pós-MVP</button>
+          <button class="filter-chip" data-filter="wayfinder">Wayfinder</button>
+          <button class="filter-chip" data-filter="ready">ready-for-agent</button>
+        </div>
+        <div class="filter-payload" id="issuePayload">carregando…</div>
+      </div>
+
+      <div class="table-wrap reveal" style="margin-top: 14px;">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Título</th><th>Estado</th><th>Ação</th></tr>
+          </thead>
+          <tbody id="issueTable">
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/902" target="_blank" rel="noopener">#902</a></td><td>Configuração do pipeline</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/903" target="_blank" rel="noopener">#903</a></td><td>Schema ticket-centric inicial</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/904" target="_blank" rel="noopener">#904</a></td><td>Resolução de evidências</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/905" target="_blank" rel="noopener">#905</a></td><td>Seleção e orquestração</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/906" target="_blank" rel="noopener">#906</a></td><td>Job dry-run e persistência</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="ready merged"><td><a href="https://github.com/eletromidia/operacoes/issues/907" target="_blank" rel="noopener">#907</a></td><td>Reserva pré-dispatch e idempotência</td><td><span class="badge green">no PR</span> <span class="badge yellow">ready</span></td><td>Fechar (única com ready-for-agent)</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/908" target="_blank" rel="noopener">#908</a></td><td>E2E live, mídia remota e smoke</td><td><span class="badge green">validado local</span></td><td>Fechar pós-staging E2E</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/909" target="_blank" rel="noopener">#909</a></td><td>Agendamento do pipeline</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/910" target="_blank" rel="noopener">#910</a></td><td>PRD Master e rollout</td><td><span class="badge orange">aberta até prod</span></td><td>Manter aberta</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/914" target="_blank" rel="noopener">#914</a></td><td>Schema ticket-centric definitivo</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/916" target="_blank" rel="noopener">#916</a></td><td>Modo live e Job Gemini</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/917" target="_blank" rel="noopener">#917</a></td><td>Prompt builder versionado</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/918" target="_blank" rel="noopener">#918</a></td><td>Modo live e modelo Gemini</td><td><span class="badge green">no PR</span></td><td>Fechar pós-merge</td></tr>
+            <tr data-cat="merged"><td><a href="https://github.com/eletromidia/operacoes/issues/919" target="_blank" rel="noopener">#919</a></td><td>Aba Análise inline</td><td><span class="badge orange">validar em staging</span></td><td>Fechar pós-validação humana</td></tr>
+            <tr data-cat="paralelo"><td><a href="https://github.com/eletromidia/operacoes/issues/920" target="_blank" rel="noopener">#920</a></td><td>Corpus Drive para calibração</td><td><span class="badge purple">paralelo</span></td><td>Pós-produção</td></tr>
+            <tr data-cat="pos-mvp"><td><a href="https://github.com/eletromidia/operacoes/issues/913" target="_blank" rel="noopener">#913</a></td><td>Evolução pós-MVP: fila HITL</td><td><span class="badge purple">placeholder</span></td><td>Pós-produção</td></tr>
+            <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/926" target="_blank" rel="noopener">#926</a></td><td>Wayfinder: prompt e execução assíncrona</td><td><span class="badge purple">wayfinder:map</span></td><td>Mapa de investigação</td></tr>
+            <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/927" target="_blank" rel="noopener">#927</a></td><td>Reconstruir prompt efetivo e elegibilidade</td><td><span class="badge purple">wayfinder:research</span></td><td>Investigação</td></tr>
+            <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/928" target="_blank" rel="noopener">#928</a></td><td>Disparo manual com run, ledger, worker</td><td><span class="badge purple">wayfinder:research</span></td><td>Investigação</td></tr>
+            <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/929" target="_blank" rel="noopener">#929</a></td><td>Prototipar loading e polling</td><td><span class="badge purple">wayfinder:prototype</span> <span class="badge yellow">human-review</span></td><td>Aguarda review</td></tr>
+            <tr data-cat="wayfinder"><td><a href="https://github.com/eletromidia/operacoes/issues/930" target="_blank" rel="noopener">#930</a></td><td>Fotos de checklist como Before/After</td><td><span class="badge purple">wayfinder:research</span></td><td>Investigação</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. FRIDAY KANBAN -->
+    <section id="friday">
+      <div class="head">
+        <div>
+          <span class="num">05 / Friday</span>
+          <h2>O board em três colunas.</h2>
+        </div>
+        <p>Board 49 group 94. O que está em movimento, o que travou, o que está esperando dono.</p>
+      </div>
+
+      <div class="kanban reveal">
+        <div class="lane working">
+          <div class="lane-head"><h3>Working</h3><span class="count">4</span></div>
+          <div class="card-job">
+            <strong>FRY-1577 · Gate final da PR #912</strong>
+            <small>CI, merge, fechar issues. Próxima tarefa concreta.</small>
+            <div class="tags"><span class="pill orange">P0</span> <span class="pill muted">s/ responsável</span></div>
+          </div>
+          <div class="card-job">
+            <strong>FRY-1380 · UI inline de análise</strong>
+            <small>Issue #919. Falta validação humana em staging.</small>
+            <div class="tags"><span class="pill orange">P0</span> <span class="pill muted">82, 59</span></div>
+          </div>
+          <div class="card-job">
+            <strong>FRY-1379 · Idempotência e E2E</strong>
+            <small>Issues #907 + #908. Suite verde, E2E local ok.</small>
+            <div class="tags"><span class="pill orange">P0</span> <span class="pill muted">82</span></div>
+          </div>
+          <div class="card-job">
+            <strong>FRY-1327 · PRD Master e rollout</strong>
+            <small>Issue #910. Mantém até produção.</small>
+            <div class="tags"><span class="pill orange">P0</span> <span class="pill muted">82</span></div>
+          </div>
+        </div>
+
+        <div class="lane stuck">
+          <div class="lane-head"><h3>Stuck</h3><span class="count">1</span></div>
+          <div class="card-job" style="border-color: var(--red);">
+            <strong>FRY-1578 · Staging, aceite humano e ativação</strong>
+            <small>Issues #908, #919, #910. Bloqueada por ambiente staging + decisão de habilitação. Exige William.</small>
+            <div class="tags"><span class="pill red">stuck</span> <span class="pill muted">82, 59</span></div>
+          </div>
+        </div>
+
+        <div class="lane backlog">
+          <div class="lane-head"><h3>Backlog</h3><span class="count">2</span></div>
+          <div class="card-job">
+            <strong>FRY-1326 · Métricas e observabilidade</strong>
+            <small>Acurácia, latência, falhas, custo, qualidade por perfil. Pós-MVP.</small>
+            <div class="tags"><span class="pill purple">P2</span> <span class="pill muted">82</span></div>
+          </div>
+          <div class="card-job">
+            <strong>FRY-1352 · Expansão pós-MVP</strong>
+            <small>Novas atividades, regiões, infra de IA. Sem urgência.</small>
+            <div class="tags"><span class="pill purple">P2</span> <span class="pill muted">s/ dono</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. OUTROS PROJETOS -->
+    <section id="outros">
+      <div class="head">
+        <div>
+          <span class="num">06 / Paralelo</span>
+          <h2>O que está no radar, mas não trava o PR.</h2>
+        </div>
+        <p>Cada um com sua fila. Nenhum bloqueia a entrega do Ticket Analysis.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card span-4 reveal" style="border-left: 4px solid var(--purple);">
+          <span class="pill purple">agent-orchestrator</span>
+          <h3 style="font-size: 16px; margin-top: 8px;">Browser-lab + 14 ferramentas MCP</h3>
+          <p>PR #11 merged. Diagnóstico do 17/07 corrigiu allowlist e devolveu JSON válido. Pendências pequenas: drift de websockify e estabilizar foco X11.</p>
+        </article>
+        <article class="card span-4 reveal" style="border-left: 4px solid var(--red);">
+          <span class="pill red">rh-whatsapp-triage-n8n</span>
+          <h3 style="font-size: 16px; margin-top: 8px;">RH WhatsApp Triage</h3>
+          <p>Fundação merged (PR #1) mas em <code>active:false</code>. Falta decidir Gupy-first vs PandaPé-second, inventário de provedores/templates/webhooks, reunião com implementadora (20-24/07).</p>
+        </article>
+        <article class="card span-4 reveal" style="border-left: 4px solid var(--red);">
+          <span class="pill red">rh-unificado</span>
+          <h3 style="font-size: 16px; margin-top: 8px;">Sem projeto canônico</h3>
+          <p>Revisão adversarial: <strong>FAIL</strong>. Sem <code>10-Projects/rh-unificado/Project.md</code>, sem repo, sem stack confirmada. Não aceitar scaffold "criado via Codex" sem threat model.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 7. PRECEDENTES -->
+    <section id="precedentes">
+      <div class="head">
+        <div>
+          <span class="num">07 / Não fazer</span>
+          <h2>Premissas que não valem mais.</h2>
+        </div>
+        <p>Marcadas stale pela auditoria de 09/07. Não reviver sem evidência nova.</p>
+      </div>
+
+      <article class="card reveal">
+        <div class="dont"><span class="x">✕</span><div><strong>"DB vazio" / "MVP sem UI"</strong><br><small>Superadas — banco real com 1.742.568 tickets e UI inline já entregue.</small></div></div>
+        <div class="dont"><span class="x">✕</span><div><strong>"UI opcional"</strong><br><small>Superada — UI HITL (#919) é MVP obrigatório.</small></div></div>
+        <div class="dont"><span class="x">✕</span><div><strong>"M1 / #918 pendente"</strong><br><small>Implementada no HEAD <code>ff93ab98</code>. Fechar pós-merge.</small></div></div>
+        <div class="dont"><span class="x">✕</span><div><strong>Schema polimórfico <code>saia_analysis_items</code></strong><br><small>Superado pelo modelo ticket-centric <code>ticket_analyses</code>.</small></div></div>
+        <div class="dont"><span class="x">✕</span><div><strong>Radar / Lens / CSP Slice 5-6</strong><br><small>Fora do escopo. Não reviver.</small></div></div>
+        <div class="dont"><span class="x">✕</span><div><strong>saIA-2.0 scaffold</strong><br><small>Refactor distinto, fora do sprint grounded.</small></div></div>
+      </article>
+    </section>
+
+    <!-- 8. PLANO DE VOLTA -->
+    <section id="volta">
+      <div class="head">
+        <div>
+          <span class="num">08 / Amanhã cedo</span>
+          <h2>Por onde começar.</h2>
+        </div>
+        <p>Seis blocos, em ordem. O primeiro é o único que destrava os outros.</p>
+      </div>
+
+      <article class="card reveal">
+        <div class="path">
+          <div class="path-step priority-p0 here">
+            <div class="path-num">A</div>
+            <div class="path-body">
+              <span class="path-here-tag">Você está aqui</span>
+              <h4>Destravar a PR #912</h4>
+              <p>Atribuir FRY-1577. Popular <code>operacoes_testing</code>. Rodar thermonuclear review em WSL limpo. Stage seletivo. CI verde. Atualizar corpo. Merge.</p>
+            </div>
+          </div>
+          <div class="path-step priority-p0">
+            <div class="path-num">B</div>
+            <div class="path-body">
+              <h4>Friday e issues sincronizados</h4>
+              <p>Verificar <code>workspace_id=11</code> e <code>board/49</code> antes de qualquer write. Mover FRY-1577 para done. Fechar 902/903/904/905/906/909/914/916/917/918/907 e 919 (após validação humana).</p>
+            </div>
+          </div>
+          <div class="path-step priority-p1">
+            <div class="path-num">C</div>
+            <div class="path-body">
+              <h4>Staging e habilitação</h4>
+              <p>FRY-1578. Smoke dry_run 1 → 2 → 5. Validação humana da UI por William. Decisão de habilitação e rollout progressivo.</p>
+            </div>
+          </div>
+          <div class="path-step priority-p1">
+            <div class="path-num">D</div>
+            <div class="path-body">
+              <h4>Paralelo que não pode esperar</h4>
+              <p>RH WhatsApp Triage: Gupy-first vs PandaPé-second, agendar implementadora, inventário. RH Unificado: criar <code>10-Projects/rh-unificado/Project.md</code>, decidir PHP.</p>
+            </div>
+          </div>
+          <div class="path-step priority-p2">
+            <div class="path-num">E</div>
+            <div class="path-body">
+              <h4>Limpezas e higiene</h4>
+              <p>Agent-orchestrator: limpar drift do websockify, smoke diário. Memória: <code>freshness --include-reviews</code>. Arquivar inbox 2026-07-15 do MCP browser (resolvido em 17/07).</p>
+            </div>
+          </div>
+          <div class="path-step priority-p3">
+            <div class="path-num">F</div>
+            <div class="path-body">
+              <h4>Backlog de pesquisa</h4>
+              <p>Subagentes WSL + VM Linux com computer-use. Visão local via Ollama + Gemma. Sync de skills e MCPs. Não imediato.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="callout reveal" style="margin-top: 22px;">
+        <div>
+          <h3>Posição final.</h3>
+          <p>O saIA/Ticket Analysis não é mais problema de código. É problema de execução de gates: seed, CI, review, staging, validação humana, merge. Tratar como sprint de 2 a 3 dias úteis, com William no loop, e a umbrella fecha. O resto é paralelo e pode ser roteado sem travar a entrega.</p>
+        </div>
+        <span class="pill black">recomendação</span>
+      </div>
+    </section>
+
+    <footer>
+      <strong>Eletromidia · saIA / Ticket Analysis · Estado na volta ao trabalho</strong>
+      <p style="margin-top: 6px;">Fontes: <a href="https://github.com/eletromidia/operacoes/pull/912">PR #912</a> · <a href="https://github.com/eletromidia/operacoes/issues">issues operacoes</a> · Friday board 49 group 94 · Obsidian memory layer · revisão adversarial 17/07. Gerado em 18/07/2026.</p>
+    </footer>
+  </main>
+</div>
+
+<div class="fab-stack" aria-label="Ações rápidas">
+  <button class="fab" id="copyFab" aria-label="Copiar link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+  </button>
+  <button class="fab" id="topFab" aria-label="Topo da página">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  (function() {
+    var $ = function(s, c) { return (c || document).querySelector(s); };
+    var $$ = function(s, c) { return Array.from((c || document).querySelectorAll(s)); };
+
+    // Theme toggle
+    var themeToggle = $('#themeToggle');
+    themeToggle.addEventListener('click', function() {
+      var current = document.documentElement.dataset.theme;
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('em-theme', next);
+      showToast(next === 'dark' ? 'Modo escuro ativado' : 'Modo claro ativado');
+    });
+
+    // Toast
+    var toast = $('#toast');
+    var toastTimer;
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { toast.classList.remove('visible'); }, 1800);
+    }
+
+    // Scroll progress
+    var bar = $('#scrollProgress');
+    function updateProgress() {
+      var doc = document.documentElement.scrollHeight - window.innerHeight;
+      var p = doc > 0 ? (window.scrollY / doc) * 100 : 0;
+      bar.style.width = Math.min(100, Math.max(0, p)) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+
+    // Reveal on scroll
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    $$('.reveal').forEach(function(el) { io.observe(el); });
+
+    // Animate gauge
+    var gaugeFill = $('#gaugeFill');
+    var gaugePct = $('#gaugePct');
+    var gaugeObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          var target = 62.5; // 5 of 8
+          var circ = 2 * Math.PI * 84;
+          gaugeFill.setAttribute('stroke-dasharray', circ.toFixed(2));
+          gaugeFill.setAttribute('stroke-dashoffset', circ.toFixed(2));
+          requestAnimationFrame(function() {
+            gaugeFill.setAttribute('stroke-dashoffset', (circ * (1 - target / 100)).toFixed(2));
+          });
+          // Counter
+          var v = 0;
+          var step = target / 60;
+          var t = setInterval(function() {
+            v += step;
+            if (v >= target) { v = target; clearInterval(t); }
+            gaugePct.textContent = Math.round(v) + '%';
+          }, 16);
+          gaugeObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    gaugeObs.observe($('#gauge'));
+
+    // Issues filter
+    var chips = $$('#issueControls .filter-chip');
+    var rows = $$('#issueTable tr');
+    var payload = $('#issuePayload');
+    function update() {
+      var active = $('#issueControls .filter-chip.active');
+      var f = active ? active.dataset.filter : 'all';
+      var visible = 0;
+      rows.forEach(function(r) {
+        var cat = (r.dataset.cat || '').split(' ');
+        var match = f === 'all' || cat.indexOf(f) !== -1;
+        r.classList.toggle('hidden', !match);
+        if (match) visible++;
+      });
+      var labels = {
+        all: 'todas as categorias',
+        merged: 'fechar no merge consciente da PR #912',
+        paralelo: 'fora da umbrella, não bloqueia entrega',
+        'pos-mvp': 'placeholder pós-MVP, sem urgência',
+        wayfinder: 'mapa de investigação criado em 17/07',
+        ready: 'apenas #907 mantém ready-for-agent'
+      };
+      payload.textContent =
+        'filtro: ' + (active ? active.textContent : 'Tudo') + '\n' +
+        'visíveis: ' + visible + ' de ' + rows.length + ' issues\n' +
+        (labels[f] || '');
+    }
+    chips.forEach(function(c) {
+      c.addEventListener('click', function() {
+        chips.forEach(function(b) { b.classList.remove('active'); });
+        c.classList.add('active');
+        update();
+        showToast('Filtro: ' + c.textContent);
+      });
+    });
+    update();
+
+    // TOC active state
+    var tocLinks = $$('.toc a');
+    var sections = $$('main section');
+    function updateToc() {
+      var fromTop = window.scrollY + 120;
+      var current = sections[0] ? sections[0].id : '';
+      sections.forEach(function(s) {
+        if (s.offsetTop <= fromTop) current = s.id;
+      });
+      tocLinks.forEach(function(a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }
+    window.addEventListener('scroll', updateToc, { passive: true });
+    updateToc();
+
+    // Copy link
+    $('#copyFab').addEventListener('click', function() {
+      var url = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function() {
+          showToast('Link copiado');
+        });
+      } else {
+        showToast('Não foi possível copiar');
+      }
+    });
+
+    // Top
+    $('#topFab').addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+</script>
+
+</body>
+</html>
