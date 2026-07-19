@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eletromidia | Ticket Analysis — Auditoria de Manutenção com IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--orange:#FF4F00;--black:#000;--white:#FFF;--purple:#4E18FF;--yellow:#FECC14;--green:#3D7700;--red:#DC2626;--surface:#FAFAFA;--muted:#F5F5F5;--line:#E5E5E5;--text:#737373;--radius:18px;--max:1180px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+::selection{background:var(--orange);color:var(--white)}
+body{background:var(--surface);color:var(--black);font-family:"Rethink Sans",system-ui,sans-serif;line-height:1.45;overflow-x:hidden}
+a{color:inherit}
+p{margin-bottom:10px;color:var(--text);font-size:16px}
+code{display:inline-block;max-width:100%;padding:2px 6px;border-radius:5px;background:var(--white);color:var(--purple);font-family:Consolas,monospace;font-size:.86em}
+main{width:min(var(--max),calc(100% - 32px));margin:0 auto;padding:24px 0 56px}
+section{margin-top:22px}
+h1,h2,h3{font-weight:800}
+h1{max-width:980px;margin-bottom:20px;font-size:clamp(42px,7.5vw,90px);line-height:.92}
+h2{font-size:clamp(28px,3.6vw,46px);line-height:1.04}
+h3{font-size:21px;line-height:1.12}
+.hero{min-height:480px;padding:clamp(24px,4vw,52px);border-radius:var(--radius);background:var(--black);color:var(--white);display:grid;align-content:space-between;gap:48px;overflow:hidden;position:relative;isolation:isolate}
+.hero::before,.hero::after{content:"";position:absolute;z-index:-1;aspect-ratio:1;border-radius:34px}
+.hero::before{right:clamp(116px,15vw,220px);bottom:clamp(-150px,-10vw,-62px);width:min(42vw,420px);background:var(--orange);transform:rotate(10deg)}
+.hero::after{right:clamp(-112px,-8vw,-48px);bottom:clamp(-120px,-7vw,-44px);width:min(34vw,340px);background:var(--purple);transform:rotate(-8deg)}
+.hero p{max-width:760px;color:#E8E8E8;font-size:clamp(17px,2vw,23px)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;padding:7px 11px;border-radius:999px;background:var(--yellow);color:var(--black);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.08em}
+.hero-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;min-height:32px;padding:7px 11px;border-radius:999px;font-size:13px;font-weight:800}
+.pill.orange{background:var(--orange);color:var(--white)}.pill.purple{background:var(--purple);color:var(--white)}.pill.green{background:var(--green);color:var(--white)}.pill.yellow{background:var(--yellow);color:var(--black)}.pill.black{background:var(--black);color:var(--white)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+.card{min-width:0;padding:clamp(18px,2.4vw,28px);border:1px solid var(--line);border-radius:var(--radius);background:var(--white);overflow:hidden;transition:transform .18s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.card.black{background:var(--black);color:var(--white);border-color:transparent}.card.orange{background:var(--orange);color:var(--white);border-color:transparent}.card.purple{background:var(--purple);color:var(--white);border-color:transparent}.card.green{background:var(--green);color:var(--white);border-color:transparent}
+.card.black p,.card.orange p,.card.purple p,.card.green p{color:#FFF}
+.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-6{grid-column:span 6}
+.metric{margin-bottom:6px;font-size:clamp(44px,8vw,86px);font-weight:800;line-height:.86}
+.head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:14px;flex-wrap:wrap}
+.head p{max-width:440px;margin-bottom:0;font-size:16px}
+.rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.rail-step{min-width:0;padding:14px;border-radius:14px;background:var(--black);color:var(--white)}
+.rail-step p{color:rgba(255,255,255,.78);font-size:14px}
+.table-wrap{overflow-x:auto;margin-top:12px;border-radius:14px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:var(--black);color:var(--white);font-weight:800;font-size:13px;text-transform:uppercase}
+th:first-child{border-radius:14px 0 0 0}th:last-child{border-radius:0 14px 0 0}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--muted)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.badge.green{background:var(--green);color:var(--white)}.badge.orange{background:var(--orange);color:var(--white)}.badge.purple{background:var(--purple);color:var(--white)}
+.callout{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:clamp(20px,3vw,32px);border-radius:var(--radius);background:var(--yellow);flex-wrap:wrap}
+.callout a{background:var(--black);color:var(--white);padding:14px 24px;border-radius:999px;font-weight:800;text-decoration:none;white-space:nowrap}
+.img-card{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+.img-card img{width:100%;display:block}
+.img-card p{padding:12px 16px;background:var(--white);font-size:14px;margin:0}
+.flow-board{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.flow-lane{min-width:0;display:grid;gap:10px;padding:16px;border:1px solid var(--line);border-radius:16px;background:var(--white)}
+.flow-node{padding:12px;border-radius:12px;background:var(--muted)}
+.flow-node strong{display:block;margin-bottom:4px;font-size:15px}
+footer{margin-top:36px;padding:20px 0 0;color:var(--text);font-size:14px;border-top:1px solid var(--line)}
+@media(max-width:920px){.span-3,.span-4,.span-6{grid-column:span 12}.rail{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){main{width:min(100% - 20px,var(--max))}.rail{grid-template-columns:1fr}.hero{min-height:400px;border-radius:14px}h1{font-size:clamp(34px,10vw,48px)}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+<div><span class="eyebrow">🚀 Operações · PR #912</span>
+<h1>Ticket Analysis</h1>
+<p>Auditoria de manutenção com IA generativa. O Gemini analisa fotos de Before × After e checklists de chamados concluídos, produzindo leitura operacional inline — apoio à decisão humana, sem automação de fechamento.</p></div>
+<div class="hero-bar"><span class="pill orange">Gemini Flash-Lite</span><span class="pill purple">Laravel 8 · PHP 7.4</span><span class="pill green">97 testes</span><span class="pill yellow">SP apenas</span></div>
+</section>
+
+<section>
+<div class="grid">
+<div class="card black span-3"><div class="metric">23</div><p style="color:#E8E8E8">itens no glossário do prompt</p></div>
+<div class="card orange span-3"><div class="metric">9</div><p>regras de análise</p></div>
+<div class="card purple span-3"><div class="metric">4</div><p>tickets validados com Gemini live</p></div>
+<div class="card green span-3"><div class="metric">97</div><p>testes passando (441 assertions)</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><h2>Interface</h2><p>Duas telas reais capturadas do fluxo funcional</p></div>
+<div class="grid">
+<div class="card span-6 img-card"><img src="media/01-ticket-com-analise.png" alt="Ticket com análise"><p><strong>Ticket 1750678</strong> — Aba "Análise" visível entre Fotos e Checklists. Ticket concluído com dados de execução, localização e técnico.</p></div>
+<div class="card span-6 img-card"><img src="media/02-ticket-sem-analise.png" alt="Ticket sem análise"><p><strong>Ticket 1685146</strong> — Seção "Inteligência Operacional" com fluxo Solicitação → Fila → Análise. Status "Na fila", aguardando processamento.</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><h2>Como funciona</h2><p>Do comando batch ao clique único na UI</p></div>
+<div class="rail">
+<div class="rail-step"><strong>1. Seleção</strong><p>Janela [5h, 4h), status completed, sistema street, SP. Exclui completed_by_system. Filtra tickets com checklist.</p></div>
+<div class="rail-step"><strong>2. Reserva</strong><p>Atômica: run + análises + run_items na mesma transação. UNIQUE(ticket_id) garante uma análise por ticket.</p></div>
+<div class="rail-step"><strong>3. Evidências</strong><p>Resolve Before/After, checklist, datas de execução e modelo de abrigo. Monta prompt versionado.</p></div>
+<div class="rail-step"><strong>4. Gemini</strong><p>Prompt JSON → resposta estruturada → validação → persistência auditável com ledger.</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><h2>Fluxo</h2><p>Batch ou on-demand, o contrato é o mesmo</p></div>
+<div class="flow-board">
+<div class="flow-lane"><div class="flow-node"><strong>Command</strong><p>Seleciona tickets, cria run, reserva análises, dispara jobs</p></div><div class="flow-node"><strong>UI On-demand</strong><p>Botão "Gerar Análise IA". Cria run individual, dispara job</p></div></div>
+<div class="flow-lane"><div class="flow-node"><strong>Job</strong><p>CAS (analysis_id, expected_run_id). Resolve evidências, chama Gemini, persiste resultado</p></div><div class="flow-node"><strong>Ledger</strong><p>Durável. Sobrevive à exclusão da análise. analysis_id sem FK</p></div></div>
+<div class="flow-lane"><div class="flow-node"><strong>UI — Resultado</strong><p>Confiança, leitura operacional, contexto. Scroll sync com checklist</p></div><div class="flow-node"><strong>Retry</strong><p>Manual, apenas failed/dispatch_failed. Dry-run promovível a live</p></div></div>
+</div>
+</section>
+
+<section>
+<div class="head"><h2>Contrato técnico</h2></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Camada</th><th>Decisão</th></tr></thead>
+<tbody>
+<tr><td>Seleção</td><td>Janela [5h,4h), status completed, sistema street, SP. Filtra answers.filepath</td></tr>
+<tr><td>Reserva</td><td>Atômica: run + análises + run_items. UNIQUE(ticket_id)</td></tr>
+<tr><td>CAS</td><td>Job recebe (analysis_id, expected_run_id). Processa se run_id bate E status é queued</td></tr>
+<tr><td>Ledger</td><td>Durável, analysis_id sem FK. Status: completed/failed</td></tr>
+<tr><td>Prompt</td><td>JSON versionado: 23 itens glossário + 9 regras + schema output</td></tr>
+<tr><td>Default</td><td>analysis_mode = live. Dry-run apenas override explícito</td></tr>
+<tr><td>.env.example</td><td>Idêntico a origin/main — sem flags de feature</td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<div class="head"><h2>Validação Gemini Live</h2><p>4 chamados reais processados com sucesso</p></div>
+<div class="table-wrap"><table>
+<thead><tr><th>Ticket</th><th>Tipo</th><th>Confiança</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>1750678</td><td>Totens CSP</td><td><span class="badge green">1.00</span></td><td>completed_live</td></tr>
+<tr><td>1708721</td><td>Abrigos CSP</td><td><span class="badge green">0.95</span></td><td>completed_live</td></tr>
+<tr><td>1736168</td><td>Abrigos CSP</td><td><span class="badge green">0.95</span></td><td>completed_live</td></tr>
+<tr><td>1753818</td><td>On-demand</td><td><span class="badge green">1.00</span></td><td>completed_live</td></tr>
+</tbody></table></div>
+</section>
+
+<section>
+<div class="head"><h2>Prompt — Glossário</h2><p>23 itens cobrindo preventiva e corretiva para Abrigo e Totem</p></div>
+<div class="grid">
+<div class="card span-4"><strong style="color:var(--purple)">Preventiva Abrigo</strong><p>Pichação, Pintura Desgastada, Cobertura Suja, Caixa Aterramento, Calçada Suja, Fiação Exposta, Itinerário, Pictogramas</p></div>
+<div class="card span-4"><strong style="color:var(--orange)">Corretiva Abrigo</strong><p>Estrutura Abalroada, Banco Quebrado, Vidros, Ferrugem Severa, Problema Elétrico, Componente Ausente, Podotátil, Supressão, Obras</p></div>
+<div class="card span-4"><strong>Totem</strong><p>Pichação, Estrutura Abalroada, Calçada/Podotátil, Componente Ausente</p></div>
+</div>
+</section>
+
+<section>
+<div class="head"><h2>Modelos de Abrigo (SP)</h2><p>14 modelos com descrições visuais validadas, usadas no prompt</p></div>
+<div class="grid">
+<div class="card span-4"><strong>BRUTALISTA</strong><p>Robusto, volumoso, linhas retas marcadas. Cobertura ampla.</p></div>
+<div class="card span-4"><strong>BRUTALISTA LEVE</strong><p>Mais delgado, maior transparência, perfis finos.</p></div>
+<div class="card span-4"><strong>CAOS ESTRUTURADO</strong><p>Assimétrico, planos e volumes dinâmicos.</p></div>
+<div class="card span-4"><strong>NEW TECH</strong><p>Linhas limpas, superfícies integradas, contemporâneo.</p></div>
+<div class="card span-4"><strong>HIGH TECH</strong><p>Estrutura metálica aparente, desenho preciso.</p></div>
+<div class="card span-4"><strong>MINIMALISTA</strong><p>Simples, ortogonal, discreto.</p></div>
+<div class="card span-4"><strong>CORBUCCI</strong><p>Arquitetônico moderno, cobertura expressiva.</p></div>
+<div class="card span-4"><strong>MONUMENTO</strong><p>Presença urbana marcante, volume expressivo.</p></div>
+<div class="card span-4"><strong>TOTEM MARROM</strong><p>Vertical, estreito, acabamento marrom.</p></div>
+</div>
+</section>
+
+<section>
+<div class="callout">
+<div><strong style="font-size:22px">PR #912 — pronto para merge</strong><p style="margin-bottom:0">26 commits · 97 testes PASS · 441 assertions · Revisão adversarial aprovada</p></div>
+<a href="https://github.com/eletromidia/operacoes/pull/912">Ver PR no GitHub →</a>
+</div>
+</section>
+
+<footer>Eletromidia · Operações · Ticket Analysis · Julho 2026</footer>
+</main>
+</body>
+</html>
