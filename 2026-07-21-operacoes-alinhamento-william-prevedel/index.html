@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eletromidia | Alinhamento Operações 21/07 — William × Prevedel</title>
+<meta name="description" content="Cockpit de alinhamento de 21/07/2026: gate de merge/rollout do Ticket Analysis (PR #912), retomada do Termo de Arrolamento RJ, decisões com William, validações com Prevedel e plano da semana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#FF4F00;--purple:#4E18FF;--yellow:#FECC14;--green:#3D7700;--red:#DC2626;
+  --black:#000;--white:#FFF;--surface:#FAFAFA;--muted:#F5F5F5;--line:#E5E5E5;--text:#525252;
+  --r:8px;--max:1180px;
+  --mono:Consolas,"SFMono-Regular",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+::selection{background:var(--orange);color:var(--white)}
+body{
+  background:var(--surface);color:var(--black);
+  font-family:"Rethink Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  line-height:1.5;overflow-x:hidden;
+  background-image:radial-gradient(#E7E7E7 1px,transparent 1px);
+  background-size:26px 26px;
+}
+a{color:inherit}
+p{color:var(--text)}
+code{display:inline-block;max-width:100%;padding:1px 6px;border-radius:4px;background:var(--white);border:1px solid var(--line);color:var(--purple);font-family:var(--mono);font-size:.84em}
+main{width:min(var(--max),calc(100% - 32px));margin:0 auto;padding:22px 0 64px}
+section{margin-top:26px;scroll-margin-top:118px}
+h1,h2,h3{font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(26px,3.4vw,42px);line-height:1.02}
+h3{font-size:19px;line-height:1.15}
+.skip{position:absolute;left:-9999px;top:0;background:var(--yellow);color:var(--black);padding:10px 16px;font-weight:800;z-index:99;border-radius:0 0 var(--r) 0}
+.skip:focus{left:0}
+.mono{font-family:var(--mono)}
+.micro{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+
+/* ---------- masthead ---------- */
+.masthead{position:relative;isolation:isolate;overflow:hidden;background:var(--black);color:var(--white);border-radius:var(--r);padding:clamp(22px,3.6vw,44px)}
+.masthead::before,.masthead::after{content:"";position:absolute;z-index:-1;aspect-ratio:1;border-radius:26px}
+.masthead::before{right:clamp(90px,13vw,200px);bottom:clamp(-150px,-11vw,-70px);width:min(40vw,400px);background:var(--orange);transform:rotate(10deg)}
+.masthead::after{right:clamp(-110px,-8vw,-46px);bottom:clamp(-120px,-7vw,-40px);width:min(30vw,300px);background:var(--purple);transform:rotate(-8deg)}
+.mast-top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:20px}
+.eyebrow{display:inline-flex;align-items:center;padding:6px 11px;border-radius:var(--r);background:var(--yellow);color:var(--black);font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.mast-date{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:#A3A3A3;text-transform:uppercase}
+.mast-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(20px,3vw,40px);align-items:end}
+.masthead h1{font-size:clamp(38px,6.4vw,76px);line-height:.92;margin-bottom:14px}
+.masthead h1 em{font-style:normal;color:var(--orange)}
+.mast-sub{max-width:640px;color:#D4D4D4;font-size:clamp(16px,1.8vw,20px)}
+.mast-sub strong{color:var(--white)}
+.status-stack{display:grid;gap:10px}
+.status-card{padding:14px 16px;border-radius:var(--r);background:#111;border:1px solid #2A2A2A;border-left:6px solid var(--orange);transition:transform .18s,border-color .18s}
+.status-card:hover{transform:translateX(4px)}
+.status-card.ta{border-left-color:var(--green)}
+.status-card .micro{color:#8F8F8F;margin-bottom:5px}
+.status-card strong{display:block;font-size:17px;margin-bottom:3px}
+.status-card p{color:#BDBDBD;font-size:13.5px;margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:22px;padding-top:16px;border-top:1px solid #2A2A2A}
+.legend span{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:#CFCFCF;text-transform:uppercase}
+.dot{width:11px;height:11px;border-radius:3px;flex:none}
+.dot.ok{background:var(--green)}.dot.rec{background:var(--purple)}.dot.pend{background:var(--orange)}
+
+/* ---------- control bar ---------- */
+.bar{position:sticky;top:0;z-index:50;background:var(--white);border:1px solid var(--line);border-radius:var(--r);margin-top:14px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.persona{display:flex;flex-wrap:wrap;gap:6px}
+.pbtn{appearance:none;border:1.5px solid var(--black);background:var(--white);color:var(--black);border-radius:var(--r);padding:8px 13px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s,color .15s,transform .1s}
+.pbtn:hover{transform:translateY(-1px)}
+.pbtn[aria-pressed="true"]{background:var(--black);color:var(--white)}
+.pbtn[data-p="william"][aria-pressed="true"]{background:var(--purple);border-color:var(--purple)}
+.pbtn[data-p="prevedel"][aria-pressed="true"]{background:var(--green);border-color:var(--green)}
+.pbtn[data-p="israel"][aria-pressed="true"]{background:var(--orange);border-color:var(--orange)}
+.bar nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;max-width:100%}
+.bar nav a{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--text);padding:7px 9px;border-radius:var(--r);white-space:nowrap;transition:background .15s,color .15s}
+.bar nav a:hover{background:var(--black);color:var(--white)}
+.bar-hint{width:100%;font-family:var(--mono);font-size:11.5px;color:var(--text);letter-spacing:.04em}
+
+/* ---------- generic blocks ---------- */
+.numbers{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.num{padding:16px 14px 13px;border:1px solid var(--line);border-radius:var(--r);background:var(--white);transition:transform .18s,border-color .18s}
+.num:hover{transform:translateY(-3px);border-color:var(--black)}
+.num b{display:block;font-size:clamp(26px,3.4vw,40px);font-weight:800;line-height:.95}
+.num span{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text)}
+.num.o b{color:var(--orange)}.num.p b{color:var(--purple)}.num.g b{color:var(--green)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+.head p{max-width:480px;font-size:15px;margin:0}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.tag.william{background:var(--purple);color:var(--white)}
+.tag.prevedel{background:var(--green);color:var(--white)}
+.tag.israel{background:var(--orange);color:var(--white)}
+.tag.all{background:var(--black);color:var(--white)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+.card{min-width:0;padding:clamp(18px,2.2vw,26px);border:1px solid var(--line);border-radius:var(--r);background:var(--white);transition:transform .18s,box-shadow .18s}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.06)}
+.card.black{background:var(--black);color:var(--white);border-color:var(--black)}
+.card.black p{color:#C9C9C9}
+.card h3{margin-bottom:8px}
+.card .lead{font-size:15px}
+.fact{display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+.card.black .fact{border-bottom-color:#2B2B2B}
+.fact:last-child{border-bottom:none}
+.fact .dot{margin-top:5px}
+.fact code{font-size:.8em}
+.kicker{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin:14px 0 6px}
+.card.black .kicker{color:#9A9A9A}
+.recbox{margin-top:12px;padding:12px 14px;border-radius:var(--r);background:#F3EFFF;border:1px solid #D9D2FF}
+.recbox .micro{color:var(--purple);margin-bottom:5px}
+.recbox p{color:#3B2B8C;font-size:14.5px;margin:0}
+.outbox{margin-top:10px;padding:12px 14px;border-radius:var(--r);background:var(--muted);border:1px solid var(--line)}
+.outbox .micro{color:var(--text);margin-bottom:6px}
+.outbox ul{list-style:none}
+.outbox li{display:flex;gap:8px;align-items:flex-start;font-size:14px;padding:3px 0}
+.outbox li::before{content:"→";color:var(--orange);font-weight:800;flex:none}
+.qbox{margin-top:10px}
+.qbox .micro{color:var(--text);margin-bottom:6px}
+.qbox ul{list-style:none}
+.qbox li{position:relative;padding:5px 0 5px 20px;font-size:14.5px;border-bottom:1px dashed var(--line)}
+.qbox li:last-child{border-bottom:none}
+.qbox li::before{content:"?";position:absolute;left:0;top:5px;width:14px;height:14px;border-radius:4px;background:var(--yellow);color:var(--black);font-family:var(--mono);font-size:10px;font-weight:700;display:grid;place-items:center}
+.dnum{font-size:clamp(40px,5vw,58px);font-weight:800;line-height:1;color:var(--line);-webkit-text-stroke:1.5px var(--purple);margin-bottom:6px}
+.dnum.prev{-webkit-text-stroke-color:var(--green)}
+.callout{display:flex;gap:18px;align-items:flex-start;padding:clamp(18px,2.6vw,28px);border-radius:var(--r);background:var(--yellow)}
+.callout .micro{color:#7A5C00;margin-bottom:8px}
+.callout p{color:#3D3200;font-size:15.5px;margin:0 0 8px}
+.callout p:last-child{margin:0}
+.callout strong{color:var(--black)}
+.callout .big{font-size:clamp(17px,2vw,21px);font-weight:700;color:var(--black)}
+
+/* ---------- issues ---------- */
+.issue-row{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;padding:13px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--white);margin-bottom:8px;text-decoration:none;transition:transform .15s,border-color .15s}
+.issue-row:hover{transform:translateX(5px);border-color:var(--purple)}
+.issue-row .n{font-family:var(--mono);font-weight:700;font-size:16px;color:var(--purple)}
+.issue-row b{display:block;font-size:15.5px}
+.issue-row p{font-size:13.5px;margin:2px 0 0}
+.badge{display:inline-block;padding:3px 9px;border-radius:var(--r);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.badge.purple{background:var(--purple);color:var(--white)}
+.badge.orange{background:var(--orange);color:var(--white)}
+.badge.green{background:var(--green);color:var(--white)}
+.badge.yellow{background:var(--yellow);color:var(--black)}
+.badge.ghost{background:var(--white);border:1.5px solid var(--black);color:var(--black)}
+
+/* ---------- week plan ---------- */
+.week{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.day{border:1px solid var(--line);border-radius:var(--r);background:var(--white);overflow:hidden;transition:transform .18s}
+.day:hover{transform:translateY(-3px)}
+.day-head{padding:12px 14px;background:var(--black);color:var(--white);display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.day-head b{font-size:15px}
+.day-head .mono{font-size:10.5px;color:#ADADAD;letter-spacing:.08em}
+.day.today .day-head{background:var(--orange)}
+.day.today .day-head .mono{color:#FFE0D1}
+.day-body{padding:10px 12px 14px}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:6px 4px;border-radius:6px;cursor:pointer;transition:background .12s}
+.chk:hover{background:var(--muted)}
+.chk input{appearance:none;flex:none;width:17px;height:17px;margin-top:2px;border:2px solid var(--black);border-radius:5px;background:var(--white);cursor:pointer;display:grid;place-items:center;transition:background .12s}
+.chk input:checked{background:var(--green);border-color:var(--green)}
+.chk input:checked::after{content:"✓";color:var(--white);font-size:11px;font-weight:800}
+.chk input:focus-visible{outline:3px solid var(--yellow);outline-offset:1px}
+.chk span{font-size:13.5px;line-height:1.35;transition:opacity .15s}
+.chk input:checked + span{opacity:.45;text-decoration:line-through}
+.day-foot{padding:8px 14px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:11px;color:var(--text);letter-spacing:.06em}
+.after{margin-top:12px;padding:16px 18px;border:1px dashed var(--purple);border-radius:var(--r);background:#FBFAFF}
+.after .micro{color:var(--purple);margin-bottom:10px}
+.after .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 18px}
+
+/* ---------- risks ---------- */
+.risk-col{display:grid;gap:0}
+.risk{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+.risk:last-child{border-bottom:none}
+.risk .sq{flex:none;width:11px;height:11px;border-radius:3px;margin-top:5px;background:var(--orange)}
+.risk.hot .sq{background:var(--red)}
+.exit .chk span{font-size:14.5px;font-weight:600}
+
+/* ---------- messages ---------- */
+.msg{border:1px solid var(--line);border-radius:var(--r);background:var(--white);overflow:hidden}
+.msg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.msg-head .who{display:flex;align-items:center;gap:10px}
+.msg-head .who b{font-size:16px}
+.msg-body{padding:16px 18px;font-size:15.5px;line-height:1.6;color:#3A3A3A}
+.copybtn{appearance:none;border:2px solid var(--black);background:var(--yellow);color:var(--black);border-radius:var(--r);padding:8px 14px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s,transform .1s}
+.copybtn:hover{transform:translateY(-1px)}
+.copybtn.done{background:var(--green);border-color:var(--green);color:var(--white)}
+
+/* ---------- footer ---------- */
+footer{margin-top:38px;padding:22px 0 0;border-top:2px solid var(--black)}
+.src-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px;margin-top:12px}
+.src-grid a{display:block;padding:11px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--white);text-decoration:none;font-size:13.5px;font-weight:600;transition:border-color .15s,transform .15s}
+.src-grid a:hover{border-color:var(--orange);transform:translateX(4px)}
+.src-grid a .mono{display:block;font-size:10px;color:var(--text);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.fineprint{margin-top:16px;font-family:var(--mono);font-size:11px;color:var(--text);letter-spacing:.04em}
+
+/* ---------- persona filtering ---------- */
+[data-audience]{transition:opacity .3s,filter .3s}
+body.view-william [data-audience]:not([data-audience~="william"]):not([data-audience~="all"]),
+body.view-prevedel [data-audience]:not([data-audience~="prevedel"]):not([data-audience~="all"]),
+body.view-israel [data-audience]:not([data-audience~="israel"]):not([data-audience~="all"]){opacity:.22;filter:grayscale(.7)}
+body.view-william [data-audience~="william"],body.view-prevedel [data-audience~="prevedel"],body.view-israel [data-audience~="israel"]{outline:2px solid var(--yellow);outline-offset:4px;border-radius:var(--r)}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* ---------- responsive ---------- */
+@media(max-width:980px){
+  .numbers{grid-template-columns:repeat(3,1fr)}
+  .week{grid-template-columns:1fr 1fr}
+  .span-4,.span-5,.span-6,.span-7,.span-8{grid-column:span 12}
+  .mast-grid{grid-template-columns:1fr}
+  .after .cols{grid-template-columns:1fr 1fr}
+  .bar nav{margin-left:0}
+}
+@media(max-width:600px){
+  main{width:calc(100% - 20px)}
+  .numbers{grid-template-columns:1fr 1fr}
+  .week{grid-template-columns:1fr}
+  .after .cols{grid-template-columns:1fr}
+  .issue-row{grid-template-columns:70px minmax(0,1fr)}
+  .issue-row .badge{display:none}
+  section{scroll-margin-top:150px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<main id="conteudo">
+
+<!-- ============ MASTHEAD ============ -->
+<header class="masthead">
+  <div class="mast-top">
+    <span class="eyebrow">Operações · Alinhamento</span>
+    <span class="mast-date">Terça · 21/07/2026</span>
+  </div>
+  <div class="mast-grid">
+    <div>
+      <h1>William <em>×</em> Prevedel</h1>
+      <p class="mast-sub">Duas frentes, uma semana de gates. O <strong>Ticket Analysis está tecnicamente pronto</strong> na PR #912 e precisa do gate humano e operacional do William. O <strong>Termo de Arrolamento RJ foi retomado</strong> e precisa de baseline limpo, decisões de arquitetura e validação operacional — sem abrir outra rodada de arquitetura.</p>
+    </div>
+    <div class="status-stack">
+      <div class="status-card ta">
+        <div class="micro">Frente 01 · Ticket Analysis</div>
+        <strong>Tecnicamente pronto</strong>
+        <p>127 testes · 584 assertions · fluxo Gemini validado ao vivo. Pendente: revisão do William, worker/cron em staging, smoke e rollout controlado.</p>
+      </div>
+      <div class="status-card">
+        <div class="micro">Frente 02 · Termo de Arrolamento RJ</div>
+        <strong>Retomado, pré-código</strong>
+        <p>Branch atual 70 commits atrás da main, sem código do Termo. Pendente: baseline limpo, extensão reuse-first, checklist v1 e golden master.</p>
+      </div>
+    </div>
+  </div>
+  <div class="legend">
+    <span><i class="dot ok"></i> Confirmado / fato</span>
+    <span><i class="dot rec"></i> Recomendação</span>
+    <span><i class="dot pend"></i> Decisão pendente</span>
+  </div>
+</header>
+
+<!-- ============ CONTROL BAR ============ -->
+<div class="bar" role="region" aria-label="Filtro de pauta e navegação">
+  <div class="persona" role="group" aria-label="Alternar visão da pauta">
+    <button class="pbtn" data-p="all" aria-pressed="true">Pauta completa</button>
+    <button class="pbtn" data-p="william" aria-pressed="false">William · 3 decisões</button>
+    <button class="pbtn" data-p="prevedel" aria-pressed="false">Prevedel · 3 validações</button>
+    <button class="pbtn" data-p="israel" aria-pressed="false">Israel · hoje</button>
+  </div>
+  <nav aria-label="Seções">
+    <a href="#estado">Estado</a>
+    <a href="#hoje">Hoje</a>
+    <a href="#william">William</a>
+    <a href="#prevedel">Prevedel</a>
+    <a href="#israel">IA/Lens</a>
+    <a href="#issues">Issues</a>
+    <a href="#semana">Semana</a>
+    <a href="#riscos">Riscos</a>
+    <a href="#mensagens">Mensagens</a>
+  </nav>
+  <div class="bar-hint" id="barHint" aria-live="polite">Mostrando a pauta completa — use os filtros para focar a conversa de cada um.</div>
+</div>
+
+<!-- ============ NÚMEROS ============ -->
+<section aria-label="Números do dia">
+  <div class="numbers">
+    <div class="num g reveal"><b>127</b><span>testes passando</span></div>
+    <div class="num g reveal"><b>584</b><span>assertions</span></div>
+    <div class="num o reveal"><b>~18s</b><span>execução controlada</span></div>
+    <div class="num p reveal"><b>31</b><span>keys do checklist</span></div>
+    <div class="num p reveal"><b>650</b><span>ativos Clear Channel</span></div>
+    <div class="num o reveal"><b>5</b><span>issues vigentes</span></div>
+  </div>
+</section>
+
+<!-- ============ 60 SEGUNDOS ============ -->
+<section aria-label="Resumo em 60 segundos">
+  <div class="callout reveal">
+    <div>
+      <div class="micro">Resumo em 60 segundos</div>
+      <p class="big">A intenção desta conversa não é abrir outra rodada de arquitetura. É separar decisões humanas reais de pesquisas que Israel resolve no código, no banco e no Lens.</p>
+      <p>O <strong>Ticket Analysis</strong> passou no gate técnico: suíte focal verde em <code>operacoes_testing</code>, fluxo real com Gemini validado, interface inline testada e artifact publicado. Falta o gate humano e operacional do William.</p>
+      <p>O <strong>Termo</strong> segue a direção vigente: reutilizar <code>Place</code>, Vistoria de Ruas, Minha Rota, checklist universal e fila de relatórios — sem módulo paralelo e sem nova identidade de ativos. Israel fecha hoje as ambiguidades do checklist com IA; Prevedel valida o contrato funcional; William decide baseline, extensão e operação.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ESTADO DAS FRENTES ============ -->
+<section id="estado" data-audience="all">
+  <div class="head">
+    <h2>Estado real das duas frentes</h2>
+    <p>Sem otimismo de relatório: o que está fechado, o que está aberto e onde mora o risco.</p>
+  </div>
+  <div class="grid">
+    <div class="card black span-6 reveal">
+      <span class="tag all">Frente 01</span>
+      <h3>Ticket Analysis — PR #912</h3>
+      <p class="lead">Encerrado tecnicamente para Israel. <strong style="color:var(--yellow)">Não está encerrado como rollout.</strong></p>
+      <div class="kicker">Fatos confirmados</div>
+      <div class="fact"><i class="dot ok"></i><span>Aberta, mergeable, fora de draft e <code>REVIEW_REQUIRED</code> — sem checks de CI reportados.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Branch <code>codex/saia-maintenance-analysis-foundation</code>, build production do Laravel Mix versionado.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Autorização municipal endurecida: exige status <code>APPROVED</code>.</span></div>
+      <div class="kicker">Em aberto</div>
+      <div class="fact"><i class="dot pend"></i><span>Revisão do William no diff e nas invariantes.</span></div>
+      <div class="fact"><i class="dot pend"></i><span>Worker da fila <code>scripts</code> e cron <code>schedule:run</code> confirmados em staging/produção.</span></div>
+      <div class="fact"><i class="dot pend"></i><span>Sequência: dry-run controlado → canário live → ampliação, com rollback definido.</span></div>
+    </div>
+    <div class="card span-6 reveal">
+      <span class="tag all">Frente 02</span>
+      <h3>Termo de Arrolamento RJ</h3>
+      <p class="lead">Retomado com auditoria completa. A branch existe, mas <strong>ainda não contém código do Termo</strong>.</p>
+      <div class="kicker">Fatos confirmados</div>
+      <div class="fact"><i class="dot ok"></i><span>Matriz revisada inspecionada: 31 campos, seis abas, duas divergências, sete propostas para validar.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Golden master <code>TERM-72-v002-2026-04-24-164441.docx</code> inspecionado.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Código atual verificado: checklist universal, regras de ativação e padrão assíncrono de PDF existem.</span></div>
+      <div class="kicker">Em aberto</div>
+      <div class="fact"><i class="dot pend"></i><span><code>feature/vistoria-arrolamento-rj</code> nasceu de snapshot antigo do Ticket Analysis: 70 commits atrás da <code>origin/main</code> + 29 commits antigos. Precisa realinhamento.</span></div>
+      <div class="fact"><i class="dot pend"></i><span>Checklist v1 (Israel + IA hoje), validação Prevedel, decisões de William.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENTREGUE HOJE ============ -->
+<section id="hoje" data-audience="all">
+  <div class="head">
+    <h2>O que foi concluído hoje</h2>
+    <p>Terça, 21/07 — receipts, não promessas.</p>
+  </div>
+  <div class="grid">
+    <div class="card span-6 reveal">
+      <span class="tag all">Ticket Analysis</span>
+      <h3>Gate técnico fechado</h3>
+      <div class="fact"><i class="dot ok"></i><span>127 testes e 584 assertions passaram em <code>operacoes_testing</code>.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Fluxo real validado: solicitação, fila <code>scripts</code>, worker, Gemini, análise, run, ledger e interface inline.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Execução controlada em ~18s: análise <code>completed_live</code>, run e ledger concluídos, fila zerada, sem failed job.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>CTA, polling, permissões e estados terminais revisados.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Artifact publicado: <a href="https://iskisraell.github.io/em-artifacts/2026-07-19-ticket-analysis/"><code>2026-07-19-ticket-analysis</code></a>.</span></div>
+    </div>
+    <div class="card span-6 reveal">
+      <span class="tag all">Termo de Arrolamento</span>
+      <h3>Base de retomada montada</h3>
+      <div class="fact"><i class="dot ok"></i><span>Branch remota localizada e auditada; issues #931–#935 recuperadas e resumidas.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>NotebookLM técnico criado com as fontes do Termo.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Podcast arquitetural de 18 minutos gerado e validado em português.</span></div>
+      <div class="fact"><i class="dot ok"></i><span>Brief completo criado em Markdown — base deste artifact.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WILLIAM ============ -->
+<section id="william" data-audience="william">
+  <div class="head">
+    <h2>Três decisões para William</h2>
+    <p>Perguntas de código não entram na pauta: serão pesquisadas antes ou depois. Cada decisão sai com dono e data.</p>
+  </div>
+  <div class="grid">
+    <div class="card span-12 reveal">
+      <span class="tag william">Pauta do William</span>
+      <div style="display:grid;grid-template-columns:80px minmax(0,1fr);gap:18px">
+        <div class="dnum">01</div>
+        <div>
+          <h3>Ticket Analysis: autorização para fechar merge e rollout</h3>
+          <div class="kicker">Situação · <span style="color:var(--green)">confirmado</span></div>
+          <p class="lead">A implementação e o gate técnico estão concluídos. O que resta é o gate humano e operacional.</p>
+          <div class="qbox">
+            <div class="micro">Precisamos alinhar</div>
+            <ul>
+              <li>William aceita o estado atual da PR #912 para merge?</li>
+              <li>Qual ambiente será usado para o smoke de staging?</li>
+              <li>Quem confirma o worker da fila <code>scripts</code> e o cron <code>schedule:run</code> em staging/produção?</li>
+              <li>Qual é a sequência autorizada: dry-run controlado, canário live, ampliação?</li>
+              <li>Quem acompanha o primeiro canário e qual é o rollback operacional?</li>
+            </ul>
+          </div>
+          <div class="recbox">
+            <div class="micro">◆ Recomendação</div>
+            <p>Não reabrir o desenho de produto. Review focado no diff e nas invariantes, confirmar infraestrutura, dry-run controlado, canário live de um ticket, read-back de run/ledger/UI — e então aprovar merge/rollout.</p>
+          </div>
+          <div class="outbox">
+            <div class="micro">Saída esperada da conversa</div>
+            <ul>
+              <li>decisão de merge</li>
+              <li>dono e data do smoke</li>
+              <li>confirmação de worker e cron</li>
+              <li>sequência de rollout</li>
+              <li>critério de rollback</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card span-12 reveal">
+      <span class="tag william">Pauta do William</span>
+      <div style="display:grid;grid-template-columns:80px minmax(0,1fr);gap:18px">
+        <div class="dnum">02</div>
+        <div>
+          <h3>Termo: corrigir o baseline da branch antes de código</h3>
+          <div class="kicker">Situação · <span style="color:var(--orange)">pendente</span></div>
+          <p class="lead">A <code>feature/vistoria-arrolamento-rj</code> não é uma branch limpa do Termo: contém histórico antigo do Ticket Analysis e está 70 commits atrás da <code>main</code>.</p>
+          <div class="qbox">
+            <div class="micro">Precisamos alinhar</div>
+            <ul>
+              <li>Esperar o merge da PR #912 e recriar/realinhar a branch a partir da <code>main</code>; ou</li>
+              <li>Se o Termo for independente do Ticket Analysis, recriar agora a branch da <code>origin/main</code> sem carregar os commits antigos.</li>
+            </ul>
+          </div>
+          <div class="recbox">
+            <div class="micro">◆ Recomendação</div>
+            <p>Não há código do Termo para preservar — usar branch limpa. Se a revisão da #912 sair já, recriar após o merge. Se demorar, criar branch nova da <code>origin/main</code> e manter as frentes independentes. Não fazer desenvolvimento longo na branch atual.</p>
+          </div>
+          <div class="outbox">
+            <div class="micro">Saída esperada da conversa</div>
+            <ul>
+              <li>base branch e SHA canônicos</li>
+              <li>decisão sobre reaproveitar ou substituir o nome da branch</li>
+              <li>autorização explícita para o ajuste Git necessário</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card span-12 reveal">
+      <span class="tag william">Pauta do William</span>
+      <div style="display:grid;grid-template-columns:80px minmax(0,1fr);gap:18px">
+        <div class="dnum">03</div>
+        <div>
+          <h3>Termo: confirmar a extensão arquitetural e operacional</h3>
+          <div class="kicker">Situação · peças já existem no código</div>
+          <p class="lead"><code>Place</code> como identidade · <code>my-route</code>/Minha Rota · <code>StreetPreventiveUniversal.vue</code> · <code>ChecklistRules.js</code> e <code>ChecklistActions.vue</code> · Vistoria de Ruas como encaixe provável · <code>Report</code>, <code>ReportJobs</code>, fila <code>reports</code> e <code>PdfHelper</code> para geração assíncrona.</p>
+          <div class="qbox">
+            <div class="micro">Precisamos alinhar</div>
+            <ul>
+              <li>Reutilizar a atividade existente de Vistoria ou criar apenas um novo <code>activity_type</code> com o mesmo motor?</li>
+              <li>Correções de endereço e GPS serão propostas auditáveis — nunca atualização silenciosa do <code>Place</code>?</li>
+              <li>O PDF será gerado de snapshot imutável após a conclusão?</li>
+              <li>Fila, storage, autorização, retry e retenção do documento?</li>
+              <li>Primeiro slice em <code>establishment_id=497</code>, modelos 39, 40 e 41?</li>
+            </ul>
+          </div>
+          <div class="recbox">
+            <div class="micro">◆ Recomendação — reuse-first</div>
+            <p>Reutilizar todo o motor. Criar somente um novo tipo de atividade se o contrato operacional exigir separação. Persistir snapshot versionado do Termo, gerar na fila <code>reports</code>, manter autorização backend e tratar correção cadastral como proposta auditável.</p>
+          </div>
+          <div class="outbox">
+            <div class="micro">Saída esperada da conversa</div>
+            <ul>
+              <li>sim ou não para o desenho reuse-first</li>
+              <li>atividade canônica</li>
+              <li>regra de snapshot</li>
+              <li>padrão de fila/storage/autorização</li>
+              <li>recorte técnico do primeiro slice</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREVEDEL ============ -->
+<section id="prevedel" data-audience="prevedel">
+  <div class="head">
+    <h2>Três validações para Prevedel</h2>
+    <p>Prevedel não precisa desenhar classes, tabelas ou jobs. O papel dele: confirmar que o produto representa a operação e que o documento final é aceito.</p>
+  </div>
+  <div class="grid">
+    <div class="card span-4 reveal">
+      <span class="tag prevedel">Pauta do Prevedel</span>
+      <div class="dnum prev">01</div>
+      <h3>Recorte do piloto</h3>
+      <div class="kicker">Proposta · <span style="color:var(--purple)">recomendada</span></div>
+      <p class="lead">Primeiro slice só nos abrigos Clear Channel do estabelecimento 497: modelo <strong>39 Standard</strong>, <strong>40 Narrow</strong> e <strong>41 Sem Publicidade</strong> (reconciliando a nomenclatura antiga “B Simples”). Um <code>Place</code> real e seguro de cada modelo para homologação.</p>
+      <div class="qbox">
+        <div class="micro">Validar com Prevedel</div>
+        <ul>
+          <li>Esse recorte é suficiente para o primeiro aceite?</li>
+          <li>MUPI, Relógio, JCDecaux e Orientação Urbana ficam explicitamente para fases posteriores?</li>
+          <li>Quais três ativos podem ser usados sem risco operacional?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card span-4 reveal">
+      <span class="tag prevedel">Pauta do Prevedel</span>
+      <div class="dnum prev">02</div>
+      <h3>Golden master e evidências mínimas</h3>
+      <div class="kicker">Proposta · <span style="color:var(--purple)">recomendada</span></div>
+      <p class="lead">Usar o <code>TERM-72</code> como contrato documental inicial: identificação e revisão; emitente, data/hora e responsável técnico; mobiliário, modelo e contrato; endereço, latitude e longitude; respostas do checklist; fotos (frontal, traseira, laterais, placa, número de série, diversas); mapa; comentários.</p>
+      <div class="qbox">
+        <div class="micro">Validar com Prevedel</div>
+        <ul>
+          <li><code>TERM-72</code> é o golden master vigente ou existe versão mais atual aprovada pela Prefeitura/RGov?</li>
+          <li>Quais fotos são obrigatórias em toda vistoria?</li>
+          <li>Mapa é obrigatório para os três modelos?</li>
+          <li>Qual é a regra de aceite do documento final?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card span-4 reveal">
+      <span class="tag prevedel">Pauta do Prevedel</span>
+      <div class="dnum prev">03</div>
+      <h3>UAT e aceite</h3>
+      <div class="kicker">Proposta · <span style="color:var(--purple)">recomendada</span></div>
+      <p class="lead">Prevedel valida uma execução ponta a ponta por modelo: ticket/rota → checklist correto → respostas e fotos → localização → conclusão → PDF → read-back.</p>
+      <div class="qbox">
+        <div class="micro">Validar com Prevedel</div>
+        <ul>
+          <li>Quem participa do UAT?</li>
+          <li>Quais cenários precisam aparecer?</li>
+          <li>Qual evidência representa aprovação?</li>
+          <li>Quem dá o aceite final antes de ampliar a coorte?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ISRAEL + IA/LENS ============ -->
+<section id="israel" data-audience="israel">
+  <div class="head">
+    <h2>Backlog de hoje — Israel + IA/Lens</h2>
+    <p>O Lens dá contexto para transformar a matriz funcional em contrato técnico. Isso vira backlog de hoje, 21/07. Marque o que fechar.</p>
+  </div>
+  <div class="grid">
+    <div class="card span-7 reveal">
+      <span class="tag israel">Israel · hoje</span>
+      <h3>Checklist v1 — 10 colunas por key</h3>
+      <p class="lead" style="margin-bottom:8px">Entregável: tabela versionada e autoconsistente com <strong>31 keys</strong>. Cada key fecha as dez colunas abaixo.</p>
+      <div class="day-body" style="padding:0" data-checkgroup="cols">
+        <label class="chk"><input type="checkbox"><span><strong>1.</strong> key técnica estável</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>2.</strong> label de interface</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>3.</strong> seção</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>4.</strong> tipo</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>5.</strong> polaridade da resposta</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>6.</strong> obrigatoriedade por Standard, Narrow e Sem Publicidade</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>7.</strong> condição por configuração digital/estática</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>8.</strong> regra de foto</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>9.</strong> mapeamento para o PDF</span></label>
+        <label class="chk"><input type="checkbox"><span><strong>10.</strong> status da decisão</span></label>
+      </div>
+      <div class="day-foot" data-counter="cols">0 / 10 colunas definidas</div>
+    </div>
+    <div class="card span-5 reveal">
+      <span class="tag israel">Israel · hoje</span>
+      <h3>Ambiguidades a resolver</h3>
+      <div class="day-body" style="padding:0" data-checkgroup="amb">
+        <label class="chk"><input type="checkbox"><span><code>Sem ocorrência</code> deve ser exclusivo e zerar ocorrências da seção.</span></label>
+        <label class="chk"><input type="checkbox"><span>Cada key declara o que <code>true</code> significa: conforme, presente ou ocorrência encontrada. Sem booleana implícita compartilhada.</span></label>
+        <label class="chk"><input type="checkbox"><span>Regra de foto congelada: gerais obrigatórias · evidência obrigatória em não conformidade · específicas condicionais por modelo.</span></label>
+        <label class="chk"><input type="checkbox"><span>Divergências <code>amortecedor</code> e <code>difusor</code>: catálogo Optional × matriz Obrigatório.</span></label>
+        <label class="chk"><input type="checkbox"><span>Validar as sete propostas: pixação ácida/resina, banco instalado, cobertura conforme, iluminação do teto, Black Light/tubulares, modem, GPS.</span></label>
+        <label class="chk"><input type="checkbox"><span>Perguntas digitais condicionais quando o ativo tiver face digital.</span></label>
+        <label class="chk"><input type="checkbox"><span>32 <code>places</code> sem modelo: impedir execução do Termo até classificação ou etapa explícita de saneamento — sem fallback silencioso.</span></label>
+        <label class="chk"><input type="checkbox"><span>Versionar o contrato usado no PDF para auditoria e regeneração controlada.</span></label>
+      </div>
+      <div class="day-foot" data-counter="amb">0 / 8 ambiguidades fechadas</div>
+      <div class="recbox" style="margin-top:14px">
+        <div class="micro">◆ O que Prevedel recebe depois</div>
+        <p>A versão v1 já organizada, com decisões e recomendações. Ele valida conteúdo operacional e corrige exceções — não recebe planilha cheia de perguntas em aberto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ISSUES ============ -->
+<section id="issues" data-audience="all">
+  <div class="head">
+    <h2>Mapa das issues #931–#935</h2>
+    <p>Todas em fase de pesquisa. Sexta é o dia de convertê-las em issues de implementação prontas para agentes.</p>
+  </div>
+  <a class="issue-row reveal" href="https://github.com/eletromidia/operacoes/issues/931" target="_blank" rel="noopener">
+    <span class="n">#931</span>
+    <span><b>Mapa canônico</b><p>Mantém objetivo, fronteira e dependências. Slices de implementação só após resolver as quatro pesquisas.</p></span>
+    <span class="badge purple">pesquisa</span>
+  </a>
+  <a class="issue-row reveal" href="https://github.com/eletromidia/operacoes/issues/932" target="_blank" rel="noopener">
+    <span class="n">#932</span>
+    <span><b>Elegibilidade da Vistoria de Ruas</b><p>Fechar atividade, criação, roteirização, execução, conclusão, autorização e leitura do Termo.</p></span>
+    <span class="badge purple">pesquisa</span>
+  </a>
+  <a class="issue-row reveal" href="https://github.com/eletromidia/operacoes/issues/933" target="_blank" rel="noopener">
+    <span class="n">#933</span>
+    <span><b>Contrato do checklist</b><p>Receberá o checklist v1 fechado por Israel + IA e validado por Prevedel.</p></span>
+    <span class="badge orange">aguarda v1</span>
+  </a>
+  <a class="issue-row reveal" href="https://github.com/eletromidia/operacoes/issues/934" target="_blank" rel="noopener">
+    <span class="n">#934</span>
+    <span><b>Coorte Clear Channel</b><p>Confirmar 650 ativos — 618 classificados e 32 sem modelo — e selecionar três fixtures reais.</p></span>
+    <span class="badge purple">pesquisa</span>
+  </a>
+  <a class="issue-row reveal" href="https://github.com/eletromidia/operacoes/issues/935" target="_blank" rel="noopener">
+    <span class="n">#935</span>
+    <span><b>Pipeline assíncrono do PDF</b><p>Snapshot, Blade, fila, idempotência, estados, autorização, fotos, mapa, retry e testes.</p></span>
+    <span class="badge purple">pesquisa</span>
+  </a>
+</section>
+
+<!-- ============ PLANO DA SEMANA ============ -->
+<section id="semana" data-audience="all">
+  <div class="head">
+    <h2>Plano proposto · ter 21 → sex 24</h2>
+    <p>Datas são proposta de execução, não compromisso confirmado. Checklist interativo — o estado vale para esta sessão.</p>
+  </div>
+  <div class="week">
+    <div class="day today reveal">
+      <div class="day-head"><b>Terça</b><span class="mono">21/07 · hoje</span></div>
+      <div class="day-body" data-checkgroup="d21">
+        <label class="chk"><input type="checkbox"><span>Fechar checklist v1 com IA</span></label>
+        <label class="chk"><input type="checkbox"><span>Organizar agenda William/Prevedel</span></label>
+        <label class="chk"><input type="checkbox"><span>Criar NotebookLM e podcast curto</span></label>
+        <label class="chk"><input type="checkbox"><span>Publicar artifact consolidado</span></label>
+        <label class="chk"><input type="checkbox"><span>Preparar mensagem de alinhamento</span></label>
+      </div>
+      <div class="day-foot" data-counter="d21">0 / 5 concluídos</div>
+    </div>
+    <div class="day reveal">
+      <div class="day-head"><b>Quarta</b><span class="mono">22/07</span></div>
+      <div class="day-body" data-checkgroup="d22">
+        <label class="chk"><input type="checkbox"><span>Alinhamento com William: #912, baseline da branch e arquitetura do Termo</span></label>
+        <label class="chk"><input type="checkbox"><span>Registrar decisões no GitHub e Obsidian</span></label>
+        <label class="chk"><input type="checkbox"><span>Validar a coorte da #934 no banco</span></label>
+        <label class="chk"><input type="checkbox"><span>Selecionar três fixtures candidatas</span></label>
+      </div>
+      <div class="day-foot" data-counter="d22">0 / 4 concluídos</div>
+    </div>
+    <div class="day reveal">
+      <div class="day-head"><b>Quinta</b><span class="mono">23/07</span></div>
+      <div class="day-body" data-checkgroup="d23">
+        <label class="chk"><input type="checkbox"><span>Resolver #932 com mapa completo da Vistoria de Ruas</span></label>
+        <label class="chk"><input type="checkbox"><span>Resolver #935 com o padrão de Report/Job/PDF mais próximo</span></label>
+        <label class="chk"><input type="checkbox"><span>Ajustar checklist v1 conforme retorno do William</span></label>
+      </div>
+      <div class="day-foot" data-counter="d23">0 / 3 concluídos</div>
+    </div>
+    <div class="day reveal">
+      <div class="day-head"><b>Sexta</b><span class="mono">24/07</span></div>
+      <div class="day-body" data-checkgroup="d24">
+        <label class="chk"><input type="checkbox"><span>Validar checklist v1 e golden master com Prevedel</span></label>
+        <label class="chk"><input type="checkbox"><span>Fechar #933</span></label>
+        <label class="chk"><input type="checkbox"><span>Converter as quatro pesquisas em issues de implementação</span></label>
+        <label class="chk"><input type="checkbox"><span>Definir vertical slice e critérios de UAT</span></label>
+      </div>
+      <div class="day-foot" data-counter="d24">0 / 4 concluídos</div>
+    </div>
+  </div>
+  <div class="after reveal">
+    <div class="micro">Próxima etapa · após os gates</div>
+    <div class="cols">
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Branch limpa</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>TDD da elegibilidade</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Checklist comum + condicionais por modelo</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Persistência de respostas/fotos</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Snapshot e PDF em fila</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Autorização, status, download e retry</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Teste ponta a ponta com três fixtures</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Aceite do Prevedel</span></label>
+      <label class="chk"><input type="checkbox" data-checkgroup="after"><span>Rollout controlado</span></label>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RISCOS E SAÍDA ============ -->
+<section id="riscos" data-audience="all">
+  <div class="head">
+    <h2>Riscos visíveis e critérios de saída</h2>
+    <p>A semana termina bem se a coluna verde fechar. A coluna laranja precisa permanecer visível até lá.</p>
+  </div>
+  <div class="grid">
+    <div class="card span-5 reveal">
+      <span class="tag" style="background:var(--orange);color:var(--white)">Riscos · não esconder</span>
+      <div class="risk-col">
+        <div class="risk hot"><i class="sq"></i><span>Branch atual do Termo contaminada por histórico antigo.</span></div>
+        <div class="risk hot"><i class="sq"></i><span>Ausência de CI na PR #912.</span></div>
+        <div class="risk hot"><i class="sq"></i><span>Worker <code>scripts</code> e cron ainda não provados em staging/produção.</span></div>
+        <div class="risk"><i class="sq"></i><span>32 ativos sem modelo.</span></div>
+        <div class="risk"><i class="sq"></i><span>Duas divergências e sete propostas na matriz.</span></div>
+        <div class="risk"><i class="sq"></i><span>Semântica booleana inconsistente se não for explicitada por key.</span></div>
+        <div class="risk"><i class="sq"></i><span>Regra de foto ainda não congelada.</span></div>
+        <div class="risk"><i class="sq"></i><span>PDF sem snapshot pode mudar após emissão.</span></div>
+        <div class="risk"><i class="sq"></i><span>Storage de fotos precisa estar acessível no worker.</span></div>
+        <div class="risk"><i class="sq"></i><span>Matriz ampla pode inflar o primeiro slice.</span></div>
+        <div class="risk"><i class="sq"></i><span>Prazos históricos de 24/07 e 01/08 precisam ser reconfirmados.</span></div>
+      </div>
+    </div>
+    <div class="card span-7 exit reveal">
+      <span class="tag" style="background:var(--green);color:var(--white)">Critérios de saída da semana</span>
+      <div data-checkgroup="exit">
+        <label class="chk"><input type="checkbox"><span>Decisão de merge/rollout da PR #912.</span></label>
+        <label class="chk"><input type="checkbox"><span>Dono para worker, cron e smoke.</span></label>
+        <label class="chk"><input type="checkbox"><span>Baseline limpo para a branch do Termo.</span></label>
+        <label class="chk"><input type="checkbox"><span>Checklist v1 autoconsistente.</span></label>
+        <label class="chk"><input type="checkbox"><span>Coorte atual verificada e três fixtures escolhidas.</span></label>
+        <label class="chk"><input type="checkbox"><span>Atividade de Vistoria definida.</span></label>
+        <label class="chk"><input type="checkbox"><span>Contrato de PDF definido.</span></label>
+        <label class="chk"><input type="checkbox"><span>Golden master confirmado.</span></label>
+        <label class="chk"><input type="checkbox"><span>Issues de implementação prontas para agentes.</span></label>
+        <label class="chk"><input type="checkbox"><span>Nenhuma expansão silenciosa para JCDecaux, MUPI, Relógio ou Orientação Urbana.</span></label>
+      </div>
+      <div class="day-foot" data-counter="exit">0 / 10 critérios fechados</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENSAGENS ============ -->
+<section id="mensagens" data-audience="all">
+  <div class="head">
+    <h2>Mensagens prontas para copiar</h2>
+    <p>Curta, direta e sem lista enorme de dúvidas — do jeito que a conversa precisa começar.</p>
+  </div>
+  <div class="grid">
+    <div class="msg span-6 reveal">
+      <div class="msg-head">
+        <div class="who"><span class="tag william" style="margin:0">William</span><b>Gate #912 + retomada do Termo</b></div>
+        <button class="copybtn" data-copy="msg-william" type="button">Copiar</button>
+      </div>
+      <div class="msg-body" id="msg-william">Will, fechei hoje o Ticket Analysis tecnicamente e organizei a retomada do Termo de Arrolamento. Não quero abrir uma lista grande de dúvidas. Preciso alinhar três decisões contigo: o gate final de merge e rollout da #912; como vamos limpar a branch do Termo, que hoje está baseada num snapshot antigo do Ticket Analysis; e se seguimos com a extensão reuse-first de Place + Minha Rota + Vistoria + fila de Reports. Minha recomendação é manter o desenho atual, fazer um canário controlado da #912 e iniciar o Termo numa branch limpa, com snapshot imutável e PDF assíncrono. Com isso validado, eu fecho as pesquisas #932 a #935 e parto para o vertical slice.</div>
+    </div>
+    <div class="msg span-6 reveal">
+      <div class="msg-head">
+        <div class="who"><span class="tag prevedel" style="margin:0">Prevedel</span><b>Checklist v1 + piloto</b></div>
+        <button class="copybtn" data-copy="msg-prevedel" type="button">Copiar</button>
+      </div>
+      <div class="msg-body" id="msg-prevedel">Prevedel, eu consolidei a matriz do Lens e vou fechar hoje as ambiguidades técnicas do checklist com IA. Quero te trazer uma versão v1 pronta para validação, não uma lista aberta. Preciso confirmar contigo três coisas: se o primeiro piloto pode ficar nos abrigos Clear Channel Standard, Narrow e Sem Publicidade; qual Termo aprovado é o golden master atual; e quais três ativos reais podemos usar no UAT. Depois disso validamos uma execução completa por modelo antes de ampliar o escopo.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FONTES ============ -->
+<footer id="fontes">
+  <h2 style="font-size:22px">Fontes e links reais</h2>
+  <div class="src-grid">
+    <a href="https://github.com/eletromidia/operacoes/pull/912" target="_blank" rel="noopener"><span class="mono">Pull Request</span>#912 — Ticket Analysis foundation</a>
+    <a href="https://github.com/eletromidia/operacoes/issues/910" target="_blank" rel="noopener"><span class="mono">Issue</span>#910 — issue mãe do Ticket Analysis</a>
+    <a href="https://github.com/eletromidia/operacoes/issues/931" target="_blank" rel="noopener"><span class="mono">Issue</span>#931 — mapa canônico do Termo</a>
+    <a href="https://github.com/eletromidia/operacoes/issues/932" target="_blank" rel="noopener"><span class="mono">Issue</span>#932 — elegibilidade da Vistoria</a>
+    <a href="https://github.com/eletromidia/operacoes/issues/933" target="_blank" rel="noopener"><span class="mono">Issue</span>#933 — contrato do checklist</a>
+    <a href="https://github.com/eletromidia/operacoes/issues/934" target="_blank" rel="noopener"><span class="mono">Issue</span>#934 — coorte Clear Channel</a>
+    <a href="https://github.com/eletromidia/operacoes/issues/935" target="_blank" rel="noopener"><span class="mono">Issue</span>#935 — pipeline assíncrono do PDF</a>
+    <a href="https://iskisraell.github.io/em-artifacts/2026-07-19-ticket-analysis/"><span class="mono">Artifact anterior</span>Ticket Analysis — auditoria com IA</a>
+    <a href="https://iskisraell.github.io/em-artifacts/2026-07-13-termo-arrolamento-rj-reuniao/"><span class="mono">Artifact anterior</span>Termo RJ — cockpit da reunião de 24/07</a>
+  </div>
+  <p class="fineprint">Fontes internas: matriz revisada <span class="mono">personal-copy-rio-checklist-matrix-tipologias-revisada-reuniao.xlsx</span> · golden master <span class="mono">TERM-72-v002-2026-04-24-164441.docx</span> · branch <span class="mono">origin/feature/vistoria-arrolamento-rj</span> · código atual de <span class="mono">origin/main</span> · memórias do Eletromidia Lens e handoffs do Operações entre 05/07 e 21/07/2026. Conteúdo gerado em 21/07/2026 a partir do brief canônico de alinhamento.</p>
+</footer>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  var body = document.body;
+  var hint = document.getElementById("barHint");
+  var hints = {
+    all: "Mostrando a pauta completa — use os filtros para focar a conversa de cada um.",
+    william: "Foco: William — 3 decisões (merge/rollout da #912, baseline da branch, extensão reuse-first).",
+    prevedel: "Foco: Prevedel — 3 validações (recorte do piloto, golden master, UAT e aceite).",
+    israel: "Foco: Israel hoje — checklist v1 com IA/Lens e ambiguidades para fechar em 21/07."
+  };
+
+  var pbtns = document.querySelectorAll(".pbtn");
+  pbtns.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var p = btn.getAttribute("data-p");
+      pbtns.forEach(function(b){ b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
+      body.classList.remove("view-william","view-prevedel","view-israel");
+      if (p !== "all") body.classList.add("view-" + p);
+      hint.textContent = hints[p] || hints.all;
+      var target = p === "all" ? null : document.getElementById(p === "israel" ? "israel" : p);
+      if (target && typeof target.scrollIntoView === "function") {
+        target.scrollIntoView({ behavior: prefersReduced() ? "auto" : "smooth", block: "start" });
+      }
+    });
+  });
+
+  function prefersReduced(){
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  document.querySelectorAll(".copybtn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var el = document.getElementById(btn.getAttribute("data-copy"));
+      if (!el) return;
+      var text = (el.textContent || "").trim();
+      function done(){
+        var original = btn.textContent;
+        btn.textContent = "Copiado ✓";
+        btn.classList.add("done");
+        setTimeout(function(){ btn.textContent = original; btn.classList.remove("done"); }, 1800);
+      }
+      function fallback(){
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly","");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch(e){}
+        document.body.removeChild(ta);
+        done();
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+    });
+  });
+
+  function singular(n, one, many){ return n === 1 ? one : many; }
+
+  var labels = {
+    cols: ["coluna definida","colunas definidas"],
+    amb: ["ambiguidade fechada","ambiguidades fechadas"],
+    d21: ["concluído","concluídos"],
+    d22: ["concluído","concluídos"],
+    d23: ["concluído","concluídos"],
+    d24: ["concluído","concluídos"],
+    exit: ["critério fechado","critérios fechados"]
+  };
+
+  function refreshCounter(key){
+    var foot = document.querySelector('[data-counter="' + key + '"]');
+    var group = document.querySelector('[data-checkgroup="' + key + '"]');
+    if (!foot || !group) return;
+    var boxes = group.querySelectorAll('input[type="checkbox"]');
+    var checked = 0;
+    boxes.forEach(function(b){ if (b.checked) checked++; });
+    var pair = labels[key] || ["item","itens"];
+    foot.textContent = checked + " / " + boxes.length + " " + (checked === 1 ? pair[0] : pair[1]);
+  }
+
+  document.querySelectorAll("[data-checkgroup]").forEach(function(group){
+    var key = group.getAttribute("data-checkgroup");
+    group.addEventListener("change", function(){ refreshCounter(key); });
+    refreshCounter(key);
+  });
+
+  var afterBoxes = document.querySelectorAll('[data-checkgroup="after"]');
+  var afterFoot = document.createElement("div");
+  afterFoot.className = "day-foot";
+  afterFoot.style.marginTop = "8px";
+  function refreshAfter(){
+    var checked = 0;
+    afterBoxes.forEach(function(b){ if (b.checked) checked++; });
+    afterFoot.textContent = checked + " / " + afterBoxes.length + " etapas prontas";
+  }
+  afterBoxes.forEach(function(b){ b.addEventListener("change", refreshAfter); });
+  var afterBlock = document.querySelector(".after");
+  if (afterBlock && afterBoxes.length) { afterBlock.appendChild(afterFoot); refreshAfter(); }
+
+  if ("IntersectionObserver" in window && !prefersReduced()) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -24px 0px" });
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+})();
+</script>
+</body>
+</html>

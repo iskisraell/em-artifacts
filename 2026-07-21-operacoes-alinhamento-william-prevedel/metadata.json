@@ -1,0 +1,28 @@
+{
+  "title": "Alinhamento Operações 21/07 — William × Prevedel",
+  "date": "2026-07-21",
+  "description": "Cockpit de alinhamento de 21/07/2026: Ticket Analysis tecnicamente pronto na PR #912 aguardando gate de merge/rollout, e retomada do Termo de Arrolamento RJ — três decisões com William, três validações com Prevedel, backlog IA/Lens (checklist v1), issues #931–#935, plano da semana e critérios de saída.",
+  "tags": [
+    "operacoes",
+    "alinhamento",
+    "ticket-analysis",
+    "termo-de-arrolamento",
+    "pr-912",
+    "william",
+    "prevedel",
+    "checklist",
+    "meeting-cockpit"
+  ],
+  "sections": [
+    "Estado das frentes",
+    "Entregue hoje",
+    "Decisões — William",
+    "Validações — Prevedel",
+    "Backlog IA/Lens",
+    "Issues #931–#935",
+    "Plano da semana",
+    "Riscos e critérios de saída",
+    "Mensagens prontas",
+    "Fontes"
+  ]
+}
