@@ -1,0 +1,7 @@
+{
+  "title": "Ticket Analysis — auditoria de manutenção com IA",
+  "date": "2026-07-19",
+  "description": "Implementação e validação ponta a ponta do Ticket Analysis: solicitação, fila scripts, Gemini e análise inline no chamado.",
+  "tags": ["ticket-analysis", "operacoes", "gemini", "laravel", "auditoria"],
+  "sections": ["O loop validado", "Como funciona", "O que foi comprovado", "Contrato técnico", "Validação Gemini Live", "Prompt", "Modelos de Abrigo"]
+}

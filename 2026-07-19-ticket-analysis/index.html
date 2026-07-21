@@ -71,23 +71,25 @@ footer{margin-top:36px;padding:20px 0 0;color:var(--text);font-size:14px;border-
 <div><span class="eyebrow">🚀 Operações · PR #912</span>
 <h1>Ticket Analysis</h1>
 <p>Auditoria de manutenção com IA generativa. O Gemini analisa fotos de Before × After e checklists de chamados concluídos, produzindo leitura operacional inline — apoio à decisão humana, sem automação de fechamento.</p></div>
-<div class="hero-bar"><span class="pill orange">Gemini Flash-Lite</span><span class="pill purple">Laravel 8 · PHP 7.4</span><span class="pill green">97 testes</span><span class="pill yellow">SP apenas</span></div>
+<div class="hero-bar"><span class="pill orange">Gemini Flash-Lite</span><span class="pill purple">Laravel 8 · PHP 7.4</span><span class="pill green">127 testes</span><span class="pill yellow">SP apenas</span></div>
 </section>
 
 <section>
 <div class="grid">
-<div class="card black span-3"><div class="metric">23</div><p style="color:#E8E8E8">itens no glossário do prompt</p></div>
+<div class="card black span-3"><div class="metric">26</div><p style="color:#E8E8E8">itens no glossário do prompt</p></div>
 <div class="card orange span-3"><div class="metric">9</div><p>regras de análise</p></div>
-<div class="card purple span-3"><div class="metric">4</div><p>tickets validados com Gemini live</p></div>
-<div class="card green span-3"><div class="metric">97</div><p>testes passando (441 assertions)</p></div>
+<div class="card purple span-3"><div class="metric">22</div><p>resultados <code>completed_live</code> persistidos localmente</p></div>
+<div class="card green span-3"><div class="metric">127</div><p>testes passando (584 assertions)</p></div>
 </div>
 </section>
 
 <section>
-<div class="head"><h2>Interface</h2><p>Duas telas reais capturadas do fluxo funcional</p></div>
+<div class="head"><h2>O loop validado</h2><p>Quatro capturas do mesmo contrato: solicitar, enfileirar, processar e revisar</p></div>
 <div class="grid">
-<div class="card span-6 img-card"><img src="media/01-ticket-com-analise.png" alt="Ticket com análise"><p><strong>Ticket 1750678</strong> — Aba "Análise" visível entre Fotos e Checklists. Ticket concluído com dados de execução, localização e técnico.</p></div>
-<div class="card span-6 img-card"><img src="media/02-ticket-sem-analise.png" alt="Ticket sem análise"><p><strong>Ticket 1685146</strong> — Seção "Inteligência Operacional" com fluxo Solicitação → Fila → Análise. Status "Na fila", aguardando processamento.</p></div>
+<div class="card span-6 img-card"><img src="media/01-solicitacao-disponivel.png" alt="Ticket elegível com solicitação de análise disponível"><p><strong>1. Disponível</strong> — O CTA aparece apenas no perímetro SP elegível e autorizado. A decisão continua humana.</p></div>
+<div class="card span-6 img-card"><img src="media/02-processamento-na-fila.png" alt="Ticket aguardando processamento na fila scripts"><p><strong>2. Na fila</strong> — Reserva, run e ledger já existem; o job aguarda um worker da fila <code>scripts</code>.</p></div>
+<div class="card span-6 img-card"><img src="media/03-analise-inline-resumo.png" alt="Aba Análise com conclusão e confiança"><p><strong>3. Resultado inline</strong> — Ticket 1737700 processado ao vivo pelo Gemini em 18 segundos, com conclusão e confiança de 100%.</p></div>
+<div class="card span-6 img-card"><img src="media/04-analise-inline-detalhes.png" alt="Detalhes da leitura operacional e contexto da análise"><p><strong>4. Leitura completa</strong> — Identificado, serviço executado, pendência, duração e consistência temporal no mesmo chamado.</p></div>
 </div>
 </section>
 
@@ -111,6 +113,15 @@ footer{margin-top:36px;padding:20px 0 0;color:var(--text);font-size:14px;border-
 </section>
 
 <section>
+<div class="head"><h2>O que foi comprovado</h2><p>Receipts do HEAD <code>93470b048</code>, não uma promessa de arquitetura</p></div>
+<div class="grid">
+<div class="card span-4"><span class="pill green">PASS</span><h3 style="margin:14px 0 8px">Worker local</h3><p>Um único job da fila <code>scripts</code> foi consumido. Analysis #59, run #46 e ledger #33 terminaram em <code>completed</code>, sem failed job.</p></div>
+<div class="card span-4"><span class="pill green">PASS</span><h3 style="margin:14px 0 8px">Persistência e UI</h3><p>O ticket 1737700 recarregou com <code>completed_live</code>, resultado read-only e aba Análise completa.</p></div>
+<div class="card span-4"><span class="pill yellow">OPERACIONAL</span><h3 style="margin:14px 0 8px">Staging e produção</h3><p>O worker externo de <code>scripts</code> deve ser confirmado pela infraestrutura. O repositório não provisiona esse processo.</p></div>
+</div>
+</section>
+
+<section>
 <div class="head"><h2>Contrato técnico</h2></div>
 <div class="table-wrap"><table>
 <thead><tr><th>Camada</th><th>Decisão</th></tr></thead>
@@ -119,14 +130,14 @@ footer{margin-top:36px;padding:20px 0 0;color:var(--text);font-size:14px;border-
 <tr><td>Reserva</td><td>Atômica: run + análises + run_items. UNIQUE(ticket_id)</td></tr>
 <tr><td>CAS</td><td>Job recebe (analysis_id, expected_run_id). Processa se run_id bate E status é queued</td></tr>
 <tr><td>Ledger</td><td>Durável, analysis_id sem FK. Status: completed/failed</td></tr>
-<tr><td>Prompt</td><td>JSON versionado: 23 itens glossário + 9 regras + schema output</td></tr>
+<tr><td>Prompt</td><td>JSON versionado: 26 itens de glossário + 9 regras + schema de saída</td></tr>
 <tr><td>Default</td><td>analysis_mode = live. Dry-run apenas override explícito</td></tr>
 <tr><td>.env.example</td><td>Idêntico a origin/main — sem flags de feature</td></tr>
 </tbody></table></div>
 </section>
 
 <section>
-<div class="head"><h2>Validação Gemini Live</h2><p>4 chamados reais processados com sucesso</p></div>
+<div class="head"><h2>Validação Gemini Live</h2><p>Amostra rastreável; o banco local contém 22 resultados completed_live</p></div>
 <div class="table-wrap"><table>
 <thead><tr><th>Ticket</th><th>Tipo</th><th>Confiança</th><th>Status</th></tr></thead>
 <tbody>
@@ -134,11 +145,12 @@ footer{margin-top:36px;padding:20px 0 0;color:var(--text);font-size:14px;border-
 <tr><td>1708721</td><td>Abrigos CSP</td><td><span class="badge green">0.95</span></td><td>completed_live</td></tr>
 <tr><td>1736168</td><td>Abrigos CSP</td><td><span class="badge green">0.95</span></td><td>completed_live</td></tr>
 <tr><td>1753818</td><td>On-demand</td><td><span class="badge green">1.00</span></td><td>completed_live</td></tr>
+<tr><td>1737700</td><td>On-demand · loop final</td><td><span class="badge green">1.00</span></td><td>completed_live</td></tr>
 </tbody></table></div>
 </section>
 
 <section>
-<div class="head"><h2>Prompt — Glossário</h2><p>23 itens cobrindo preventiva e corretiva para Abrigo e Totem</p></div>
+<div class="head"><h2>Prompt — Glossário</h2><p>26 itens cobrindo preventiva e corretiva para Abrigo e Totem</p></div>
 <div class="grid">
 <div class="card span-4"><strong style="color:var(--purple)">Preventiva Abrigo</strong><p>Pichação, Pintura Desgastada, Cobertura Suja, Caixa Aterramento, Calçada Suja, Fiação Exposta, Itinerário, Pictogramas</p></div>
 <div class="card span-4"><strong style="color:var(--orange)">Corretiva Abrigo</strong><p>Estrutura Abalroada, Banco Quebrado, Vidros, Ferrugem Severa, Problema Elétrico, Componente Ausente, Podotátil, Supressão, Obras</p></div>
@@ -155,6 +167,11 @@ footer{margin-top:36px;padding:20px 0 0;color:var(--text);font-size:14px;border-
 <div class="card span-4"><strong>NEW TECH</strong><p>Linhas limpas, superfícies integradas, contemporâneo.</p></div>
 <div class="card span-4"><strong>HIGH TECH</strong><p>Estrutura metálica aparente, desenho preciso.</p></div>
 <div class="card span-4"><strong>MINIMALISTA</strong><p>Simples, ortogonal, discreto.</p></div>
+<div class="card span-4"><strong>CAOS LEVE</strong><p>Perfis finos, diagonais em X e grande fechamento traseiro transparente.</p></div>
+<div class="card span-4"><strong>ESTAÇÃO BIDIRECIONAL</strong><p>Estrutura longitudinal aberta, acessível e visível pelos dois lados.</p></div>
+<div class="card span-4"><strong>MINIMALISTA LEVE</strong><p>Retangular, compacto e transparente, com painéis nas extremidades.</p></div>
+<div class="card span-4"><strong>MINIMALISTA TOP</strong><p>Alta capacidade, múltiplos módulos de vidro e assentos integrados.</p></div>
+<div class="card span-4"><strong>BRUTALISTA TOP</strong><p>Apoios de concreto em Y/X e cobertura escura elevada.</p></div>
 <div class="card span-4"><strong>CORBUCCI</strong><p>Arquitetônico moderno, cobertura expressiva.</p></div>
 <div class="card span-4"><strong>MONUMENTO</strong><p>Presença urbana marcante, volume expressivo.</p></div>
 <div class="card span-4"><strong>TOTEM MARROM</strong><p>Vertical, estreito, acabamento marrom.</p></div>
@@ -163,7 +180,7 @@ footer{margin-top:36px;padding:20px 0 0;color:var(--text);font-size:14px;border-
 
 <section>
 <div class="callout">
-<div><strong style="font-size:22px">PR #912 — pronto para merge</strong><p style="margin-bottom:0">26 commits · 97 testes PASS · 441 assertions · Revisão adversarial aprovada</p></div>
+<div><strong style="font-size:22px">PR #912 — pronta para revisão do William</strong><p style="margin-bottom:0">32 commits · 127 testes PASS · 584 assertions · gate técnico PASS condicional</p></div>
 <a href="https://github.com/eletromidia/operacoes/pull/912">Ver PR no GitHub →</a>
 </div>
 </section>
