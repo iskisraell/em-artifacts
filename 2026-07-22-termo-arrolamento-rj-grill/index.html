@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | Grill de Decisões — Termo de Arrolamento RJ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --radius: 18px;
+      --mono: Consolas, "Cascadia Mono", "Courier New", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    ::selection { background: var(--orange); color: var(--white); }
+    ::-moz-selection { background: var(--orange); color: var(--white); }
+
+    html, body { overflow-x: hidden; }
+
+    body {
+      background-color: var(--surface);
+      background-image: radial-gradient(#E8E8E8 1px, transparent 1px);
+      background-size: 22px 22px;
+      color: var(--black);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button { font: inherit; cursor: pointer; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+
+    :focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+
+    .app {
+      width: min(600px, 100%);
+      margin: 0 auto;
+      padding: 14px 14px 140px;
+      min-height: 100vh;
+    }
+
+    /* ---------- Intro: cabeçalho de documento ---------- */
+    .doc-hero {
+      position: relative; isolation: isolate; overflow: hidden;
+      background: var(--black); color: var(--white);
+      border-radius: var(--radius);
+      padding: 20px 20px 26px;
+      margin-bottom: 14px;
+    }
+
+    .doc-hero::before, .doc-hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 30px;
+    }
+
+    .doc-hero::before {
+      right: 44px; bottom: -96px;
+      width: 230px; background: var(--orange);
+      transform: rotate(10deg);
+    }
+
+    .doc-hero::after {
+      right: -58px; bottom: -70px;
+      width: 190px; background: var(--purple);
+      transform: rotate(-8deg);
+    }
+
+    .doc-top {
+      display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+      font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+      text-transform: uppercase; color: #B0B0B0;
+      margin-bottom: 18px;
+    }
+
+    .doc-top b { color: var(--yellow); font-weight: 400; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 14px; padding: 7px 11px;
+      border-radius: 999px; background: var(--yellow);
+      color: var(--black); font-weight: 800;
+      text-transform: uppercase; font-size: 11px;
+      letter-spacing: .08em;
+    }
+
+    .doc-hero h1 {
+      font-size: clamp(36px, 10.5vw, 54px);
+      line-height: .94; font-weight: 800;
+      letter-spacing: -.01em; max-width: 12ch;
+      margin-bottom: 16px;
+    }
+
+    .doc-hero h1 em { font-style: normal; color: var(--orange); }
+
+    .doc-meta { display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 1; }
+
+    .meta-chip {
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      padding: 8px 11px; border-radius: 10px;
+      border: 1px solid #3A3A3A; color: #EDEDED; background: rgba(255,255,255,.04);
+    }
+
+    .meta-chip b { color: var(--yellow); font-weight: 700; }
+
+    /* ---------- Faixa de números ---------- */
+    .stats {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px; margin-bottom: 14px;
+    }
+
+    .stat {
+      background: var(--white); border: 1px solid var(--line);
+      border-radius: 14px; padding: 12px 14px;
+      transition: transform .15s, border-color .15s;
+    }
+
+    .stat:hover { transform: translateY(-2px); border-color: var(--black); }
+
+    .stat b {
+      display: block; font-family: var(--mono);
+      font-size: clamp(20px, 5.6vw, 26px); line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat:nth-child(1) b { color: var(--orange); }
+    .stat:nth-child(2) b { color: var(--purple); }
+    .stat:nth-child(3) b { color: var(--green); }
+    .stat:nth-child(4) b { color: var(--black); }
+
+    .stat span { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: .04em; }
+
+    /* ---------- Resumo 30s: cláusulas ---------- */
+    .clause {
+      background: var(--white); border: 1px solid var(--line);
+      border-left: 6px solid var(--black);
+      border-radius: 14px; padding: 16px;
+      margin-bottom: 10px;
+      transition: transform .15s;
+    }
+
+    .clause:hover { transform: translateX(3px); }
+    .clause.c-green { border-left-color: var(--green); }
+    .clause.c-purple { border-left-color: var(--purple); }
+    .clause.c-orange { border-left-color: var(--orange); }
+
+    .clause .k {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .clause .k i {
+      font-style: normal; background: var(--black); color: var(--white);
+      border-radius: 6px; padding: 2px 7px;
+    }
+
+    .clause h2 { font-size: 19px; font-weight: 800; line-height: 1.15; margin-bottom: 8px; }
+    .clause p { font-size: 14.5px; color: #525252; margin-bottom: 8px; }
+    .clause p:last-child { margin-bottom: 0; }
+    .clause li { font-size: 14.5px; color: #525252; }
+    .clause li::marker { color: var(--orange); font-weight: 800; }
+
+    .theme-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .theme-chip {
+      font-size: 12px; font-weight: 800; padding: 6px 10px;
+      border-radius: 999px; border: 1.5px solid var(--black);
+      background: var(--white); transition: background .15s, color .15s;
+      cursor: default;
+    }
+
+    .theme-chip:hover { background: var(--black); color: var(--white); }
+
+    /* ---------- Botões ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 12px 18px;
+      border-radius: 12px; border: 2px solid var(--black);
+      font-weight: 800; font-size: 16px; line-height: 1.1;
+      background: var(--white); color: var(--black);
+      transition: transform .12s, background .15s, color .15s, border-color .15s;
+      text-align: center;
+    }
+
+    .btn:active { transform: scale(.97); }
+    .btn.primary { background: var(--black); color: var(--white); }
+    .btn.primary:hover { background: var(--orange); border-color: var(--orange); }
+    .btn.ghost:hover { background: var(--black); color: var(--white); }
+    .btn.sun { background: var(--yellow); color: var(--black); border-color: var(--black); }
+    .btn.sun:hover { background: var(--black); color: var(--yellow); }
+    .btn.flame { background: var(--orange); color: var(--black); border-color: var(--black); font-weight: 800; }
+    .btn.flame:hover { background: var(--black); color: var(--white); }
+    .btn.block { width: 100%; }
+    .btn.small { min-height: 44px; font-size: 14px; padding: 10px 14px; }
+    .btn.danger-ghost { border-color: var(--red); color: var(--red); }
+    .btn.danger-ghost:hover { background: var(--red); color: var(--white); }
+
+    .intro-actions { display: grid; gap: 10px; margin: 16px 0 10px; }
+
+    .foot-note {
+      font-family: var(--mono); font-size: 11.5px; color: var(--text);
+      text-align: center; margin-top: 14px; letter-spacing: .02em;
+    }
+
+    /* ---------- Cabeçalho fixo de progresso ---------- */
+    .q-head {
+      position: sticky; top: 0; z-index: 8;
+      background: var(--surface);
+      border-bottom: 2px solid var(--black);
+      padding: 10px 0 12px; margin-bottom: 18px;
+    }
+
+    .q-head-row {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 10px; margin-bottom: 8px; flex-wrap: wrap;
+    }
+
+    .q-count { font-family: var(--mono); font-size: 13px; font-weight: 700; }
+    .q-count b { font-size: 17px; color: var(--orange); }
+
+    .q-eta { font-family: var(--mono); font-size: 11.5px; color: var(--text); }
+
+    .q-bar { height: 7px; border-radius: 999px; background: #E4E4E4; overflow: hidden; }
+    .q-bar i {
+      display: block; height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--orange), var(--purple));
+      border-radius: 999px;
+      transition: width .4s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .save-flag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--mono); font-size: 11px; color: var(--green);
+      font-weight: 700;
+    }
+
+    .save-flag .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); display: inline-block;
+    }
+
+    .save-flag .dot.pulse { animation: pulse .7s ease; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.9); background: var(--orange); }
+      100% { transform: scale(1); }
+    }
+
+    /* ---------- Pergunta ---------- */
+    .q-theme-pill {
+      display: inline-block; margin-bottom: 12px;
+      padding: 6px 11px; border-radius: 999px;
+      background: var(--purple); color: var(--white);
+      font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .07em;
+    }
+
+    fieldset.q-field { border: 0; min-width: 0; }
+
+    legend.q-title {
+      font-size: clamp(24px, 6.8vw, 32px);
+      font-weight: 800; line-height: 1.06;
+      letter-spacing: -.01em; margin-bottom: 10px;
+      max-width: 22ch;
+    }
+
+    .q-ctx {
+      font-family: var(--mono); font-size: 12.5px;
+      color: #525252; background: var(--white);
+      border: 1px dashed #C9C9C9; border-radius: 10px;
+      padding: 9px 11px; margin-bottom: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    details.aux {
+      border: 1px solid var(--line); border-radius: 12px;
+      background: var(--white); overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    details.aux + details.aux { margin-top: 0; }
+
+    details.aux summary {
+      cursor: pointer; padding: 13px 15px;
+      font-weight: 800; font-size: 14px; list-style: none;
+      display: flex; align-items: center; gap: 8px;
+      min-height: 44px;
+      transition: background .15s;
+    }
+
+    details.aux summary::-webkit-details-marker { display: none; }
+    details.aux summary::before { content: "+"; font-weight: 800; color: var(--orange); font-size: 17px; }
+    details.aux[open] summary::before { content: "–"; }
+    details.aux[open] summary { background: var(--yellow); color: var(--black); }
+    details.aux summary:hover { background: var(--muted); }
+    details.aux[open] summary:hover { background: var(--yellow); }
+
+    .aux-body { padding: 4px 15px 14px; }
+    .aux-body p { font-size: 14px; color: #525252; margin-bottom: 8px; }
+    .aux-body li { font-size: 13.5px; color: #525252; }
+    .aux-body .ev-src { font-family: var(--mono); font-size: 11px; color: var(--text); display: block; overflow-wrap: anywhere; }
+
+    .opts { display: grid; gap: 10px; margin-top: 14px; }
+
+    .opt {
+      position: relative;
+      display: grid; grid-template-columns: 26px minmax(0, 1fr);
+      gap: 12px; align-items: start;
+      padding: 14px; min-height: 56px;
+      border: 2px solid var(--line); border-radius: 14px;
+      background: var(--white); cursor: pointer;
+      transition: border-color .15s, transform .15s, background .15s;
+    }
+
+    .opt:hover { border-color: var(--black); transform: translateY(-1px); }
+    .opt:focus-within { outline: 3px solid var(--purple); outline-offset: 2px; }
+
+    .opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+    .opt .box {
+      width: 24px; height: 24px; margin-top: 2px;
+      border: 2.5px solid var(--black); background: var(--white);
+      display: grid; place-items: center;
+      transition: background .12s;
+    }
+
+    .opt .box.radio { border-radius: 50%; }
+    .opt .box.check { border-radius: 7px; }
+
+    .opt .box::after {
+      content: ""; width: 10px; height: 10px;
+      background: var(--orange); border-radius: 50%;
+      transform: scale(0); transition: transform .15s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .opt .box.check::after { border-radius: 3px; }
+
+    .opt.sel { border-color: var(--orange); background: #FFF3EC; }
+    .opt.sel .box::after { transform: scale(1); }
+
+    .opt .l { font-weight: 700; font-size: 16.5px; line-height: 1.25; }
+    .opt .fx { font-size: 13.5px; color: #525252; margin-top: 4px; }
+
+    .rec {
+      display: inline-block; margin-bottom: 7px;
+      background: var(--yellow); color: var(--black);
+      font-size: 10.5px; font-weight: 800;
+      padding: 4px 9px; border-radius: 999px;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+
+    .rec-why {
+      font-size: 13px; color: #3F3F3F; margin-top: 7px;
+      border-left: 3px solid var(--yellow); padding-left: 9px;
+    }
+
+    .note-box { margin-top: 12px; display: none; }
+    .note-box.open { display: block; animation: rise .25s ease; }
+
+    .note-box label {
+      display: block; font-weight: 800; font-size: 14px; margin-bottom: 6px;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%; min-height: 96px; resize: vertical;
+      padding: 12px 13px; border: 2px solid var(--black);
+      border-radius: 12px; background: var(--white);
+      font: inherit; font-size: 15.5px; color: var(--black);
+    }
+
+    textarea:focus { outline: 3px solid var(--purple); outline-offset: 2px; }
+
+    .char-hint { font-family: var(--mono); font-size: 11px; color: var(--text); margin-top: 5px; }
+
+    /* ---------- Barra de navegação fixa ---------- */
+    .nav-bar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+      background: var(--white); border-top: 2px solid var(--black);
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    }
+
+    .nav-inner {
+      width: min(600px, 100%); margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    }
+
+    .nav-inner .btn { min-width: 0; }
+    .nav-inner .btn.primary { flex: 1 1 180px; }
+
+    /* ---------- Revisão ---------- */
+    .rev-head h2 {
+      font-size: clamp(28px, 8vw, 38px); font-weight: 800;
+      line-height: 1; margin-bottom: 6px;
+    }
+
+    .rev-head p { font-size: 14.5px; color: #525252; margin-bottom: 14px; }
+
+    .rev-counters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+
+    .rev-counter {
+      border-radius: 14px; padding: 12px 10px; text-align: center;
+      border: 1px solid var(--line); background: var(--white);
+    }
+
+    .rev-counter b {
+      display: block; font-family: var(--mono);
+      font-size: clamp(24px, 7vw, 34px); line-height: 1; margin-bottom: 4px;
+    }
+
+    .rev-counter span { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--text); }
+    .rev-counter.ok b { color: var(--green); }
+    .rev-counter.pend b { color: var(--orange); }
+    .rev-counter.off b { color: var(--purple); }
+
+    .rev-group {
+      border: 1px solid var(--line); border-radius: 16px;
+      background: var(--white); overflow: hidden; margin-bottom: 12px;
+    }
+
+    .rev-group > h3 {
+      background: var(--black); color: var(--white);
+      font-size: 12.5px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .07em;
+      padding: 11px 15px;
+    }
+
+    .rev-row { padding: 13px 15px; border-top: 1px solid var(--line); display: grid; gap: 5px; }
+    .rev-row:first-of-type { border-top: 0; }
+
+    .rev-row .q { font-weight: 800; font-size: 15px; line-height: 1.25; }
+    .rev-row .a { font-size: 14px; color: #404040; overflow-wrap: anywhere; }
+    .rev-row .n { font-size: 12.5px; color: var(--text); font-style: italic; overflow-wrap: anywhere; }
+
+    .rev-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+    .badge {
+      display: inline-block; padding: 4px 9px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 800; line-height: 1.2;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+
+    .badge.pend { background: var(--white); color: var(--orange); border: 1.5px solid var(--orange); }
+    .badge.off { background: var(--yellow); color: var(--black); }
+    .badge.outro { background: var(--purple); color: var(--white); }
+    .badge.ok { background: var(--green); color: var(--white); }
+    .badge.skip { background: var(--muted); color: var(--text); border: 1.5px solid var(--line); }
+
+    .rev-edit {
+      justify-self: start; min-height: 44px;
+      padding: 9px 14px; border-radius: 10px;
+      border: 2px solid var(--black); background: var(--white);
+      font-weight: 800; font-size: 13.5px;
+      transition: background .15s, color .15s;
+    }
+
+    .rev-edit:hover { background: var(--black); color: var(--white); }
+
+    .rev-skipped {
+      border: 1px dashed #C9C9C9; border-radius: 14px;
+      background: var(--muted); padding: 13px 15px; margin-bottom: 12px;
+    }
+
+    .rev-skipped h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #525252; }
+    .rev-skipped p { font-size: 13px; color: var(--text); }
+
+    /* ---------- Exportação ---------- */
+    .export-card {
+      background: var(--black); color: var(--white);
+      border-radius: var(--radius); padding: 18px 16px;
+      margin-top: 16px; position: relative; overflow: hidden; isolation: isolate;
+    }
+
+    .export-card::after {
+      content: ""; position: absolute; z-index: -1;
+      right: -46px; top: -46px; width: 130px; height: 130px;
+      border-radius: 26px; background: var(--purple);
+      transform: rotate(12deg);
+    }
+
+    .export-card h3 { font-size: 21px; font-weight: 800; margin-bottom: 6px; }
+    .export-card > p { color: #D6D6D6; font-size: 14px; margin-bottom: 14px; }
+
+    .export-actions { display: grid; gap: 10px; position: relative; z-index: 1; }
+
+    .json-wrap { margin-top: 14px; position: relative; z-index: 1; }
+
+    .json-wrap summary { color: var(--yellow); background: transparent; }
+    .json-wrap[open] summary { background: transparent; color: var(--yellow); }
+
+    .json-pre {
+      margin-top: 10px; padding: 13px;
+      background: #111; border: 1px solid #333; border-radius: 12px;
+      color: var(--yellow); font-family: var(--mono); font-size: 11.5px;
+      white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
+      max-height: 300px; overflow-y: auto;
+    }
+
+    .danger-zone { margin-top: 18px; text-align: center; }
+
+    /* ---------- Toast / live ---------- */
+    .toast {
+      position: fixed; bottom: 92px; left: 50%; transform: translate(-50%, 16px);
+      padding: 13px 20px; border-radius: 12px;
+      background: var(--black); color: var(--white);
+      border: 2px solid var(--yellow);
+      font-weight: 700; font-size: 14px; z-index: 100;
+      opacity: 0; transition: opacity .25s, transform .25s;
+      pointer-events: none; max-width: min(92vw, 480px); text-align: center;
+    }
+
+    .toast.visible { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ---------- Animações de entrada ---------- */
+    .rise { animation: rise .3s ease both; }
+    .rise-1 { animation-delay: .03s; }
+    .rise-2 { animation-delay: .06s; }
+    .rise-3 { animation-delay: .09s; }
+    .rise-4 { animation-delay: .12s; }
+    .rise-5 { animation-delay: .15s; }
+    .rise-6 { animation-delay: .18s; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (min-width: 420px) {
+      .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" id="app"></main>
+
+  <div class="toast" id="toast" role="status"></div>
+  <p class="sr-only" id="live" aria-live="polite"></p>
+
+  <script>
+  (function () {
+    "use strict";
+
+    /*PURE-START*/
+    var SCHEMA_VERSION = "1.0";
+    var ARTIFACT = "termo-arrolamento-rj-grill";
+    var STORAGE_KEY = "termo-arrolamento-rj-grill:v1";
+
+    var EVIDENCE = [
+      { id: "matrix", label: "Matriz revisada (reunião 13/07/2026)", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx" },
+      { id: "catalog", label: "Catálogo de campos — 31 keys", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx · aba Catálogo de Campos" },
+      { id: "gaps", label: "Gaps e propostas por tema", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx · aba Gaps" },
+      { id: "term72", label: "Golden master TERM-72 v002 (vistoria 13/04/2026)", source: "TERM-72-v002-2026-04-24-164441.docx" },
+      { id: "jcdecaux", label: "Base JCDecaux — 2.108 linhas / 1.546 abrigos", source: "EFS - JCDecaux.xlsx" },
+      { id: "operacoes", label: "Operações — 650 places ativos (estabelecimento 497)", source: "base Operações" },
+      { id: "gh931", label: "Wayfinder #931 — mapa", source: "https://github.com/eletromidia/operacoes/issues/931" },
+      { id: "gh932", label: "Wayfinder #932 — elegibilidade / reuso Vistoria de Ruas", source: "https://github.com/eletromidia/operacoes/issues/932" },
+      { id: "gh933", label: "Wayfinder #933 — contrato de checklist por modelo", source: "https://github.com/eletromidia/operacoes/issues/933" },
+      { id: "gh934", label: "Wayfinder #934 — coorte / identidade Clear Channel", source: "https://github.com/eletromidia/operacoes/issues/934" },
+      { id: "gh935", label: "Wayfinder #935 — pipeline de PDF assíncrono", source: "https://github.com/eletromidia/operacoes/issues/935" }
+    ];
+
+    var THEMES = [
+      { id: "corte", l: "Corte de validação" },
+      { id: "superficie", l: "Superfície de coleta" },
+      { id: "identidade", l: "Identidade e matching" },
+      { id: "endereco", l: "Endereço e GPS" },
+      { id: "checklist", l: "Estrutura do checklist" },
+      { id: "digital", l: "Abrigo digital" },
+      { id: "fotos", l: "Evidência fotográfica" },
+      { id: "pdf", l: "PDF e golden master" },
+      { id: "rollout", l: "Rollout e aceite" },
+      { id: "riscos", l: "Campo livre" }
+    ];
+
+    var OUTRO = { v: "outro", l: "Outro / preciso de mais contexto", fx: "Registra que a decisão ainda não fechou e vira pendência explícita no JSON." };
+
+    var QUESTIONS = [
+      {
+        id: "q_corte", theme: "corte", type: "single",
+        title: "Qual é o corte de validação antes do rollout?",
+        ctx: "Prazo até 24/07 · base JCDecaux sem IDs · 31 campos × 3 tipologias.",
+        why: "Define o tamanho da primeira entrega homologável. Um corte pequeno prova o fluxo com dados reais; um corte grande adia a descoberta de problemas de matching e de PDF.",
+        options: [
+          { v: "abrigo_ponta_a_ponta", l: "Um Abrigo JCDecaux real, ponta a ponta", fx: "Valida matching, checklist, fotos e PDF com um ativo real antes de escalar.", rec: true, recWhy: "Foi a proposta da reunião de 13/07: menor corte que prova o fluxo inteiro com dado real." },
+          { v: "um_por_tipologia", l: "Um ativo de cada tipologia (3 ativos)", fx: "Testa MUPI, Relógio e Abrigos, mas triplica o esforço de homologação." },
+          { v: "cobertura_total", l: "Cobertura total das 3 tipologias", fx: "Só libera depois de validar tudo: maior prazo e risco de travar no matching." }
+        ],
+        ev: ["matrix", "gaps", "gh931"]
+      },
+      {
+        id: "q_ordem", theme: "corte", type: "single",
+        title: "Depois do primeiro corte, qual ordem de parametrização?",
+        ctx: "O golden master TERM-72 é um MUPI SCROLLER do Lote 1.",
+        why: "A ordem define qual tipologia ganha comparação direta com o PDF aprovado primeiro e onde o retrabalho aparece.",
+        options: [
+          { v: "mupi_primeiro", l: "MUPI primeiro", fx: "O PDF de referência já existe para MUPI; a comparação visual fica direta.", rec: true, recWhy: "O único golden master aprovado (TERM-72) é MUPI — começar por ele reduz risco de aceite do PDF." },
+          { v: "relogio_primeiro", l: "Relógio primeiro", fx: "Relógio tem mais campos exclusivos (GPS, sensor de temperatura, display de hora)." },
+          { v: "paralelo", l: "MUPI e Relógio em paralelo", fx: "Avança mais rápido, porém divide o foco durante a homologação." }
+        ],
+        ev: ["term72", "matrix"]
+      },
+      {
+        id: "q_superficie", theme: "superficie", type: "single",
+        title: "Onde o técnico preenche o termo?",
+        ctx: "Superfície indicada: Place canônico + my-route / street-route + checklist existente.",
+        why: "Reusar a Vistoria de Ruas aproveita rota, perfil do técnico e infraestrutura existentes. Um fluxo paralelo cria uma segunda experiência para manter.",
+        options: [
+          { v: "reuso_vistoria", l: "Adaptar a Vistoria de Ruas existente", fx: "my-route / street-route + checklist atual: menos superfície nova e curva de aprendizado menor.", rec: true, recWhy: "É a superfície indicada desde o lens de 05/07 e está mapeada no Wayfinder #932." },
+          { v: "fluxo_paralelo", l: "Fluxo paralelo novo", fx: "Isola o projeto do fluxo atual, mas duplica experiência do técnico e manutenção." }
+        ],
+        ev: ["gh932", "gaps"]
+      },
+      {
+        id: "q_paralelo_just", theme: "superficie", type: "text",
+        title: "O que o fluxo paralelo precisa entregar que o reuso não entrega?",
+        ctx: "Você escolheu fluxo paralelo — a justificativa entra no JSON para o time de implementação.",
+        why: "Sem justificativa objetiva, o fluxo paralelo vira dívida técnica gratuita.",
+        placeholder: "Ex.: checklist incompatível com offline, permissões, prazo do app atual...",
+        ev: ["gh932"]
+      },
+      {
+        id: "q_identidade", theme: "identidade", type: "single",
+        title: "Como o ativo JCDecaux vira um registro no Operações?",
+        ctx: "Base JCDecaux: 2.108 linhas, 1.546 abrigos, sem código externo / ID / lat-long / bairro / CEP e com endereços repetidos.",
+        why: "Carga cega sobre uma base sem identificadores cria Places duplicados. O matching com aprovação transforma duplicado em exceção, não em regra.",
+        options: [
+          { v: "place_match_proposta", l: "Place canônico + proposta de match com aprovação", fx: "Técnico sugere o vínculo com evidências; backoffice aprova. Nada é criado às cegas.", rec: true, recWhy: "É a proposta da reunião: a base serve para matching, não para carga cega." },
+          { v: "import_direta", l: "Importação direta criando registros novos", fx: "Rápido, mas os endereços repetidos da base viram Places duplicados." },
+          { v: "id_externo", l: "Exigir ID externo da JCDecaux antes", fx: "Mais seguro, porém depende de terceiro e trava o prazo de 24/07." }
+        ],
+        ev: ["jcdecaux", "gaps", "gh934"]
+      },
+      {
+        id: "q_match_evidencias", theme: "identidade", type: "multi",
+        title: "Quais evidências mínimas tornam um match seguro?",
+        ctx: "Sem regra objetiva, cada aprovador decide por intuição.",
+        why: "As evidências mínimas viram critério de sistema: abaixo delas, o match nem é proposto.",
+        options: [
+          { v: "endereco_numero", l: "Endereço + número confirmados em campo", fx: "Âncora textual mínima do vínculo.", rec: true },
+          { v: "gps_proximo", l: "GPS capturado em campo próximo ao Place sugerido", fx: "Âncora geográfica — a base JCDecaux não tem coordenada própria.", rec: true },
+          { v: "placa_foto", l: "Foto da placa de identificação", fx: "Evidência visual conferível depois, no próprio termo.", rec: true },
+          { v: "serial", l: "Número de série legível", fx: "Identificador físico forte, quando visível no ativo." },
+          { v: "modelo_subtipo", l: "Modelo / subtipo compatível", fx: "Ex.: Grimshaw, Grimshaw Duplo, PAL-LI, PAL-LI 2.0, Narrow, Standard." }
+        ],
+        recWhy: "Endereço + GPS + placa formam o tripé mínimo proposto; série e modelo reforçam, mas nem sempre estão visíveis.",
+        ev: ["jcdecaux", "operacoes", "gh934"]
+      },
+      {
+        id: "q_sem_modelo", theme: "identidade", type: "single",
+        title: "O que fazer com os 32 places sem modelo?",
+        ctx: "Operações: 650 places ativos — 435 Standard, 135 Narrow, 48 Sem Publicidade e 32 sem modelo.",
+        why: "Sem modelo não existe parametrização de checklist confiável: ou o ativo trava, ou responde um checklist errado.",
+        options: [
+          { v: "classificar_em_campo", l: "Classificar o modelo na primeira visita e liberar o checklist", fx: "A vistoria começa informando o modelo; o checklist nasce certo para o ativo.", rec: true, recWhy: "Aproveita a ida a campo que já vai acontecer e resolve a lacuna na origem." },
+          { v: "inferir_subtipo", l: "Inferir modelo automaticamente pelo subtipo", fx: "Avança sem intervenção, mas arrisca checklist incorreto para abrigos fora do padrão." },
+          { v: "indefinido_generico", l: "Manter 'indefinido' com checklist genérico", fx: "Simples, porém o termo sai incompleto e exige retrabalho depois." }
+        ],
+        ev: ["operacoes", "gh933"]
+      },
+      {
+        id: "q_atualizacao", theme: "endereco", type: "single",
+        title: "Endereço e GPS confirmados em campo atualizam o Place na hora?",
+        ctx: "A base JCDecaux não traz latitude/longitude, bairro nem CEP — o técnico é a fonte nova.",
+        why: "Endereço e coordenada alimentam rota, matching e o mapa do PDF. Atualizar sem trilha perde a capacidade de auditar uma correção errada.",
+        options: [
+          { v: "proposta_auditavel", l: "Proposta auditável: técnico sugere, backoffice aprova", fx: "Mudança registrada com origem, antes/depois, usuário e data.", rec: true, recWhy: "Foi a recomendação da reunião de 13/07: campo confirma, backoffice aprova." },
+          { v: "imediata", l: "Atualização imediata pelo técnico", fx: "Dado fresco na hora, mas sem trilha de aprovação para reverter erro." }
+        ],
+        ev: ["gaps", "jcdecaux"]
+      },
+      {
+        id: "q_aprovador", theme: "endereco", type: "single",
+        title: "Quem aprova a mudança de endereço / GPS?",
+        ctx: "Vale para o fluxo de proposta auditável que você escolheu.",
+        why: "Sem dono definido, a proposta acumula e o termo sai com dado antigo.",
+        options: [
+          { v: "backoffice_operacoes", l: "Backoffice de Operações", fx: "Já opera o estabelecimento 497 e conhece a base de places.", rec: true, recWhy: "É quem administra os 650 places ativos hoje." },
+          { v: "coordenacao_rj", l: "Coordenação da equipe RJ", fx: "Aprova com contexto local, porém fora da rotina do backoffice." }
+        ],
+        ev: ["operacoes", "gaps"]
+      },
+      {
+        id: "q_sem_aprovacao", theme: "endereco", type: "single",
+        title: "E se a proposta de endereço / GPS não for aprovada?",
+        ctx: "Vale para o fluxo de proposta auditável que você escolheu.",
+        why: "O destino de uma proposta rejeitada precisa estar definido antes, senão a coleta do técnico evapora.",
+        options: [
+          { v: "manter_flag_revisao", l: "Mantém o valor antigo e marca o place para nova conferência", fx: "Nada muda sem aprovação; a divergência fica visível como pendência.", rec: true, recWhy: "Conservador e auditável: a discordância vira tarefa, não dado perdido." },
+          { v: "descartar_coleta", l: "Descarta a coleta do técnico", fx: "Base fica limpa, mas o trabalho de campo se perde." },
+          { v: "aplicar_provisoria", l: "Aplica provisoriamente até alguém contestar", fx: "Dado novo vale logo, porém um valor não aprovado circula no sistema." }
+        ],
+        ev: ["gaps"]
+      },
+      {
+        id: "q_estrutura_checklist", theme: "checklist", type: "single",
+        title: "Um checklist só ou vários?",
+        ctx: "31 campos com regras por tipologia: ex. bancoInstalado e coberturaConforme só existem em Abrigos.",
+        why: "A estrutura define custo de evolução: cada campo novo mexe em uma configuração ou em três.",
+        options: [
+          { v: "parametrizado", l: "Uma configuração parametrizada por modelo", fx: "Um motor de checklist; as regras 'Não se aplica' saem da parametrização.", rec: true, recWhy: "A matriz já é uma tabela tipologia × campo — parametrizar replica isso sem duplicar." },
+          { v: "separados", l: "Checklists separados por tipologia", fx: "Simples de entender, mas 31 campos replicados em três configurações." }
+        ],
+        ev: ["matrix", "gh933"]
+      },
+      {
+        id: "q_amortecedor_difusor", theme: "checklist", type: "single",
+        title: "amortecedor e difusor: Optional ou Obrigatório?",
+        ctx: "Divergência visível: catálogo marca Optional; a matriz revisada marca Obrigatório nas 3 tipologias.",
+        why: "Enquanto a divergência existir, o formulário e a matriz se contradizem — e o aceite do termo fica ambíguo.",
+        options: [
+          { v: "obrigatorio", l: "Obrigatório — a matriz revisada é a fonte da verdade", fx: "Fecha a divergência agora; o checklist cobra os dois campos em todas as tipologias.", rec: true, recWhy: "A matriz revisada na reunião de 13/07 é o documento mais recente e aprovado como referência." },
+          { v: "opcional", l: "Opcional — o catálogo vence", fx: "O técnico pode pular, mas o termo sai sem dados que a matriz espera." },
+          { v: "por_modelo", l: "Obrigatório só para modelos que têm o componente", fx: "Mais preciso, porém exige mapear quais modelos possuem amortecedor / difusor." }
+        ],
+        ev: ["catalog", "matrix"]
+      },
+      {
+        id: "q_sem_ocorrencia", theme: "checklist", type: "single",
+        title: "Como 'Sem ocorrência' convive com as não conformidades?",
+        ctx: "Hoje não existe regra de exclusão / reset — gap marcado como ABERTO.",
+        why: "Sem regra, o técnico pode marcar 'Sem ocorrência' e uma não conformidade ao mesmo tempo, e o termo sai contraditório.",
+        options: [
+          { v: "exclusivo_com_reset", l: "Mutuamente exclusivo: marca limpa ocorrências e fotos da seção", fx: "Uma ação deixa o estado consistente; espelha o uso real em campo.", rec: true, recWhy: "É a proposta levada à reunião: exclusão mútua com reset de respostas e fotos." },
+          { v: "campo_independente", l: "Campo independente, sem reset", fx: "Técnico controla tudo manualmente, mas estados contraditórios ficam possíveis." }
+        ],
+        ev: ["gaps", "catalog"]
+      },
+      {
+        id: "q_gatilho_digital", theme: "digital", type: "single",
+        title: "O que dispara as perguntas digitais em Abrigos?",
+        ctx: "Subtipos incluem Digital/Digital e Híbrido (Digital + Estático); a nota da matriz pede um gatilho objetivo.",
+        why: "Sem gatilho objetivo, a exibição das perguntas digitais depende de quem preenche — e o checklist varia sem regra.",
+        options: [
+          { v: "config_modelo", l: "Configuração do modelo / subtipo no cadastro", fx: "A pergunta nasce do dado do ativo: objetivo e auditável.", rec: true, recWhy: "É a regra proposta na nota da matriz revisada: condicional por subtipo / configuração." },
+          { v: "atributo_place", l: "Atributo 'face digital' no Place", fx: "Funciona se o atributo existir e estiver preenchido para toda a base." },
+          { v: "tecnico_inicio", l: "Técnico responde no início da vistoria", fx: "Flexível, mas subjetivo e fácil de esquecer." }
+        ],
+        ev: ["matrix", "gaps"]
+      },
+      {
+        id: "q_digital_desconhecido", theme: "digital", type: "single",
+        title: "E quando a configuração digital for desconhecida?",
+        ctx: "32 places sem modelo e subtipos ainda pendentes de validação.",
+        why: "O caso indefinido precisa de comportamento padrão, senão a vistoria trava justamente nos ativos com dado mais frágil.",
+        options: [
+          { v: "tratar_estatico_lacuna", l: "Tratar como estático e registrar lacuna de evidência", fx: "A vistoria segue; a lacuna vira tarefa de cadastro.", rec: true, recWhy: "Não bloqueia campo e transforma o desconhecido em pendência visível." },
+          { v: "sempre_digital", l: "Aplicar perguntas digitais sempre", fx: "Nada passa despercebido, mas cansa o técnico em abrigos estáticos." },
+          { v: "bloquear_vistoria", l: "Bloquear a vistoria até a configuração existir", fx: "Dado perfeito, porém campo parado nos ativos indefinidos." }
+        ],
+        ev: ["gaps", "operacoes"]
+      },
+      {
+        id: "q_foto_baseline", theme: "fotos", type: "multi",
+        title: "Quais slots de foto formam o baseline obrigatório?",
+        ctx: "TERM-72 usa: frontal, traseira, laterais, placa, série + fotos diversas até 10 + mapa.",
+        why: "O baseline define o mínimo para o termo ser aceito; slots demais encarecem a visita, de menos enfraquecem a evidência.",
+        options: [
+          { v: "frontal", l: "Foto frontal", fx: "Vista principal do mobiliário.", rec: true },
+          { v: "traseira", l: "Foto traseira", fx: "Porta, fixações e acesso interno.", rec: true },
+          { v: "lateral_esquerda", l: "Foto lateral esquerda", fx: "Completa a leitura externa do ativo.", rec: true },
+          { v: "lateral_direita", l: "Foto lateral direita", fx: "Completa a leitura externa do ativo.", rec: true },
+          { v: "placa", l: "Foto da placa de identificação", fx: "Vínculo visual com o Place.", rec: true },
+          { v: "serie", l: "Foto do número de série", fx: "Identificador físico do ativo.", rec: true }
+        ],
+        recWhy: "É exatamente o baseline do golden master TERM-72 — manter os 6 slots preserva o aceite atual.",
+        ev: ["term72", "gaps"]
+      },
+      {
+        id: "q_foto_nao_conformidade", theme: "fotos", type: "single",
+        title: "Quando a foto vira obrigatória?",
+        ctx: "Regra proposta no catálogo para os 31 campos: foto quando a resposta indicar não conformidade.",
+        why: "Não conformidade sem foto é retrabalho garantido: alguém vai precisar voltar ao ativo para comprovar.",
+        options: [
+          { v: "toda_nao_conformidade", l: "Em qualquer não conformidade marcada", fx: "Cada 'não conforme' exige foto; a regra vale para as três seções.", rec: true, recWhy: "É a regra sugerida em todos os campos do catálogo revisado." },
+          { v: "so_estrutura", l: "Só na seção A (estrutura / vidros)", fx: "Menos fotos, porém não conformidades elétricas e internas ficam sem evidência." },
+          { v: "opcional", l: "Continua opcional", fx: "Nenhuma mudança — o gap permanece aberto." }
+        ],
+        ev: ["catalog", "gaps"]
+      },
+      {
+        id: "q_teto_fotos", theme: "fotos", type: "single",
+        title: "Qual é o teto de imagens por termo?",
+        ctx: "TERM-72 acomoda 10 fotos + mapa; a matriz menciona até 14 imagens.",
+        why: "O teto precisa caber no layout aprovado do PDF — mudar o teto sem validar o layout quebra o golden master.",
+        options: [
+          { v: "dez_mais_mapa", l: "Até 10 fotos + mapa (padrão TERM-72)", fx: "Cabe no layout atual do golden master sem redesenho.", rec: true, recWhy: "É o padrão já aprovado no documento de referência." },
+          { v: "quatorze", l: "Até 14 imagens (referência da matriz)", fx: "Mais evidência, porém exige validar espaço no layout do PDF antes." }
+        ],
+        ev: ["term72", "matrix"]
+      },
+      {
+        id: "q_golden_master", theme: "pdf", type: "single",
+        title: "O TERM-72 v002 é o golden master do PDF?",
+        ctx: "O modelo aprovado tem emitente, data/hora, técnico, mobiliário/modelo/contrato, lat/long, checklist, fotos, mapa e comentários.",
+        why: "O aceite do PDF precisa de um alvo único e congelado; sem isso, cada revisão compara contra algo diferente.",
+        options: [
+          { v: "sim_congelado", l: "Sim — preservar o layout aprovado", fx: "Aceite vira comparação visual contra um alvo único e estável.", rec: true, recWhy: "O documento já passou por aprovação; mudar o alvo aumenta o risco de reprovar o que estava aceito." },
+          { v: "sim_com_ajustes", l: "Sim, mas aceitar ajustes pontuais", fx: "Permite corrigir detalhes, porém o alvo fica parcialmente móvel." },
+          { v: "redesenhar", l: "Redesenhar do zero", fx: "Maior prazo e risco de reprovar o que já foi aprovado." }
+        ],
+        ev: ["term72", "gaps"]
+      },
+      {
+        id: "q_geracao", theme: "pdf", type: "single",
+        title: "Como o PDF é gerado?",
+        ctx: "Geração assíncrona em fila foi proposta na reunião (Wayfinder #935).",
+        why: "PDF com mapa e até 14 imagens é pesado; síncrono em rede móvel ruim trava o técnico no fim da visita.",
+        options: [
+          { v: "assincrona_fila", l: "Assíncrona em fila", fx: "Técnico finaliza e segue a rota; o PDF é processado depois.", rec: true, recWhy: "É a proposta do Wayfinder #935 e desloca a falha de processamento para fora do campo." },
+          { v: "sincrona", l: "Síncrona ao finalizar", fx: "PDF imediato, mas falha de rede ou de render trava o fluxo do técnico." }
+        ],
+        ev: ["gh935", "gaps"]
+      },
+      {
+        id: "q_momento", theme: "pdf", type: "single",
+        title: "Em que momento o PDF é gerado?",
+        ctx: "Há dados que podem passar por aprovação do backoffice após a visita.",
+        why: "Define se o termo reflete a coleta bruta de campo ou o dado já aprovado — e quantas versões existem por ativo.",
+        options: [
+          { v: "ao_finalizar", l: "Ao finalizar a vistoria em campo", fx: "O termo espelha exatamente o que o técnico viu e registrou.", rec: true, recWhy: "Mantém o termo como evidência de campo; correções aprovadas geram nova versão, sem apagar a original." },
+          { v: "apos_aprovacao", l: "Após aprovação do backoffice", fx: "O termo já nasce com dado aprovado, mas só existe depois da fila humana." },
+          { v: "sob_demanda", l: "Sob demanda", fx: "Economiza processamento, porém o termo pode não existir quando for pedido." }
+        ],
+        ev: ["gh935", "term72"]
+      },
+      {
+        id: "q_versao", theme: "pdf", type: "single",
+        title: "Se o termo for regenerado, o que acontece com a versão anterior?",
+        ctx: "O termo aprovado é evidência — inclusive jurídica — do estado do ativo.",
+        why: "Regenerar sobrescrevendo apaga o histórico; versionar preserva a trilha de evidência.",
+        options: [
+          { v: "versionar_historico", l: "Nova versão numerada, histórico preservado", fx: "Cada regeneração cria v00X; versões anteriores ficam consultáveis.", rec: true, recWhy: "Combina com o padrão do próprio golden master (TERM-72 v002)." },
+          { v: "sobrescrever", l: "Sobrescrever a última versão", fx: "Simples, mas elimina o registro anterior do estado do ativo." }
+        ],
+        ev: ["term72"]
+      },
+      {
+        id: "q_mapa_fallback", theme: "pdf", type: "single",
+        title: "E o mapa quando não há coordenada confiável?",
+        ctx: "A base JCDecaux não tem lat/long; o requisito atual pede render satélite a partir do GPS confirmado em campo.",
+        why: "Nem toda visita vai sair com GPS bom; o comportamento padrão precisa estar decidido antes de virar erro em produção.",
+        options: [
+          { v: "termo_sem_mapa_aviso", l: "Termo sai sem mapa + aviso de lacuna", fx: "O endereço textual segue como evidência; o mapa vira pendência explícita.", rec: true, recWhy: "Não bloqueia a entrega e registra a lacuna — a nota antiga já dizia para não confiar em coordenada de terceiros." },
+          { v: "bloquear_pdf", l: "Bloquear o PDF até existir GPS", fx: "Todo termo nasce completo, porém a visita sem sinal não gera documento." },
+          { v: "geocodificar_endereco", l: "Mapa gerado pelo endereço geocodificado", fx: "Cobre a lacuna automaticamente, mas a divergência de geocodificação volta pela janela." }
+        ],
+        ev: ["gaps", "jcdecaux"]
+      },
+      {
+        id: "q_etapas", theme: "rollout", type: "single",
+        title: "Qual é o caminho de rollout?",
+        ctx: "Proposta: dev → homologação → campo controlado.",
+        why: "Cada etapa extra é um portão de qualidade — e também tempo. O caminho precisa caber no prazo de 24/07.",
+        options: [
+          { v: "tres_etapas", l: "dev → homologação → campo controlado", fx: "Portões claros; o campo controlado usa um Abrigo JCDecaux real.", rec: true, recWhy: "É o desenho proposto na reunião e casa com o corte de validação recomendado." },
+          { v: "duas_etapas", l: "dev → campo", fx: "Mais rápido, mas sem etapa de homologação antes do técnico real." },
+          { v: "direto_campo", l: "Direto para campo", fx: "Máxima velocidade, mínimo controle." }
+        ],
+        ev: ["gaps", "gh931"]
+      },
+      {
+        id: "q_aceite", theme: "rollout", type: "multi",
+        title: "O que compõe o aceite da primeira entrega?",
+        ctx: "Critérios viram a definição de pronto do agent-loop de implementação.",
+        why: "Sem critérios explícitos, o aceite vira opinião — e cada parte espera uma coisa diferente.",
+        options: [
+          { v: "pdf_fiel_golden", l: "PDF fiel ao golden master TERM-72", fx: "Comparação visual contra o documento aprovado.", rec: true },
+          { v: "campos_31", l: "31 campos respeitando 'Não se aplica' por tipologia", fx: "A matriz revisada inteira respondida corretamente.", rec: true },
+          { v: "trilha_endereco_gps", l: "Endereço / GPS com trilha auditável", fx: "Origem, antes/depois, usuário e data registrados.", rec: true },
+          { v: "regra_fotos", l: "Regra de foto por não conformidade funcionando", fx: "Toda não conformidade gera foto obrigatória.", rec: true },
+          { v: "sem_regressao_vistoria", l: "Sem regressão na Vistoria de Ruas", fx: "O fluxo existente continua funcionando para os demais checklists." },
+          { v: "coorte_clear_channel", l: "Coorte Clear Channel identificada", fx: "Narrow / Standard / B Simples distinguíveis no fluxo (#934)." }
+        ],
+        recWhy: "Os quatro primeiros cobrem PDF, matriz, dado geográfico e evidência — o núcleo do termo; os dois últimos são reforço.",
+        ev: ["gh931", "gh932", "gh933", "gh934", "gh935"]
+      },
+      {
+        id: "q_go_nogo", theme: "rollout", type: "single",
+        title: "Qual é a condição GO / NO-GO?",
+        ctx: "O GO libera a parametrização das demais tipologias.",
+        why: "Uma condição binária e testável evita que o rollout avance por inércia com pendências abertas.",
+        options: [
+          { v: "um_abrigo_e2e", l: "1 Abrigo JCDecaux aprovado ponta a ponta em homologação", fx: "O menor sinal de que o fluxo inteiro funciona com dado real.", rec: true, recWhy: "Espelha o corte de validação recomendado: um ativo real, do match ao PDF." },
+          { v: "tres_ativos", l: "3+ ativos aprovados (um por tipologia)", fx: "Sinal mais amplo, porém o GO fica mais distante no prazo." },
+          { v: "signoff_backoffice", l: "Sign-off formal do backoffice", fx: "Decisão humana explícita, mas sem critério técnico objetivo." }
+        ],
+        ev: ["gaps", "gh931"]
+      },
+      {
+        id: "q_riscos", theme: "riscos", type: "text", optional: true,
+        title: "Algum risco ou decisão que este grill não cobriu?",
+        ctx: "Campo livre — entra no JSON como nota. Pode ficar em branco.",
+        why: "Decisões não cobertas aqui viram surpresa no agent-loop; melhor registrá-las agora.",
+        placeholder: "Ex.: dependência de terceiro, prazo, dado que falta, regra de negócio pendente...",
+        ev: ["gaps"]
+      }
+    ];
+
+    function themeLabel(id) {
+      for (var i = 0; i < THEMES.length; i++) if (THEMES[i].id === id) return THEMES[i].l;
+      return id;
+    }
+
+    function evalShow(q, answers) {
+      if (q.id === "q_paralelo_just") {
+        var s = answers["q_superficie"];
+        return !!s && s.value === "fluxo_paralelo";
+      }
+      if (q.id === "q_aprovador" || q.id === "q_sem_aprovacao") {
+        var a = answers["q_atualizacao"];
+        return !!a && a.value === "proposta_auditavel";
+      }
+      return true;
+    }
+
+    function visibleQuestions(answers) {
+      return QUESTIONS.filter(function (q) { return evalShow(q, answers); });
+    }
+
+    function skippedIds(answers) {
+      return QUESTIONS.filter(function (q) { return !evalShow(q, answers); }).map(function (q) { return q.id; });
+    }
+
+    function isAnswered(id, answers) {
+      var a = answers[id];
+      if (!a) return false;
+      if (Array.isArray(a.value)) return a.value.length > 0;
+      if (a.value === "texto_livre") return String(a.notes || "").trim().length > 0;
+      return true;
+    }
+
+    function unresolvedIds(answers) {
+      var out = [];
+      visibleQuestions(answers).forEach(function (q) {
+        var a = answers[q.id];
+        if (!isAnswered(q.id, answers)) {
+          if (!q.optional) out.push(q.id);
+          return;
+        }
+        if (Array.isArray(a.value)) {
+          if (a.value.indexOf("outro") !== -1) out.push(q.id);
+        } else if (a.value === "outro") {
+          out.push(q.id);
+        }
+      });
+      return out;
+    }
+
+    function buildExport(answers) {
+      var vis = visibleQuestions(answers);
+      var answeredIds = vis.filter(function (q) { return isAnswered(q.id, answers); }).map(function (q) { return q.id; });
+      var unr = unresolvedIds(answers);
+      var ans = {};
+      answeredIds.forEach(function (id) { ans[id] = answers[id]; });
+      return {
+        schemaVersion: SCHEMA_VERSION,
+        artifact: ARTIFACT,
+        generatedAt: new Date().toISOString(),
+        completion: { answered: answeredIds.length, total: vis.length, unresolved: unr.length },
+        answers: ans,
+        skipped: skippedIds(answers).map(function (id) { return { id: id, reason: "branch_not_applicable" }; }),
+        unresolved: unr,
+        evidenceRefs: EVIDENCE
+      };
+    }
+    /*PURE-END*/
+
+    var state = { answers: {}, cur: "intro", savedAt: null };
+
+    function $(sel) { return document.querySelector(sel); }
+    function el(tag, attrs, children) {
+      var n = document.createElement(tag);
+      if (attrs) {
+        Object.keys(attrs).forEach(function (k) {
+          if (k === "class") n.className = attrs[k];
+          else if (k === "html") n.innerHTML = attrs[k];
+          else if (k === "text") n.textContent = attrs[k];
+          else if (k.indexOf("on") === 0) n.addEventListener(k.slice(2), attrs[k]);
+          else if (attrs[k] !== null && attrs[k] !== undefined && attrs[k] !== false) n.setAttribute(k, attrs[k] === true ? "" : attrs[k]);
+        });
+      }
+      (children || []).forEach(function (c) {
+        if (c == null) return;
+        n.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+      });
+      return n;
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function showToast(msg) {
+      var t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("visible");
+      clearTimeout(t._h);
+      t._h = setTimeout(function () { t.classList.remove("visible"); }, 2200);
+    }
+
+    function announce(msg) { $("#live").textContent = msg; }
+
+    function save() {
+      try {
+        state.savedAt = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers: state.answers, cur: state.cur, savedAt: state.savedAt }));
+        var f = $("#saveFlag");
+        if (f) {
+          var d = f.querySelector(".dot");
+          f.querySelector("span").textContent = "Salvo neste dispositivo · " + fmtTime(state.savedAt);
+          d.classList.remove("pulse");
+          void d.offsetWidth;
+          d.classList.add("pulse");
+        }
+      } catch (e) { /* armazenamento indisponível */ }
+    }
+
+    function load() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        var data = JSON.parse(raw);
+        if (!data || typeof data.answers !== "object") return false;
+        state.answers = data.answers || {};
+        state.savedAt = data.savedAt || null;
+        state.cur = data.cur || "intro";
+        return Object.keys(state.answers).length > 0;
+      } catch (e) { return false; }
+    }
+
+    function resetAll() {
+      if (!window.confirm("Recomeçar do zero? As respostas salvas neste dispositivo serão apagadas.")) return;
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      state = { answers: {}, cur: "intro", savedAt: null };
+      render();
+      showToast("Respostas apagadas. Grill reiniciado.");
+    }
+
+    function fmtTime(iso) {
+      if (!iso) return "";
+      var d = new Date(iso);
+      return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    }
+
+    function visList() { return visibleQuestions(state.answers); }
+
+    function gotoCur(cur) {
+      state.cur = cur;
+      save();
+      render();
+      window.scrollTo({ top: 0 });
+    }
+
+    function navBar(leftLabel, onLeft, rightLabel, onRight, rightClass) {
+      var inner = el("div", { class: "nav-inner" });
+      if (leftLabel) inner.appendChild(el("button", { class: "btn ghost small", type: "button", onclick: onLeft, text: leftLabel }));
+      if (rightLabel) inner.appendChild(el("button", { class: "btn " + (rightClass || "primary") + " small", type: "button", onclick: onRight, text: rightLabel }));
+      return el("nav", { class: "nav-bar" }, [inner]);
+    }
+
+    /* ---------- Tela: introdução ---------- */
+    function renderIntro(hasSaved) {
+      var app = $("#app");
+      app.innerHTML = "";
+
+      var hero = el("header", { class: "doc-hero rise" }, [
+        el("div", { class: "doc-top" }, [
+          el("span", { text: "ELETROMIDIA · OPERAÇÕES" }),
+          el("span", { html: "GRILL <b>Nº 001</b> · REV 00" })
+        ]),
+        el("span", { class: "eyebrow", text: "Grill de decisões · pré-implementação" }),
+        el("h1", { html: "Termo de<br>Arrolamento <em>RJ</em>" }),
+        el("div", { class: "doc-meta" }, [
+          el("span", { class: "meta-chip", html: "<b>10</b> temas" }),
+          el("span", { class: "meta-chip", html: "<b>27</b> decisões" }),
+          el("span", { class: "meta-chip", html: "~<b>7</b> min" }),
+          el("span", { class: "meta-chip", text: "1 pergunta por tela" })
+        ])
+      ]);
+      app.appendChild(hero);
+
+      var stats = el("section", { class: "stats rise rise-1", "aria-label": "Números do contexto" }, [
+        el("div", { class: "stat" }, [el("b", { text: "2.108" }), el("span", { text: "linhas na base JCDecaux" })]),
+        el("div", { class: "stat" }, [el("b", { text: "650" }), el("span", { text: "places ativos (est. 497)" })]),
+        el("div", { class: "stat" }, [el("b", { text: "31" }), el("span", { text: "campos · 3 seções · 7 novos" })]),
+        el("div", { class: "stat" }, [el("b", { text: "32" }), el("span", { text: "places sem modelo" })])
+      ]);
+      app.appendChild(stats);
+
+      var c1 = el("section", { class: "clause c-green rise rise-2" }, [
+        el("div", { class: "k" }, [el("i", { text: "01" }), el("span", { text: "O que já está decidido" })]),
+        el("h2", { text: "Este grill não reabre o que a reunião fechou" }),
+        el("ul", {}, [
+          el("li", { text: "Escopo: MUPIs, Relógios e Abrigos — placas e orientação urbana fora desta entrega." }),
+          el("li", { text: "Nada de módulo novo: Place canônico + my-route/street-route + checklist existente." }),
+          el("li", { text: "Matriz revisada com 31 campos em 3 seções, incluindo os 7 campos adicionados." }),
+          el("li", { text: "A base JCDecaux serve para matching, não para carga cega." }),
+          el("li", { text: "O modelo TERM-72 v002 é a referência do PDF aprovado." })
+        ])
+      ]);
+      app.appendChild(c1);
+
+      var chips = el("div", { class: "theme-chips" });
+      THEMES.forEach(function (t) { chips.appendChild(el("span", { class: "theme-chip", text: t.l })); });
+      var c2 = el("section", { class: "clause c-purple rise rise-3" }, [
+        el("div", { class: "k" }, [el("i", { text: "02" }), el("span", { text: "O que você vai responder" })]),
+        el("h2", { text: "10 temas, uma pergunta por tela" }),
+        el("p", { text: "Cada decisão mostra a recomendação com o motivo, a consequência de cada opção e as evidências em accordion. Dá para marcar 'Outro / preciso de mais contexto' em qualquer pergunta." }),
+        chips
+      ]);
+      app.appendChild(c2);
+
+      var c3 = el("section", { class: "clause c-orange rise rise-4" }, [
+        el("div", { class: "k" }, [el("i", { text: "03" }), el("span", { text: "O que acontece com as respostas" })]),
+        el("h2", { text: "Você exporta um JSON e cola de volta no chat" }),
+        el("p", { text: "No fim, um JSON com schema versionado (1.0) reúne respostas, itens pulados por branching, pendências e referências de evidência. Ele vira input do agent-loop de implementação. Tudo fica salvo apenas neste dispositivo." })
+      ]);
+      app.appendChild(c3);
+
+      var actions = el("div", { class: "intro-actions rise rise-5" });
+      if (hasSaved) {
+        actions.appendChild(el("button", {
+          class: "btn primary block", type: "button",
+          text: "Continuar de onde parou" + (state.savedAt ? " (salvo às " + fmtTime(state.savedAt) + ")" : ""),
+          onclick: function () { resumeFromSaved(); }
+        }));
+        actions.appendChild(el("button", { class: "btn ghost block", type: "button", text: "Recomeçar do zero", onclick: function () {
+          if (window.confirm("Recomeçar do zero? As respostas salvas neste dispositivo serão apagadas.")) {
+            try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+            state = { answers: {}, cur: "intro", savedAt: null };
+            render();
+          }
+        } }));
+      } else {
+        actions.appendChild(el("button", { class: "btn primary block", type: "button", text: "Começar o grill", onclick: function () { gotoCur(0); } }));
+      }
+      app.appendChild(actions);
+
+      app.appendChild(el("p", { class: "foot-note rise rise-6", text: "100% neste dispositivo · sem backend · sem dependências externas" }));
+      announce("Grill de decisões do Termo de Arrolamento RJ. " + (hasSaved ? "Existe progresso salvo. Use Continuar para retomar." : "Use Começar para iniciar."));
+    }
+
+    function resumeFromSaved() {
+      var vis = visList();
+      if (state.cur === "review") { gotoCur("review"); return; }
+      if (typeof state.cur === "number" && state.cur >= 0 && state.cur < vis.length) { gotoCur(state.cur); return; }
+      gotoCur(0);
+    }
+
+    /* ---------- Tela: pergunta ---------- */
+    function outroChecked(q) {
+      var a = state.answers[q.id];
+      if (!a) return false;
+      return Array.isArray(a.value) ? a.value.indexOf("outro") !== -1 : a.value === "outro";
+    }
+
+    function renderQuestion(idx) {
+      var vis = visList();
+      var q = vis[idx];
+      var app = $("#app");
+      app.innerHTML = "";
+
+      var answeredCount = vis.filter(function (x) { return isAnswered(x.id, state.answers); }).length;
+      var pct = Math.round((answeredCount / vis.length) * 100);
+      var remaining = Math.max(1, Math.ceil((vis.length - idx) * 0.25));
+
+      var head = el("div", { class: "q-head" }, [
+        el("div", { class: "q-head-row" }, [
+          el("span", { class: "q-count", html: "Pergunta <b>" + (idx + 1) + "</b> de " + vis.length }),
+          el("span", { class: "save-flag", id: "saveFlag" }, [
+            el("span", { class: "dot" }),
+            el("span", { text: state.savedAt ? "Salvo neste dispositivo · " + fmtTime(state.savedAt) : "Salvo neste dispositivo" })
+          ])
+        ]),
+        el("div", { class: "q-bar" }, [el("i", { id: "barFill", style: "width:" + pct + "%" })]),
+        el("div", { class: "q-head-row", style: "margin-top:8px;margin-bottom:0" }, [
+          el("span", { class: "q-eta", text: "~" + remaining + " min restantes" }),
+          el("span", { class: "q-eta", id: "answeredCount", text: answeredCount + " de " + vis.length + " respondidas" })
+        ])
+      ]);
+      app.appendChild(head);
+
+      app.appendChild(el("span", { class: "q-theme-pill", text: themeLabel(q.theme) }));
+
+      var fieldset = el("fieldset", { class: "q-field" });
+      var legend = el("legend", { class: "q-title", id: "qTitle", tabindex: "-1", text: q.title });
+      fieldset.appendChild(legend);
+      app.appendChild(fieldset);
+
+      if (q.ctx) fieldset.appendChild(el("p", { class: "q-ctx", text: q.ctx }));
+
+      if (q.why) {
+        fieldset.appendChild(el("details", { class: "aux" }, [
+          el("summary", { text: "Por que isso importa?" }),
+          el("div", { class: "aux-body" }, [el("p", { text: q.why })])
+        ]));
+      }
+
+      if (q.ev && q.ev.length) {
+        var evList = el("ul", {});
+        q.ev.forEach(function (eid) {
+          var e = null;
+          for (var i = 0; i < EVIDENCE.length; i++) if (EVIDENCE[i].id === eid) e = EVIDENCE[i];
+          if (!e) return;
+          evList.appendChild(el("li", {}, [
+            el("strong", { text: e.label + " " }),
+            el("span", { class: "ev-src", text: e.source })
+          ]));
+        });
+        fieldset.appendChild(el("details", { class: "aux" }, [
+          el("summary", { text: "Ver evidências" }),
+          el("div", { class: "aux-body" }, [evList])
+        ]));
+      }
+
+      var optsWrap = el("div", { class: "opts", role: "presentation" });
+
+      function refreshCounter() {
+        var vis2 = visList();
+        var c = vis2.filter(function (x) { return isAnswered(x.id, state.answers); }).length;
+        var bar = $("#barFill");
+        if (bar) bar.style.width = Math.round((c / vis2.length) * 100) + "%";
+        var ac = $("#answeredCount");
+        if (ac) ac.textContent = c + " de " + vis2.length + " respondidas";
+      }
+
+      function toggleNote(open) {
+        var nb = $("#noteBox");
+        if (!nb) return;
+        nb.classList.toggle("open", open);
+        if (open) {
+          var ta = nb.querySelector("textarea");
+          if (ta) setTimeout(function () { ta.focus(); }, 60);
+        }
+      }
+
+      function noteBox(q2) {
+        var a = state.answers[q2.id] || {};
+        var box = el("div", { class: "note-box" + (outroChecked(q2) ? " open" : ""), id: "noteBox" }, [
+          el("label", { for: "noteTa", text: "Observação curta (o que falta para decidir?)" })
+        ]);
+        var ta = el("textarea", {
+          id: "noteTa", maxlength: "280",
+          placeholder: "Ex.: preciso confirmar com a área responsável antes de fechar..."
+        });
+        ta.value = (a.notes && !Array.isArray(a.value)) ? a.notes : (a.notes || "");
+        ta.addEventListener("input", function () {
+          var ans = state.answers[q2.id];
+          if (ans) { ans.notes = ta.value; save(); }
+        });
+        box.appendChild(ta);
+        box.appendChild(el("p", { class: "char-hint", text: "máx. 280 caracteres · entra no campo notes do JSON" }));
+        return box;
+      }
+
+      if (q.type === "text") {
+        var a0 = state.answers[q.id];
+        var ta0 = el("textarea", {
+          id: "freeTa", maxlength: "600",
+          placeholder: q.placeholder || "Escreva aqui..."
+        });
+        if (a0 && a0.notes) ta0.value = a0.notes;
+        var tHint = el("p", { class: "char-hint", id: "freeHint", text: (a0 && a0.notes ? a0.notes.length : 0) + "/600" + (q.optional ? " · opcional" : "") });
+        ta0.addEventListener("input", function () {
+          var v = ta0.value;
+          if (v.trim().length > 0) {
+            state.answers[q.id] = { value: "texto_livre", label: "Resposta livre registrada", recommended: true, notes: v };
+          } else {
+            delete state.answers[q.id];
+          }
+          tHint.textContent = v.length + "/600" + (q.optional ? " · opcional" : "");
+          save();
+          refreshCounter();
+        });
+        fieldset.appendChild(el("div", { class: "opts" }, [ta0, tHint]));
+      } else {
+        var opts = q.options.slice();
+        opts.push(OUTRO);
+
+        opts.forEach(function (o, oi) {
+          var inputType = q.type === "multi" ? "checkbox" : "radio";
+          var input = el("input", {
+            type: inputType, name: q.id, id: q.id + "_" + o.v, value: o.v
+          });
+
+          var current = state.answers[q.id];
+          var checked = false;
+          if (current) {
+            checked = Array.isArray(current.value) ? current.value.indexOf(o.v) !== -1 : current.value === o.v;
+          }
+          if (checked) input.checked = true;
+
+          var label = el("label", { class: "opt rise rise-" + Math.min(oi + 1, 6) + (checked ? " sel" : ""), for: q.id + "_" + o.v });
+
+          var box = el("span", { class: "box " + (q.type === "multi" ? "check" : "radio"), "aria-hidden": "true" });
+          label.appendChild(input);
+          label.appendChild(box);
+
+          var body = el("span", {});
+          if (o.rec) body.appendChild(el("span", { class: "rec", text: "Nossa recomendação" }));
+          body.appendChild(el("span", { class: "l", text: o.l }));
+          if (o.fx) body.appendChild(el("span", { class: "fx", text: o.fx }));
+          if (o.rec && o.recWhy) body.appendChild(el("span", { class: "rec-why", text: o.recWhy }));
+          if (o.rec && q.type === "multi" && q.recWhy) body.appendChild(el("span", { class: "rec-why", text: q.recWhy }));
+          label.appendChild(body);
+
+          input.addEventListener("change", function () {
+            if (q.type === "single") {
+              state.answers[q.id] = {
+                value: o.v,
+                label: o.l,
+                recommended: !!o.rec,
+                notes: o.v === "outro" ? (state.answers[q.id] && state.answers[q.id].notes) || "" : ""
+              };
+              optsWrap.querySelectorAll(".opt").forEach(function (n) { n.classList.remove("sel"); });
+              label.classList.add("sel");
+              toggleNote(o.v === "outro");
+            } else {
+              var prev = state.answers[q.id];
+              var vals = prev && Array.isArray(prev.value) ? prev.value.slice() : [];
+              var pos = vals.indexOf(o.v);
+              if (input.checked) { if (pos === -1) vals.push(o.v); }
+              else { if (pos !== -1) vals.splice(pos, 1); }
+              if (vals.length === 0) {
+                delete state.answers[q.id];
+              } else {
+                var labels = [];
+                var recSet = q.options.filter(function (x) { return x.rec; }).map(function (x) { return x.v; });
+                opts.forEach(function (x) { if (vals.indexOf(x.v) !== -1) labels.push(x.l); });
+                var exactRec = vals.length === recSet.length && recSet.every(function (v) { return vals.indexOf(v) !== -1; });
+                state.answers[q.id] = {
+                  value: vals,
+                  label: labels.join(" + "),
+                  recommended: exactRec,
+                  notes: vals.indexOf("outro") !== -1 ? (prev && prev.notes) || "" : ""
+                };
+              }
+              label.classList.toggle("sel", input.checked);
+              toggleNote(vals.indexOf("outro") !== -1);
+            }
+            save();
+            refreshCounter();
+          });
+
+          optsWrap.appendChild(label);
+        });
+
+        fieldset.appendChild(optsWrap);
+        fieldset.appendChild(noteBox(q));
+      }
+
+      var isLast = idx === vis.length - 1;
+      var bar = navBar(
+        idx === 0 ? "← Resumo" : "← Anterior",
+        function () { gotoCur(idx === 0 ? "intro" : idx - 1); },
+        isLast ? "Revisar respostas →" : "Próxima →",
+        function () { gotoCur(isLast ? "review" : idx + 1); }
+      );
+      app.appendChild(bar);
+
+      announce("Pergunta " + (idx + 1) + " de " + vis.length + ". Tema: " + themeLabel(q.theme) + ". " + q.title);
+      setTimeout(function () { legend.focus({ preventScroll: false }); }, 80);
+    }
+
+    /* ---------- Tela: revisão ---------- */
+    function copyText(text, okMsg) {
+      function fallback() {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        showToast(ok ? okMsg : "Não foi possível copiar — use Baixar .json");
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { showToast(okMsg); }, fallback);
+      } else {
+        fallback();
+      }
+    }
+
+    function downloadJson(text) {
+      var blob = new Blob([text], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "termo-arrolamento-rj-decisoes.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 800);
+      showToast("Download iniciado: termo-arrolamento-rj-decisoes.json");
+    }
+
+    function promptText(payload) {
+      return "Aqui estão minhas decisões do grill do Termo de Arrolamento RJ (schema " + payload.schemaVersion + "): " +
+        payload.completion.answered + "/" + payload.completion.total + " respondidas, " +
+        payload.completion.unresolved + " pendente(s), " + payload.skipped.length + " item(ns) fora do caminho escolhido.\n\n" +
+        JSON.stringify(payload, null, 2);
+    }
+
+    function renderReview() {
+      var vis = visList();
+      var unr = unresolvedIds(state.answers);
+      var offRec = vis.filter(function (q) {
+        var a = state.answers[q.id];
+        return a && isAnswered(q.id, state.answers) && a.recommended === false && a.value !== "outro" &&
+          !(Array.isArray(a.value) && a.value.indexOf("outro") !== -1);
+      });
+      var skipped = skippedIds(state.answers);
+      var payload = buildExport(state.answers);
+
+      var app = $("#app");
+      app.innerHTML = "";
+
+      app.appendChild(el("div", { class: "rev-head rise" }, [
+        el("span", { class: "q-theme-pill", text: "Revisão final" }),
+        el("h2", { text: "Confira por tema antes de exportar" }),
+        el("p", { text: "Toque em Editar para ajustar qualquer resposta. Pendências e escolhas fora da recomendação ficam destacadas — sem julgamento, só sinalização." })
+      ]));
+
+      app.appendChild(el("div", { class: "rev-counters rise rise-1" }, [
+        el("div", { class: "rev-counter ok" }, [el("b", { text: String(payload.completion.answered) }), el("span", { text: "respondidas" })]),
+        el("div", { class: "rev-counter pend" }, [el("b", { text: String(payload.completion.unresolved) }), el("span", { text: "pendências" })]),
+        el("div", { class: "rev-counter off" }, [el("b", { text: String(offRec.length) }), el("span", { text: "fora da reco." })])
+      ]));
+
+      THEMES.forEach(function (t, ti) {
+        var qs = vis.filter(function (q) { return q.theme === t.id; });
+        if (!qs.length) return;
+        var group = el("section", { class: "rev-group rise rise-" + Math.min(ti + 1, 6) });
+        group.appendChild(el("h3", { text: t.l }));
+        qs.forEach(function (q) {
+          var a = state.answers[q.id];
+          var answered = isAnswered(q.id, state.answers);
+          var row = el("div", { class: "rev-row" });
+          row.appendChild(el("p", { class: "q", text: q.title }));
+
+          var badges = el("div", { class: "rev-badges" });
+          var isOutro = answered && (a.value === "outro" || (Array.isArray(a.value) && a.value.indexOf("outro") !== -1));
+          if (!answered) {
+            badges.appendChild(el("span", { class: "badge " + (q.optional ? "skip" : "pend"), text: q.optional ? "Opcional em branco" : "Pendente" }));
+          } else if (isOutro) {
+            badges.appendChild(el("span", { class: "badge outro", text: "Precisa de mais contexto" }));
+          } else if (a.recommended === false) {
+            badges.appendChild(el("span", { class: "badge off", text: "Fora da recomendação" }));
+          } else {
+            badges.appendChild(el("span", { class: "badge ok", text: "Decidido" }));
+          }
+          row.appendChild(badges);
+
+          if (answered) {
+            row.appendChild(el("p", { class: "a", text: Array.isArray(a.value) ? a.label : (a.value === "texto_livre" ? "Resposta livre registrada" : a.label) }));
+            if (a.notes && String(a.notes).trim()) row.appendChild(el("p", { class: "n", text: "Nota: " + a.notes }));
+          } else {
+            row.appendChild(el("p", { class: "a", text: "Sem resposta registrada." }));
+          }
+
+          row.appendChild(el("button", {
+            class: "rev-edit", type: "button", text: "Editar",
+            onclick: function () {
+              var list = visList();
+              for (var i = 0; i < list.length; i++) {
+                if (list[i].id === q.id) { gotoCur(i); return; }
+              }
+            }
+          }));
+          group.appendChild(row);
+        });
+        app.appendChild(group);
+      });
+
+      if (skipped.length) {
+        var names = skipped.map(function (id) {
+          for (var i = 0; i < QUESTIONS.length; i++) if (QUESTIONS[i].id === id) return QUESTIONS[i].title;
+          return id;
+        });
+        app.appendChild(el("div", { class: "rev-skipped rise" }, [
+          el("h3", { text: "Não se aplicaram pelo caminho escolhido (" + skipped.length + ")" }),
+          el("p", { text: names.join(" · ") })
+        ]));
+      }
+
+      var jsonStr = JSON.stringify(payload, null, 2);
+
+      var exportCard = el("section", { class: "export-card rise" }, [
+        el("h3", { text: "Exportar decisões" }),
+        el("p", { text: "JSON com schema " + SCHEMA_VERSION + ": respostas, itens pulados, pendências, notas e evidências. Sem dados pessoais." })
+      ]);
+      var actions = el("div", { class: "export-actions" }, [
+        el("button", { class: "btn sun block", type: "button", text: "Copiar JSON", onclick: function () { copyText(JSON.stringify(payload, null, 2), "JSON copiado — cole de volta no chat."); } }),
+        el("button", { class: "btn flame block", type: "button", text: "Copiar prompt + JSON", onclick: function () { copyText(promptText(payload), "Prompt + JSON copiados — cole no Hermes."); } }),
+        el("button", { class: "btn block", style: "background:#fff;color:#000;border-color:#fff", type: "button", text: "Baixar .json", onclick: function () { downloadJson(JSON.stringify(payload, null, 2)); } })
+      ]);
+      exportCard.appendChild(actions);
+      exportCard.appendChild(el("details", { class: "aux json-wrap" }, [
+        el("summary", { text: "Pré-visualizar JSON" }),
+        el("pre", { class: "json-pre", text: jsonStr })
+      ]));
+      app.appendChild(exportCard);
+
+      app.appendChild(el("div", { class: "danger-zone" }, [
+        el("button", { class: "btn danger-ghost small", type: "button", text: "Reiniciar grill", onclick: resetAll })
+      ]));
+
+      var bar = navBar(
+        "← Perguntas",
+        function () { gotoCur(vis.length - 1); },
+        "Copiar prompt + JSON",
+        function () { copyText(promptText(payload), "Prompt + JSON copiados — cole no Hermes."); },
+        "sun"
+      );
+      app.appendChild(bar);
+
+      announce("Revisão final. " + payload.completion.answered + " respondidas, " + payload.completion.unresolved + " pendências, " + offRec.length + " fora da recomendação.");
+      window.scrollTo({ top: 0 });
+    }
+
+    /* ---------- Roteador ---------- */
+    function render() {
+      if (state.cur === "intro") { renderIntro(false); return; }
+      if (state.cur === "review") { renderReview(); return; }
+      var vis = visList();
+      var idx = typeof state.cur === "number" ? state.cur : 0;
+      if (idx < 0) idx = 0;
+      if (idx >= vis.length) idx = vis.length - 1;
+      state.cur = idx;
+      renderQuestion(idx);
+    }
+
+    var hadSaved = load();
+    if (hadSaved && state.cur !== "intro") {
+      renderIntro(true);
+    } else if (hadSaved) {
+      renderIntro(true);
+    } else {
+      state.cur = "intro";
+      renderIntro(false);
+    }
+
+    window.GRILL = {
+      buildExport: buildExport,
+      visibleQuestions: visibleQuestions,
+      skippedIds: skippedIds,
+      unresolvedIds: unresolvedIds,
+      isAnswered: isAnswered,
+      QUESTIONS: QUESTIONS,
+      EVIDENCE: EVIDENCE,
+      THEMES: THEMES,
+      SCHEMA_VERSION: SCHEMA_VERSION
+    };
+  })();
+  </script>
+</body>
+</html>
