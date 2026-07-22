@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eletromidia | Grill de Decisões — Termo de Arrolamento RJ</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Eletromidia | Contrato do Checklist — Termo de Arrolamento RJ (v2)</title>
   <style>
     :root {
       --orange: #FF4F00;
@@ -57,18 +54,17 @@
     :focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
 
     .app {
-      width: min(600px, 100%);
+      width: min(680px, 100%);
       margin: 0 auto;
-      padding: 14px 14px 140px;
+      padding: 14px 12px 150px;
       min-height: 100vh;
     }
 
-    /* ---------- Intro: cabeçalho de documento ---------- */
     .doc-hero {
       position: relative; isolation: isolate; overflow: hidden;
       background: var(--black); color: var(--white);
       border-radius: var(--radius);
-      padding: 20px 20px 26px;
+      padding: 20px 18px 26px;
       margin-bottom: 14px;
     }
 
@@ -108,9 +104,9 @@
     }
 
     .doc-hero h1 {
-      font-size: clamp(36px, 10.5vw, 54px);
+      font-size: clamp(34px, 9.5vw, 52px);
       line-height: .94; font-weight: 800;
-      letter-spacing: -.01em; max-width: 12ch;
+      letter-spacing: -.01em; max-width: 13ch;
       margin-bottom: 16px;
     }
 
@@ -126,7 +122,6 @@
 
     .meta-chip b { color: var(--yellow); font-weight: 700; }
 
-    /* ---------- Faixa de números ---------- */
     .stats {
       display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px; margin-bottom: 14px;
@@ -153,7 +148,6 @@
 
     .stat span { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: .04em; }
 
-    /* ---------- Resumo 30s: cláusulas ---------- */
     .clause {
       background: var(--white); border: 1px solid var(--line);
       border-left: 6px solid var(--black);
@@ -185,18 +179,6 @@
     .clause li { font-size: 14.5px; color: #525252; }
     .clause li::marker { color: var(--orange); font-weight: 800; }
 
-    .theme-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-
-    .theme-chip {
-      font-size: 12px; font-weight: 800; padding: 6px 10px;
-      border-radius: 999px; border: 1.5px solid var(--black);
-      background: var(--white); transition: background .15s, color .15s;
-      cursor: default;
-    }
-
-    .theme-chip:hover { background: var(--black); color: var(--white); }
-
-    /* ---------- Botões ---------- */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       min-height: 48px; padding: 12px 18px;
@@ -213,8 +195,8 @@
     .btn.ghost:hover { background: var(--black); color: var(--white); }
     .btn.sun { background: var(--yellow); color: var(--black); border-color: var(--black); }
     .btn.sun:hover { background: var(--black); color: var(--yellow); }
-    .btn.flame { background: var(--orange); color: var(--black); border-color: var(--black); font-weight: 800; }
-    .btn.flame:hover { background: var(--black); color: var(--white); }
+    .btn.flame { background: var(--orange); color: var(--white); border-color: var(--orange); font-weight: 800; }
+    .btn.flame:hover { background: var(--black); border-color: var(--black); }
     .btn.block { width: 100%; }
     .btn.small { min-height: 44px; font-size: 14px; padding: 10px 14px; }
     .btn.danger-ghost { border-color: var(--red); color: var(--red); }
@@ -227,12 +209,11 @@
       text-align: center; margin-top: 14px; letter-spacing: .02em;
     }
 
-    /* ---------- Cabeçalho fixo de progresso ---------- */
     .q-head {
       position: sticky; top: 0; z-index: 8;
       background: var(--surface);
       border-bottom: 2px solid var(--black);
-      padding: 10px 0 12px; margin-bottom: 18px;
+      padding: 10px 0 12px; margin-bottom: 16px;
     }
 
     .q-head-row {
@@ -248,7 +229,7 @@
     .q-bar { height: 7px; border-radius: 999px; background: #E4E4E4; overflow: hidden; }
     .q-bar i {
       display: block; height: 100%; width: 0;
-      background: linear-gradient(90deg, var(--orange), var(--purple));
+      background: var(--orange);
       border-radius: 999px;
       transition: width .4s cubic-bezier(.22, 1, .36, 1);
     }
@@ -272,7 +253,6 @@
       100% { transform: scale(1); }
     }
 
-    /* ---------- Pergunta ---------- */
     .q-theme-pill {
       display: inline-block; margin-bottom: 12px;
       padding: 6px 11px; border-radius: 999px;
@@ -284,10 +264,10 @@
     fieldset.q-field { border: 0; min-width: 0; }
 
     legend.q-title {
-      font-size: clamp(24px, 6.8vw, 32px);
-      font-weight: 800; line-height: 1.06;
+      font-size: clamp(23px, 6.4vw, 31px);
+      font-weight: 800; line-height: 1.08;
       letter-spacing: -.01em; margin-bottom: 10px;
-      max-width: 22ch;
+      max-width: 24ch;
     }
 
     .q-ctx {
@@ -303,8 +283,6 @@
       background: var(--white); overflow: hidden;
       margin-bottom: 10px;
     }
-
-    details.aux + details.aux { margin-top: 0; }
 
     details.aux summary {
       cursor: pointer; padding: 13px 15px;
@@ -346,12 +324,10 @@
     .opt .box {
       width: 24px; height: 24px; margin-top: 2px;
       border: 2.5px solid var(--black); background: var(--white);
+      border-radius: 50%;
       display: grid; place-items: center;
       transition: background .12s;
     }
-
-    .opt .box.radio { border-radius: 50%; }
-    .opt .box.check { border-radius: 7px; }
 
     .opt .box::after {
       content: ""; width: 10px; height: 10px;
@@ -359,10 +335,11 @@
       transform: scale(0); transition: transform .15s cubic-bezier(.34, 1.56, .64, 1);
     }
 
-    .opt .box.check::after { border-radius: 3px; }
-
     .opt.sel { border-color: var(--orange); background: #FFF3EC; }
     .opt.sel .box::after { transform: scale(1); }
+
+    .opt.prefilled { border-style: dashed; border-color: #B0B0B0; }
+    .opt.prefilled .box { border-style: dashed; }
 
     .opt .l { font-weight: 700; font-size: 16.5px; line-height: 1.25; }
     .opt .fx { font-size: 13.5px; color: #525252; margin-top: 4px; }
@@ -388,40 +365,281 @@
     }
 
     textarea, input[type="text"] {
-      width: 100%; min-height: 96px; resize: vertical;
+      width: 100%; min-height: 88px; resize: vertical;
       padding: 12px 13px; border: 2px solid var(--black);
       border-radius: 12px; background: var(--white);
       font: inherit; font-size: 15.5px; color: var(--black);
     }
 
-    textarea:focus { outline: 3px solid var(--purple); outline-offset: 2px; }
+    input[type="text"] { min-height: 46px; }
+
+    textarea:focus, input[type="text"]:focus { outline: 3px solid var(--purple); outline-offset: 2px; }
 
     .char-hint { font-family: var(--mono); font-size: 11px; color: var(--text); margin-top: 5px; }
 
-    /* ---------- Barra de navegação fixa ---------- */
     .nav-bar {
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
       background: var(--white); border-top: 2px solid var(--black);
-      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
     }
 
     .nav-inner {
-      width: min(600px, 100%); margin: 0 auto;
+      width: min(680px, 100%); margin: 0 auto;
       display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
     }
 
     .nav-inner .btn { min-width: 0; }
-    .nav-inner .btn.primary { flex: 1 1 180px; }
+    .nav-inner .btn.primary, .nav-inner .btn.sun { flex: 1 1 170px; }
 
-    /* ---------- Revisão ---------- */
+    .banner-open {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;
+      background: var(--yellow); border: 2px solid var(--black);
+      border-radius: 14px; padding: 12px 14px; margin-bottom: 12px;
+    }
+
+    .banner-open p { font-weight: 800; font-size: 14px; }
+    .banner-open .btn { min-height: 44px; font-size: 13.5px; padding: 9px 13px; }
+
+    .pbar-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+    .pchip {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      padding: 5px 9px; border-radius: 999px;
+      border: 1.5px solid var(--line); background: var(--white); color: #525252;
+    }
+
+    .pchip b { color: var(--black); }
+    .pchip.done { border-color: var(--green); background: #EFF7E6; }
+    .pchip.warn { border-color: var(--orange); background: #FFF3EC; }
+
+    .tabs {
+      display: flex; gap: 6px; overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px; margin-bottom: 8px;
+      scrollbar-width: thin;
+    }
+
+    .tab {
+      flex: 0 0 auto; min-height: 44px;
+      padding: 9px 13px; border-radius: 11px;
+      border: 2px solid var(--black); background: var(--white);
+      font-weight: 800; font-size: 13.5px; line-height: 1.1;
+      transition: background .15s, color .15s;
+    }
+
+    .tab small { display: block; font-family: var(--mono); font-weight: 400; font-size: 10px; color: var(--text); }
+    .tab[aria-pressed="true"] { background: var(--black); color: var(--white); }
+    .tab[aria-pressed="true"] small { color: var(--yellow); }
+    .tab:hover { background: var(--yellow); color: var(--black); }
+    .tab[aria-pressed="true"]:hover { background: var(--black); color: var(--white); }
+
+    .filters {
+      display: flex; gap: 6px; overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px; margin-bottom: 12px;
+      scrollbar-width: thin;
+    }
+
+    .chip {
+      flex: 0 0 auto; min-height: 40px;
+      padding: 8px 12px; border-radius: 999px;
+      border: 1.5px solid var(--black); background: var(--white);
+      font-weight: 800; font-size: 12.5px;
+      transition: background .15s, color .15s;
+    }
+
+    .chip:hover { background: var(--muted); }
+    .chip[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); color: var(--white); }
+
+    .badge {
+      display: inline-block; padding: 4px 9px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 800; line-height: 1.2;
+      text-transform: uppercase; letter-spacing: .04em;
+      vertical-align: middle;
+    }
+
+    .badge.conflict { background: var(--yellow); color: var(--black); border: 1.5px solid var(--black); }
+    .badge.altered { background: var(--purple); color: var(--white); }
+    .badge.override { background: var(--white); color: var(--orange); border: 1.5px solid var(--orange); }
+    .badge.matrix { background: var(--muted); color: #525252; border: 1px solid var(--line); font-family: var(--mono); text-transform: none; }
+    .badge.ok { background: var(--green); color: var(--white); }
+    .badge.pend { background: var(--white); color: var(--orange); border: 1.5px solid var(--orange); }
+    .badge.removed { background: var(--white); color: var(--red); border: 1.5px solid var(--red); }
+    .badge.skip { background: var(--muted); color: var(--text); border: 1.5px solid var(--line); }
+
+    .semocc {
+      border: 2px dashed var(--red); border-radius: 14px;
+      background: #FFF8F8; padding: 14px; margin-bottom: 12px;
+    }
+
+    .semocc h3 { font-size: 15.5px; font-weight: 800; margin-bottom: 6px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .semocc p { font-size: 13px; color: #525252; margin-bottom: 10px; }
+
+    .semocc-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+
+    .semocc-opt {
+      min-height: 48px; padding: 10px 12px; border-radius: 11px;
+      border: 2px solid var(--black); background: var(--white);
+      font-weight: 800; font-size: 13.5px;
+      transition: background .15s, color .15s;
+    }
+
+    .semocc-opt[aria-pressed="true"] { background: var(--black); color: var(--white); }
+    .semocc-opt:hover { background: var(--yellow); color: var(--black); }
+    .semocc-opt[aria-pressed="true"]:hover { background: var(--black); color: var(--white); }
+
+    .global-note {
+      font-family: var(--mono); font-size: 11.5px; color: var(--text);
+      border: 1px dashed #C9C9C9; border-radius: 10px;
+      padding: 9px 11px; margin-bottom: 12px; overflow-wrap: anywhere;
+    }
+
+    .sec {
+      border: 1px solid var(--line); border-radius: 16px;
+      background: var(--white); overflow: hidden; margin-bottom: 12px;
+    }
+
+    .sec > summary {
+      cursor: pointer; list-style: none;
+      padding: 13px 15px; min-height: 48px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      background: var(--black); color: var(--white);
+      transition: background .15s;
+    }
+
+    .sec > summary::-webkit-details-marker { display: none; }
+    .sec > summary::before { content: "+"; font-weight: 800; color: var(--yellow); font-size: 18px; }
+    .sec[open] > summary::before { content: "–"; }
+    .sec > summary:hover { background: #1C1C1C; }
+
+    .sec-letter {
+      font-family: var(--mono); font-weight: 700; font-size: 15px;
+      background: var(--orange); color: var(--white);
+      border-radius: 8px; padding: 3px 9px;
+    }
+
+    .sec-title { font-weight: 800; font-size: 14.5px; text-transform: uppercase; letter-spacing: .05em; flex: 1 1 auto; }
+    .sec-count { font-family: var(--mono); font-size: 11px; color: #CFCFCF; }
+
+    .bulk-bar {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding: 10px 12px; border-bottom: 1px solid var(--line);
+      background: var(--muted);
+    }
+
+    .bulk-btn {
+      flex: 1 1 auto; min-width: 84px; min-height: 44px;
+      padding: 8px 10px; border-radius: 10px;
+      border: 2px solid var(--black); background: var(--white);
+      font-weight: 800; font-size: 12.5px;
+      transition: background .15s, color .15s;
+    }
+
+    .bulk-btn:hover { background: var(--black); color: var(--white); }
+    .bulk-btn.reco { background: var(--yellow); }
+    .bulk-btn.reco:hover { background: var(--black); color: var(--yellow); }
+
+    .field-card {
+      padding: 13px 14px 14px; border-top: 1px solid var(--line);
+      display: grid; gap: 9px;
+      transition: background .15s;
+    }
+
+    .field-card:first-of-type { border-top: 0; }
+    .field-card:hover { background: #FDFDFD; }
+    .field-card.has-conflict { background: #FFFBEA; }
+    .field-card.has-conflict:hover { background: #FFF7D6; }
+
+    .fc-top { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+    .fc-label { font-weight: 800; font-size: 15.5px; line-height: 1.25; flex: 1 1 100%; }
+    .fc-key { font-family: var(--mono); font-size: 10.5px; color: var(--text); overflow-wrap: anywhere; }
+
+    .seg {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px;
+    }
+
+    .seg-btn {
+      display: flex; align-items: center; gap: 8px;
+      min-height: 46px; padding: 8px 11px;
+      border-radius: 11px; border: 2px solid var(--line);
+      background: var(--white); font-weight: 800; font-size: 13.5px;
+      color: #404040; text-align: left;
+      transition: border-color .15s, background .15s, color .15s, transform .12s;
+    }
+
+    .seg-btn:active { transform: scale(.97); }
+    .seg-btn:hover { border-color: var(--black); }
+
+    .seg-btn .sdot {
+      width: 11px; height: 11px; border-radius: 50%;
+      flex: 0 0 auto;
+    }
+
+    .seg-btn[data-v="required"] .sdot { background: var(--orange); }
+    .seg-btn[data-v="optional"] .sdot { background: var(--purple); }
+    .seg-btn[data-v="na"] .sdot { background: #A3A3A3; }
+    .seg-btn[data-v="conditional"] .sdot { background: var(--yellow); }
+
+    .seg-btn[aria-pressed="true"] { background: var(--black); border-color: var(--black); color: var(--white); }
+    .seg-btn[aria-pressed="true"][data-v="required"] { background: var(--orange); border-color: var(--orange); }
+    .seg-btn[aria-pressed="true"][data-v="optional"] { background: var(--purple); border-color: var(--purple); }
+    .seg-btn[aria-pressed="true"][data-v="na"] { background: #525252; border-color: #525252; }
+    .seg-btn[aria-pressed="true"][data-v="conditional"] { background: #8A6D00; border-color: #8A6D00; }
+
+    .gate-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .gate-row .gate-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--text); flex: 1 1 100%; }
+
+    .gate-pill {
+      min-height: 44px; padding: 9px 12px; border-radius: 999px;
+      border: 2px solid var(--black); background: var(--white);
+      font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+      transition: background .15s, color .15s;
+      overflow-wrap: anywhere;
+    }
+
+    .gate-pill:hover { background: var(--muted); }
+    .gate-pill[aria-pressed="true"] { background: var(--yellow); }
+
+    .photo-row {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      min-height: 44px;
+    }
+
+    .photo-row .pl { font-size: 13px; font-weight: 700; color: #404040; flex: 1 1 auto; }
+    .photo-row .pl small { display: block; font-family: var(--mono); font-weight: 400; font-size: 10.5px; color: var(--text); }
+
+    .switch {
+      position: relative; width: 58px; height: 32px; flex: 0 0 auto;
+      border-radius: 999px; border: 2px solid var(--black);
+      background: #E4E4E4; transition: background .15s;
+    }
+
+    .switch::after {
+      content: ""; position: absolute; top: 2px; left: 2px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--white); border: 2px solid var(--black);
+      transition: left .15s;
+    }
+
+    .switch[aria-checked="true"] { background: var(--green); }
+    .switch[aria-checked="true"]::after { left: 26px; }
+    .switch[aria-disabled="true"] { opacity: .35; cursor: not-allowed; }
+
+    .sw-wrap { display: inline-flex; min-height: 44px; min-width: 58px; align-items: center; }
+
+    .empty-filter {
+      padding: 16px 15px; font-size: 13px; color: var(--text);
+      border-top: 1px solid var(--line);
+    }
+
     .rev-head h2 {
-      font-size: clamp(28px, 8vw, 38px); font-weight: 800;
+      font-size: clamp(27px, 7.6vw, 36px); font-weight: 800;
       line-height: 1; margin-bottom: 6px;
     }
 
     .rev-head p { font-size: 14.5px; color: #525252; margin-bottom: 14px; }
 
-    .rev-counters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+    .rev-counters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
 
     .rev-counter {
       border-radius: 14px; padding: 12px 10px; text-align: center;
@@ -430,13 +648,57 @@
 
     .rev-counter b {
       display: block; font-family: var(--mono);
-      font-size: clamp(24px, 7vw, 34px); line-height: 1; margin-bottom: 4px;
+      font-size: clamp(22px, 6.4vw, 30px); line-height: 1; margin-bottom: 4px;
     }
 
     .rev-counter span { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--text); }
     .rev-counter.ok b { color: var(--green); }
     .rev-counter.pend b { color: var(--orange); }
     .rev-counter.off b { color: var(--purple); }
+    .rev-counter.dark b { color: var(--black); }
+
+    .go-strip {
+      border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;
+      font-weight: 800; font-size: 15px;
+      border: 2px solid var(--black);
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+
+    .go-strip.go { background: #EFF7E6; color: var(--green); border-color: var(--green); }
+    .go-strip.nogo { background: #FFF3EC; color: var(--orange); border-color: var(--orange); }
+    .go-strip small { flex: 1 1 100%; font-weight: 400; font-size: 12.5px; color: #525252; }
+
+    .model-card {
+      border: 1px solid var(--line); border-radius: 16px;
+      background: var(--white); overflow: hidden; margin-bottom: 12px;
+    }
+
+    .model-card > h3 {
+      background: var(--black); color: var(--white);
+      font-size: 12.5px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .07em;
+      padding: 11px 15px;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+
+    .model-card > h3 .mc-count { font-family: var(--mono); font-weight: 400; font-size: 10.5px; color: var(--yellow); }
+
+    .mc-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 15px 4px; }
+
+    .mc-chip {
+      font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+      padding: 6px 10px; border-radius: 999px; border: 1.5px solid var(--line);
+      background: var(--muted); color: #404040;
+    }
+
+    .mc-chip.req { border-color: var(--orange); color: var(--orange); background: #FFF3EC; }
+    .mc-chip.cond { border-color: #8A6D00; color: #8A6D00; background: #FFFBEA; }
+    .mc-chip.na { color: var(--text); }
+    .mc-chip.opt { border-color: var(--purple); color: var(--purple); background: #F3EEFF; }
+
+    .mc-list { padding: 8px 15px 14px; }
+    .mc-list li { font-size: 13px; color: #525252; overflow-wrap: anywhere; }
+    .mc-list li b { color: var(--black); }
 
     .rev-group {
       border: 1px solid var(--line); border-radius: 16px;
@@ -450,26 +712,10 @@
       padding: 11px 15px;
     }
 
-    .rev-row { padding: 13px 15px; border-top: 1px solid var(--line); display: grid; gap: 5px; }
+    .rev-row { padding: 13px 15px; border-top: 1px solid var(--line); display: grid; gap: 6px; }
     .rev-row:first-of-type { border-top: 0; }
-
-    .rev-row .q { font-weight: 800; font-size: 15px; line-height: 1.25; }
-    .rev-row .a { font-size: 14px; color: #404040; overflow-wrap: anywhere; }
-    .rev-row .n { font-size: 12.5px; color: var(--text); font-style: italic; overflow-wrap: anywhere; }
-
-    .rev-badges { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-
-    .badge {
-      display: inline-block; padding: 4px 9px; border-radius: 999px;
-      font-size: 10.5px; font-weight: 800; line-height: 1.2;
-      text-transform: uppercase; letter-spacing: .04em;
-    }
-
-    .badge.pend { background: var(--white); color: var(--orange); border: 1.5px solid var(--orange); }
-    .badge.off { background: var(--yellow); color: var(--black); }
-    .badge.outro { background: var(--purple); color: var(--white); }
-    .badge.ok { background: var(--green); color: var(--white); }
-    .badge.skip { background: var(--muted); color: var(--text); border: 1.5px solid var(--line); }
+    .rev-row .q { font-weight: 800; font-size: 14.5px; line-height: 1.25; }
+    .rev-row .a { font-size: 13.5px; color: #404040; overflow-wrap: anywhere; }
 
     .rev-edit {
       justify-self: start; min-height: 44px;
@@ -481,15 +727,6 @@
 
     .rev-edit:hover { background: var(--black); color: var(--white); }
 
-    .rev-skipped {
-      border: 1px dashed #C9C9C9; border-radius: 14px;
-      background: var(--muted); padding: 13px 15px; margin-bottom: 12px;
-    }
-
-    .rev-skipped h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #525252; }
-    .rev-skipped p { font-size: 13px; color: var(--text); }
-
-    /* ---------- Exportação ---------- */
     .export-card {
       background: var(--black); color: var(--white);
       border-radius: var(--radius); padding: 18px 16px;
@@ -508,14 +745,14 @@
 
     .export-actions { display: grid; gap: 10px; position: relative; z-index: 1; }
 
-    .json-wrap { margin-top: 14px; position: relative; z-index: 1; }
-
-    .json-wrap summary { color: var(--yellow); background: transparent; }
+    .json-wrap { margin-top: 14px; position: relative; z-index: 1; border-color: #333; background: #111; }
+    .json-wrap summary { color: var(--yellow); }
     .json-wrap[open] summary { background: transparent; color: var(--yellow); }
+    .json-wrap summary:hover { background: #1C1C1C; }
 
     .json-pre {
-      margin-top: 10px; padding: 13px;
-      background: #111; border: 1px solid #333; border-radius: 12px;
+      margin: 0 12px 12px; padding: 13px;
+      background: #0A0A0A; border: 1px solid #333; border-radius: 12px;
       color: var(--yellow); font-family: var(--mono); font-size: 11.5px;
       white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
       max-height: 300px; overflow-y: auto;
@@ -523,7 +760,6 @@
 
     .danger-zone { margin-top: 18px; text-align: center; }
 
-    /* ---------- Toast / live ---------- */
     .toast {
       position: fixed; bottom: 92px; left: 50%; transform: translate(-50%, 16px);
       padding: 13px 20px; border-radius: 12px;
@@ -536,7 +772,6 @@
 
     .toast.visible { opacity: 1; transform: translate(-50%, 0); }
 
-    /* ---------- Animações de entrada ---------- */
     .rise { animation: rise .3s ease both; }
     .rise-1 { animation-delay: .03s; }
     .rise-2 { animation-delay: .06s; }
@@ -550,8 +785,10 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (min-width: 420px) {
+    @media (min-width: 460px) {
       .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .rev-counters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .seg { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -574,433 +811,507 @@
     "use strict";
 
     /*PURE-START*/
-    var SCHEMA_VERSION = "1.0";
+    var SCHEMA_VERSION = "2.0";
     var ARTIFACT = "termo-arrolamento-rj-grill";
-    var STORAGE_KEY = "termo-arrolamento-rj-grill:v1";
+    var STORAGE_KEY = "termo-arrolamento-rj-grill:v2";
 
-    var EVIDENCE = [
-      { id: "matrix", label: "Matriz revisada (reunião 13/07/2026)", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx" },
-      { id: "catalog", label: "Catálogo de campos — 31 keys", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx · aba Catálogo de Campos" },
-      { id: "gaps", label: "Gaps e propostas por tema", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx · aba Gaps" },
-      { id: "term72", label: "Golden master TERM-72 v002 (vistoria 13/04/2026)", source: "TERM-72-v002-2026-04-24-164441.docx" },
-      { id: "jcdecaux", label: "Base JCDecaux — 2.108 linhas / 1.546 abrigos", source: "EFS - JCDecaux.xlsx" },
-      { id: "operacoes", label: "Operações — 650 places ativos (estabelecimento 497)", source: "base Operações" },
-      { id: "gh931", label: "Wayfinder #931 — mapa", source: "https://github.com/eletromidia/operacoes/issues/931" },
-      { id: "gh932", label: "Wayfinder #932 — elegibilidade / reuso Vistoria de Ruas", source: "https://github.com/eletromidia/operacoes/issues/932" },
-      { id: "gh933", label: "Wayfinder #933 — contrato de checklist por modelo", source: "https://github.com/eletromidia/operacoes/issues/933" },
-      { id: "gh934", label: "Wayfinder #934 — coorte / identidade Clear Channel", source: "https://github.com/eletromidia/operacoes/issues/934" },
-      { id: "gh935", label: "Wayfinder #935 — pipeline de PDF assíncrono", source: "https://github.com/eletromidia/operacoes/issues/935" }
+    var SECTIONS = [
+      { id: "A", label: "Estrutura e vidros" },
+      { id: "B", label: "Elétrica e iluminação" },
+      { id: "C", label: "Digital e componentes internos" }
     ];
 
-    var THEMES = [
-      { id: "corte", l: "Corte de validação" },
-      { id: "superficie", l: "Superfície de coleta" },
-      { id: "identidade", l: "Identidade e matching" },
-      { id: "endereco", l: "Endereço e GPS" },
-      { id: "checklist", l: "Estrutura do checklist" },
-      { id: "digital", l: "Abrigo digital" },
-      { id: "fotos", l: "Evidência fotográfica" },
-      { id: "pdf", l: "PDF e golden master" },
-      { id: "rollout", l: "Rollout e aceite" },
-      { id: "riscos", l: "Campo livre" }
+    var SCOPES = [
+      { id: "base", l: "Base Abrigos", sub: "contrato geral" },
+      { id: "39", l: "Standard", sub: "modelo 39 · 435 lugares" },
+      { id: "40", l: "Narrow", sub: "modelo 40 · 135 lugares" },
+      { id: "41", l: "Sem Publicidade", sub: "modelo 41 · 48 lugares" }
+    ];
+
+    var FIELDS = [
+      { key: "semOcorrencia", label: "Sem ocorrência", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "estruturaDanificada", label: "Estrutura danificada", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "estruturaFerrugem", label: "Ferrugem / Corrosão", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "estruturaPinturaRiscada", label: "Pintura riscada / danificada", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "pixacaoAcidaResina", label: "Pixação ácida / resina", section: "A", m: { mupi: "required", relogio: "na", abrigos: "required" } },
+      { key: "vidroQuebrado", label: "Vidro quebrado", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "vidroRiscado", label: "Vidro riscado", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "vidroAusente", label: "Vidro ausente", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "vidroSerigrafiaDefeituosa", label: "Serigrafia defeituosa", section: "A", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "bancoInstalado", label: "Banco instalado", section: "A", m: { mupi: "na", relogio: "na", abrigos: "required" } },
+      { key: "coberturaConforme", label: "Cobertura conforme", section: "A", m: { mupi: "na", relogio: "na", abrigos: "required" } },
+      { key: "equipamentoEnergizado", label: "Equipamento energizado", section: "B", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "energia24h", label: "Opera em regime 24h?", section: "B", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "quadroEletricaConforme", label: "Quadro elétrico conforme", section: "B", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "possuiAterramento", label: "Possui aterramento", section: "B", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "kitIluminacaoConforme", label: "Kit de iluminação conforme (sensor/fotocélula, lâmpada/LED, fiação e disjuntor)", section: "B", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "kitDifusorConforme", label: "Kit difusor conforme", section: "B", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "fixacaoCartazConforme", label: "Fixação de cartaz conforme", section: "B", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "iluminacaoTetoConforme", label: "Iluminação do teto conforme", section: "B", m: { mupi: "na", relogio: "na", abrigos: "required" } },
+      { key: "displayApis", label: "Display hora / temperatura", section: "C", m: { mupi: "na", relogio: "required", abrigos: "na" } },
+      { key: "displayAd", label: "Display publicitário", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "displayFuncionando", label: "Painel de LED funcionando e/ou sem falhas", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "fontes", label: "Possui controladoras, fontes e Receiver Card", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "possuiPc", label: "Possui PC", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "ventilacao", label: "Sistema de ventilação conforme", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "amortecedor", label: "Possui amortecedor", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "difusor", label: "Possui difusor", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "sensorTemp", label: "Possui sensor de temperatura instalado", section: "C", m: { mupi: "na", relogio: "required", abrigos: "na" } },
+      { key: "blackLightOuLampadasTubulares", label: "Possui Black Light ou lâmpadas tubulares", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "possuiModem", label: "Possui modem", section: "C", m: { mupi: "required", relogio: "required", abrigos: "required" } },
+      { key: "possuiGps", label: "Possui GPS", section: "C", m: { mupi: "na", relogio: "required", abrigos: "na" } }
+    ];
+
+    var DIGITAL_KEYS = ["displayAd", "displayFuncionando", "fontes", "possuiPc", "ventilacao", "blackLightOuLampadasTubulares", "possuiModem"];
+    var CONFLICT_KEYS = ["amortecedor", "difusor"];
+    var CONFLICT_WHY = "Catálogo dizia Optional; a matriz revisada marca Required. Exige decisão humana.";
+
+    var RECO = {
+      base: {
+        semOcorrencia: { a: "removed" },
+        estruturaDanificada: { a: "required" },
+        estruturaFerrugem: { a: "required" },
+        estruturaPinturaRiscada: { a: "required" },
+        pixacaoAcidaResina: { a: "required" },
+        vidroQuebrado: { a: "required" },
+        vidroRiscado: { a: "required" },
+        vidroAusente: { a: "required" },
+        vidroSerigrafiaDefeituosa: { a: "required" },
+        bancoInstalado: { a: "required" },
+        coberturaConforme: { a: "required" },
+        equipamentoEnergizado: { a: "required" },
+        energia24h: { a: "required" },
+        quadroEletricaConforme: { a: "required" },
+        possuiAterramento: { a: "required" },
+        kitIluminacaoConforme: { a: "required" },
+        kitDifusorConforme: { a: "conditional", c: "static_panel_present" },
+        fixacaoCartazConforme: { a: "conditional", c: "static_panel_present" },
+        iluminacaoTetoConforme: { a: "required" },
+        displayApis: { a: "na" },
+        displayAd: { a: "conditional", c: "digital_panel_present" },
+        displayFuncionando: { a: "conditional", c: "digital_panel_present" },
+        fontes: { a: "conditional", c: "digital_panel_present" },
+        possuiPc: { a: "conditional", c: "digital_panel_present" },
+        ventilacao: { a: "conditional", c: "digital_panel_present" },
+        amortecedor: { a: "optional" },
+        difusor: { a: "optional" },
+        sensorTemp: { a: "na" },
+        blackLightOuLampadasTubulares: { a: "conditional", c: "digital_panel_present" },
+        possuiModem: { a: "conditional", c: "digital_panel_present" },
+        possuiGps: { a: "na" }
+      },
+      "39": {},
+      "40": {
+        displayAd: { a: "na" }, displayFuncionando: { a: "na" }, fontes: { a: "na" },
+        possuiPc: { a: "na" }, ventilacao: { a: "na" },
+        blackLightOuLampadasTubulares: { a: "na" }, possuiModem: { a: "na" }
+      },
+      "41": {
+        displayAd: { a: "na" }, displayFuncionando: { a: "na" }, fontes: { a: "na" },
+        possuiPc: { a: "na" }, ventilacao: { a: "na" },
+        blackLightOuLampadasTubulares: { a: "na" }, possuiModem: { a: "na" },
+        fixacaoCartazConforme: { a: "na" }, kitDifusorConforme: { a: "na" }
+      }
+    };
+
+    var GATES = [
+      { v: "digital_panel_present", l: "digital_panel_present no place" },
+      { v: "static_panel_present", l: "static_panel_present no place" },
+      { v: "outro", l: "Outro gate (descrever)" }
+    ];
+
+    var APPLICABILITIES = [
+      { v: "required", l: "Obrigatório" },
+      { v: "optional", l: "Opcional" },
+      { v: "na", l: "N/A" },
+      { v: "conditional", l: "Condicional" }
+    ];
+
+    var PRIOR = [
+      "Vistoria de Ruas reutilizada como superfície de coleta.",
+      "Place canônico + match/proposta com aprovação do backoffice.",
+      "6 fotos baseline: frontal, traseira, laterais E/D, placa, série.",
+      "Foto obrigatória em toda não conformidade.",
+      "TERM-72 v002 como golden master do PDF, com ajustes pontuais.",
+      "PDF assíncrono ao finalizar a vistoria.",
+      "Mapa pode faltar com aviso de lacuna.",
+      "Rollout dev → campo.",
+      "JCDecaux fora da slice."
+    ];
+
+    var FACTS = [
+      "Slice atual: Clear Channel, somente Abrigos; JCDecaux fora.",
+      "Coorte confiável: establishment_id 497 (Abrigos [Sem Publicidade], env 186), RJ, 650 places ativos — 618 com modelo.",
+      "Modelos: Standard (39) = 435 · Narrow (40) = 135 · Sem Publicidade (41) = 48 · sem modelo = 32.",
+      "MUPI/Relógio Clear Channel não existem identificados no banco; os encontrados pertencem a Metrô/VLT/SuperVia.",
+      "place_equipment_type_id é NULL em todos os places ativos RJ — não usar como gate.",
+      "Nas 618 linhas modeladas: digital_panel preenchido só em 3 Standard; static_panel em 432 Standard e 135 Narrow; Sem Publicidade tem zero painéis; is_energized e has_luminaire não marcados.",
+      "Gatilho digital recomendado: presença de place_shelter_informations.digital_panel no place, não tipologia/modelo sozinho.",
+      "14 fotos é alerta suave: 6 baseline + uma por não conformidade; extras permitidos com paginação.",
+      "Os 32 places sem modelo ficam fora do rollout até classificação.",
+      "Não existe versionamento de checklist no DB; PDF individual de street checklist ainda não existe (reusar infra reports/jobs com novo report_type)."
+    ];
+
+    var EVIDENCE = [
+      { id: "xlsx_matrix", label: "Matriz Checklist — 31 campos × tipologias", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx" },
+      { id: "xlsx_catalog", label: "Catálogo de Campos — 31 keys", source: "rio-checklist-matrix-tipologias-revisada-reuniao.xlsx · aba Catálogo de Campos" },
+      { id: "db_cohort", label: "Coorte verificada: est. 497 · RJ · 650 places ativos", source: "banco Operações (read-only) · establishments/places" },
+      { id: "db_models", label: "shelter_models: 39 Standard · 40 Narrow · 41 Sem Publicidade", source: "banco Operações (read-only) · shelter_models/places" },
+      { id: "db_panels", label: "Painéis: digital em 3 Standard; estático em 432 Standard + 135 Narrow", source: "banco Operações (read-only) · place_shelter_informations" },
+      { id: "db_nulls", label: "place_equipment_type_id NULL em todos os places ativos RJ", source: "banco Operações (read-only)" },
+      { id: "db_mupi", label: "Sem MUPI/Relógio Clear Channel identificados no banco", source: "banco Operações (read-only) · encontrados apenas Metrô/VLT/SuperVia" },
+      { id: "repo_universal", label: "Renderer universal do street checklist", source: "Operacoes · StreetPreventiveUniversal.vue" },
+      { id: "repo_shelters", label: "Config de campos dos Abrigos RJ (required, condition, photoField...)", source: "Operacoes · StreetPreventiveSheltersRj.js" },
+      { id: "repo_mupi", label: "Paradigma Conforme/Não Conforme (MUPI)", source: "Operacoes · StreetPreventiveMupi.js" },
+      { id: "repo_mixin", label: "Lógica compartilhada de checklist", source: "Operacoes · checklistMixin.js" },
+      { id: "repo_storage", label: "Persistência offline (localStorage/Cache Storage)", source: "Operacoes · ChecklistStorageHelper.js" },
+      { id: "repo_template", label: "Template/render do checklist", source: "Operacoes · ChecklistTemplate.js" },
+      { id: "repo_route", label: "Rotas do módulo street", source: "Operacoes · route.js" },
+      { id: "db_tables", label: "Persistência: questions/checklists/ticket_answers · fotos em ticket_photos", source: "banco Operações (read-only) · reports/jobs para PDF" },
+      { id: "term72", label: "Golden master TERM-72 v002 (vistoria 13/04/2026)", source: "TERM-72-v002-2026-04-24-164441.docx" }
+    ];
+
+    var ARCH = [
+      {
+        id: "slice1_scope", theme: "Escopo",
+        title: "A slice 1 cobre somente Abrigos Clear Channel?",
+        ctx: "MUPI/Relógio Clear Channel não existem identificados no banco; os MUPIs/Relógios RJ encontrados pertencem a Metrô/VLT/SuperVia.",
+        why: "Sem candidatos confiáveis no DB, parametrizar MUPI/Relógio seria inventar dado. Abrigos têm coorte verificada de 650 places.",
+        options: [
+          { v: "abrigos_only", l: "Slice 1: somente Abrigos (est. 497)", fx: "JCDecaux fora; MUPI/Relógio aguardam mapeamento externo.", rec: true, recWhy: "Não existe MUPI/Relógio Clear Channel identificado no banco — não há o que parametrizar agora." },
+          { v: "aguardar_mapeamento", l: "Aguardar mapeamento externo de MUPI/Relógio antes da slice 1", fx: "Adia a entrega até existir candidato confiável de terceiros." }
+        ],
+        ev: ["db_mupi", "db_cohort"]
+      },
+      {
+        id: "cohort_gate", theme: "Coorte",
+        title: "Qual gate define a coorte da slice 1?",
+        ctx: "Coorte verificada: establishment_id 497 · RJ · 650 places ativos · 618 com modelo 39/40/41.",
+        why: "O gate define quem responde o contrato. Incluir os 32 sem modelo é responder checklist potencialmente errado.",
+        options: [
+          { v: "gate_497_modelos", l: "est. 497 + RJ + ativos + modelos 39/40/41", fx: "618 linhas modeladas; os 32 sem modelo ficam fora.", rec: true, recWhy: "É a coorte confiável verificada no banco, com modelo conhecido." },
+          { v: "gate_497_sem_filtro", l: "est. 497 + RJ + ativos, sem filtro de modelo", fx: "Inclui os 32 sem modelo sem classificação de checklist." }
+        ],
+        ev: ["db_cohort", "db_models"]
+      },
+      {
+        id: "accept_assets", theme: "Aceite",
+        title: "Quais ativos compõem o aceite da slice 1?",
+        ctx: "Não existem 3 tipologias Clear Channel no DB; a coorte tem 3 modelos de abrigo (Standard, Narrow, Sem Publicidade).",
+        why: "O aceite precisa provar o contrato onde ele varia: digitais (3 Standard), estáticos e Sem Publicidade têm campos diferentes.",
+        options: [
+          { v: "um_por_modelo", l: "Um abrigo por modelo (Standard, Narrow, Sem Publicidade)", fx: "3 ativos reais provam base + overrides de cada modelo.", rec: true, recWhy: "Cobre a variação real da coorte com o menor esforço de homologação." },
+          { v: "tres_tipologias", l: "Um ativo por tipologia (MUPI, Relógio, Abrigos)", fx: "Exige ativos que não existem identificados no banco." },
+          { v: "um_standard", l: "Somente um Standard ponta a ponta", fx: "Menor corte possível, porém sem provar Narrow/Sem Publicidade." }
+        ],
+        ev: ["db_models", "db_panels"]
+      },
+      {
+        id: "sem_ocorrencia", theme: "Checklist",
+        title: "'Sem ocorrência' continua no checklist do Termo?",
+        ctx: "Dois paradigmas coexistem: Abrigos RJ com ocorrências ricas e MUPI com Conforme/Não Conforme por item.",
+        why: "Um gate global 'Sem ocorrência' conflita com itens explícitos: o técnico pode marcar o gate e uma não conformidade ao mesmo tempo.",
+        options: [
+          { v: "remover_global", l: "Remover global; cada item vira Conforme/Não Conforme", fx: "Estado consistente por campo; espelha o paradigma MUPI.", rec: true, recWhy: "Decisão arquitetural: itens explícitos tornam o gate global redundante e ambíguo." },
+          { v: "gate_secao", l: "Manter como gate por seção", fx: "Uma marcação limpa a seção inteira — estados contraditórios seguem possíveis." }
+        ],
+        ev: ["repo_mupi", "repo_shelters", "xlsx_catalog"]
+      },
+      {
+        id: "contract_source", theme: "Contrato",
+        title: "Onde vive o contrato dos 31 campos?",
+        ctx: "Não existe versionamento de checklist no DB. O repo já usa config JS de fields (required, condition, photoField...).",
+        why: "A fonte do contrato define como ele evolui: PR com diff e review, admin sem diff, ou migration pesada.",
+        options: [
+          { v: "config_js", l: "Config JS versionado no repo", fx: "contractVersion no config e em reports.parameters; evolução via PR.", rec: true, recWhy: "Sem nova tabela; histórico auditável por git e compatível com o padrão StreetPreventiveSheltersRj.js." },
+          { v: "json_db", l: "JSON em coluna no banco", fx: "Editável via admin, porém sem diff/review de código." },
+          { v: "tabela_normalizada", l: "Tabelas normalizadas de contrato", fx: "Modelagem completa, porém migration e custo de migração." }
+        ],
+        ev: ["repo_shelters", "db_tables"]
+      },
+      {
+        id: "checklist_db", theme: "Checklist",
+        title: "Qual checklist no banco para o Termo?",
+        ctx: "Renderer e persistence são genéricos: checklistMixin, ChecklistStorageHelper, ChecklistTemplate, StreetPreventiveUniversal.",
+        why: "Adaptar o checklist 78 acopla o Termo ao fluxo atual; um checklist novo reusa a infra sem risco de regressão.",
+        options: [
+          { v: "novo_street", l: "Criar checklist street novo e reusar renderer/persistence", fx: "Contrato isolado; zero regressão nos checklists atuais.", rec: true, recWhy: "Reusa toda a infra existente mantendo o contrato independente." },
+          { v: "adaptar_78", l: "Adaptar o checklist 78 existente", fx: "Menos cadastro novo, porém risco de regressão no fluxo atual." }
+        ],
+        ev: ["repo_universal", "repo_mixin", "repo_storage", "repo_template", "repo_route"]
+      },
+      {
+        id: "digital_gate", theme: "Digital",
+        title: "O que dispara os campos digitais em Abrigos?",
+        ctx: "digital_panel preenchido em só 3 Standard; is_energized e has_luminaire não estão marcados na coorte.",
+        why: "Gate por modelo trataria 435 Standard como digitais; gate por atributo do place reflete o dado verificado (3 digitais).",
+        options: [
+          { v: "place_attr", l: "digital_panel_present no place", fx: "Gate por registro: 3 Standard digitais hoje, novos entram automático.", rec: true, recWhy: "Atributo verificado no banco; modelo sozinho não distingue digital de estático." },
+          { v: "por_modelo", l: "Gate por modelo", fx: "Standard inteiro viraria digital — 432 abrigos estáticos afetados." },
+          { v: "manual_tecnico", l: "Técnico informa no início da vistoria", fx: "Flexível, porém subjetivo e fácil de errar." }
+        ],
+        ev: ["db_panels", "db_nulls"]
+      },
+      {
+        id: "no_model_32", theme: "Coorte",
+        title: "O que fazer com os 32 places sem modelo?",
+        ctx: "Sem modelo não existe parametrização de checklist confiável (Standard 435 · Narrow 135 · Sem Publicidade 48 · sem modelo 32).",
+        why: "Checklist errado gera termo errado; checklist ausente gera tarefa de cadastro visível.",
+        options: [
+          { v: "quarentena", l: "Excluir/quarentena até classificação", fx: "Ficam fora do rollout; viram tarefa de cadastro explícita.", rec: true, recWhy: "Checklist errado é pior que checklist ausente — e a lacuna vira pendência visível." },
+          { v: "fallback_standard", l: "Fallback Standard", fx: "Avança sem cadastro, porém 32 ativos respondem contrato potencialmente incorreto." }
+        ],
+        ev: ["db_models", "db_cohort"]
+      },
+      {
+        id: "pdf_versioning", theme: "PDF",
+        title: "Como versionar o contrato no PDF?",
+        ctx: "PDF individual ainda não existe para street checklist; a infra reports/jobs está disponível. Não há versionamento de checklist no DB.",
+        why: "O termo é evidência do estado do ativo; regenerar sem versão apaga o histórico.",
+        options: [
+          { v: "contract_version", l: "contractVersion no config + reports.parameters; novo report por regeneração", fx: "Histórico por row de report; sem nova tabela.", rec: true, recWhy: "Reusa a infra existente e preserva a trilha de evidência por regeneração." },
+          { v: "migration_dedicada", l: "Migration dedicada de versionamento", fx: "Modelagem formal, porém custo e prazo maiores." }
+        ],
+        ev: ["db_tables", "term72"]
+      },
+      {
+        id: "photo_policy", theme: "Fotos",
+        title: "Qual política de fotos por termo?",
+        ctx: "Baseline 6 + uma por não conformidade; TERM-72 acomoda 10 + mapa; a matriz cita até 14 imagens.",
+        why: "Teto rígido pode cortar evidência de campo; alerta suave mantém o termo completo e paginado.",
+        options: [
+          { v: "soft_14", l: "6 baseline + 1 por NC; alerta suave após 14; extras permitidos", fx: "Sem bloqueio rígido; paginação no PDF quando passar de 14.", rec: true, recWhy: "14 é alerta, não limite — evita travar a vistoria justamente quando há muita não conformidade." },
+          { v: "hard_cap", l: "Teto rígido de 14 imagens", fx: "Limite estrito; risco de cortar evidência relevante." }
+        ],
+        ev: ["term72", "xlsx_matrix"]
+      },
+      {
+        id: "address_gps", theme: "Endereço",
+        title: "Endereço/GPS entram no escopo desta slice?",
+        ctx: "Decisão v1 já fechada: proposta auditável com aprovação do backoffice — fluxo próprio, separado do checklist.",
+        why: "Misturar atualização de endereço ao editor de checklist amplia o escopo e reabre uma decisão já tomada.",
+        options: [
+          { v: "pendente_isolado", l: "Manter pendente; não misturar ao editor de checklist", fx: "Fluxo auditável segue em slice própria, como decidido na v1.", rec: true, recWhy: "Endereço/GPS tem aprovação própria já decidida; a slice 1 foca no contrato dos 31 campos." },
+          { v: "atualizacao_imediata", l: "Atualização imediata pelo técnico nesta slice", fx: "Mistura dois fluxos e reabre a trilha de aprovação da v1." }
+        ],
+        ev: ["db_cohort", "xlsx_matrix"]
+      }
     ];
 
     var OUTRO = { v: "outro", l: "Outro / preciso de mais contexto", fx: "Registra que a decisão ainda não fechou e vira pendência explícita no JSON." };
 
-    var QUESTIONS = [
-      {
-        id: "q_corte", theme: "corte", type: "single",
-        title: "Qual é o corte de validação antes do rollout?",
-        ctx: "Prazo até 24/07 · base JCDecaux sem IDs · 31 campos × 3 tipologias.",
-        why: "Define o tamanho da primeira entrega homologável. Um corte pequeno prova o fluxo com dados reais; um corte grande adia a descoberta de problemas de matching e de PDF.",
-        options: [
-          { v: "abrigo_ponta_a_ponta", l: "Um Abrigo JCDecaux real, ponta a ponta", fx: "Valida matching, checklist, fotos e PDF com um ativo real antes de escalar.", rec: true, recWhy: "Foi a proposta da reunião de 13/07: menor corte que prova o fluxo inteiro com dado real." },
-          { v: "um_por_tipologia", l: "Um ativo de cada tipologia (3 ativos)", fx: "Testa MUPI, Relógio e Abrigos, mas triplica o esforço de homologação." },
-          { v: "cobertura_total", l: "Cobertura total das 3 tipologias", fx: "Só libera depois de validar tudo: maior prazo e risco de travar no matching." }
-        ],
-        ev: ["matrix", "gaps", "gh931"]
-      },
-      {
-        id: "q_ordem", theme: "corte", type: "single",
-        title: "Depois do primeiro corte, qual ordem de parametrização?",
-        ctx: "O golden master TERM-72 é um MUPI SCROLLER do Lote 1.",
-        why: "A ordem define qual tipologia ganha comparação direta com o PDF aprovado primeiro e onde o retrabalho aparece.",
-        options: [
-          { v: "mupi_primeiro", l: "MUPI primeiro", fx: "O PDF de referência já existe para MUPI; a comparação visual fica direta.", rec: true, recWhy: "O único golden master aprovado (TERM-72) é MUPI — começar por ele reduz risco de aceite do PDF." },
-          { v: "relogio_primeiro", l: "Relógio primeiro", fx: "Relógio tem mais campos exclusivos (GPS, sensor de temperatura, display de hora)." },
-          { v: "paralelo", l: "MUPI e Relógio em paralelo", fx: "Avança mais rápido, porém divide o foco durante a homologação." }
-        ],
-        ev: ["term72", "matrix"]
-      },
-      {
-        id: "q_superficie", theme: "superficie", type: "single",
-        title: "Onde o técnico preenche o termo?",
-        ctx: "Superfície indicada: Place canônico + my-route / street-route + checklist existente.",
-        why: "Reusar a Vistoria de Ruas aproveita rota, perfil do técnico e infraestrutura existentes. Um fluxo paralelo cria uma segunda experiência para manter.",
-        options: [
-          { v: "reuso_vistoria", l: "Adaptar a Vistoria de Ruas existente", fx: "my-route / street-route + checklist atual: menos superfície nova e curva de aprendizado menor.", rec: true, recWhy: "É a superfície indicada desde o lens de 05/07 e está mapeada no Wayfinder #932." },
-          { v: "fluxo_paralelo", l: "Fluxo paralelo novo", fx: "Isola o projeto do fluxo atual, mas duplica experiência do técnico e manutenção." }
-        ],
-        ev: ["gh932", "gaps"]
-      },
-      {
-        id: "q_paralelo_just", theme: "superficie", type: "text",
-        title: "O que o fluxo paralelo precisa entregar que o reuso não entrega?",
-        ctx: "Você escolheu fluxo paralelo — a justificativa entra no JSON para o time de implementação.",
-        why: "Sem justificativa objetiva, o fluxo paralelo vira dívida técnica gratuita.",
-        placeholder: "Ex.: checklist incompatível com offline, permissões, prazo do app atual...",
-        ev: ["gh932"]
-      },
-      {
-        id: "q_identidade", theme: "identidade", type: "single",
-        title: "Como o ativo JCDecaux vira um registro no Operações?",
-        ctx: "Base JCDecaux: 2.108 linhas, 1.546 abrigos, sem código externo / ID / lat-long / bairro / CEP e com endereços repetidos.",
-        why: "Carga cega sobre uma base sem identificadores cria Places duplicados. O matching com aprovação transforma duplicado em exceção, não em regra.",
-        options: [
-          { v: "place_match_proposta", l: "Place canônico + proposta de match com aprovação", fx: "Técnico sugere o vínculo com evidências; backoffice aprova. Nada é criado às cegas.", rec: true, recWhy: "É a proposta da reunião: a base serve para matching, não para carga cega." },
-          { v: "import_direta", l: "Importação direta criando registros novos", fx: "Rápido, mas os endereços repetidos da base viram Places duplicados." },
-          { v: "id_externo", l: "Exigir ID externo da JCDecaux antes", fx: "Mais seguro, porém depende de terceiro e trava o prazo de 24/07." }
-        ],
-        ev: ["jcdecaux", "gaps", "gh934"]
-      },
-      {
-        id: "q_match_evidencias", theme: "identidade", type: "multi",
-        title: "Quais evidências mínimas tornam um match seguro?",
-        ctx: "Sem regra objetiva, cada aprovador decide por intuição.",
-        why: "As evidências mínimas viram critério de sistema: abaixo delas, o match nem é proposto.",
-        options: [
-          { v: "endereco_numero", l: "Endereço + número confirmados em campo", fx: "Âncora textual mínima do vínculo.", rec: true },
-          { v: "gps_proximo", l: "GPS capturado em campo próximo ao Place sugerido", fx: "Âncora geográfica — a base JCDecaux não tem coordenada própria.", rec: true },
-          { v: "placa_foto", l: "Foto da placa de identificação", fx: "Evidência visual conferível depois, no próprio termo.", rec: true },
-          { v: "serial", l: "Número de série legível", fx: "Identificador físico forte, quando visível no ativo." },
-          { v: "modelo_subtipo", l: "Modelo / subtipo compatível", fx: "Ex.: Grimshaw, Grimshaw Duplo, PAL-LI, PAL-LI 2.0, Narrow, Standard." }
-        ],
-        recWhy: "Endereço + GPS + placa formam o tripé mínimo proposto; série e modelo reforçam, mas nem sempre estão visíveis.",
-        ev: ["jcdecaux", "operacoes", "gh934"]
-      },
-      {
-        id: "q_sem_modelo", theme: "identidade", type: "single",
-        title: "O que fazer com os 32 places sem modelo?",
-        ctx: "Operações: 650 places ativos — 435 Standard, 135 Narrow, 48 Sem Publicidade e 32 sem modelo.",
-        why: "Sem modelo não existe parametrização de checklist confiável: ou o ativo trava, ou responde um checklist errado.",
-        options: [
-          { v: "classificar_em_campo", l: "Classificar o modelo na primeira visita e liberar o checklist", fx: "A vistoria começa informando o modelo; o checklist nasce certo para o ativo.", rec: true, recWhy: "Aproveita a ida a campo que já vai acontecer e resolve a lacuna na origem." },
-          { v: "inferir_subtipo", l: "Inferir modelo automaticamente pelo subtipo", fx: "Avança sem intervenção, mas arrisca checklist incorreto para abrigos fora do padrão." },
-          { v: "indefinido_generico", l: "Manter 'indefinido' com checklist genérico", fx: "Simples, porém o termo sai incompleto e exige retrabalho depois." }
-        ],
-        ev: ["operacoes", "gh933"]
-      },
-      {
-        id: "q_atualizacao", theme: "endereco", type: "single",
-        title: "Endereço e GPS confirmados em campo atualizam o Place na hora?",
-        ctx: "A base JCDecaux não traz latitude/longitude, bairro nem CEP — o técnico é a fonte nova.",
-        why: "Endereço e coordenada alimentam rota, matching e o mapa do PDF. Atualizar sem trilha perde a capacidade de auditar uma correção errada.",
-        options: [
-          { v: "proposta_auditavel", l: "Proposta auditável: técnico sugere, backoffice aprova", fx: "Mudança registrada com origem, antes/depois, usuário e data.", rec: true, recWhy: "Foi a recomendação da reunião de 13/07: campo confirma, backoffice aprova." },
-          { v: "imediata", l: "Atualização imediata pelo técnico", fx: "Dado fresco na hora, mas sem trilha de aprovação para reverter erro." }
-        ],
-        ev: ["gaps", "jcdecaux"]
-      },
-      {
-        id: "q_aprovador", theme: "endereco", type: "single",
-        title: "Quem aprova a mudança de endereço / GPS?",
-        ctx: "Vale para o fluxo de proposta auditável que você escolheu.",
-        why: "Sem dono definido, a proposta acumula e o termo sai com dado antigo.",
-        options: [
-          { v: "backoffice_operacoes", l: "Backoffice de Operações", fx: "Já opera o estabelecimento 497 e conhece a base de places.", rec: true, recWhy: "É quem administra os 650 places ativos hoje." },
-          { v: "coordenacao_rj", l: "Coordenação da equipe RJ", fx: "Aprova com contexto local, porém fora da rotina do backoffice." }
-        ],
-        ev: ["operacoes", "gaps"]
-      },
-      {
-        id: "q_sem_aprovacao", theme: "endereco", type: "single",
-        title: "E se a proposta de endereço / GPS não for aprovada?",
-        ctx: "Vale para o fluxo de proposta auditável que você escolheu.",
-        why: "O destino de uma proposta rejeitada precisa estar definido antes, senão a coleta do técnico evapora.",
-        options: [
-          { v: "manter_flag_revisao", l: "Mantém o valor antigo e marca o place para nova conferência", fx: "Nada muda sem aprovação; a divergência fica visível como pendência.", rec: true, recWhy: "Conservador e auditável: a discordância vira tarefa, não dado perdido." },
-          { v: "descartar_coleta", l: "Descarta a coleta do técnico", fx: "Base fica limpa, mas o trabalho de campo se perde." },
-          { v: "aplicar_provisoria", l: "Aplica provisoriamente até alguém contestar", fx: "Dado novo vale logo, porém um valor não aprovado circula no sistema." }
-        ],
-        ev: ["gaps"]
-      },
-      {
-        id: "q_estrutura_checklist", theme: "checklist", type: "single",
-        title: "Um checklist só ou vários?",
-        ctx: "31 campos com regras por tipologia: ex. bancoInstalado e coberturaConforme só existem em Abrigos.",
-        why: "A estrutura define custo de evolução: cada campo novo mexe em uma configuração ou em três.",
-        options: [
-          { v: "parametrizado", l: "Uma configuração parametrizada por modelo", fx: "Um motor de checklist; as regras 'Não se aplica' saem da parametrização.", rec: true, recWhy: "A matriz já é uma tabela tipologia × campo — parametrizar replica isso sem duplicar." },
-          { v: "separados", l: "Checklists separados por tipologia", fx: "Simples de entender, mas 31 campos replicados em três configurações." }
-        ],
-        ev: ["matrix", "gh933"]
-      },
-      {
-        id: "q_amortecedor_difusor", theme: "checklist", type: "single",
-        title: "amortecedor e difusor: Optional ou Obrigatório?",
-        ctx: "Divergência visível: catálogo marca Optional; a matriz revisada marca Obrigatório nas 3 tipologias.",
-        why: "Enquanto a divergência existir, o formulário e a matriz se contradizem — e o aceite do termo fica ambíguo.",
-        options: [
-          { v: "obrigatorio", l: "Obrigatório — a matriz revisada é a fonte da verdade", fx: "Fecha a divergência agora; o checklist cobra os dois campos em todas as tipologias.", rec: true, recWhy: "A matriz revisada na reunião de 13/07 é o documento mais recente e aprovado como referência." },
-          { v: "opcional", l: "Opcional — o catálogo vence", fx: "O técnico pode pular, mas o termo sai sem dados que a matriz espera." },
-          { v: "por_modelo", l: "Obrigatório só para modelos que têm o componente", fx: "Mais preciso, porém exige mapear quais modelos possuem amortecedor / difusor." }
-        ],
-        ev: ["catalog", "matrix"]
-      },
-      {
-        id: "q_sem_ocorrencia", theme: "checklist", type: "single",
-        title: "Como 'Sem ocorrência' convive com as não conformidades?",
-        ctx: "Hoje não existe regra de exclusão / reset — gap marcado como ABERTO.",
-        why: "Sem regra, o técnico pode marcar 'Sem ocorrência' e uma não conformidade ao mesmo tempo, e o termo sai contraditório.",
-        options: [
-          { v: "exclusivo_com_reset", l: "Mutuamente exclusivo: marca limpa ocorrências e fotos da seção", fx: "Uma ação deixa o estado consistente; espelha o uso real em campo.", rec: true, recWhy: "É a proposta levada à reunião: exclusão mútua com reset de respostas e fotos." },
-          { v: "campo_independente", l: "Campo independente, sem reset", fx: "Técnico controla tudo manualmente, mas estados contraditórios ficam possíveis." }
-        ],
-        ev: ["gaps", "catalog"]
-      },
-      {
-        id: "q_gatilho_digital", theme: "digital", type: "single",
-        title: "O que dispara as perguntas digitais em Abrigos?",
-        ctx: "Subtipos incluem Digital/Digital e Híbrido (Digital + Estático); a nota da matriz pede um gatilho objetivo.",
-        why: "Sem gatilho objetivo, a exibição das perguntas digitais depende de quem preenche — e o checklist varia sem regra.",
-        options: [
-          { v: "config_modelo", l: "Configuração do modelo / subtipo no cadastro", fx: "A pergunta nasce do dado do ativo: objetivo e auditável.", rec: true, recWhy: "É a regra proposta na nota da matriz revisada: condicional por subtipo / configuração." },
-          { v: "atributo_place", l: "Atributo 'face digital' no Place", fx: "Funciona se o atributo existir e estiver preenchido para toda a base." },
-          { v: "tecnico_inicio", l: "Técnico responde no início da vistoria", fx: "Flexível, mas subjetivo e fácil de esquecer." }
-        ],
-        ev: ["matrix", "gaps"]
-      },
-      {
-        id: "q_digital_desconhecido", theme: "digital", type: "single",
-        title: "E quando a configuração digital for desconhecida?",
-        ctx: "32 places sem modelo e subtipos ainda pendentes de validação.",
-        why: "O caso indefinido precisa de comportamento padrão, senão a vistoria trava justamente nos ativos com dado mais frágil.",
-        options: [
-          { v: "tratar_estatico_lacuna", l: "Tratar como estático e registrar lacuna de evidência", fx: "A vistoria segue; a lacuna vira tarefa de cadastro.", rec: true, recWhy: "Não bloqueia campo e transforma o desconhecido em pendência visível." },
-          { v: "sempre_digital", l: "Aplicar perguntas digitais sempre", fx: "Nada passa despercebido, mas cansa o técnico em abrigos estáticos." },
-          { v: "bloquear_vistoria", l: "Bloquear a vistoria até a configuração existir", fx: "Dado perfeito, porém campo parado nos ativos indefinidos." }
-        ],
-        ev: ["gaps", "operacoes"]
-      },
-      {
-        id: "q_foto_baseline", theme: "fotos", type: "multi",
-        title: "Quais slots de foto formam o baseline obrigatório?",
-        ctx: "TERM-72 usa: frontal, traseira, laterais, placa, série + fotos diversas até 10 + mapa.",
-        why: "O baseline define o mínimo para o termo ser aceito; slots demais encarecem a visita, de menos enfraquecem a evidência.",
-        options: [
-          { v: "frontal", l: "Foto frontal", fx: "Vista principal do mobiliário.", rec: true },
-          { v: "traseira", l: "Foto traseira", fx: "Porta, fixações e acesso interno.", rec: true },
-          { v: "lateral_esquerda", l: "Foto lateral esquerda", fx: "Completa a leitura externa do ativo.", rec: true },
-          { v: "lateral_direita", l: "Foto lateral direita", fx: "Completa a leitura externa do ativo.", rec: true },
-          { v: "placa", l: "Foto da placa de identificação", fx: "Vínculo visual com o Place.", rec: true },
-          { v: "serie", l: "Foto do número de série", fx: "Identificador físico do ativo.", rec: true }
-        ],
-        recWhy: "É exatamente o baseline do golden master TERM-72 — manter os 6 slots preserva o aceite atual.",
-        ev: ["term72", "gaps"]
-      },
-      {
-        id: "q_foto_nao_conformidade", theme: "fotos", type: "single",
-        title: "Quando a foto vira obrigatória?",
-        ctx: "Regra proposta no catálogo para os 31 campos: foto quando a resposta indicar não conformidade.",
-        why: "Não conformidade sem foto é retrabalho garantido: alguém vai precisar voltar ao ativo para comprovar.",
-        options: [
-          { v: "toda_nao_conformidade", l: "Em qualquer não conformidade marcada", fx: "Cada 'não conforme' exige foto; a regra vale para as três seções.", rec: true, recWhy: "É a regra sugerida em todos os campos do catálogo revisado." },
-          { v: "so_estrutura", l: "Só na seção A (estrutura / vidros)", fx: "Menos fotos, porém não conformidades elétricas e internas ficam sem evidência." },
-          { v: "opcional", l: "Continua opcional", fx: "Nenhuma mudança — o gap permanece aberto." }
-        ],
-        ev: ["catalog", "gaps"]
-      },
-      {
-        id: "q_teto_fotos", theme: "fotos", type: "single",
-        title: "Qual é o teto de imagens por termo?",
-        ctx: "TERM-72 acomoda 10 fotos + mapa; a matriz menciona até 14 imagens.",
-        why: "O teto precisa caber no layout aprovado do PDF — mudar o teto sem validar o layout quebra o golden master.",
-        options: [
-          { v: "dez_mais_mapa", l: "Até 10 fotos + mapa (padrão TERM-72)", fx: "Cabe no layout atual do golden master sem redesenho.", rec: true, recWhy: "É o padrão já aprovado no documento de referência." },
-          { v: "quatorze", l: "Até 14 imagens (referência da matriz)", fx: "Mais evidência, porém exige validar espaço no layout do PDF antes." }
-        ],
-        ev: ["term72", "matrix"]
-      },
-      {
-        id: "q_golden_master", theme: "pdf", type: "single",
-        title: "O TERM-72 v002 é o golden master do PDF?",
-        ctx: "O modelo aprovado tem emitente, data/hora, técnico, mobiliário/modelo/contrato, lat/long, checklist, fotos, mapa e comentários.",
-        why: "O aceite do PDF precisa de um alvo único e congelado; sem isso, cada revisão compara contra algo diferente.",
-        options: [
-          { v: "sim_congelado", l: "Sim — preservar o layout aprovado", fx: "Aceite vira comparação visual contra um alvo único e estável.", rec: true, recWhy: "O documento já passou por aprovação; mudar o alvo aumenta o risco de reprovar o que estava aceito." },
-          { v: "sim_com_ajustes", l: "Sim, mas aceitar ajustes pontuais", fx: "Permite corrigir detalhes, porém o alvo fica parcialmente móvel." },
-          { v: "redesenhar", l: "Redesenhar do zero", fx: "Maior prazo e risco de reprovar o que já foi aprovado." }
-        ],
-        ev: ["term72", "gaps"]
-      },
-      {
-        id: "q_geracao", theme: "pdf", type: "single",
-        title: "Como o PDF é gerado?",
-        ctx: "Geração assíncrona em fila foi proposta na reunião (Wayfinder #935).",
-        why: "PDF com mapa e até 14 imagens é pesado; síncrono em rede móvel ruim trava o técnico no fim da visita.",
-        options: [
-          { v: "assincrona_fila", l: "Assíncrona em fila", fx: "Técnico finaliza e segue a rota; o PDF é processado depois.", rec: true, recWhy: "É a proposta do Wayfinder #935 e desloca a falha de processamento para fora do campo." },
-          { v: "sincrona", l: "Síncrona ao finalizar", fx: "PDF imediato, mas falha de rede ou de render trava o fluxo do técnico." }
-        ],
-        ev: ["gh935", "gaps"]
-      },
-      {
-        id: "q_momento", theme: "pdf", type: "single",
-        title: "Em que momento o PDF é gerado?",
-        ctx: "Há dados que podem passar por aprovação do backoffice após a visita.",
-        why: "Define se o termo reflete a coleta bruta de campo ou o dado já aprovado — e quantas versões existem por ativo.",
-        options: [
-          { v: "ao_finalizar", l: "Ao finalizar a vistoria em campo", fx: "O termo espelha exatamente o que o técnico viu e registrou.", rec: true, recWhy: "Mantém o termo como evidência de campo; correções aprovadas geram nova versão, sem apagar a original." },
-          { v: "apos_aprovacao", l: "Após aprovação do backoffice", fx: "O termo já nasce com dado aprovado, mas só existe depois da fila humana." },
-          { v: "sob_demanda", l: "Sob demanda", fx: "Economiza processamento, porém o termo pode não existir quando for pedido." }
-        ],
-        ev: ["gh935", "term72"]
-      },
-      {
-        id: "q_versao", theme: "pdf", type: "single",
-        title: "Se o termo for regenerado, o que acontece com a versão anterior?",
-        ctx: "O termo aprovado é evidência — inclusive jurídica — do estado do ativo.",
-        why: "Regenerar sobrescrevendo apaga o histórico; versionar preserva a trilha de evidência.",
-        options: [
-          { v: "versionar_historico", l: "Nova versão numerada, histórico preservado", fx: "Cada regeneração cria v00X; versões anteriores ficam consultáveis.", rec: true, recWhy: "Combina com o padrão do próprio golden master (TERM-72 v002)." },
-          { v: "sobrescrever", l: "Sobrescrever a última versão", fx: "Simples, mas elimina o registro anterior do estado do ativo." }
-        ],
-        ev: ["term72"]
-      },
-      {
-        id: "q_mapa_fallback", theme: "pdf", type: "single",
-        title: "E o mapa quando não há coordenada confiável?",
-        ctx: "A base JCDecaux não tem lat/long; o requisito atual pede render satélite a partir do GPS confirmado em campo.",
-        why: "Nem toda visita vai sair com GPS bom; o comportamento padrão precisa estar decidido antes de virar erro em produção.",
-        options: [
-          { v: "termo_sem_mapa_aviso", l: "Termo sai sem mapa + aviso de lacuna", fx: "O endereço textual segue como evidência; o mapa vira pendência explícita.", rec: true, recWhy: "Não bloqueia a entrega e registra a lacuna — a nota antiga já dizia para não confiar em coordenada de terceiros." },
-          { v: "bloquear_pdf", l: "Bloquear o PDF até existir GPS", fx: "Todo termo nasce completo, porém a visita sem sinal não gera documento." },
-          { v: "geocodificar_endereco", l: "Mapa gerado pelo endereço geocodificado", fx: "Cobre a lacuna automaticamente, mas a divergência de geocodificação volta pela janela." }
-        ],
-        ev: ["gaps", "jcdecaux"]
-      },
-      {
-        id: "q_etapas", theme: "rollout", type: "single",
-        title: "Qual é o caminho de rollout?",
-        ctx: "Proposta: dev → homologação → campo controlado.",
-        why: "Cada etapa extra é um portão de qualidade — e também tempo. O caminho precisa caber no prazo de 24/07.",
-        options: [
-          { v: "tres_etapas", l: "dev → homologação → campo controlado", fx: "Portões claros; o campo controlado usa um Abrigo JCDecaux real.", rec: true, recWhy: "É o desenho proposto na reunião e casa com o corte de validação recomendado." },
-          { v: "duas_etapas", l: "dev → campo", fx: "Mais rápido, mas sem etapa de homologação antes do técnico real." },
-          { v: "direto_campo", l: "Direto para campo", fx: "Máxima velocidade, mínimo controle." }
-        ],
-        ev: ["gaps", "gh931"]
-      },
-      {
-        id: "q_aceite", theme: "rollout", type: "multi",
-        title: "O que compõe o aceite da primeira entrega?",
-        ctx: "Critérios viram a definição de pronto do agent-loop de implementação.",
-        why: "Sem critérios explícitos, o aceite vira opinião — e cada parte espera uma coisa diferente.",
-        options: [
-          { v: "pdf_fiel_golden", l: "PDF fiel ao golden master TERM-72", fx: "Comparação visual contra o documento aprovado.", rec: true },
-          { v: "campos_31", l: "31 campos respeitando 'Não se aplica' por tipologia", fx: "A matriz revisada inteira respondida corretamente.", rec: true },
-          { v: "trilha_endereco_gps", l: "Endereço / GPS com trilha auditável", fx: "Origem, antes/depois, usuário e data registrados.", rec: true },
-          { v: "regra_fotos", l: "Regra de foto por não conformidade funcionando", fx: "Toda não conformidade gera foto obrigatória.", rec: true },
-          { v: "sem_regressao_vistoria", l: "Sem regressão na Vistoria de Ruas", fx: "O fluxo existente continua funcionando para os demais checklists." },
-          { v: "coorte_clear_channel", l: "Coorte Clear Channel identificada", fx: "Narrow / Standard / B Simples distinguíveis no fluxo (#934)." }
-        ],
-        recWhy: "Os quatro primeiros cobrem PDF, matriz, dado geográfico e evidência — o núcleo do termo; os dois últimos são reforço.",
-        ev: ["gh931", "gh932", "gh933", "gh934", "gh935"]
-      },
-      {
-        id: "q_go_nogo", theme: "rollout", type: "single",
-        title: "Qual é a condição GO / NO-GO?",
-        ctx: "O GO libera a parametrização das demais tipologias.",
-        why: "Uma condição binária e testável evita que o rollout avance por inércia com pendências abertas.",
-        options: [
-          { v: "um_abrigo_e2e", l: "1 Abrigo JCDecaux aprovado ponta a ponta em homologação", fx: "O menor sinal de que o fluxo inteiro funciona com dado real.", rec: true, recWhy: "Espelha o corte de validação recomendado: um ativo real, do match ao PDF." },
-          { v: "tres_ativos", l: "3+ ativos aprovados (um por tipologia)", fx: "Sinal mais amplo, porém o GO fica mais distante no prazo." },
-          { v: "signoff_backoffice", l: "Sign-off formal do backoffice", fx: "Decisão humana explícita, mas sem critério técnico objetivo." }
-        ],
-        ev: ["gaps", "gh931"]
-      },
-      {
-        id: "q_riscos", theme: "riscos", type: "text", optional: true,
-        title: "Algum risco ou decisão que este grill não cobriu?",
-        ctx: "Campo livre — entra no JSON como nota. Pode ficar em branco.",
-        why: "Decisões não cobertas aqui viram surpresa no agent-loop; melhor registrá-las agora.",
-        placeholder: "Ex.: dependência de terceiro, prazo, dado que falta, regra de negócio pendente...",
-        ev: ["gaps"]
-      }
-    ];
+    function fieldDef(key) {
+      for (var i = 0; i < FIELDS.length; i++) if (FIELDS[i].key === key) return FIELDS[i];
+      return null;
+    }
 
-    function themeLabel(id) {
-      for (var i = 0; i < THEMES.length; i++) if (THEMES[i].id === id) return THEMES[i].l;
+    function sectionLabel(id) {
+      for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].id === id) return SECTIONS[i].label;
       return id;
     }
 
-    function evalShow(q, answers) {
-      if (q.id === "q_paralelo_just") {
-        var s = answers["q_superficie"];
-        return !!s && s.value === "fluxo_paralelo";
+    function scopeLabel(id) {
+      for (var i = 0; i < SCOPES.length; i++) if (SCOPES[i].id === id) return SCOPES[i].l;
+      return id;
+    }
+
+    function isConflict(key) { return CONFLICT_KEYS.indexOf(key) !== -1; }
+
+    function recoFor(scope, key) {
+      return (RECO[scope] && RECO[scope][key]) || RECO.base[key];
+    }
+
+    function recoPhoto(r) { return !(r.a === "na" || r.a === "removed"); }
+
+    function stField(state, scope, key) {
+      return state.fields[scope] ? state.fields[scope][key] : null;
+    }
+
+    function eff(state, scope, key) {
+      if (scope !== "base") {
+        var sm = stField(state, scope, key);
+        if (sm) {
+          var offm = sm.a === "na" || sm.a === "removed";
+          return { a: sm.a, c: sm.a === "conditional" ? (sm.c || null) : null, cn: sm.cn || "", photo: offm ? false : sm.photo !== false };
+        }
+        if (RECO[scope] && RECO[scope][key]) {
+          var rm = RECO[scope][key];
+          return { a: rm.a, c: rm.a === "conditional" ? (rm.c || null) : null, cn: "", photo: recoPhoto(rm) };
+        }
+        return eff(state, "base", key);
       }
-      if (q.id === "q_aprovador" || q.id === "q_sem_aprovacao") {
-        var a = answers["q_atualizacao"];
-        return !!a && a.value === "proposta_auditavel";
+      var s = stField(state, "base", key);
+      if (s) {
+        var off = s.a === "na" || s.a === "removed";
+        return { a: s.a, c: s.a === "conditional" ? (s.c || null) : null, cn: s.cn || "", photo: off ? false : s.photo !== false };
       }
-      return true;
+      var rb = RECO.base[key];
+      return { a: rb.a, c: rb.a === "conditional" ? (rb.c || null) : null, cn: "", photo: recoPhoto(rb) };
     }
 
-    function visibleQuestions(answers) {
-      return QUESTIONS.filter(function (q) { return evalShow(q, answers); });
+    function isReviewed(state, scope, key) { return !!stField(state, scope, key); }
+
+    function isAltered(state, scope, key) {
+      var s = stField(state, scope, key);
+      if (!s) return false;
+      var r = recoFor(scope, key);
+      var rc = r.a === "conditional" ? (r.c || null) : null;
+      var sc = s.a === "conditional" ? (s.c || null) : null;
+      return s.a !== r.a || sc !== rc;
     }
 
-    function skippedIds(answers) {
-      return QUESTIONS.filter(function (q) { return !evalShow(q, answers); }).map(function (q) { return q.id; });
+    function defaultGate(key) {
+      return DIGITAL_KEYS.indexOf(key) !== -1 ? "digital_panel_present" : "static_panel_present";
     }
 
-    function isAnswered(id, answers) {
-      var a = answers[id];
-      if (!a) return false;
-      if (Array.isArray(a.value)) return a.value.length > 0;
-      if (a.value === "texto_livre") return String(a.notes || "").trim().length > 0;
-      return true;
+    function archRec(d) {
+      for (var i = 0; i < d.options.length; i++) if (d.options[i].rec) return d.options[i];
+      return d.options[0];
     }
 
-    function unresolvedIds(answers) {
+    function archValue(state, id) {
+      var a = state.arch[id];
+      return a ? a.value : null;
+    }
+
+    function progress(state) {
+      var archD = ARCH.filter(function (d) { return !!state.arch[d.id]; }).length;
+      var rev = FIELDS.filter(function (f) { return isReviewed(state, "base", f.key); }).length;
+      var conf = CONFLICT_KEYS.filter(function (k) { return !!stField(state, "base", k); }).length;
+      var secs = SECTIONS.filter(function (sec) {
+        return FIELDS.filter(function (f) { return f.section === sec.id && !isConflict(f.key); })
+          .every(function (f) { return isReviewed(state, "base", f.key); });
+      }).length;
+      return {
+        archD: archD, archT: ARCH.length,
+        rev: rev, fieldT: FIELDS.length,
+        conf: conf, confT: CONFLICT_KEYS.length,
+        secs: secs, secT: SECTIONS.length,
+        pct: Math.round(((archD + rev) / (ARCH.length + FIELDS.length)) * 100)
+      };
+    }
+
+    function unresolved(state) {
       var out = [];
-      visibleQuestions(answers).forEach(function (q) {
-        var a = answers[q.id];
-        if (!isAnswered(q.id, answers)) {
-          if (!q.optional) out.push(q.id);
-          return;
-        }
-        if (Array.isArray(a.value)) {
-          if (a.value.indexOf("outro") !== -1) out.push(q.id);
-        } else if (a.value === "outro") {
-          out.push(q.id);
-        }
+      ARCH.forEach(function (d) {
+        if (!state.arch[d.id]) out.push({ type: "architecture", id: d.id, label: d.title });
+      });
+      CONFLICT_KEYS.forEach(function (k) {
+        if (!stField(state, "base", k)) out.push({ type: "conflict", id: k, label: fieldDef(k).label + " — divergência catálogo × matriz" });
+      });
+      FIELDS.forEach(function (f) {
+        if (!isReviewed(state, "base", f.key)) out.push({ type: "field", id: f.key, label: f.label + " — campo não revisado" });
       });
       return out;
     }
 
-    function buildExport(answers) {
-      var vis = visibleQuestions(answers);
-      var answeredIds = vis.filter(function (q) { return isAnswered(q.id, answers); }).map(function (q) { return q.id; });
-      var unr = unresolvedIds(answers);
-      var ans = {};
-      answeredIds.forEach(function (id) { ans[id] = answers[id]; });
+    function photoPolicy(state) {
+      var hard = archValue(state, "photo_policy") === "hard_cap";
+      return {
+        baseline: ["frontal", "traseira", "lateral_esquerda", "lateral_direita", "placa", "serie"],
+        perNonConformity: true,
+        softWarningAt: hard ? null : 14,
+        hardCap: hard ? 14 : null,
+        pagination: true
+      };
+    }
+
+    function fieldExport(state, scope, key) {
+      var f = fieldDef(key);
+      var e = eff(state, scope, key);
+      var o = {
+        key: key,
+        label: f.label,
+        section: f.section,
+        applicability: e.a,
+        condition: e.c || null,
+        photoRule: e.photo ? "required_on_non_conformity" : "off",
+        sourceMatrix: f.m.abrigos,
+        reviewed: isReviewed(state, scope, key),
+        conflict: isConflict(key)
+      };
+      if (e.c === "outro" && e.cn) o.conditionNote = e.cn;
+      return o;
+    }
+
+    function buildExport(state) {
+      var base = {};
+      FIELDS.forEach(function (f) { base[f.key] = fieldExport(state, "base", f.key); });
+
+      var overrides = {};
+      ["39", "40", "41"].forEach(function (sc) {
+        overrides[sc] = {};
+        FIELDS.forEach(function (f) {
+          overrides[sc][f.key] = fieldExport(state, sc, f.key);
+        });
+      });
+
+      var unr = unresolved(state);
+      var p = progress(state);
+      var byApp = { required: 0, optional: 0, na: 0, conditional: 0, removed: 0 };
+      FIELDS.forEach(function (f) { byApp[eff(state, "base", f.key).a]++; });
+
+      var archOut = {};
+      ARCH.forEach(function (d) {
+        var a = state.arch[d.id];
+        if (a) {
+          archOut[d.id] = { value: a.value, label: a.label, recommended: !!a.recommended, notes: a.notes || "" };
+        } else {
+          archOut[d.id] = { value: null, status: "open", recommendedDefault: archRec(d).v };
+        }
+      });
+
       return {
         schemaVersion: SCHEMA_VERSION,
         artifact: ARTIFACT,
         generatedAt: new Date().toISOString(),
-        completion: { answered: answeredIds.length, total: vis.length, unresolved: unr.length },
-        answers: ans,
-        skipped: skippedIds(answers).map(function (id) { return { id: id, reason: "branch_not_applicable" }; }),
+        priorDecisions: PRIOR.slice(),
+        evidenceFacts: {
+          facts: FACTS.slice(),
+          sources: EVIDENCE.map(function (e) { return { id: e.id, label: e.label, source: e.source }; })
+        },
+        architectureDecisions: archOut,
+        fieldContract: { base: base, modelOverrides: overrides },
+        photoPolicy: photoPolicy(state),
         unresolved: unr,
-        evidenceRefs: EVIDENCE
+        completion: {
+          architecture: { decided: p.archD, total: p.archT },
+          fields: { reviewed: p.rev, total: p.fieldT, pending: p.fieldT - p.rev, byApplicability: byApp },
+          conflicts: { resolved: p.conf, total: p.confT },
+          sectionsApproved: { approved: p.secs, total: p.secT }
+        }
       };
+    }
+
+    function promptText(payload) {
+      var c = payload.completion;
+      var head = "Contrato de checklist do Termo de Arrolamento RJ (schema " + payload.schemaVersion + ", slice 1: Abrigos Clear Channel, est. 497).\n" +
+        "Reconcilie este contrato com o config JS versionado (padrão StreetPreventiveSheltersRj.js) e prepare o agent-loop: " +
+        "checklist street novo reusando renderer/persistence, gate digital_panel_present, PDF via reports/jobs com contractVersion.\n";
+      if (payload.unresolved.length > 0) {
+        head += "BLOQUEIO: " + payload.unresolved.length + " pendência(s) bloqueante(s) em unresolved — NÃO inicie implementação; reconcilie as decisões e reexporte o JSON.\n";
+      } else {
+        head += "Sem pendências bloqueantes.\n";
+      }
+      head += "Campos revisados: " + c.fields.reviewed + "/" + c.fields.total +
+        " · decisões de arquitetura: " + c.architecture.decided + "/" + c.architecture.total +
+        " · conflitos: " + c.conflicts.resolved + "/" + c.conflicts.total +
+        " · seções aprovadas: " + c.sectionsApproved.approved + "/" + c.sectionsApproved.total + ".\n\n";
+      return head + JSON.stringify(payload, null, 2);
     }
     /*PURE-END*/
 
-    var state = { answers: {}, cur: "intro", savedAt: null };
+    var state = {
+      cur: { s: "intro" },
+      arch: {},
+      fields: { base: {}, "39": {}, "40": {}, "41": {} },
+      savedAt: null
+    };
+
+    var ui = { tab: "base", filter: "all", open: { A: true, B: true, C: true }, focus: null, scroll: 0 };
 
     function $(sel) { return document.querySelector(sel); }
+
     function el(tag, attrs, children) {
       var n = document.createElement(tag);
       if (attrs) {
@@ -1019,55 +1330,15 @@
       return n;
     }
 
-    function esc(s) {
-      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    }
-
     function showToast(msg) {
       var t = $("#toast");
       t.textContent = msg;
       t.classList.add("visible");
       clearTimeout(t._h);
-      t._h = setTimeout(function () { t.classList.remove("visible"); }, 2200);
+      t._h = setTimeout(function () { t.classList.remove("visible"); }, 2400);
     }
 
     function announce(msg) { $("#live").textContent = msg; }
-
-    function save() {
-      try {
-        state.savedAt = new Date().toISOString();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers: state.answers, cur: state.cur, savedAt: state.savedAt }));
-        var f = $("#saveFlag");
-        if (f) {
-          var d = f.querySelector(".dot");
-          f.querySelector("span").textContent = "Salvo neste dispositivo · " + fmtTime(state.savedAt);
-          d.classList.remove("pulse");
-          void d.offsetWidth;
-          d.classList.add("pulse");
-        }
-      } catch (e) { /* armazenamento indisponível */ }
-    }
-
-    function load() {
-      try {
-        var raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return false;
-        var data = JSON.parse(raw);
-        if (!data || typeof data.answers !== "object") return false;
-        state.answers = data.answers || {};
-        state.savedAt = data.savedAt || null;
-        state.cur = data.cur || "intro";
-        return Object.keys(state.answers).length > 0;
-      } catch (e) { return false; }
-    }
-
-    function resetAll() {
-      if (!window.confirm("Recomeçar do zero? As respostas salvas neste dispositivo serão apagadas.")) return;
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-      state = { answers: {}, cur: "intro", savedAt: null };
-      render();
-      showToast("Respostas apagadas. Grill reiniciado.");
-    }
 
     function fmtTime(iso) {
       if (!iso) return "";
@@ -1075,10 +1346,49 @@
       return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
     }
 
-    function visList() { return visibleQuestions(state.answers); }
+    function save() {
+      try {
+        state.savedAt = new Date().toISOString();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ cur: state.cur, arch: state.arch, fields: state.fields, savedAt: state.savedAt }));
+        var f = $("#saveFlag");
+        if (f) {
+          var d = f.querySelector(".dot");
+          f.querySelector("span:last-child").textContent = "Salvo neste dispositivo · " + fmtTime(state.savedAt);
+          d.classList.remove("pulse");
+          void d.offsetWidth;
+          d.classList.add("pulse");
+        }
+      } catch (e) {}
+    }
 
-    function gotoCur(cur) {
-      state.cur = cur;
+    function load() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        var data = JSON.parse(raw);
+        if (!data || typeof data !== "object") return false;
+        state.arch = data.arch || {};
+        state.fields = data.fields || { base: {}, "39": {}, "40": {}, "41": {} };
+        ["base", "39", "40", "41"].forEach(function (s) { if (!state.fields[s]) state.fields[s] = {}; });
+        state.cur = data.cur || { s: "intro" };
+        state.savedAt = data.savedAt || null;
+        return Object.keys(state.arch).length > 0 || Object.keys(state.fields.base).length > 0 ||
+          Object.keys(state.fields["39"]).length > 0 || Object.keys(state.fields["40"]).length > 0 ||
+          Object.keys(state.fields["41"]).length > 0;
+      } catch (e) { return false; }
+    }
+
+    function resetV2() {
+      if (!window.confirm("Recomeçar a v2 do zero? As respostas da v2 salvas neste dispositivo serão apagadas (o progresso do grill v1 não é tocado).")) return;
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      state = { cur: { s: "intro" }, arch: {}, fields: { base: {}, "39": {}, "40": {}, "41": {} }, savedAt: null };
+      ui = { tab: "base", filter: "all", open: { A: true, B: true, C: true }, focus: null, scroll: 0 };
+      render();
+      showToast("v2 reiniciada. Progresso do grill v1 preservado.");
+    }
+
+    function gotoScreen(s, i) {
+      state.cur = { s: s, i: i || 0 };
       save();
       render();
       window.scrollTo({ top: 0 });
@@ -1091,64 +1401,101 @@
       return el("nav", { class: "nav-bar" }, [inner]);
     }
 
-    /* ---------- Tela: introdução ---------- */
+    function saveFlag() {
+      return el("span", { class: "save-flag", id: "saveFlag" }, [
+        el("span", { class: "dot" }),
+        el("span", { text: state.savedAt ? "Salvo neste dispositivo · " + fmtTime(state.savedAt) : "Salvo neste dispositivo" })
+      ]);
+    }
+
+    function evidenceList(ids) {
+      var list = el("ul", {});
+      (ids || EVIDENCE.map(function (e) { return e.id; })).forEach(function (eid) {
+        var e = null;
+        for (var i = 0; i < EVIDENCE.length; i++) if (EVIDENCE[i].id === eid) e = EVIDENCE[i];
+        if (!e) return;
+        list.appendChild(el("li", {}, [
+          el("strong", { text: e.label + " " }),
+          el("span", { class: "ev-src", text: e.source })
+        ]));
+      });
+      return list;
+    }
+
+    function evidenceAccordion(ids, label) {
+      return el("details", { class: "aux" }, [
+        el("summary", { text: label || "Ver evidências" }),
+        el("div", { class: "aux-body" }, [evidenceList(ids)])
+      ]);
+    }
+
+    function restoreFocus() {
+      if (!ui.focus) return;
+      var n = document.getElementById(ui.focus);
+      ui.focus = null;
+      if (n) n.focus();
+    }
+
     function renderIntro(hasSaved) {
       var app = $("#app");
       app.innerHTML = "";
 
-      var hero = el("header", { class: "doc-hero rise" }, [
+      app.appendChild(el("header", { class: "doc-hero rise" }, [
         el("div", { class: "doc-top" }, [
           el("span", { text: "ELETROMIDIA · OPERAÇÕES" }),
-          el("span", { html: "GRILL <b>Nº 001</b> · REV 00" })
+          el("span", { html: "CONTRATO <b>Nº 002</b> · REV 00" })
         ]),
-        el("span", { class: "eyebrow", text: "Grill de decisões · pré-implementação" }),
-        el("h1", { html: "Termo de<br>Arrolamento <em>RJ</em>" }),
+        el("span", { class: "eyebrow", text: "Configurador de contrato · v2" }),
+        el("h1", { html: "Contrato do checklist <em>Termo RJ</em>" }),
         el("div", { class: "doc-meta" }, [
-          el("span", { class: "meta-chip", html: "<b>10</b> temas" }),
-          el("span", { class: "meta-chip", html: "<b>27</b> decisões" }),
-          el("span", { class: "meta-chip", html: "~<b>7</b> min" }),
-          el("span", { class: "meta-chip", text: "1 pergunta por tela" })
+          el("span", { class: "meta-chip", html: "<b>31</b> campos" }),
+          el("span", { class: "meta-chip", html: "<b>3</b> modelos" }),
+          el("span", { class: "meta-chip", html: "<b>11</b> decisões" }),
+          el("span", { class: "meta-chip", text: "~6 min" })
         ])
-      ]);
-      app.appendChild(hero);
+      ]));
 
-      var stats = el("section", { class: "stats rise rise-1", "aria-label": "Números do contexto" }, [
-        el("div", { class: "stat" }, [el("b", { text: "2.108" }), el("span", { text: "linhas na base JCDecaux" })]),
-        el("div", { class: "stat" }, [el("b", { text: "650" }), el("span", { text: "places ativos (est. 497)" })]),
-        el("div", { class: "stat" }, [el("b", { text: "31" }), el("span", { text: "campos · 3 seções · 7 novos" })]),
-        el("div", { class: "stat" }, [el("b", { text: "32" }), el("span", { text: "places sem modelo" })])
-      ]);
-      app.appendChild(stats);
+      app.appendChild(el("section", { class: "stats rise rise-1", "aria-label": "Números verificados no banco" }, [
+        el("div", { class: "stat" }, [el("b", { text: "650" }), el("span", { text: "places ativos · est. 497" })]),
+        el("div", { class: "stat" }, [el("b", { text: "618" }), el("span", { text: "linhas com modelo" })]),
+        el("div", { class: "stat" }, [el("b", { text: "3" }), el("span", { text: "Standard digitais" })]),
+        el("div", { class: "stat" }, [el("b", { text: "32" }), el("span", { text: "sem modelo · fora" })])
+      ]));
 
-      var c1 = el("section", { class: "clause c-green rise rise-2" }, [
-        el("div", { class: "k" }, [el("i", { text: "01" }), el("span", { text: "O que já está decidido" })]),
-        el("h2", { text: "Este grill não reabre o que a reunião fechou" }),
+      var factsList = el("ul", {});
+      FACTS.slice(0, 6).forEach(function (f) { factsList.appendChild(el("li", { text: f })); });
+      app.appendChild(el("section", { class: "clause c-green rise rise-2" }, [
+        el("div", { class: "k" }, [el("i", { text: "01" }), el("span", { text: "Fatos verificados" })]),
+        el("h2", { text: "Isto é evidência, não escolha" }),
+        factsList,
+        el("details", { class: "aux", style: "margin-top:10px" }, [
+          el("summary", { text: "Ver todos os fatos e fontes" }),
+          el("div", { class: "aux-body" }, [
+            el("ul", {}, FACTS.slice(6).map(function (f) { return el("li", { text: f }); })),
+            evidenceList()
+          ])
+        ])
+      ]));
+
+      app.appendChild(el("details", { class: "clause c-purple rise rise-3", style: "padding:0" }, [
+        el("summary", { style: "padding:16px;min-height:48px" }, [
+          el("span", { class: "k", style: "margin-bottom:0" }, [el("i", { text: "02" }), el("span", { text: "Decisões v1 congeladas · 9" })])
+        ]),
+        el("div", { style: "padding:0 16px 16px" }, [
+          el("h2", { style: "font-size:17px;margin-bottom:8px", text: "Este configurador não reabre o que a v1 fechou" }),
+          el("ul", {}, PRIOR.map(function (p) { return el("li", { text: p }); }))
+        ])
+      ]));
+
+      app.appendChild(el("section", { class: "clause c-orange rise rise-4" }, [
+        el("div", { class: "k" }, [el("i", { text: "03" }), el("span", { text: "Como funciona" })]),
+        el("h2", { text: "Arquitetura → Campos → Revisão" }),
         el("ul", {}, [
-          el("li", { text: "Escopo: MUPIs, Relógios e Abrigos — placas e orientação urbana fora desta entrega." }),
-          el("li", { text: "Nada de módulo novo: Place canônico + my-route/street-route + checklist existente." }),
-          el("li", { text: "Matriz revisada com 31 campos em 3 seções, incluindo os 7 campos adicionados." }),
-          el("li", { text: "A base JCDecaux serve para matching, não para carga cega." }),
-          el("li", { text: "O modelo TERM-72 v002 é a referência do PDF aprovado." })
+          el("li", { text: "Arquitetura: 11 decisões, uma por tela, com recomendação pré-preenchida e evidência." }),
+          el("li", { text: "Campos: editor por abas (Base, Standard, Narrow, Sem Publicidade), 4 estados por toque, ações em lote e filtros." }),
+          el("li", { text: "Revisão: contagens por modelo, pendências rotuladas e JSON schema 2.0 pronto para o agent-loop." })
         ])
-      ]);
-      app.appendChild(c1);
-
-      var chips = el("div", { class: "theme-chips" });
-      THEMES.forEach(function (t) { chips.appendChild(el("span", { class: "theme-chip", text: t.l })); });
-      var c2 = el("section", { class: "clause c-purple rise rise-3" }, [
-        el("div", { class: "k" }, [el("i", { text: "02" }), el("span", { text: "O que você vai responder" })]),
-        el("h2", { text: "10 temas, uma pergunta por tela" }),
-        el("p", { text: "Cada decisão mostra a recomendação com o motivo, a consequência de cada opção e as evidências em accordion. Dá para marcar 'Outro / preciso de mais contexto' em qualquer pergunta." }),
-        chips
-      ]);
-      app.appendChild(c2);
-
-      var c3 = el("section", { class: "clause c-orange rise rise-4" }, [
-        el("div", { class: "k" }, [el("i", { text: "03" }), el("span", { text: "O que acontece com as respostas" })]),
-        el("h2", { text: "Você exporta um JSON e cola de volta no chat" }),
-        el("p", { text: "No fim, um JSON com schema versionado (1.0) reúne respostas, itens pulados por branching, pendências e referências de evidência. Ele vira input do agent-loop de implementação. Tudo fica salvo apenas neste dispositivo." })
-      ]);
-      app.appendChild(c3);
+      ]));
 
       var actions = el("div", { class: "intro-actions rise rise-5" });
       if (hasSaved) {
@@ -1157,245 +1504,491 @@
           text: "Continuar de onde parou" + (state.savedAt ? " (salvo às " + fmtTime(state.savedAt) + ")" : ""),
           onclick: function () { resumeFromSaved(); }
         }));
-        actions.appendChild(el("button", { class: "btn ghost block", type: "button", text: "Recomeçar do zero", onclick: function () {
-          if (window.confirm("Recomeçar do zero? As respostas salvas neste dispositivo serão apagadas.")) {
-            try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-            state = { answers: {}, cur: "intro", savedAt: null };
-            render();
-          }
-        } }));
+        actions.appendChild(el("button", { class: "btn ghost block", type: "button", text: "Recomeçar v2", onclick: resetV2 }));
       } else {
-        actions.appendChild(el("button", { class: "btn primary block", type: "button", text: "Começar o grill", onclick: function () { gotoCur(0); } }));
+        actions.appendChild(el("button", { class: "btn primary block", type: "button", text: "Revisar contrato", onclick: function () { gotoScreen("arch", 0); } }));
       }
       app.appendChild(actions);
 
-      app.appendChild(el("p", { class: "foot-note rise rise-6", text: "100% neste dispositivo · sem backend · sem dependências externas" }));
-      announce("Grill de decisões do Termo de Arrolamento RJ. " + (hasSaved ? "Existe progresso salvo. Use Continuar para retomar." : "Use Começar para iniciar."));
+      app.appendChild(el("p", { class: "foot-note rise rise-6", text: "100% neste dispositivo · autosave na chave v2 · não apaga o progresso do grill v1" }));
+      announce("Configurador do contrato de checklist do Termo RJ. " + (hasSaved ? "Existe progresso v2 salvo." : "Use Revisar contrato para iniciar."));
     }
 
     function resumeFromSaved() {
-      var vis = visList();
-      if (state.cur === "review") { gotoCur("review"); return; }
-      if (typeof state.cur === "number" && state.cur >= 0 && state.cur < vis.length) { gotoCur(state.cur); return; }
-      gotoCur(0);
+      var c = state.cur || { s: "intro" };
+      if (c.s === "arch") { gotoScreen("arch", Math.min(c.i || 0, ARCH.length - 1)); return; }
+      if (c.s === "fields") { gotoScreen("fields"); return; }
+      if (c.s === "review") { gotoScreen("review"); return; }
+      gotoScreen("arch", 0);
     }
 
-    /* ---------- Tela: pergunta ---------- */
-    function outroChecked(q) {
-      var a = state.answers[q.id];
-      if (!a) return false;
-      return Array.isArray(a.value) ? a.value.indexOf("outro") !== -1 : a.value === "outro";
-    }
-
-    function renderQuestion(idx) {
-      var vis = visList();
-      var q = vis[idx];
+    function renderArch(idx) {
+      if (idx < 0) idx = 0;
+      if (idx >= ARCH.length) idx = ARCH.length - 1;
+      var d = ARCH[idx];
       var app = $("#app");
       app.innerHTML = "";
+      var p = progress(state);
 
-      var answeredCount = vis.filter(function (x) { return isAnswered(x.id, state.answers); }).length;
-      var pct = Math.round((answeredCount / vis.length) * 100);
-      var remaining = Math.max(1, Math.ceil((vis.length - idx) * 0.25));
-
-      var head = el("div", { class: "q-head" }, [
+      app.appendChild(el("div", { class: "q-head" }, [
         el("div", { class: "q-head-row" }, [
-          el("span", { class: "q-count", html: "Pergunta <b>" + (idx + 1) + "</b> de " + vis.length }),
-          el("span", { class: "save-flag", id: "saveFlag" }, [
-            el("span", { class: "dot" }),
-            el("span", { text: state.savedAt ? "Salvo neste dispositivo · " + fmtTime(state.savedAt) : "Salvo neste dispositivo" })
-          ])
+          el("span", { class: "q-count", html: "Decisão <b>" + (idx + 1) + "</b> de " + ARCH.length }),
+          saveFlag()
         ]),
-        el("div", { class: "q-bar" }, [el("i", { id: "barFill", style: "width:" + pct + "%" })]),
+        el("div", { class: "q-bar" }, [el("i", { style: "width:" + Math.round((p.archD / ARCH.length) * 100) + "%" })]),
         el("div", { class: "q-head-row", style: "margin-top:8px;margin-bottom:0" }, [
-          el("span", { class: "q-eta", text: "~" + remaining + " min restantes" }),
-          el("span", { class: "q-eta", id: "answeredCount", text: answeredCount + " de " + vis.length + " respondidas" })
+          el("span", { class: "q-eta", text: p.archD + " de " + ARCH.length + " decididas" }),
+          el("span", { class: "q-eta", text: "etapa 1 de 3 · arquitetura" })
         ])
-      ]);
-      app.appendChild(head);
+      ]));
 
-      app.appendChild(el("span", { class: "q-theme-pill", text: themeLabel(q.theme) }));
+      app.appendChild(el("span", { class: "q-theme-pill", text: d.theme }));
 
       var fieldset = el("fieldset", { class: "q-field" });
-      var legend = el("legend", { class: "q-title", id: "qTitle", tabindex: "-1", text: q.title });
+      var legend = el("legend", { class: "q-title", id: "archTitle", tabindex: "-1", text: d.title });
       fieldset.appendChild(legend);
       app.appendChild(fieldset);
 
-      if (q.ctx) fieldset.appendChild(el("p", { class: "q-ctx", text: q.ctx }));
-
-      if (q.why) {
+      if (d.ctx) fieldset.appendChild(el("p", { class: "q-ctx", text: d.ctx }));
+      if (d.why) {
         fieldset.appendChild(el("details", { class: "aux" }, [
           el("summary", { text: "Por que isso importa?" }),
-          el("div", { class: "aux-body" }, [el("p", { text: q.why })])
+          el("div", { class: "aux-body" }, [el("p", { text: d.why })])
         ]));
       }
+      if (d.ev && d.ev.length) fieldset.appendChild(evidenceAccordion(d.ev));
 
-      if (q.ev && q.ev.length) {
-        var evList = el("ul", {});
-        q.ev.forEach(function (eid) {
-          var e = null;
-          for (var i = 0; i < EVIDENCE.length; i++) if (EVIDENCE[i].id === eid) e = EVIDENCE[i];
-          if (!e) return;
-          evList.appendChild(el("li", {}, [
-            el("strong", { text: e.label + " " }),
-            el("span", { class: "ev-src", text: e.source })
-          ]));
-        });
-        fieldset.appendChild(el("details", { class: "aux" }, [
-          el("summary", { text: "Ver evidências" }),
-          el("div", { class: "aux-body" }, [evList])
-        ]));
-      }
-
+      var current = state.arch[d.id];
       var optsWrap = el("div", { class: "opts", role: "presentation" });
 
-      function refreshCounter() {
-        var vis2 = visList();
-        var c = vis2.filter(function (x) { return isAnswered(x.id, state.answers); }).length;
-        var bar = $("#barFill");
-        if (bar) bar.style.width = Math.round((c / vis2.length) * 100) + "%";
-        var ac = $("#answeredCount");
-        if (ac) ac.textContent = c + " de " + vis2.length + " respondidas";
-      }
-
-      function toggleNote(open) {
-        var nb = $("#noteBox");
-        if (!nb) return;
-        nb.classList.toggle("open", open);
-        if (open) {
-          var ta = nb.querySelector("textarea");
-          if (ta) setTimeout(function () { ta.focus(); }, 60);
-        }
-      }
-
-      function noteBox(q2) {
-        var a = state.answers[q2.id] || {};
-        var box = el("div", { class: "note-box" + (outroChecked(q2) ? " open" : ""), id: "noteBox" }, [
-          el("label", { for: "noteTa", text: "Observação curta (o que falta para decidir?)" })
+      function noteBox() {
+        var box = el("div", { class: "note-box" + (current && current.value === "outro" ? " open" : ""), id: "archNoteBox" }, [
+          el("label", { for: "archNoteTa", text: "Observação curta (o que falta para decidir?)" })
         ]);
-        var ta = el("textarea", {
-          id: "noteTa", maxlength: "280",
-          placeholder: "Ex.: preciso confirmar com a área responsável antes de fechar..."
-        });
-        ta.value = (a.notes && !Array.isArray(a.value)) ? a.notes : (a.notes || "");
+        var ta = el("textarea", { id: "archNoteTa", maxlength: "280", placeholder: "Ex.: preciso confirmar com a área responsável antes de fechar..." });
+        ta.value = current && current.notes ? current.notes : "";
         ta.addEventListener("input", function () {
-          var ans = state.answers[q2.id];
-          if (ans) { ans.notes = ta.value; save(); }
+          if (state.arch[d.id]) { state.arch[d.id].notes = ta.value; save(); }
         });
         box.appendChild(ta);
         box.appendChild(el("p", { class: "char-hint", text: "máx. 280 caracteres · entra no campo notes do JSON" }));
         return box;
       }
 
-      if (q.type === "text") {
-        var a0 = state.answers[q.id];
-        var ta0 = el("textarea", {
-          id: "freeTa", maxlength: "600",
-          placeholder: q.placeholder || "Escreva aqui..."
-        });
-        if (a0 && a0.notes) ta0.value = a0.notes;
-        var tHint = el("p", { class: "char-hint", id: "freeHint", text: (a0 && a0.notes ? a0.notes.length : 0) + "/600" + (q.optional ? " · opcional" : "") });
-        ta0.addEventListener("input", function () {
-          var v = ta0.value;
-          if (v.trim().length > 0) {
-            state.answers[q.id] = { value: "texto_livre", label: "Resposta livre registrada", recommended: true, notes: v };
-          } else {
-            delete state.answers[q.id];
-          }
-          tHint.textContent = v.length + "/600" + (q.optional ? " · opcional" : "");
+      var opts = d.options.slice();
+      opts.push(OUTRO);
+
+      opts.forEach(function (o, oi) {
+        var checked = !!current && current.value === o.v;
+        var input = el("input", { type: "radio", name: d.id, id: "arch_" + d.id + "_" + o.v, value: o.v });
+        if (checked) input.checked = true;
+
+        var cls = "opt rise rise-" + Math.min(oi + 1, 6);
+        if (checked) cls += " sel";
+        else if (o.rec && !current) cls += " prefilled";
+        var label = el("label", { class: cls, for: "arch_" + d.id + "_" + o.v });
+
+        label.appendChild(input);
+        label.appendChild(el("span", { class: "box", "aria-hidden": "true" }));
+
+        var body = el("span", {});
+        if (o.rec) body.appendChild(el("span", { class: "rec", text: !current ? "Recomendada · pré-preenchida" : "Nossa recomendação" }));
+        body.appendChild(el("span", { class: "l", text: o.l }));
+        if (o.fx) body.appendChild(el("span", { class: "fx", text: o.fx }));
+        if (o.rec && o.recWhy) body.appendChild(el("span", { class: "rec-why", text: o.recWhy }));
+        label.appendChild(body);
+
+        input.addEventListener("change", function () {
+          state.arch[d.id] = {
+            value: o.v,
+            label: o.l,
+            recommended: !!o.rec,
+            notes: o.v === "outro" ? (state.arch[d.id] && state.arch[d.id].notes) || "" : ""
+          };
+          ui.focus = "arch_" + d.id + "_" + o.v;
           save();
-          refreshCounter();
+          renderArch(idx);
+          announce("Decisão registrada: " + o.l);
         });
-        fieldset.appendChild(el("div", { class: "opts" }, [ta0, tHint]));
-      } else {
-        var opts = q.options.slice();
-        opts.push(OUTRO);
 
-        opts.forEach(function (o, oi) {
-          var inputType = q.type === "multi" ? "checkbox" : "radio";
-          var input = el("input", {
-            type: inputType, name: q.id, id: q.id + "_" + o.v, value: o.v
-          });
+        optsWrap.appendChild(label);
+      });
 
-          var current = state.answers[q.id];
-          var checked = false;
-          if (current) {
-            checked = Array.isArray(current.value) ? current.value.indexOf(o.v) !== -1 : current.value === o.v;
-          }
-          if (checked) input.checked = true;
+      fieldset.appendChild(optsWrap);
+      fieldset.appendChild(noteBox());
 
-          var label = el("label", { class: "opt rise rise-" + Math.min(oi + 1, 6) + (checked ? " sel" : ""), for: q.id + "_" + o.v });
-
-          var box = el("span", { class: "box " + (q.type === "multi" ? "check" : "radio"), "aria-hidden": "true" });
-          label.appendChild(input);
-          label.appendChild(box);
-
-          var body = el("span", {});
-          if (o.rec) body.appendChild(el("span", { class: "rec", text: "Nossa recomendação" }));
-          body.appendChild(el("span", { class: "l", text: o.l }));
-          if (o.fx) body.appendChild(el("span", { class: "fx", text: o.fx }));
-          if (o.rec && o.recWhy) body.appendChild(el("span", { class: "rec-why", text: o.recWhy }));
-          if (o.rec && q.type === "multi" && q.recWhy) body.appendChild(el("span", { class: "rec-why", text: q.recWhy }));
-          label.appendChild(body);
-
-          input.addEventListener("change", function () {
-            if (q.type === "single") {
-              state.answers[q.id] = {
-                value: o.v,
-                label: o.l,
-                recommended: !!o.rec,
-                notes: o.v === "outro" ? (state.answers[q.id] && state.answers[q.id].notes) || "" : ""
-              };
-              optsWrap.querySelectorAll(".opt").forEach(function (n) { n.classList.remove("sel"); });
-              label.classList.add("sel");
-              toggleNote(o.v === "outro");
-            } else {
-              var prev = state.answers[q.id];
-              var vals = prev && Array.isArray(prev.value) ? prev.value.slice() : [];
-              var pos = vals.indexOf(o.v);
-              if (input.checked) { if (pos === -1) vals.push(o.v); }
-              else { if (pos !== -1) vals.splice(pos, 1); }
-              if (vals.length === 0) {
-                delete state.answers[q.id];
-              } else {
-                var labels = [];
-                var recSet = q.options.filter(function (x) { return x.rec; }).map(function (x) { return x.v; });
-                opts.forEach(function (x) { if (vals.indexOf(x.v) !== -1) labels.push(x.l); });
-                var exactRec = vals.length === recSet.length && recSet.every(function (v) { return vals.indexOf(v) !== -1; });
-                state.answers[q.id] = {
-                  value: vals,
-                  label: labels.join(" + "),
-                  recommended: exactRec,
-                  notes: vals.indexOf("outro") !== -1 ? (prev && prev.notes) || "" : ""
-                };
-              }
-              label.classList.toggle("sel", input.checked);
-              toggleNote(vals.indexOf("outro") !== -1);
+      if (!current) {
+        var rec = archRec(d);
+        fieldset.appendChild(el("div", { style: "margin-top:12px" }, [
+          el("button", {
+            class: "btn sun block", type: "button",
+            text: "Manter recomendação e próxima →",
+            onclick: function () {
+              state.arch[d.id] = { value: rec.v, label: rec.l, recommended: true, notes: "" };
+              save();
+              if (idx === ARCH.length - 1) { gotoScreen("fields"); showToast("Arquitetura concluída — editor de campos."); }
+              else { gotoScreen("arch", idx + 1); }
             }
-            save();
-            refreshCounter();
-          });
-
-          optsWrap.appendChild(label);
-        });
-
-        fieldset.appendChild(optsWrap);
-        fieldset.appendChild(noteBox(q));
+          })
+        ]));
       }
 
-      var isLast = idx === vis.length - 1;
-      var bar = navBar(
-        idx === 0 ? "← Resumo" : "← Anterior",
-        function () { gotoCur(idx === 0 ? "intro" : idx - 1); },
-        isLast ? "Revisar respostas →" : "Próxima →",
-        function () { gotoCur(isLast ? "review" : idx + 1); }
-      );
-      app.appendChild(bar);
+      var isLast = idx === ARCH.length - 1;
+      app.appendChild(navBar(
+        idx === 0 ? "← Início" : "← Anterior",
+        function () { if (idx === 0) gotoScreen("intro"); else gotoScreen("arch", idx - 1); },
+        isLast ? "Ir para campos →" : "Próxima →",
+        function () { if (isLast) gotoScreen("fields"); else gotoScreen("arch", idx + 1); }
+      ));
 
-      announce("Pergunta " + (idx + 1) + " de " + vis.length + ". Tema: " + themeLabel(q.theme) + ". " + q.title);
+      announce("Decisão " + (idx + 1) + " de " + ARCH.length + ". " + d.theme + ". " + d.title);
       setTimeout(function () { legend.focus({ preventScroll: false }); }, 80);
+      restoreFocus();
     }
 
-    /* ---------- Tela: revisão ---------- */
+    function setField(scope, key, patch) {
+      var cur = eff(state, scope, key);
+      var next = {
+        a: patch.a || cur.a,
+        c: ("c" in patch) ? patch.c : cur.c,
+        cn: ("cn" in patch) ? patch.cn : (cur.cn || ""),
+        photo: ("photo" in patch) ? patch.photo : cur.photo,
+        reviewed: true
+      };
+      if (next.a !== "conditional") next.c = null;
+      if (next.a === "na" || next.a === "removed") next.photo = false;
+      state.fields[scope] = state.fields[scope] || {};
+      state.fields[scope][key] = next;
+      save();
+      renderFields();
+    }
+
+    function clearOverride(scope, key) {
+      if (state.fields[scope] && state.fields[scope][key]) {
+        delete state.fields[scope][key];
+        save();
+        renderFields();
+        showToast("Override removido — herdando da Base.");
+      }
+    }
+
+    function bulkAction(scope, secId, action) {
+      var keys = FIELDS.filter(function (f) { return f.section === secId && !isConflict(f.key); }).map(function (f) { return f.key; });
+      var conflictsInSection = FIELDS.filter(function (f) { return f.section === secId && isConflict(f.key); }).length;
+
+      var overwrites = keys.filter(function (k) {
+        var s = stField(state, scope, k);
+        if (!s) return false;
+        var target = action === "reco" ? recoFor(scope, k).a : action;
+        return s.a !== target;
+      }).length;
+
+      var verb = action === "reco" ? "aceitar a recomendação em" : ("marcar como " + action + " em");
+      if (overwrites > 0 && !window.confirm("Substituir " + overwrites + " escolha(s) já revisada(s)? Vai " + verb + " " + keys.length + " campos da seção " + secId + ".")) return;
+
+      state.fields[scope] = state.fields[scope] || {};
+      keys.forEach(function (k) {
+        var r = recoFor(scope, k);
+        var a = action === "reco" ? r.a : action;
+        var c = null;
+        if (a === "conditional") c = (action === "reco" && r.c) ? r.c : defaultGate(k);
+        var off = a === "na" || a === "removed";
+        state.fields[scope][k] = { a: a, c: c, cn: "", photo: !off, reviewed: true };
+      });
+      save();
+      renderFields();
+      var msg = keys.length + " campos atualizados na seção " + secId + " (" + scopeLabel(scope) + ").";
+      if (conflictsInSection > 0) msg += " " + conflictsInSection + " conflito(s) exigem decisão manual.";
+      showToast(msg);
+      announce(msg);
+    }
+
+    function matchesFilter(scope, key) {
+      var f = ui.filter;
+      if (f === "all") return true;
+      if (f === "conflitos") return isConflict(key);
+      if (f === "alterados") return isAltered(state, scope, key);
+      if (f === "digitais") return DIGITAL_KEYS.indexOf(key) !== -1;
+      if (f === "pendentes") return !isReviewed(state, scope, key);
+      return true;
+    }
+
+    function fieldCard(scope, key) {
+      var f = fieldDef(key);
+      var e = eff(state, scope, key);
+      var reviewed = isReviewed(state, scope, key);
+      var altered = isAltered(state, scope, key);
+      var conflict = isConflict(key);
+      var hasOverride = scope !== "base" && !!stField(state, scope, key);
+
+      var card = el("div", { class: "field-card" + (conflict ? " has-conflict" : "") });
+
+      var top = el("div", { class: "fc-top" });
+      top.appendChild(el("span", { class: "fc-label", text: f.label }));
+      if (conflict) top.appendChild(el("span", { class: "badge conflict", title: CONFLICT_WHY, text: "Conflito" }));
+      if (altered) top.appendChild(el("span", { class: "badge altered", text: "Alterado" }));
+      if (hasOverride) top.appendChild(el("span", { class: "badge override", text: "Override" }));
+      if (!reviewed && !hasOverride) top.appendChild(el("span", { class: "badge pend", text: "Pendente" }));
+      if (reviewed) top.appendChild(el("span", { class: "badge ok", text: "Revisado" }));
+      top.appendChild(el("span", { class: "badge matrix", text: "matriz: " + f.m.abrigos }));
+      card.appendChild(top);
+      card.appendChild(el("span", { class: "fc-key", text: key + " · seção " + f.section }));
+
+      if (conflict) card.appendChild(el("p", { style: "font-size:12.5px;color:#525252", text: CONFLICT_WHY }));
+
+      var seg = el("div", { class: "seg", role: "group", "aria-label": "Aplicabilidade de " + f.label });
+      APPLICABILITIES.forEach(function (ap) {
+        var pressed = e.a === ap.v;
+        var btn = el("button", {
+          class: "seg-btn", type: "button", "data-v": ap.v,
+          id: "app_" + scope + "_" + key + "_" + ap.v,
+          "aria-pressed": pressed ? "true" : "false",
+          onclick: function () {
+            ui.focus = "app_" + scope + "_" + key + "_" + ap.v;
+            ui.scroll = window.scrollY;
+            var patch = { a: ap.v };
+            if (ap.v === "conditional") patch.c = e.c || (recoFor(scope, key).a === "conditional" && recoFor(scope, key).c) || defaultGate(key);
+            setField(scope, key, patch);
+            announce(f.label + ": " + ap.l);
+          }
+        }, [el("span", { class: "sdot", "aria-hidden": "true" }), el("span", { text: ap.l })]);
+        seg.appendChild(btn);
+      });
+      card.appendChild(seg);
+
+      if (e.a === "conditional") {
+        var gateRow = el("div", { class: "gate-row", role: "group", "aria-label": "Gate condicional de " + f.label });
+        gateRow.appendChild(el("span", { class: "gate-label", text: "Gate (quando exibir)" }));
+        GATES.forEach(function (g) {
+          var pressed = e.c === g.v;
+          gateRow.appendChild(el("button", {
+            class: "gate-pill", type: "button",
+            id: "gate_" + scope + "_" + key + "_" + g.v,
+            "aria-pressed": pressed ? "true" : "false",
+            text: g.l,
+            onclick: function () {
+              ui.focus = "gate_" + scope + "_" + key + "_" + g.v;
+              ui.scroll = window.scrollY;
+              setField(scope, key, { a: "conditional", c: g.v });
+              announce("Gate de " + f.label + ": " + g.l);
+            }
+          }));
+        });
+        card.appendChild(gateRow);
+        if (e.c === "outro") {
+          var inp = el("input", {
+            type: "text", id: "gatenote_" + scope + "_" + key,
+            maxlength: "140", placeholder: "Descreva o gate (ex.: subtipo híbrido no cadastro)",
+            "aria-label": "Descrição do gate outro para " + f.label
+          });
+          inp.value = e.cn || "";
+          inp.addEventListener("change", function () {
+            ui.scroll = window.scrollY;
+            setField(scope, key, { a: "conditional", c: "outro", cn: inp.value });
+          });
+          card.appendChild(inp);
+        }
+      }
+
+      var disabled = e.a === "na" || e.a === "removed";
+      var photoRow = el("div", { class: "photo-row" });
+      photoRow.appendChild(el("span", { class: "pl" }, [
+        el("span", { text: "Foto em não conformidade" }),
+        el("small", { text: disabled ? "desabilitada para N/A" : "required_on_non_conformity" })
+      ]));
+      photoRow.appendChild(el("span", { class: "sw-wrap" }, [
+        el("button", {
+          class: "switch", type: "button", role: "switch",
+          id: "photo_" + scope + "_" + key,
+          "aria-checked": e.photo ? "true" : "false",
+          "aria-disabled": disabled ? "true" : "false",
+          "aria-label": "Regra de foto para " + f.label,
+          onclick: function () {
+            if (disabled) return;
+            ui.focus = "photo_" + scope + "_" + key;
+            ui.scroll = window.scrollY;
+            setField(scope, key, { photo: !e.photo });
+            announce("Regra de foto de " + f.label + ": " + (!e.photo ? "ligada" : "desligada"));
+          }
+        })
+      ]));
+      card.appendChild(photoRow);
+
+      if (hasOverride) {
+        card.appendChild(el("button", {
+          class: "rev-edit", type: "button", text: "Limpar override (herdar Base)",
+          id: "clear_" + scope + "_" + key,
+          onclick: function () {
+            ui.focus = "app_" + scope + "_" + key + "_" + eff(state, "base", key).a;
+            ui.scroll = window.scrollY;
+            clearOverride(scope, key);
+          }
+        }));
+      }
+
+      return card;
+    }
+
+    function semOcorrenciaCard() {
+      var e = eff(state, "base", "semOcorrencia");
+      var removed = e.a === "removed";
+      var card = el("div", { class: "semocc" });
+      card.appendChild(el("h3", {}, [
+        el("span", { text: "semOcorrencia — Sem ocorrência" }),
+        el("span", { class: "badge removed", text: "Proposto para remoção" })
+      ]));
+      card.appendChild(el("p", { text: "Decisão arquitetural: remover o gate global e tratar cada item como Conforme/Não Conforme. Se mantido, vira campo obrigatório normal em todos os modelos." }));
+      var opts = el("div", { class: "semocc-opts", role: "group", "aria-label": "Destino do campo Sem ocorrência" });
+      opts.appendChild(el("button", {
+        class: "semocc-opt", type: "button", id: "semocc_removed",
+        "aria-pressed": removed ? "true" : "false",
+        text: "Remover (recomendado)",
+        onclick: function () {
+          ui.focus = "semocc_removed"; ui.scroll = window.scrollY;
+          setField("base", "semOcorrencia", { a: "removed" });
+          announce("Sem ocorrência: proposto para remoção.");
+        }
+      }));
+      opts.appendChild(el("button", {
+        class: "semocc-opt", type: "button", id: "semocc_required",
+        "aria-pressed": !removed ? "true" : "false",
+        text: "Manter obrigatório",
+        onclick: function () {
+          ui.focus = "semocc_required"; ui.scroll = window.scrollY;
+          setField("base", "semOcorrencia", { a: "required" });
+          announce("Sem ocorrência: mantido como obrigatório.");
+        }
+      }));
+      card.appendChild(opts);
+      return card;
+    }
+
+    function renderFields() {
+      var app = $("#app");
+      app.innerHTML = "";
+      var p = progress(state);
+      var scope = ui.tab;
+      var openArch = p.archT - p.archD;
+
+      app.appendChild(el("div", { class: "q-head" }, [
+        el("div", { class: "q-head-row" }, [
+          el("span", { class: "q-count", html: "Contrato · <b>" + p.pct + "%</b>" }),
+          saveFlag()
+        ]),
+        el("div", { class: "q-bar" }, [el("i", { style: "width:" + p.pct + "%" })]),
+        el("div", { class: "pbar-chips" }, [
+          el("span", { class: "pchip" + (p.archD === p.archT ? " done" : " warn"), html: "arquitetura <b>" + p.archD + "/" + p.archT + "</b>" }),
+          el("span", { class: "pchip" + (p.rev === p.fieldT ? " done" : ""), html: "campos <b>" + p.rev + "/" + p.fieldT + "</b>" }),
+          el("span", { class: "pchip" + (p.conf === p.confT ? " done" : " warn"), html: "conflitos <b>" + p.conf + "/" + p.confT + "</b>" }),
+          el("span", { class: "pchip" + (p.secs === p.secT ? " done" : ""), html: "seções <b>" + p.secs + "/" + p.secT + "</b>" })
+        ])
+      ]));
+
+      if (openArch > 0) {
+        app.appendChild(el("div", { class: "banner-open" }, [
+          el("p", { text: openArch + " decisão(ões) de arquitetura aberta(s) — resolva antes de exportar." }),
+          el("button", { class: "btn small", type: "button", text: "Ir para decisões", onclick: function () { gotoScreen("arch", 0); } })
+        ]));
+      }
+
+      var tabs = el("div", { class: "tabs", role: "group", "aria-label": "Escopo do contrato" });
+      SCOPES.forEach(function (sc) {
+        tabs.appendChild(el("button", {
+          class: "tab", type: "button", id: "tab_" + sc.id,
+          "aria-pressed": ui.tab === sc.id ? "true" : "false",
+          onclick: function () {
+            ui.tab = sc.id; ui.focus = "tab_" + sc.id; ui.scroll = 0;
+            renderFields();
+            announce("Aba " + sc.l);
+          }
+        }, [el("span", { text: sc.l }), el("small", { text: sc.sub })]));
+      });
+      app.appendChild(tabs);
+
+      var FILTERS = [
+        { id: "all", l: "Todos" },
+        { id: "conflitos", l: "Conflitos" },
+        { id: "alterados", l: "Alterados" },
+        { id: "digitais", l: "Digitais" },
+        { id: "pendentes", l: "Pendentes" }
+      ];
+      var filters = el("div", { class: "filters", role: "group", "aria-label": "Filtros de campos" });
+      FILTERS.forEach(function (fl) {
+        filters.appendChild(el("button", {
+          class: "chip", type: "button", id: "flt_" + fl.id,
+          "aria-pressed": ui.filter === fl.id ? "true" : "false",
+          text: fl.l,
+          onclick: function () {
+            ui.filter = fl.id; ui.focus = "flt_" + fl.id; ui.scroll = 0;
+            renderFields();
+            announce("Filtro " + fl.l);
+          }
+        }));
+      });
+      app.appendChild(filters);
+
+      if (scope === "base") {
+        app.appendChild(semOcorrenciaCard());
+      } else {
+        var eSem = eff(state, "base", "semOcorrencia");
+        app.appendChild(el("p", { class: "global-note", text: "semOcorrencia — Sem ocorrência: " + (eSem.a === "removed" ? "proposto para remoção" : "mantido obrigatório") + " (decisão global, editável na aba Base)." }));
+      }
+
+      SECTIONS.forEach(function (sec) {
+        var secFields = FIELDS.filter(function (f) { return f.section === sec.id && f.key !== "semOcorrencia"; });
+        var visible = secFields.filter(function (f) { return matchesFilter(scope, f.key); });
+        var reviewedIn = secFields.filter(function (f) { return isReviewed(state, scope, f.key); }).length;
+
+        var det = el("details", { class: "sec", id: "sec_" + sec.id });
+        if (ui.open[sec.id]) det.setAttribute("open", "");
+        det.appendChild(el("summary", {}, [
+          el("span", { class: "sec-letter", text: sec.id }),
+          el("span", { class: "sec-title", text: sec.label }),
+          el("span", { class: "sec-count", text: secFields.length + " campos · " + reviewedIn + " revistos" })
+        ]));
+        det.addEventListener("toggle", function () { ui.open[sec.id] = det.open; });
+
+        var bulk = el("div", { class: "bulk-bar", role: "group", "aria-label": "Ações em lote da seção " + sec.id });
+        [
+          { a: "reco", l: "Aceitar reco", cls: "reco" },
+          { a: "required", l: "Obrigatório", cls: "" },
+          { a: "optional", l: "Opcional", cls: "" },
+          { a: "na", l: "N/A", cls: "" }
+        ].forEach(function (b) {
+          bulk.appendChild(el("button", {
+            class: "bulk-btn " + b.cls, type: "button",
+            id: "bulk_" + scope + "_" + sec.id + "_" + b.a,
+            text: b.l,
+            onclick: function () {
+              ui.focus = "bulk_" + scope + "_" + sec.id + "_" + b.a;
+              ui.scroll = window.scrollY;
+              bulkAction(scope, sec.id, b.a);
+            }
+          }));
+        });
+        det.appendChild(bulk);
+
+        if (visible.length === 0) {
+          det.appendChild(el("p", { class: "empty-filter", text: "Nenhum campo da seção " + sec.id + " neste filtro." }));
+        } else {
+          visible.forEach(function (f) { det.appendChild(fieldCard(scope, f.key)); });
+        }
+
+        app.appendChild(det);
+      });
+
+      app.appendChild(navBar(
+        "← Arquitetura",
+        function () { gotoScreen("arch", ARCH.length - 1); },
+        "Revisar →",
+        function () { gotoScreen("review"); }
+      ));
+
+      announce("Editor de campos, aba " + scopeLabel(scope) + ". Progresso " + p.pct + "%.");
+      window.scrollTo({ top: ui.scroll || 0 });
+      restoreFocus();
+    }
+
     function copyText(text, okMsg) {
       function fallback() {
         var ta = document.createElement("textarea");
@@ -1422,115 +2015,150 @@
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
-      a.download = "termo-arrolamento-rj-decisoes.json";
+      a.download = "termo-arrolamento-rj-contrato-v2.json";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       setTimeout(function () { URL.revokeObjectURL(url); }, 800);
-      showToast("Download iniciado: termo-arrolamento-rj-decisoes.json");
+      showToast("Download iniciado: termo-arrolamento-rj-contrato-v2.json");
     }
 
-    function promptText(payload) {
-      return "Aqui estão minhas decisões do grill do Termo de Arrolamento RJ (schema " + payload.schemaVersion + "): " +
-        payload.completion.answered + "/" + payload.completion.total + " respondidas, " +
-        payload.completion.unresolved + " pendente(s), " + payload.skipped.length + " item(ns) fora do caminho escolhido.\n\n" +
-        JSON.stringify(payload, null, 2);
+    function scopeCounts(scope) {
+      var c = { required: 0, optional: 0, na: 0, conditional: 0, removed: 0 };
+      FIELDS.forEach(function (f) { c[eff(state, scope, f.key).a]++; });
+      return c;
     }
 
     function renderReview() {
-      var vis = visList();
-      var unr = unresolvedIds(state.answers);
-      var offRec = vis.filter(function (q) {
-        var a = state.answers[q.id];
-        return a && isAnswered(q.id, state.answers) && a.recommended === false && a.value !== "outro" &&
-          !(Array.isArray(a.value) && a.value.indexOf("outro") !== -1);
-      });
-      var skipped = skippedIds(state.answers);
-      var payload = buildExport(state.answers);
-
       var app = $("#app");
       app.innerHTML = "";
+      var payload = buildExport(state);
+      var p = progress(state);
+      var unr = payload.unresolved;
+      var altered = FIELDS.filter(function (f) { return isAltered(state, "base", f.key); });
 
       app.appendChild(el("div", { class: "rev-head rise" }, [
         el("span", { class: "q-theme-pill", text: "Revisão final" }),
-        el("h2", { text: "Confira por tema antes de exportar" }),
-        el("p", { text: "Toque em Editar para ajustar qualquer resposta. Pendências e escolhas fora da recomendação ficam destacadas — sem julgamento, só sinalização." })
+        el("h2", { text: "Contrato por modelo" }),
+        el("p", { text: "Contagens efetivas por escopo (Base + overrides), pendências rotuladas e exportação. Draft pode ser exportado com pendências — o prompt bloqueia implementação enquanto houver unresolved." })
       ]));
 
-      app.appendChild(el("div", { class: "rev-counters rise rise-1" }, [
-        el("div", { class: "rev-counter ok" }, [el("b", { text: String(payload.completion.answered) }), el("span", { text: "respondidas" })]),
-        el("div", { class: "rev-counter pend" }, [el("b", { text: String(payload.completion.unresolved) }), el("span", { text: "pendências" })]),
-        el("div", { class: "rev-counter off" }, [el("b", { text: String(offRec.length) }), el("span", { text: "fora da reco." })])
+      app.appendChild(el("div", { class: (unr.length === 0 ? "go-strip go" : "go-strip nogo") + " rise rise-1" }, [
+        el("span", { text: unr.length === 0 ? "Pronto para reconciliação" : "Draft — " + unr.length + " pendência(s) bloqueante(s)" }),
+        el("small", { text: unr.length === 0 ? "Todas as decisões de arquitetura fechadas e conflitos resolvidos." : "Resolva as pendências listadas abaixo antes do agent-loop." })
       ]));
 
-      THEMES.forEach(function (t, ti) {
-        var qs = vis.filter(function (q) { return q.theme === t.id; });
-        if (!qs.length) return;
-        var group = el("section", { class: "rev-group rise rise-" + Math.min(ti + 1, 6) });
-        group.appendChild(el("h3", { text: t.l }));
-        qs.forEach(function (q) {
-          var a = state.answers[q.id];
-          var answered = isAnswered(q.id, state.answers);
-          var row = el("div", { class: "rev-row" });
-          row.appendChild(el("p", { class: "q", text: q.title }));
+      app.appendChild(el("div", { class: "rev-counters rise rise-2" }, [
+        el("div", { class: "rev-counter ok" }, [el("b", { text: p.rev + "/" + p.fieldT }), el("span", { text: "campos revisados" })]),
+        el("div", { class: "rev-counter pend" }, [el("b", { text: String(unr.length) }), el("span", { text: "bloqueantes" })]),
+        el("div", { class: "rev-counter off" }, [el("b", { text: String(altered.length) }), el("span", { text: "fora da reco." })]),
+        el("div", { class: "rev-counter dark" }, [el("b", { text: p.archD + "/" + p.archT }), el("span", { text: "decisões arch" })])
+      ]));
 
-          var badges = el("div", { class: "rev-badges" });
-          var isOutro = answered && (a.value === "outro" || (Array.isArray(a.value) && a.value.indexOf("outro") !== -1));
-          if (!answered) {
-            badges.appendChild(el("span", { class: "badge " + (q.optional ? "skip" : "pend"), text: q.optional ? "Opcional em branco" : "Pendente" }));
-          } else if (isOutro) {
-            badges.appendChild(el("span", { class: "badge outro", text: "Precisa de mais contexto" }));
-          } else if (a.recommended === false) {
-            badges.appendChild(el("span", { class: "badge off", text: "Fora da recomendação" }));
-          } else {
-            badges.appendChild(el("span", { class: "badge ok", text: "Decidido" }));
+      SCOPES.forEach(function (sc, si) {
+        var c = scopeCounts(sc.id);
+        var card = el("section", { class: "model-card rise rise-" + Math.min(si + 1, 6) });
+        card.appendChild(el("h3", {}, [
+          el("span", { text: sc.id === "base" ? "Base Abrigos (contrato geral)" : "Override · " + sc.l + " (modelo " + sc.id + ")" }),
+          el("span", { class: "mc-count", text: sc.sub })
+        ]));
+
+        card.appendChild(el("div", { class: "mc-chips" }, [
+          el("span", { class: "mc-chip req", text: c.required + " obrigatório(s)" }),
+          el("span", { class: "mc-chip opt", text: c.optional + " opcional(is)" }),
+          el("span", { class: "mc-chip na", text: (c.na + c.removed) + " N/A" }),
+          el("span", { class: "mc-chip cond", text: c.conditional + " condicional(is)" })
+        ]));
+
+        var list = el("ul", { class: "mc-list" });
+        var rows = 0;
+
+        FIELDS.forEach(function (f) {
+          var e = eff(state, sc.id, f.key);
+          if (e.a === "conditional") {
+            list.appendChild(el("li", {}, [
+              el("b", { text: f.label + " " }),
+              el("span", { text: "→ condicional em " + (e.c === "outro" ? ("outro: " + (e.cn || "sem descrição")) : e.c) })
+            ]));
+            rows++;
           }
-          row.appendChild(badges);
-
-          if (answered) {
-            row.appendChild(el("p", { class: "a", text: Array.isArray(a.value) ? a.label : (a.value === "texto_livre" ? "Resposta livre registrada" : a.label) }));
-            if (a.notes && String(a.notes).trim()) row.appendChild(el("p", { class: "n", text: "Nota: " + a.notes }));
-          } else {
-            row.appendChild(el("p", { class: "a", text: "Sem resposta registrada." }));
-          }
-
-          row.appendChild(el("button", {
-            class: "rev-edit", type: "button", text: "Editar",
-            onclick: function () {
-              var list = visList();
-              for (var i = 0; i < list.length; i++) {
-                if (list[i].id === q.id) { gotoCur(i); return; }
-              }
-            }
-          }));
-          group.appendChild(row);
         });
-        app.appendChild(group);
+
+        if (sc.id !== "base") {
+          FIELDS.forEach(function (f) {
+            if (!stField(state, sc.id, f.key)) return;
+            var eb = eff(state, "base", f.key);
+            var es = eff(state, sc.id, f.key);
+            list.appendChild(el("li", {}, [
+              el("b", { text: f.label + " " }),
+              el("span", { text: "override do usuário: " + es.a + (es.a !== eb.a ? " (base: " + eb.a + ")" : "") })
+            ]));
+            rows++;
+          });
+        }
+
+        CONFLICT_KEYS.forEach(function (k) {
+          var resolved = !!stField(state, "base", k);
+          var e = eff(state, sc.id, k);
+          list.appendChild(el("li", {}, [
+            el("b", { text: fieldDef(k).label + " " }),
+            el("span", { class: "badge " + (resolved ? "ok" : "conflict"), text: resolved ? ("conflito resolvido (" + e.a + ")") : "conflito aberto" })
+          ]));
+          rows++;
+        });
+
+        if (rows === 0) list.appendChild(el("li", { text: "Sem condicionais, overrides ou conflitos neste escopo — herda a Base." }));
+        card.appendChild(list);
+        app.appendChild(card);
       });
 
-      if (skipped.length) {
-        var names = skipped.map(function (id) {
-          for (var i = 0; i < QUESTIONS.length; i++) if (QUESTIONS[i].id === id) return QUESTIONS[i].title;
-          return id;
+      var openArch = ARCH.filter(function (d) { return !state.arch[d.id]; });
+      if (openArch.length) {
+        var gArch = el("section", { class: "rev-group rise" });
+        gArch.appendChild(el("h3", { text: "Decisões de arquitetura abertas (" + openArch.length + ")" }));
+        openArch.forEach(function (d) {
+          gArch.appendChild(el("div", { class: "rev-row" }, [
+            el("p", { class: "q", text: d.title }),
+            el("p", { class: "a", text: "Recomendação padrão: " + archRec(d).l }),
+            el("button", {
+              class: "rev-edit", type: "button", text: "Decidir",
+              onclick: function () { gotoScreen("arch", ARCH.indexOf(d)); }
+            })
+          ]));
         });
-        app.appendChild(el("div", { class: "rev-skipped rise" }, [
-          el("h3", { text: "Não se aplicaram pelo caminho escolhido (" + skipped.length + ")" }),
-          el("p", { text: names.join(" · ") })
-        ]));
+        app.appendChild(gArch);
       }
 
-      var jsonStr = JSON.stringify(payload, null, 2);
+      if (unr.length) {
+        var gUnr = el("section", { class: "rev-group rise" });
+        gUnr.appendChild(el("h3", { text: "Pendências bloqueantes (" + unr.length + ")" }));
+        unr.forEach(function (u) {
+          gUnr.appendChild(el("div", { class: "rev-row" }, [
+            el("p", { class: "q", text: u.label }),
+            el("p", { class: "a", text: u.type === "conflict" ? "Conflito catálogo × matriz — exige decisão manual na aba Base." : "Decisão de arquitetura em aberto." })
+          ]));
+        });
+        app.appendChild(gUnr);
+      }
 
+      app.appendChild(el("details", { class: "aux rise", style: "margin-bottom:12px" }, [
+        el("summary", { text: "Ver evidências (fatos e fontes)" }),
+        el("div", { class: "aux-body" }, [
+          el("ul", {}, FACTS.map(function (f) { return el("li", { text: f }); })),
+          evidenceList()
+        ])
+      ]));
+
+      var jsonStr = JSON.stringify(payload, null, 2);
       var exportCard = el("section", { class: "export-card rise" }, [
-        el("h3", { text: "Exportar decisões" }),
-        el("p", { text: "JSON com schema " + SCHEMA_VERSION + ": respostas, itens pulados, pendências, notas e evidências. Sem dados pessoais." })
+        el("h3", { text: "Exportar contrato" }),
+        el("p", { text: "JSON schema " + SCHEMA_VERSION + ": decisões v1, fatos, arquitetura, base + overrides por modelo (39/40/41), política de fotos e pendências. Sem dados pessoais." })
       ]);
-      var actions = el("div", { class: "export-actions" }, [
+      exportCard.appendChild(el("div", { class: "export-actions" }, [
         el("button", { class: "btn sun block", type: "button", text: "Copiar JSON", onclick: function () { copyText(JSON.stringify(payload, null, 2), "JSON copiado — cole de volta no chat."); } }),
-        el("button", { class: "btn flame block", type: "button", text: "Copiar prompt + JSON", onclick: function () { copyText(promptText(payload), "Prompt + JSON copiados — cole no Hermes."); } }),
+        el("button", { class: "btn flame block", type: "button", text: "Copiar prompt + JSON", onclick: function () { copyText(promptText(payload), "Prompt + JSON copiados — cole no agente."); } }),
         el("button", { class: "btn block", style: "background:#fff;color:#000;border-color:#fff", type: "button", text: "Baixar .json", onclick: function () { downloadJson(JSON.stringify(payload, null, 2)); } })
-      ]);
-      exportCard.appendChild(actions);
+      ]));
       exportCard.appendChild(el("details", { class: "aux json-wrap" }, [
         el("summary", { text: "Pré-visualizar JSON" }),
         el("pre", { class: "json-pre", text: jsonStr })
@@ -1538,55 +2166,51 @@
       app.appendChild(exportCard);
 
       app.appendChild(el("div", { class: "danger-zone" }, [
-        el("button", { class: "btn danger-ghost small", type: "button", text: "Reiniciar grill", onclick: resetAll })
+        el("button", { class: "btn danger-ghost small", type: "button", text: "Recomeçar v2", onclick: resetV2 })
       ]));
 
-      var bar = navBar(
-        "← Perguntas",
-        function () { gotoCur(vis.length - 1); },
+      app.appendChild(navBar(
+        "← Campos",
+        function () { gotoScreen("fields"); },
         "Copiar prompt + JSON",
-        function () { copyText(promptText(payload), "Prompt + JSON copiados — cole no Hermes."); },
+        function () { copyText(promptText(payload), "Prompt + JSON copiados — cole no agente."); },
         "sun"
-      );
-      app.appendChild(bar);
+      ));
 
-      announce("Revisão final. " + payload.completion.answered + " respondidas, " + payload.completion.unresolved + " pendências, " + offRec.length + " fora da recomendação.");
+      announce("Revisão final. " + p.rev + " de " + p.fieldT + " campos revisados, " + unr.length + " pendências bloqueantes, " + altered.length + " fora da recomendação.");
       window.scrollTo({ top: 0 });
     }
 
-    /* ---------- Roteador ---------- */
     function render() {
-      if (state.cur === "intro") { renderIntro(false); return; }
-      if (state.cur === "review") { renderReview(); return; }
-      var vis = visList();
-      var idx = typeof state.cur === "number" ? state.cur : 0;
-      if (idx < 0) idx = 0;
-      if (idx >= vis.length) idx = vis.length - 1;
-      state.cur = idx;
-      renderQuestion(idx);
-    }
-
-    var hadSaved = load();
-    if (hadSaved && state.cur !== "intro") {
-      renderIntro(true);
-    } else if (hadSaved) {
-      renderIntro(true);
-    } else {
-      state.cur = "intro";
+      var c = state.cur || { s: "intro" };
+      if (c.s === "arch") { renderArch(c.i || 0); return; }
+      if (c.s === "fields") { renderFields(); return; }
+      if (c.s === "review") { renderReview(); return; }
       renderIntro(false);
     }
 
-    window.GRILL = {
+    var hadSaved = load();
+    renderIntro(!!hadSaved);
+
+    window.CONTRACT = {
       buildExport: buildExport,
-      visibleQuestions: visibleQuestions,
-      skippedIds: skippedIds,
-      unresolvedIds: unresolvedIds,
-      isAnswered: isAnswered,
-      QUESTIONS: QUESTIONS,
+      progress: progress,
+      unresolved: unresolved,
+      eff: eff,
+      isAltered: isAltered,
+      promptText: promptText,
+      FIELDS: FIELDS,
+      ARCH: ARCH,
+      RECO: RECO,
       EVIDENCE: EVIDENCE,
-      THEMES: THEMES,
-      SCHEMA_VERSION: SCHEMA_VERSION
+      SCHEMA_VERSION: SCHEMA_VERSION,
+      STORAGE_KEY: STORAGE_KEY,
+      getState: function () { return state; }
     };
+    Object.defineProperty(window.CONTRACT, "state", {
+      enumerable: true,
+      get: function () { return state; }
+    });
   })();
   </script>
 </body>
