@@ -252,27 +252,27 @@
     var artifacts = [
       {
             "slug": "2026-07-22-termo-arrolamento-rj-grill",
-            "title": "Grill de decisões — Termo de Arrolamento RJ",
+            "title": "Contrato do checklist — Termo de Arrolamento RJ (v2)",
             "date": "2026-07-22",
-            "description": "Formulário decisório mobile-first (uma pergunta por tela) para resolver as ambiguidades arquiteturais do Termo de Arrolamento RJ antes do agent-loop: corte de validação, reuso da Vistoria de Ruas, matching de Places JCDecaux, endereço/GPS auditável, estrutura do checklist (amortecedor/difusor e Sem ocorrência), gatilho de abrigo digital, regra de fotos, PDF contra o golden master TERM-72 e rollout com GO/NO-GO. Autosave em localStorage, branching com itens pulados explícitos, revisão por tema e exportação de JSON versionado (schema 1.0) com botões Copiar JSON, Baixar .json e Copiar prompt + JSON.",
+            "description": "Configurador mobile-first para fechar o contrato dos 31 campos do Termo de Arrolamento RJ antes do agent-loop: 11 decisões arquiteturais pré-preenchidas com evidência verificada (coorte est. 497, modelos 39/40/41, gatilho digital_panel_present, 32 sem modelo fora), editor de campos por abas (Base, Standard, Narrow, Sem Publicidade) com 4 estados por toque (Obrigatório/Opcional/N/A/Condicional + gate), regra de foto por não conformidade, ações em lote com confirmação, filtros (Conflitos, Alterados, Digitais, Pendentes), semOcorrencia proposto para remoção, conflitos amortecedor/difusor sinalizados, progresso real, autosave em localStorage (chave v2, não apaga a v1) e exportação JSON schema 2.0 com prompt de reconciliação que bloqueia implementação se houver unresolved.",
             "tags": [
                   "termo-de-arrolamento",
                   "rio-de-janeiro",
-                  "grill",
-                  "decisoes",
+                  "contrato",
+                  "checklist",
+                  "configurador",
                   "mobile-first",
                   "operacoes",
-                  "checklist",
-                  "jcdecaux",
-                  "my-route",
-                  "golden-master"
+                  "clear-channel",
+                  "abrigos",
+                  "schema-2.0"
             ],
             "sections": [
-                  "Cabeçalho de documento + números do contexto",
-                  "Resumo de 30 segundos (3 cláusulas)",
-                  "Árvore de decisões — 10 temas, 27 perguntas",
-                  "Revisão por tema com edição e destaques",
-                  "Exportação JSON (copiar, baixar, prompt + JSON)"
+                  "Intro com fatos verificados e decisões v1 congeladas",
+                  "Etapa Arquitetura — 11 decisões, uma por tela, com recomendação e evidência",
+                  "Etapa Campos — editor por abas com seções A/B/C, ações em lote e filtros",
+                  "Revisão final por modelo com contagens e pendências bloqueantes",
+                  "Exportação JSON 2.0 (copiar, baixar, prompt + JSON)"
             ]
       },
       {
