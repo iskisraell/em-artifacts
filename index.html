@@ -251,6 +251,31 @@
     // ============================================================
     var artifacts = [
       {
+            "slug": "2026-07-31-motor-de-email-operacoes",
+            "title": "O motor de e-mail do Operações.",
+            "date": "2026-07-31",
+            "description": "Pipeline completo do motor de e-mail do Operações: MailHelper como gateway único, fila legada REST V2 (Seahorse) com assinatura HMAC SHA-256 em produção e MailHog em local. Inclui catálogo de mailables, pontos de disparo, guia prático, configuração e armadilhas.",
+            "tags": [
+                  "email",
+                  "mailhelper",
+                  "restv2",
+                  "laravel",
+                  "operacoes",
+                  "mailhog",
+                  "arquitetura"
+            ],
+            "sections": [
+                  "Pipeline",
+                  "Ambientes",
+                  "Segurança",
+                  "Mailables",
+                  "Quem dispara",
+                  "Guia prático",
+                  "Config",
+                  "Armadilhas"
+            ]
+      },
+      {
             "slug": "2026-07-22-termo-arrolamento-rj-grill",
             "title": "Contrato do checklist — Termo de Arrolamento RJ (v2)",
             "date": "2026-07-22",
@@ -354,6 +379,39 @@
             ]
       },
       {
+            "slug": "2026-07-18-saia-volta-trabalho-overview-v2",
+            "title": "saIA / Ticket Analysis · Estado na volta ao trabalho — v2 experimental",
+            "date": "2026-07-18",
+            "description": "Versão experimental do overview: dark mode global, sidebar TOC, gauge animado no hero, timeline vertical para o sprint, kanban para o Friday, copy mais enxuta, reveal on scroll, FABs, scroll progress. Proposta de patch visual para o skill eletromidia-artifact — antes de embedar no skill.",
+            "tags": [
+                  "saia",
+                  "ticket-analysis",
+                  "operacoes",
+                  "pr-912",
+                  "volta-ao-trabalho",
+                  "experimental",
+                  "dark-mode",
+                  "sidebar-toc",
+                  "gauge",
+                  "kanban",
+                  "timeline",
+                  "v2",
+                  "skill-patch-proposal"
+            ],
+            "sections": [
+                  "Hero (com gauge)",
+                  "TL;DR strip",
+                  "Onde paramos",
+                  "PR #912 / Por que travou",
+                  "O caminho (timeline vertical)",
+                  "Issues na fila (filtro interativo)",
+                  "Board do Friday (kanban)",
+                  "Paralelo",
+                  "O que não fazer",
+                  "Amanhã cedo (path com você está aqui)"
+            ]
+      },
+      {
             "slug": "2026-07-18-saia-volta-trabalho-overview",
             "title": "saIA / Ticket Analysis · Estado na volta ao trabalho — 18/07/2026",
             "date": "2026-07-18",
@@ -385,39 +443,6 @@
                   "Precedentes stale (não reviver)",
                   "Plano de volta em 6 blocos",
                   "Posição final"
-            ]
-      },
-      {
-            "slug": "2026-07-18-saia-volta-trabalho-overview-v2",
-            "title": "saIA / Ticket Analysis · Estado na volta ao trabalho — v2 experimental",
-            "date": "2026-07-18",
-            "description": "Versão experimental do overview: dark mode global, sidebar TOC, gauge animado no hero, timeline vertical para o sprint, kanban para o Friday, copy mais enxuta, reveal on scroll, FABs, scroll progress. Proposta de patch visual para o skill eletromidia-artifact — antes de embedar no skill.",
-            "tags": [
-                  "saia",
-                  "ticket-analysis",
-                  "operacoes",
-                  "pr-912",
-                  "volta-ao-trabalho",
-                  "experimental",
-                  "dark-mode",
-                  "sidebar-toc",
-                  "gauge",
-                  "kanban",
-                  "timeline",
-                  "v2",
-                  "skill-patch-proposal"
-            ],
-            "sections": [
-                  "Hero (com gauge)",
-                  "TL;DR strip",
-                  "Onde paramos",
-                  "PR #912 / Por que travou",
-                  "O caminho (timeline vertical)",
-                  "Issues na fila (filtro interativo)",
-                  "Board do Friday (kanban)",
-                  "Paralelo",
-                  "O que não fazer",
-                  "Amanhã cedo (path com você está aqui)"
             ]
       },
       {
@@ -546,6 +571,36 @@
             ]
       },
       {
+            "slug": "2026-07-06-rh-whatsapp-ia-n8n",
+            "title": "Triagem de RH no WhatsApp com IA: arquitetura e decisões para o MVP",
+            "date": "2026-07-06",
+            "description": "Artefato Eletromidia que explica a arquitetura de triagem pelo WhatsApp usando n8n, Gemini e Gupy. Inclui decisões de design, baseline MVP, riscos, demonstração interativa do fluxo e próximos passos.",
+            "tags": [
+                  "RH",
+                  "WhatsApp",
+                  "n8n",
+                  "Gemini",
+                  "Gupy",
+                  "IA",
+                  "triagem",
+                  "LGPD",
+                  "MVP"
+            ],
+            "sections": [
+                  "Hero e tags",
+                  "O que mudou depois da pesquisa",
+                  "Tabs: Visão executiva, Arquitetura, Riscos e Próximos passos",
+                  "Demonstração interativa do fluxo Gupy para n8n, WhatsApp, Gemini e Gupy",
+                  "Baseline MVP",
+                  "Por que a hipótese de provedor de testes externo está bloqueada",
+                  "O que RH deve decidir",
+                  "O que Tech deve decidir",
+                  "Padrões reusáveis de Helen/SMB e elt-n8n",
+                  "Podcast e notebook de acompanhamento",
+                  "Callout final e footer"
+            ]
+      },
+      {
             "slug": "2026-07-06-saia-plano-implementacao",
             "title": "saIA: plano de implementacao auditavel",
             "date": "2026-07-06",
@@ -574,36 +629,6 @@
                   "Evidencias e Handles",
                   "Mapeamento de Gaps por Secao",
                   "Footer"
-            ]
-      },
-      {
-            "slug": "2026-07-06-rh-whatsapp-ia-n8n",
-            "title": "Triagem de RH no WhatsApp com IA: arquitetura e decisões para o MVP",
-            "date": "2026-07-06",
-            "description": "Artefato Eletromidia que explica a arquitetura de triagem pelo WhatsApp usando n8n, Gemini e Gupy. Inclui decisões de design, baseline MVP, riscos, demonstração interativa do fluxo e próximos passos.",
-            "tags": [
-                  "RH",
-                  "WhatsApp",
-                  "n8n",
-                  "Gemini",
-                  "Gupy",
-                  "IA",
-                  "triagem",
-                  "LGPD",
-                  "MVP"
-            ],
-            "sections": [
-                  "Hero e tags",
-                  "O que mudou depois da pesquisa",
-                  "Tabs: Visão executiva, Arquitetura, Riscos e Próximos passos",
-                  "Demonstração interativa do fluxo Gupy para n8n, WhatsApp, Gemini e Gupy",
-                  "Baseline MVP",
-                  "Por que a hipótese de provedor de testes externo está bloqueada",
-                  "O que RH deve decidir",
-                  "O que Tech deve decidir",
-                  "Padrões reusáveis de Helen/SMB e elt-n8n",
-                  "Podcast e notebook de acompanhamento",
-                  "Callout final e footer"
             ]
       },
       {
@@ -733,6 +758,28 @@
             ]
       },
       {
+            "slug": "2026-06-10-curva-instalacao-fases",
+            "title": "Da planilha à instalação rastreável.",
+            "date": "2026-06-10",
+            "description": "Proposta de arquitetura para Curvas de Instalação, com cadastro prévio dos pontos, tickets por ativo, etapas configuráveis, evidências fotográficas e aprovação auditável.",
+            "tags": [
+                  "Operações",
+                  "Instalação",
+                  "Curva",
+                  "Place",
+                  "Evidências",
+                  "Arquitetura"
+            ],
+            "sections": [
+                  "Problema",
+                  "Modelo proposto",
+                  "Resolução de pontos",
+                  "Execução por etapas",
+                  "MVP",
+                  "Decisões para alinhamento"
+            ]
+      },
+      {
             "slug": "2026-06-10-operacoes-reuse-first-freshness-sweep",
             "title": "Antes de criar um módulo, prove a lacuna.",
             "date": "2026-06-10",
@@ -757,28 +804,6 @@
                   "Exemplos reais",
                   "Spike",
                   "Próximos passos"
-            ]
-      },
-      {
-            "slug": "2026-06-10-curva-instalacao-fases",
-            "title": "Da planilha à instalação rastreável.",
-            "date": "2026-06-10",
-            "description": "Proposta de arquitetura para Curvas de Instalação, com cadastro prévio dos pontos, tickets por ativo, etapas configuráveis, evidências fotográficas e aprovação auditável.",
-            "tags": [
-                  "Operações",
-                  "Instalação",
-                  "Curva",
-                  "Place",
-                  "Evidências",
-                  "Arquitetura"
-            ],
-            "sections": [
-                  "Problema",
-                  "Modelo proposto",
-                  "Resolução de pontos",
-                  "Execução por etapas",
-                  "MVP",
-                  "Decisões para alinhamento"
             ]
       },
       {
@@ -859,31 +884,6 @@
             ]
       },
       {
-            "slug": "2026-05-29-radar-mapa-performance",
-            "title": "Radar Mapa: Performance, Agrupamento e Cache Inteligente",
-            "date": "2026-05-29",
-            "description": "Quatro commits resolveram freeze de 6s no mapa (Web Worker), eliminaram sobreposição de marcadores (carousel popup) e cortaram poluição de cache (search bypass).",
-            "tags": [
-                  "radar",
-                  "performance",
-                  "web-worker",
-                  "supercluster",
-                  "cache",
-                  "leaflet",
-                  "vue",
-                  "laravel"
-            ],
-            "sections": [
-                  "Contexto",
-                  "Problemas",
-                  "Web Worker",
-                  "Agrupamento",
-                  "Cache Inteligente",
-                  "Commits",
-                  "Roadmap"
-            ]
-      },
-      {
             "slug": "2026-05-29-radar-pr876-aceito",
             "title": "Radar no Operações: PR #876 aceito",
             "date": "2026-05-29",
@@ -912,29 +912,28 @@
             ]
       },
       {
-            "slug": "2026-05-28-eletromidia-edge-vision",
-            "title": "Edge Vision: deteccao de faces OOH direto do carro, do clique ao pipeline em segundos.",
-            "date": "2026-05-28",
-            "description": "Sistema de visao computacional embarcada para captura de rotas urbanas com deteccao local de faces Eletromidia. Pipeline detector+sorter com RF-DETR Small (Apache 2.0) + ONNX Runtime + Supervision + OpenCLIP. Benchmark reprodutivel. Planejamento completo, pronto para kick off de desenvolvimento.",
+            "slug": "2026-05-29-radar-mapa-performance",
+            "title": "Radar Mapa: Performance, Agrupamento e Cache Inteligente",
+            "date": "2026-05-29",
+            "description": "Quatro commits resolveram freeze de 6s no mapa (Web Worker), eliminaram sobreposição de marcadores (carousel popup) e cortaram poluição de cache (search bypass).",
             "tags": [
-                  "edge-ai",
-                  "computer-vision",
-                  "onnx",
-                  "python",
-                  "poc",
-                  "eletromidia",
-                  "supervision",
-                  "rf-detr"
+                  "radar",
+                  "performance",
+                  "web-worker",
+                  "supercluster",
+                  "cache",
+                  "leaflet",
+                  "vue",
+                  "laravel"
             ],
             "sections": [
                   "Contexto",
-                  "Pipeline",
-                  "Stack Tecnico",
-                  "Diagrama UML",
-                  "Fases de Desenvolvimento",
-                  "Benchmark",
-                  "Próximos Passos",
-                  "Decisoes Junho 2026"
+                  "Problemas",
+                  "Web Worker",
+                  "Agrupamento",
+                  "Cache Inteligente",
+                  "Commits",
+                  "Roadmap"
             ]
       },
       {
@@ -984,6 +983,32 @@
                   "Workflow 5 fases",
                   "Hub page",
                   "Demo interativa"
+            ]
+      },
+      {
+            "slug": "2026-05-28-eletromidia-edge-vision",
+            "title": "Edge Vision: deteccao de faces OOH direto do carro, do clique ao pipeline em segundos.",
+            "date": "2026-05-28",
+            "description": "Sistema de visao computacional embarcada para captura de rotas urbanas com deteccao local de faces Eletromidia. Pipeline detector+sorter com RF-DETR Small (Apache 2.0) + ONNX Runtime + Supervision + OpenCLIP. Benchmark reprodutivel. Planejamento completo, pronto para kick off de desenvolvimento.",
+            "tags": [
+                  "edge-ai",
+                  "computer-vision",
+                  "onnx",
+                  "python",
+                  "poc",
+                  "eletromidia",
+                  "supervision",
+                  "rf-detr"
+            ],
+            "sections": [
+                  "Contexto",
+                  "Pipeline",
+                  "Stack Tecnico",
+                  "Diagrama UML",
+                  "Fases de Desenvolvimento",
+                  "Benchmark",
+                  "Próximos Passos",
+                  "Decisoes Junho 2026"
             ]
       }
 ];
