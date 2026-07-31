@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eletromidia | O motor de e-mail do Operações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script>
+    (function() {
+      var saved = localStorage.getItem('em-theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --black: #000000;
+      --white: #FFFFFF;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --bg: #FAFAFA;
+      --surface: #FAFAFA;
+      --muted: #F5F5F5;
+      --line: #E5E5E5;
+      --text: #737373;
+      --heading: #000000;
+      --card: #FFFFFF;
+      --code-bg: #FFFFFF;
+      --hero-text: #E8E8E8;
+      --radius: 18px;
+      --max: 1180px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B0B0B;
+      --surface: #0B0B0B;
+      --muted: #161616;
+      --line: #262626;
+      --text: #A3A3A3;
+      --heading: #FAFAFA;
+      --card: #141414;
+      --code-bg: #141414;
+      --hero-text: #C7C7C7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--heading);
+      font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
+      transition: background .25s ease, color .25s ease;
+    }
+    ::selection { background: var(--orange); color: var(--white); }
+    ::-moz-selection { background: var(--orange); color: var(--white); }
+    a { color: inherit; }
+    ul, ol { padding-left: 20px; }
+    li { margin-bottom: 7px; color: var(--text); }
+    p { margin-bottom: 10px; color: var(--text); font-size: 16px; }
+    p:last-child, li:last-child { margin-bottom: 0; }
+    h1, h2, h3, h4 { margin-top: 0; font-weight: 800; color: var(--heading); }
+
+    code {
+      display: inline-block; max-width: 100%;
+      padding: 2px 6px; border-radius: 5px;
+      background: var(--code-bg); color: var(--purple);
+      border: 1px solid var(--line);
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: .86em; white-space: normal;
+      overflow-wrap: anywhere; word-break: break-word;
+      vertical-align: baseline;
+    }
+    [data-theme="dark"] code { color: #B5A0FF; }
+
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: var(--orange); z-index: 50;
+      width: 0; transition: width .1s linear;
+    }
+
+    .skip-link {
+      position: absolute; top: -100px; left: 0;
+      background: var(--black); color: var(--white);
+      padding: 8px 14px; font-weight: 800; font-size: 13px;
+      text-decoration: none; border-radius: 0 0 8px 0;
+    }
+    .skip-link:focus { top: 0; }
+
+    main {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto; padding: 24px 0 56px;
+    }
+    section { margin-top: 22px; }
+
+    h1 {
+      max-width: 980px; margin-bottom: 20px;
+      font-size: clamp(42px, 7.5vw, 90px);
+      line-height: .92; letter-spacing: 0;
+    }
+    .hero h1 { color: #FFFFFF; }
+    h2 {
+      max-width: 820px; margin-bottom: 0;
+      font-size: clamp(28px, 3.6vw, 46px);
+      line-height: 1.04;
+    }
+    h3 { margin-bottom: 8px; font-size: 21px; line-height: 1.12; }
+
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Hero */
+    .hero {
+      min-height: 480px; padding: clamp(24px, 4vw, 52px);
+      border-radius: var(--radius);
+      background: var(--black); color: var(--white);
+      display: grid; align-content: space-between;
+      gap: 48px; overflow: hidden;
+      position: relative; isolation: isolate;
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; z-index: -1;
+      aspect-ratio: 1; border-radius: 34px;
+    }
+    .hero::before {
+      right: clamp(116px, 15vw, 220px);
+      bottom: clamp(-150px, -10vw, -62px);
+      width: min(42vw, 420px);
+      background: var(--orange);
+      transform: rotate(10deg);
+    }
+    .hero::after {
+      right: clamp(-112px, -8vw, -48px);
+      bottom: clamp(-120px, -7vw, -44px);
+      width: min(34vw, 340px);
+      background: var(--purple);
+      transform: rotate(-8deg);
+    }
+    .hero p { max-width: 760px; color: var(--hero-text); font-size: clamp(17px, 2vw, 23px); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 22px; padding: 7px 11px;
+      border-radius: 999px; background: var(--yellow);
+      color: var(--black); font-weight: 800;
+      text-transform: uppercase; font-size: 12px;
+      letter-spacing: .08em;
+    }
+    .hero-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    .pill {
+      display: inline-flex; align-items: center;
+      min-height: 32px; padding: 7px 11px;
+      border-radius: 999px; font-size: 13px;
+      font-weight: 800; line-height: 1; white-space: normal;
+    }
+    .pill.orange { background: var(--orange); color: var(--white); }
+    .pill.purple { background: var(--purple); color: var(--white); }
+    .pill.yellow { background: var(--yellow); color: var(--black); }
+    .pill.green { background: var(--green); color: var(--white); }
+    .pill.pink { background: var(--pink); color: var(--black); }
+    .pill.black { background: var(--black); color: var(--white); }
+    .pill.red { background: var(--red); color: var(--white); }
+    .pill.outline {
+      background: transparent; color: var(--white);
+      border: 1px solid rgba(255,255,255,.35);
+    }
+    .pill.muted {
+      background: var(--muted); color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .nav {
+      position: sticky; top: 3px; z-index: 40;
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0 18px; padding: 12px 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+    }
+    .nav-brand { font-weight: 800; font-size: 14px; margin-right: auto; color: var(--heading); }
+    .nav a {
+      padding: 10px 13px;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: var(--card); color: var(--heading);
+      font-weight: 800; font-size: 14px; text-decoration: none;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .nav a:hover { background: var(--heading); color: var(--bg); border-color: var(--heading); }
+
+    .theme-toggle {
+      width: 38px; height: 38px; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--card);
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      transition: background .15s, transform .2s, border-color .15s;
+      color: var(--heading);
+    }
+    .theme-toggle:hover { background: var(--muted); border-color: var(--heading); transform: rotate(15deg); }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    [data-theme="dark"] .icon-sun { display: block; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="light"] .icon-sun { display: none; }
+    [data-theme="light"] .icon-moon { display: block; }
+
+    .grid {
+      display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px; min-width: 0;
+    }
+    .card {
+      min-width: 0; min-height: 100%;
+      padding: clamp(18px, 2.4vw, 28px);
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--card); overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s, background .25s;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    [data-theme="dark"] .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.4); border-color: rgba(255,255,255,.18); }
+    .card.black, .card.purple, .card.orange, .card.green, .card.red {
+      border-color: transparent; color: var(--white);
+    }
+    .card.black { background: var(--black); }
+    .card.purple { background: var(--purple); }
+    .card.orange { background: var(--orange); }
+    .card.yellow { background: var(--yellow); color: var(--black); }
+    .card.pink { background: var(--pink); color: var(--black); }
+    .card.green { background: var(--green); }
+    .card.red { background: var(--red); }
+    .card.black p, .card.purple p, .card.orange p, .card.green p, .card.red p { color: #FFFFFF; }
+    .card.black li, .card.purple li, .card.orange li, .card.green li, .card.red li { color: #FFFFFF; }
+    .card.yellow p, .card.yellow li, .card.pink p, .card.pink li { color: rgba(0,0,0,.75); }
+    .card.black code, .card.purple code, .card.orange code, .card.green code, .card.red code { color: var(--black); border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.18); }
+
+    .span-3 { grid-column: span 3; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-9 { grid-column: span 9; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      margin-bottom: 6px;
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800; line-height: .86; letter-spacing: -.02em;
+    }
+    .metric-label {
+      font-size: 13px; text-transform: uppercase;
+      letter-spacing: .08em; font-weight: 800;
+      color: var(--text); margin-bottom: 4px; display: block;
+    }
+    .card.black .metric-label, .card.purple .metric-label, .card.orange .metric-label, .card.green .metric-label, .card.red .metric-label { color: rgba(255,255,255,.7); }
+    .card.yellow .metric-label, .card.pink .metric-label { color: rgba(0,0,0,.7); }
+
+    .head {
+      display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 14px;
+    }
+    .head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+    .head .num { font-size: 12px; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 6px; display: block; }
+
+    /* Pipeline */
+    .pipe { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; }
+    .pipe-step {
+      flex: 1 1 170px; min-width: 170px;
+      padding: 16px; border: 1px solid var(--line);
+      background: var(--card); position: relative;
+    }
+    .pipe-step:first-child { border-radius: 14px 0 0 14px; }
+    .pipe-step:last-child { border-radius: 0 14px 14px 0; }
+    .pipe-step + .pipe-step { border-left: none; }
+    .pipe-step .step-num {
+      display: inline-block; width: 24px; height: 24px; line-height: 24px;
+      text-align: center; border-radius: 999px;
+      background: var(--black); color: var(--white);
+      font-size: 12px; font-weight: 800; margin-bottom: 10px;
+    }
+    .pipe-step.orange .step-num { background: var(--orange); }
+    .pipe-step.purple .step-num { background: var(--purple); }
+    .pipe-step.yellow .step-num { background: var(--yellow); color: var(--black); }
+    .pipe-step.green .step-num { background: var(--green); }
+    .pipe-step.red .step-num { background: var(--red); }
+    .pipe-step.blue .step-num { background: var(--blue); }
+    .pipe-step strong { display: block; margin-bottom: 6px; font-size: 15px; line-height: 1.15; }
+    .pipe-step p { font-size: 13.5px; margin-bottom: 0; }
+    .pipe-step code { font-size: .8em; }
+    .pipe-arrow {
+      flex: 0 0 34px; display: grid; place-items: center;
+      background: var(--muted); color: var(--orange);
+      font-size: 20px; font-weight: 800;
+      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    }
+    .pipe-branch {
+      flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 12px;
+      margin-top: 12px;
+    }
+    .pipe-branch-label {
+      flex: 1 1 100%; font-size: 12px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .1em; color: var(--text);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .pipe-branch-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .pipe-branch-card {
+      flex: 1 1 300px; min-width: 260px; padding: 16px;
+      border-radius: 14px; border: 1px solid var(--line);
+      background: var(--card);
+    }
+    .pipe-branch-card.green { border-color: var(--green); }
+    .pipe-branch-card.purple { border-color: var(--purple); }
+    .pipe-branch-card.red { border-color: var(--red); }
+    .pipe-branch-card strong { display: block; margin-bottom: 6px; }
+    .pipe-branch-card p { font-size: 13.5px; margin-bottom: 0; }
+    .pipe-branch-card code { font-size: .8em; }
+
+    .callout {
+      display: flex; justify-content: space-between;
+      gap: 16px; align-items: center;
+      padding: clamp(20px, 3vw, 32px);
+      border-radius: var(--radius);
+      background: var(--yellow); color: var(--black);
+    }
+    .callout h3 { margin-bottom: 4px; color: var(--black); }
+    .callout p { color: rgba(0,0,0,.75); }
+
+    .table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th {
+      background: var(--black); color: var(--white);
+      font-weight: 800; font-size: 13px;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    [data-theme="dark"] th { background: #FAFAFA; color: var(--black); }
+    th:first-child { border-radius: 14px 0 0 0; }
+    th:last-child { border-radius: 0 14px 0 0; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--muted); }
+    td { color: var(--heading); }
+
+    .badge {
+      display: inline-block; padding: 3px 8px;
+      border-radius: 999px; font-size: 11px;
+      font-weight: 800; line-height: 1;
+    }
+    .badge.green { background: var(--green); color: var(--white); }
+    .badge.orange { background: var(--orange); color: var(--white); }
+    .badge.red { background: var(--red); color: var(--white); }
+    .badge.purple { background: var(--purple); color: var(--white); }
+    .badge.black { background: var(--black); color: var(--white); }
+    .badge.yellow { background: var(--yellow); color: var(--black); }
+    .badge.muted { background: var(--muted); color: var(--text); border: 1px solid var(--line); }
+
+    .syntax-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px; margin-top: 12px; min-width: 0;
+    }
+    .syntax-box {
+      min-width: 0; padding: 14px; border-radius: 14px;
+      background: var(--black); color: var(--white); overflow: hidden;
+    }
+    .syntax-box p { color: rgba(255,255,255,.76); }
+    .syntax-box code {
+      display: block; width: 100%; max-width: 100%;
+      white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word;
+      background: transparent; color: var(--yellow); padding: 0;
+    }
+
+    .checklist { margin: 0; padding-left: 20px; color: var(--text); }
+    .checklist li { margin-bottom: 7px; }
+
+    details {
+      border: 1px solid var(--line); border-radius: 14px;
+      background: var(--card); overflow: hidden;
+    }
+    details + details { margin-top: 8px; }
+    summary {
+      cursor: pointer; padding: 16px 18px;
+      font-weight: 800; list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    details[open] summary { background: var(--yellow); color: var(--black); }
+    .details-body { padding: 0 18px 18px; }
+
+    .tldr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+
+    footer {
+      margin-top: 22px; padding: 20px 0 0;
+      color: var(--text); font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px) {
+      .head, .callout { display: grid; }
+      .head p { max-width: none; }
+      .span-3, .span-4, .span-5, .span-6, .span-7, .span-8, .span-9 { grid-column: span 12; }
+      .syntax-grid { grid-template-columns: 1fr; }
+      .tldr { grid-template-columns: 1fr; }
+      .pipe-step:first-child, .pipe-step:last-child { border-radius: 14px; }
+      .pipe-step + .pipe-step { border-left: 1px solid var(--line); border-top: none; }
+    }
+    @media (max-width: 560px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .hero { min-height: 580px; border-radius: 14px; }
+      h1 { font-size: clamp(40px, 13vw, 56px); }
+      h2 { font-size: clamp(30px, 9.5vw, 40px); }
+      .syntax-grid { grid-template-columns: 1fr; }
+      .pipe-step { flex: 1 1 100%; border-left: 1px solid var(--line) !important; }
+      .pipe-arrow { flex: 1 1 100%; min-height: 40px; transform: rotate(90deg); }
+      .card, details { border-radius: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    }
+
+    @media print {
+      .scroll-progress, .nav, .theme-toggle { display: none; }
+      body { background: #fff; color: #000; }
+    }
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<a class="skip-link" href="#conteudo">Pular para conteúdo</a>
+
+<main id="conteudo">
+
+  <section class="hero" id="top">
+    <div>
+      <span class="eyebrow">Operações | Motor de e-mail · 2026-07-31</span>
+      <h1>O motor de e-mail do Operações.</h1>
+      <p>Sim, existe. Um pipeline duplo: produção fala com a fila de e-mails legada (REST V2 / Seahorse) via API autenticada com HMAC, e o ambiente local desvia tudo para o MailHog. Este artefato mapeia o caminho completo — de quem dispara até a entrega — e o que você precisa saber para trabalhar com ele.</p>
+      <div class="hero-bar">
+        <span class="pill orange">RestV2EmailQueue</span>
+        <span class="pill purple">MailHelper</span>
+        <span class="pill yellow">HMAC SHA-256</span>
+        <span class="pill outline">Laravel 8 · PHP 7.4</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="tldr">
+    <article class="card span-4 reveal">
+      <span class="metric-label">Entrada única</span>
+      <div class="metric">1</div>
+      <p><code>MailHelper::send()</code> é o único gateway. Nada de <code>Mail::send()</code> solto em produção — todo envio passa por ele e decide o destino por ambiente.</p>
+    </article>
+    <article class="card span-4 reveal">
+      <span class="metric-label">Rota de produção</span>
+      <div class="metric" style="font-size: clamp(34px, 6vw, 56px);">REST V2</div>
+      <p>POST síncrono em <code>/mensageiro/email</code> com assinatura HMAC SHA-256, chaves do <code>.env</code> e remetente definido por apelido na base legada <code>msg.emails_remetentes</code>.</p>
+    </article>
+    <article class="card span-4 reveal">
+      <span class="metric-label">Rota local</span>
+      <div class="metric" style="font-size: clamp(34px, 6vw, 56px);">MailHog</div>
+      <p>Em <code>local</code>, o e-mail vai para um dev fixo via SMTP local (<code>mailhog:1025</code>). Nada sai de verdade; você inspeciona no UI do MailHog.</p>
+    </article>
+  </div>
+
+  <nav class="nav" id="nav">
+    <span class="nav-brand">Navegação</span>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#ambientes">Ambientes</a>
+    <a href="#seguranca">Segurança</a>
+    <a href="#mailable">Mailables</a>
+    <a href="#quem-dispara">Quem dispara</a>
+    <a href="#guia">Guia prático</a>
+    <a href="#config">Config</a>
+    <a href="#pitfalls">Armadilhas</a>
+  </nav>
+
+  <section id="pipeline">
+    <div class="head">
+      <div>
+        <span class="num">01 / Pipeline</span>
+        <h2>O caminho do e-mail, do clique à fila.</h2>
+      </div>
+      <p>O disparo nunca é direto: um repositório, helper ou command chama o gateway, que renderiza o mailable e decide a rota pelo ambiente.</p>
+    </div>
+
+    <div class="pipe reveal">
+      <div class="pipe-step orange">
+        <span class="step-num">1</span>
+        <strong>Disparo</strong>
+        <p>Repositories, Helpers, Controllers e Commands chamam <code>MailHelper::send($emails, $mailable, $subject?, $sender?)</code>.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step purple">
+        <span class="step-num">2</span>
+        <strong>Gateway MailHelper</strong>
+        <p>Converte destinatários em array, chama <code>build()</code> do mailable para capturar o <code>subject</code> se não foi passado e decide a rota por <code>app()->environment()</code>.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step blue">
+        <span class="step-num">3</span>
+        <strong>Render do corpo</strong>
+        <p>Em produção, <code>$mailable->render()</code> gera o HTML da view Blade (<code>resources/views/emails/**</code>) que será enviado como <code>corpo</code>.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step yellow">
+        <span class="step-num">4</span>
+        <strong>Fila legada</strong>
+        <p>O <code>RestV2EmailQueue</code> monta os parâmetros, assina com HMAC e faz POST para a fila <code>msg.fila_envio_emails</code> no SQL Server legado.</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step green">
+        <span class="step-num">5</span>
+        <strong>Entrega</strong>
+        <p>A fila legada despacha o SMTP. A resposta traz o ID do agendamento: <code>"EMAIL AGENDADO: ID: 12345"</code>.</p>
+      </div>
+    </div>
+
+    <div class="pipe reveal" style="margin-top: 12px;">
+      <div class="pipe-branch-label">Rota alternativa — ambiente local</div>
+      <div class="pipe-branch">
+        <div class="pipe-branch-card red">
+          <strong>Se <code>app()->environment('local')</code></strong>
+          <p>O <code>MailHelper</code> ignora a fila e usa o <code>Mail</code> nativo do Laravel via SMTP apontando para o <code>MailHog</code> (<code>MAIL_HOST=mailhog</code>, porta <code>1025</code>). O destinatário é substituído por <code>william.pinheiro@eletromidia.com.br</code> — o dev principal — para testes.</p>
+        </div>
+        <div class="pipe-branch-card purple">
+          <strong>Se qualquer outro ambiente</strong>
+          <p>Sobe pela <code>RestV2EmailQueue</code>: renderiza o HTML do mailable, valida/deduplica destinatários, monta <code>CURLFile</code> para anexos e envia via cURL para o REST V2. Sem exceção — é o caminho único em produção.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ambientes">
+    <div class="head">
+      <div>
+        <span class="num">02 / Ambientes</span>
+        <h2>Dois comportamentos, uma assinatura.</h2>
+      </div>
+      <p>O mesmo código renderiza o mesmo e-mail; o que muda é o transporte e o destinatário.</p>
+    </div>
+    <div class="grid">
+      <article class="card span-6 reveal">
+        <span class="metric-label">Produção · REST V2 Email Queue</span>
+        <h3>Fila corporativa com autenticação por chave</h3>
+        <ul class="checklist">
+          <li>Envio <strong>síncrono</strong> via cURL (sem fila do Laravel — <code>QUEUE_CONNECTION=database</code> não participa do e-mail).</li>
+          <li>Autenticação por <code>pubkey</code> + <code>seckey</code> (HMAC SHA-256), lidas de <code>USER_EMAIL_QUEUE_PUBLIC_KEY</code> e <code>USER_EMAIL_QUEUE_PRIVATY_KEY</code> no <code>.env</code>.</li>
+          <li>Remetente é um <strong>apelido</strong> cadastrado na tabela legada <code>msg.emails_remetentes</code> (default: <code>MAILSENDER</code>).</li>
+          <li>Destinatários: array JSON de e-mails válidos (<code>FILTER_VALIDATE_EMAIL</code> + <code>unique()</code>). Zero e-mails válidos = exceção.</li>
+          <li>Anexos: <code>CURLFile</code> + mime por <code>finfo</code>, chaveados por nome do arquivo.</li>
+          <li>Sucesso retorna o ID da fila: <code>EMAIL AGENDADO: ID: &lt;id&gt;</code>.</li>
+        </ul>
+      </article>
+      <article class="card span-6 reveal">
+        <span class="metric-label">Local · Laravel Mail + MailHog</span>
+        <h3>Caixa de teste que nunca entrega</h3>
+        <ul class="checklist">
+          <li>Dispara via <code>Mail::to($emailDev)->send($mailable)</code> com SMTP <code>mailhog:1025</code> (sem TLS, sem credenciais).</li>
+          <li>Destinatário fixo: <code>william.pinheiro@eletromidia.com.br</code> — você nunca vê o e-mail "real" do fluxo.</li>
+          <li>Interface do MailHog em <code>http://localhost:8025</code> (porta padrão do container) para inspecionar HTML e anexos.</li>
+          <li>Importante: <strong>não testa</strong> o fluxo de assinatura, a validação de apelido do remetente nem a fila legada.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="seguranca">
+    <div class="head">
+      <div>
+        <span class="num">03 / Segurança</span>
+        <h2>Como o REST V2 confia no seu pedido.</h2>
+      </div>
+      <p>Cada chamada é assinada com HMAC SHA-256 usando a chave privada — nada de segredo no payload.</p>
+    </div>
+
+    <div class="syntax-grid">
+      <div class="syntax-box reveal">
+        <p>Assinatura HMAC (gerada em <code>generateSecretKey()</code>)</p>
+        <code>ksort($params);
+$token = hash_hmac(
+  "sha256",
+  strtolower($method) . $path . serialize($params),
+  $this->privateKey
+);</code>
+      </div>
+      <div class="syntax-box reveal">
+        <p>Headers enviados no cURL</p>
+        <code>Authorization: Token {pubkey}
+Public-Key: {pubkey}
+Client-SID: {session_id}
+Client-RemoteAddr: {REMOTE_ADDR}
+Client-UserAgent: {HTTP_USER_AGENT}
+Client-Referer: {HTTP_REFERER}</code>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top: 12px;">
+      <article class="card span-7 reveal">
+        <span class="metric-label">Payload</span>
+        <h3>POST em <code>REST_V2_URL + /mensageiro/email</code></h3>
+        <p style="margin-bottom: 6px;">Parâmetros montados em <code>saveToQueue()</code> — a ordem importa, porque <code>ksort</code> e <code>serialize</code> fazem parte do token:</p>
+        <ul class="checklist">
+          <li><code>remetente</code> — apelido válido na tabela <code>msg.emails_remetentes</code> (padrão <code>MAILSENDER</code>).</li>
+          <li><code>destinatarios</code> — JSON array de e-mails validados e deduplicados.</li>
+          <li><code>assunto</code> — subject capturado do mailable (ou passado explicitamente).</li>
+          <li><code>pubkey</code> — chave pública do <code>.env</code> (duplicada no header).</li>
+          <li><code>corpo</code> — HTML renderizado do mailable.</li>
+          <li><code>seckey</code> — token HMAC calculado com a chave privada.</li>
+        </ul>
+      </article>
+      <article class="card span-5 reveal" style="background: var(--muted); border-color: var(--line);">
+        <span class="metric-label">Falhas e log</span>
+        <h3>O que acontece quando dá errado</h3>
+        <ul class="checklist">
+          <li>Erro de cURL → exceção <code>"CURL ERROR - {errno}"</code>.</li>
+          <li>Resposta vazia → exceção <code>"ERRO NA CHAMADA DO REST_V2 MENSAGEIRO"</code>.</li>
+          <li>JSON inválido ou <code>status != true</code> → <code>OperationalLogHelper::error('emails', 'restv2-queue', ...)</code> com params (sem chaves), resposta e URL, e exceção lançada.</li>
+          <li>Nenhum destinatário válido → exceção <code>"Nenhum e-mail valido para destinatario"</code>.</li>
+        </ul>
+        <p style="margin-top: 10px;"><strong>Rastreie falhas</strong> pela tag <code>emails</code> no log operacional — é o ponto de partida de qualquer investigação de e-mail não entregue.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="mailable">
+    <div class="head">
+      <div>
+        <span class="num">04 / Catálogo</span>
+        <h2>Os mailables prontos para uso.</h2>
+      </div>
+      <p>Todo conteúdo vive em <code>app/Mail/</code> com views em <code>resources/views/emails/</code>. Para reaproveitar, basta instanciar e chamar o gateway.</p>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Mailable</th>
+            <th>View Blade</th>
+            <th>Para quem vai</th>
+            <th>Quem dispara</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>TicketOpenedRecMail</code></td>
+            <td><code>ticket/opened-rec</code></td>
+            <td>Recipients do chamado + usuário logado</td>
+            <td><code>TicketsRepository</code> (abertura de chamado)</td>
+          </tr>
+          <tr>
+            <td><code>TicketClosedRecMail</code></td>
+            <td><code>ticket/closed-rec</code></td>
+            <td>Recipients do chamado</td>
+            <td><code>TicketsRepository</code> / <code>TicketMastersRepository</code></td>
+          </tr>
+          <tr>
+            <td><code>TicketReleasedMail</code></td>
+            <td><code>ticket/released</code></td>
+            <td>Lista de e-mails do contexto</td>
+            <td><code>TicketsRepository</code> (liberação)</td>
+          </tr>
+          <tr>
+            <td><code>TicketOutsourceCompanyNotificationMail</code></td>
+            <td><code>ticket/outsource-company</code></td>
+            <td>E-mail da empresa terceira</td>
+            <td><code>TicketsRepository</code> / <code>TicketHelper</code> (atribuição)</td>
+          </tr>
+          <tr>
+            <td><code>TicketOverdueOutsourseCompanyNotificationMail</code></td>
+            <td><code>ticket/overdue-outsource-company</code></td>
+            <td>Empresa terceira (chamados &gt; 144h)</td>
+            <td>Command <code>ticket:notify-overdue-outsource-company</code></td>
+          </tr>
+          <tr>
+            <td><code>N3NotificationEmail</code></td>
+            <td><code>ticket/n3-notify</code></td>
+            <td><code>monitoramento@eletromidia.com.br</code></td>
+            <td><code>TicketHelper::notifyN3</code> (com fallback de erro p/ Slack)</td>
+          </tr>
+          <tr>
+            <td><code>QualityInspectionMail</code></td>
+            <td><code>ticket/quality-inspection</code></td>
+            <td>Equipe de qualidade</td>
+            <td><code>QualityTicketHelper</code> / <code>QualityTicketController</code></td>
+          </tr>
+          <tr>
+            <td><code>RequiredAccesssMail</code></td>
+            <td><code>ticket/required-access</code></td>
+            <td>Destinatários de acesso requerido</td>
+            <td>Fluxo de acesso</td>
+          </tr>
+          <tr>
+            <td><code>NpsMail</code></td>
+            <td><code>nps</code></td>
+            <td>E-mails do contexto de avaliação</td>
+            <td><code>RatingsRepository</code></td>
+          </tr>
+          <tr>
+            <td><code>PasswordResetMail</code></td>
+            <td>markdown próprio</td>
+            <td>Usuário que pediu reset</td>
+            <td><code>ForgotPasswordController</code></td>
+          </tr>
+          <tr>
+            <td><code>SendLoginCodeEmail</code></td>
+            <td>markdown próprio</td>
+            <td>Usuário logando com código</td>
+            <td><code>LoginController</code> (login por código)</td>
+          </tr>
+          <tr>
+            <td><code>ProjectWorkInspectionCompletedMail</code></td>
+            <td><code>project/project-work-inspection-completed</code></td>
+            <td>Envolvidos na inspeção de obra</td>
+            <td><code>ProjectWorkInspectionsRepository</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="quem-dispara">
+    <div class="head">
+      <div>
+        <span class="num">05 / Quem dispara</span>
+        <h2>Os pontos de entrada do motor.</h2>
+      </div>
+      <p>Nenhum deles fala com a fila diretamente — todos passam pelo <code>MailHelper</code>. É o que garante a troca de transporte sem tocar em regra de negócio.</p>
+    </div>
+    <div class="grid">
+      <article class="card span-4 reveal">
+        <span class="metric-label">Fluxos de chamado</span>
+        <h3>Tickets</h3>
+        <p><code>TicketsRepository</code> (abertura, liberação, atribuição a terceiros), <code>TicketMastersRepository</code> (fechamento) e <code>TicketHelper</code> (N3, empresa terceira, rota de técnico).</p>
+      </article>
+      <article class="card span-4 reveal">
+        <span class="metric-label">Qualidade e projetos</span>
+        <h3>Inspeções</h3>
+        <p><code>QualityTicketHelper</code> avisa a equipe de qualidade; <code>ProjectWorkInspectionsRepository</code> avisa sobre vistoria de obra concluída.</p>
+      </article>
+      <article class="card span-4 reveal">
+        <span class="metric-label">Auth e feedback</span>
+        <h3>Autenticação + NPS</h3>
+        <p><code>LoginController</code> envia o código de acesso; <code>ForgotPasswordController</code> o link de reset; <code>RatingsRepository</code> dispara o NPS.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="guia">
+    <div class="head">
+      <div>
+        <span class="num">06 / Guia prático</span>
+        <h2>Como enviar um e-mail novo.</h2>
+      </div>
+      <p>O padrão é fixo: mailable + view + chamada única ao gateway. Não reinvente o transporte.</p>
+    </div>
+    <div class="syntax-grid">
+      <div class="syntax-box reveal">
+        <p>1 · Crie o mailable (padrão Laravel, PHP 7.4-safe)</p>
+        <code>php artisan make:mail ExemploMail
+
+// app/Mail/ExemploMail.php
+public function build()
+{
+    return $this->subject('Assunto do e-mail')
+                ->view('emails.exemplo');
+}</code>
+      </div>
+      <div class="syntax-box reveal">
+        <p>2 · Crie a view em <code>resources/views/emails/</code></p>
+        <code>{{-- resources/views/emails/exemplo.blade.php --}}
+&lt;h1&gt;Olá, {{ $nome }}!&lt;/h1&gt;
+&lt;p&gt;Seu chamado {{ $codigo }} foi atualizado.&lt;/p&gt;</code>
+      </div>
+      <div class="syntax-box reveal">
+        <p>3 · Dispare pelo gateway (nunca <code>Mail::send</code> direto)</p>
+        <code>use App\Helpers\MailHelper;
+use App\Mail\ExemploMail;
+
+MailHelper::send(
+    ['cliente@eletromidia.com.br', 'sup@x.com'],
+    new ExemploMail($ticket)
+);
+// sender opcional: MailHelper::send(..., 'SUPORTE');</code>
+      </div>
+      <div class="syntax-box reveal">
+        <p>4 · Teste e valide</p>
+        <code># Ambiente local: confira em http://localhost:8025 (MailHog)
+# O e-mail vai para william.pinheiro@eletromidia.com.br
+
+# Se precisar validar remetente, confira o apelido na tabela legada:
+# msg.emails_remetentes (coluna "apelido")</code>
+      </div>
+    </div>
+  </section>
+
+  <section id="config">
+    <div class="head">
+      <div>
+        <span class="num">07 / Config</span>
+        <h2>Variáveis de ambiente.</h2>
+      </div>
+      <p>Tudo que o motor lê do <code>.env</code>. Não existem credenciais no código — apenas um par hardcoded de chaves de integração legadas em <code>RestV2Helper</code>.</p>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Variável</th>
+            <th>Valor atual (dev)</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>MAIL_MAILER</code></td>
+            <td><code>smtp</code></td>
+            <td>Transporte nativo do Laravel (rota local)</td>
+          </tr>
+          <tr>
+            <td><code>MAIL_HOST</code> / <code>MAIL_PORT</code></td>
+            <td><code>mailhog</code> / <code>1025</code></td>
+            <td>SMTP do MailHog no ambiente local</td>
+          </tr>
+          <tr>
+            <td><code>USER_EMAIL_QUEUE_PUBLIC_KEY</code></td>
+            <td>chave pública do REST V2</td>
+            <td>Autenticação da fila de e-mails (header <code>Token</code> + payload)</td>
+          </tr>
+          <tr>
+            <td><code>USER_EMAIL_QUEUE_PRIVATY_KEY</code></td>
+            <td>chave privada do REST V2</td>
+            <td>Assinatura HMAC SHA-256 (nunca vai no payload)</td>
+          </tr>
+          <tr>
+            <td><code>REST_V2_URL</code></td>
+            <td><code>http://host.docker.internal:80/seahorse/rest_v2/</code></td>
+            <td>Base do endpoint <code>/mensageiro/email</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="pitfalls">
+    <div class="head">
+      <div>
+        <span class="num">08 / Armadilhas</span>
+        <h2>O que morde quem não conhece o motor.</h2>
+      </div>
+      <p>Lições colhidas do código — evite repetir o erro.</p>
+    </div>
+    <div class="grid">
+      <article class="card span-6 reveal" style="border-color: var(--red);">
+        <h3>Envio síncrono e sem timeout</h3>
+        <p>O cURL da fila roda <code>CURLOPT_TIMEOUT = 0</code> (sem limite) no ciclo da request. Se o REST V2 estiver lento, a request do usuário espera junto. Não existem jobs de e-mail aqui — a fila do Laravel não participa.</p>
+      </article>
+      <article class="card span-6 reveal" style="border-color: var(--red);">
+        <h3>Remetente inválido quebra o envio</h3>
+        <p><code>MAILSENDER</code> precisa existir como apelido na tabela legada <code>msg.emails_remetentes</code>. Um apelido novo exige cadastro no legado antes de usar <code>setSender()</code>.</p>
+      </article>
+      <article class="card span-6 reveal" style="border-color: var(--red);">
+        <h3>Local mascara destinatários</h3>
+        <p>Em <code>local</code> o e-mail vai sempre para o dev fixo. Testar "quem recebe o quê" em local é impossível sem mudar o comportamento — valide regras de destinatário com testes, não no MailHog.</p>
+      </article>
+      <article class="card span-6 reveal" style="border-color: var(--red);">
+        <h3>Chaves são compartilhadas e globais</h3>
+        <p>Todos os envios usam as mesmas chaves do <code>.env</code>. Rotação de chave afeta o sistema inteiro de uma vez, e o token HMAC muda com qualquer alteração de payload — params e token andam juntos.</p>
+      </article>
+      <article class="card span-12 reveal" style="border-color: var(--red);">
+        <h3>Não confunda com o <code>RestV2Helper</code></h3>
+        <p>O <code>RestV2Helper</code> (e o <code>RestWSClient</code>) é outro cliente REST V2 usado para tickets, HubSpot e WhatsApp — <strong>não é o motor de e-mail</strong>. O motor de e-mail é só <code>RestV2EmailQueue</code> + <code>MailHelper</code>. As notificações Laravel (<code>MaintenanceNotification</code>, <code>ReportNotification</code>) também são canais separados (database/Slack) e não passam pela fila de e-mail.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="proximo">
+    <div class="callout">
+      <div>
+        <h3>Resumo para o dia a dia.</h3>
+        <p>Existe um motor de e-mail: <code>MailHelper::send()</code> é a porta de entrada, o <code>RestV2EmailQueue</code> é a fila de produção assinada por HMAC e o MailHog é a caixa de testes local. Para enviar um e-mail novo: crie o mailable, a view em <code>resources/views/emails/</code> e dispare pelo gateway — nada de <code>Mail::send</code> solto. Em caso de e-mail não entregue, procure a tag <code>emails</code> no log operacional.</p>
+      </div>
+      <span class="pill black">Motor mapeado</span>
+    </div>
+  </section>
+
+  <footer>
+    <strong>O motor de e-mail do Operações</strong>
+    <p>Fontes: <code>app/Helpers/MailHelper.php</code>, <code>app/Libraries/RestV2EmailQueue.php</code>, <code>app/Mail/**</code>, <code>resources/views/emails/**</code>, <code>config/mail.php</code>, <code>.env</code> (dev). Mapeamento em 2026-07-31 sobre a branch <code>feature/termo-arrolamento-rj-v2</code>.</p>
+  </footer>
+</main>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Alternar tema" style="position: fixed; right: 18px; bottom: 18px; z-index: 30;">
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+</button>
+
+<script>
+  (function() {
+    var btn = document.getElementById('themeToggle');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var current = document.documentElement.dataset.theme;
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('em-theme', next);
+    });
+  })();
+
+  (function() {
+    var bar = document.getElementById('scrollProgress');
+    function update() {
+      var doc = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (doc > 0 ? Math.min(100, (window.scrollY / doc) * 100) : 0) + '%';
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+
+  (function() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>

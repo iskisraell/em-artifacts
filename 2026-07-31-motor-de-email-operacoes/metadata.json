@@ -1,0 +1,7 @@
+{
+  "title": "O motor de e-mail do Operações.",
+  "date": "2026-07-31",
+  "description": "Pipeline completo do motor de e-mail do Operações: MailHelper como gateway único, fila legada REST V2 (Seahorse) com assinatura HMAC SHA-256 em produção e MailHog em local. Inclui catálogo de mailables, pontos de disparo, guia prático, configuração e armadilhas.",
+  "tags": ["email", "mailhelper", "restv2", "laravel", "operacoes", "mailhog", "arquitetura"],
+  "sections": ["Pipeline", "Ambientes", "Segurança", "Mailables", "Quem dispara", "Guia prático", "Config", "Armadilhas"]
+}
