@@ -1,0 +1,7 @@
+{
+  "title": "Termo de Arrolamento RJ — PR #950",
+  "date": "2026-08-08",
+  "description": "Vertical slice do Termo de Arrolamento RJ no Operações: checklist dinâmica por equipamento (abrigo, relógio, totem), opção Não se Aplica, readiness e PDF com mapa de satélite. Draft aguardando OK do William.",
+  "tags": ["operacoes", "termo-rj", "pr-950", "checklist", "pdf", "arcgis", "laravel"],
+  "sections": ["contexto", "entrega", "fluxo", "catalogo", "defat", "incidente", "validacao", "mapa", "rollout", "proximos"]
+}
