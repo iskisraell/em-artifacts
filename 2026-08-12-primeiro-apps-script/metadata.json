@@ -1,7 +1,7 @@
 {
   "title": "Sua planilha está pedindo um botão",
   "date": "2026-08-12",
-  "description": "Um caminho curto, em duas conversas com Gems encadeados, para transformar uma tarefa em uma solução dentro do Google Workspace.",
+  "description": "Um caminho visual e prático, em duas conversas com Gems encadeados, para transformar uma tarefa em uma solução dentro do Google Workspace.",
   "tags": ["Gemini", "Apps Script", "Google Workspace", "Programa de Estágio", "Eletromidia", "automação"],
-  "sections": ["Por que isso importa", "Duas conversas", "Pipeline", "Formas de disparar", "Anatomia do projeto", "Materiais"]
+  "sections": ["Por que isso importa", "Duas conversas", "Pipeline", "Na prática", "Criar o projeto", "IDs dos arquivos", "Práticas que ajudam", "Formas de disparar", "Anatomia do projeto", "Primeira execução", "Materiais"]
 }

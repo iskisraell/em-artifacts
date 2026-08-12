@@ -7,8 +7,10 @@
   <title>Eletromidia | Sua planilha está pedindo um botão</title>
   <script>
     (function () {
-      var saved = localStorage.getItem('em-theme');
-      document.documentElement.dataset.theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      var saved = null;
+      try { saved = localStorage.getItem('em-theme'); } catch (error) { saved = null; }
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,7 +65,7 @@
     .nav { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(14px); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(var(--max), calc(100% - 32px)); min-height: 62px; margin: 0 auto; }
     .brand { display: flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 800; }
-    .nav-links { display: flex; align-items: center; gap: 18px; font-size: 13px; font-weight: 700; color: var(--text); }
+     .nav-links { display: flex; align-items: center; gap: 18px; font-size: 13px; font-weight: 700; color: var(--text); }
     .nav-links a { text-decoration: none; }
     .nav-links a:hover { color: var(--orange); }
     .theme { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--heading); cursor: pointer; }
@@ -80,8 +82,8 @@
     .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 17px; border: 1px solid transparent; border-radius: 999px; font-size: 14px; font-weight: 800; text-decoration: none; cursor: pointer; transition: transform .18s, background .18s, color .18s, border-color .18s; }
     .btn:hover { transform: translateY(-2px); }
-    .btn-primary { background: var(--orange); color: var(--white); }
-    .btn-primary:hover { background: #e44600; }
+     .btn-primary { background: #B83D00; color: var(--white); }
+     .btn-primary:hover { background: #983200; }
     .btn-light { background: var(--white); color: var(--black); }
     .btn-light:hover { background: var(--yellow); }
     .btn-outline { border-color: rgba(255,255,255,.3); color: var(--white); }
@@ -182,10 +184,61 @@
     .warning p { font-size: 14px; }
     .trigger-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
     .trigger { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
-    .trigger strong { display: block; margin-bottom: 7px; font-size: 16px; }
-    .trigger p { font-size: 13px; }
-    .trigger code { margin-bottom: 14px; color: var(--orange); }
-    footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--text); font-size: 12px; }
+     .trigger strong { display: block; margin-bottom: 7px; font-size: 16px; }
+     .trigger p { font-size: 13px; }
+     .trigger code { margin-bottom: 14px; color: var(--orange); }
+     .visual-intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
+     .visual-intro > p { max-width: 360px; font-size: 14px; }
+     .visual-note { margin-bottom: 12px; padding: 13px 16px; border-left: 3px solid var(--orange); border-radius: 0 10px 10px 0; background: var(--muted); color: var(--text); font-size: 13px; }
+     .visual-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+     .visual-card { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+     .visual-card:hover { border-color: var(--orange); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+     .visual-image-link { display: block; padding: 10px; background: var(--muted); }
+     .visual-image-link img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 9px; background: var(--white); }
+     .visual-copy { padding: 19px 21px 21px; }
+     .visual-step { display: block; margin-bottom: 8px; color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+     .visual-copy h3 { margin-bottom: 7px; }
+     .visual-copy p { font-size: 14px; }
+     .visual-open { display: inline-block; margin-top: 13px; color: var(--orange); font-size: 12px; font-weight: 800; text-decoration: none; }
+     .visual-open:hover { text-decoration: underline; }
+     .prompt-dialog { width: min(620px, calc(100% - 28px)); padding: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--card); color: var(--heading); box-shadow: 0 18px 60px rgba(0,0,0,.25); }
+     .prompt-dialog::backdrop { background: rgba(0,0,0,.55); }
+     .prompt-dialog form { padding: 22px; }
+     .prompt-dialog h3 { margin-bottom: 8px; }
+     .prompt-dialog p { font-size: 13px; }
+     .prompt-dialog textarea { display: block; width: 100%; min-height: 190px; margin: 14px 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--muted); color: var(--heading); font: 13px/1.5 Consolas, monospace; resize: vertical; }
+     .prompt-dialog .btn { border: 0; background: var(--orange); color: var(--white); }
+     .principles-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+     .principle { min-height: 170px; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+     .principle:nth-child(2) { background: var(--yellow); }
+     .principle:nth-child(4) { background: var(--orange); color: var(--white); }
+     .principle:nth-child(5) { background: var(--purple); color: var(--white); }
+     .principle:nth-child(4) p, .principle:nth-child(5) p { color: rgba(255,255,255,.78); }
+     .principle-number { display: block; margin-bottom: 28px; color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; }
+     .principle:nth-child(2) .principle-number, .principle:nth-child(4) .principle-number, .principle:nth-child(5) .principle-number { color: inherit; opacity: .7; }
+     .principle h3 { font-size: 18px; }
+     .principle p { margin-top: 8px; font-size: 14px; }
+     .project-start { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 12px; }
+     .project-lead { padding: clamp(23px, 3vw, 34px); border-radius: var(--radius); background: var(--black); color: var(--white); }
+     .project-lead h3 { max-width: 410px; margin-top: 10px; font-size: clamp(27px, 4vw, 44px); letter-spacing: -.035em; }
+     .project-lead p { max-width: 430px; margin-top: 15px; color: #C8C8C8; }
+     .project-steps { display: grid; gap: 8px; }
+     .project-step { display: grid; grid-template-columns: 38px 1fr; gap: 13px; align-items: start; padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: var(--card); }
+     .project-step strong { display: block; font-size: 15px; }
+     .project-step p { margin-top: 4px; font-size: 13px; }
+     .project-step .number { margin: 0; background: var(--orange); color: var(--white); }
+     .id-guide { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 18px; margin-top: 12px; padding: clamp(22px, 3vw, 30px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--muted); }
+     .id-guide h3 { margin-top: 9px; font-size: clamp(23px, 3vw, 34px); letter-spacing: -.025em; }
+     .id-guide p { margin-top: 10px; font-size: 14px; }
+     .id-examples { display: grid; gap: 8px; }
+     .id-example { padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+     .id-label { display: block; margin-bottom: 8px; color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+     .id-example code { display: block; overflow-wrap: anywhere; color: var(--text); font-size: clamp(11px, 1.3vw, 13px); line-height: 1.55; }
+     .id-example code strong { color: var(--heading); }
+     .id-example mark { padding: 2px 4px; border-radius: 4px; background: var(--yellow); color: var(--black); font-weight: 800; }
+     .id-tip { margin: 0 !important; color: var(--text); font-size: 12px !important; }
+     .id-tip code { color: var(--heading); }
+     footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--text); font-size: 12px; }
     footer strong { color: var(--heading); }
     .toast { position: fixed; right: 20px; bottom: 20px; z-index: 30; max-width: 320px; padding: 13px 16px; border-radius: 12px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; opacity: 0; transform: translateY(18px); pointer-events: none; transition: .2s; }
     .toast.show { opacity: 1; transform: translateY(0); }
@@ -194,9 +247,11 @@
     @media (max-width: 920px) {
       .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
       .pipeline-tabs { grid-template-columns: repeat(5, minmax(112px, 1fr)); overflow-x: auto; padding-bottom: 3px; }
-      .step-detail, .syntax { grid-template-columns: 1fr; }
-      .rail { grid-template-columns: 1fr 1fr; }
-      .trigger-grid { grid-template-columns: 1fr 1fr; }
+       .step-detail, .syntax { grid-template-columns: 1fr; }
+       .rail { grid-template-columns: 1fr 1fr; }
+       .trigger-grid { grid-template-columns: 1fr 1fr; }
+       .principles-grid { grid-template-columns: 1fr 1fr; }
+       .project-start { grid-template-columns: 1fr; }
     }
     @media (max-width: 600px) {
       main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
@@ -210,12 +265,16 @@
       .callout .btn { margin-top: 14px; }
       .pipeline-wrap { padding: 14px; }
       .pipeline-tabs { grid-template-columns: repeat(5, 112px); margin-right: -2px; }
-      .step-detail { display: block; }
-      .detail-side { margin-top: 12px; }
-      .gem-chain { grid-template-columns: 1fr; }
-      .chain-arrow { transform: rotate(90deg); }
-      .rail, .resource-grid, .trigger-grid { grid-template-columns: 1fr; }
-      footer { display: block; }
+       .step-detail { display: block; }
+       .detail-side { margin-top: 12px; }
+       .gem-chain { grid-template-columns: 1fr; }
+       .chain-arrow { transform: rotate(90deg); }
+       .rail, .resource-grid, .trigger-grid, .visual-grid, .principles-grid { grid-template-columns: 1fr; }
+       .visual-intro { display: block; }
+       .visual-intro > p { margin-top: 10px; }
+       .visual-image-link { padding: 7px; }
+       .id-guide { grid-template-columns: 1fr; }
+       footer { display: block; }
       footer span { display: block; margin-top: 7px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -236,6 +295,7 @@
       <a class="brand" href="#topo">Programa de estágio</a>
       <div class="nav-links">
         <a href="#pipeline">Pipeline</a>
+        <a href="#na-pratica">Na prática</a>
         <a href="#materiais">Materiais</a>
         <button class="theme" id="themeToggle" type="button" aria-label="Alternar tema">☼</button>
       </div>
@@ -296,16 +356,75 @@
       </div>
       <div class="pipeline-wrap">
         <div class="pipeline-tabs" role="tablist" aria-label="Etapas do pipeline">
-          <button class="step-tab active" role="tab" aria-selected="true" data-step="0"><span class="step-num">01 / CONVERSA 1</span><strong>Planificar</strong></button>
-          <button class="step-tab" role="tab" aria-selected="false" data-step="1"><span class="step-num">02 / CONVERSA 2</span><strong>Pensar produto</strong></button>
-          <button class="step-tab" role="tab" aria-selected="false" data-step="2"><span class="step-num">03 / MONTAR</span><strong>Colar código</strong></button>
-          <button class="step-tab" role="tab" aria-selected="false" data-step="3"><span class="step-num">04 / PREPARAR</span><strong>Configurar</strong></button>
-          <button class="step-tab" role="tab" aria-selected="false" data-step="4"><span class="step-num">05 / USAR</span><strong>Abrir menu</strong></button>
+          <button class="step-tab active" id="step-tab-0" role="tab" aria-selected="true" aria-controls="stepDetail" tabindex="0" data-step="0"><span class="step-num">01 / CONVERSA 1</span><strong>Planificar</strong></button>
+          <button class="step-tab" id="step-tab-1" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="1"><span class="step-num">02 / CONVERSA 2</span><strong>Pensar produto</strong></button>
+          <button class="step-tab" id="step-tab-2" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="2"><span class="step-num">03 / MONTAR</span><strong>Criar projeto</strong></button>
+          <button class="step-tab" id="step-tab-3" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="3"><span class="step-num">04 / PREPARAR</span><strong>Configurar</strong></button>
+          <button class="step-tab" id="step-tab-4" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="4"><span class="step-num">05 / USAR</span><strong>Abrir menu</strong></button>
         </div>
-        <div class="step-detail" id="stepDetail" role="tabpanel">
+        <div class="step-detail" id="stepDetail" role="tabpanel" aria-labelledby="step-tab-0" tabindex="0">
           <div class="detail-main"><span class="detail-label" id="detailLabel">01 / CONVERSA 1</span><h3 id="detailTitle">Planifique antes de construir.</h3><p id="detailText">Anexe o xlsx ao Gem de Planificação. Ele transforma abas, colunas, fórmulas e relações em um texto que a IA consegue carregar na nova conversa do próximo passo.</p></div>
-          <div class="detail-side"><div class="detail-box"><h4>Você fornece</h4><p id="detailInput">Uma planilha e uma pergunta: “para que esse dado serve?”</p></div><div class="detail-box"><h4>Você confere</h4><p id="detailCheck">Se a descrição representa a planilha real. Se inventou algo, pare e corrija.</p></div></div>
+           <div class="detail-side"><div class="detail-box"><h4>Você fornece</h4><p id="detailInput">Uma planilha e uma pergunta: “para que esse dado serve?”</p></div><div class="detail-box"><h4>Você confere</h4><p id="detailCheck">Se a descrição representa a planilha real. Se inventou algo, pare e corrija.</p></div></div>
         </div>
+      </div>
+    </section>
+
+    <section id="na-pratica" class="reveal">
+      <div class="visual-intro">
+        <div><div class="section-kicker">Na prática</div><h2>Dois caminhos. Um projeto que você entende.</h2></div>
+        <p>Não precisa decorar a tela. Estas imagens mostram o que aparece quando você sai da planilha e começa a montar a solução.</p>
+      </div>
+      <p class="visual-note"><strong>Leia assim:</strong> as imagens 01 e 02 mostram dois jeitos de começar. Depois, as imagens 03 e 04 mostram o que acontece dentro do projeto, qualquer que seja o caminho escolhido.</p>
+      <div class="visual-grid">
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/01-abrir-apps-script.png" target="_blank" rel="noopener"><img src="media/01-abrir-apps-script.png" alt="Planilha do Google com o menu Extensões aberto e a opção Apps Script visível"></a>
+          <div class="visual-copy"><span class="visual-step">01 / caminho vinculado</span><h3>O atalho está na planilha.</h3><p>Se a automação nasce nesse arquivo, clique em <strong>Extensões</strong> e escolha <strong>Apps Script</strong>. O projeto já começa conectado a ele.</p><a class="visual-open" href="media/01-abrir-apps-script.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/02-criar-ou-escolher-projeto.png" target="_blank" rel="noopener"><img src="media/02-criar-ou-escolher-projeto.png" alt="Tela inicial do Apps Script com o botão Novo projeto destacado e uma lista de projetos existentes"></a>
+          <div class="visual-copy"><span class="visual-step">02 / caminho independente</span><h3>Um projeto pode nascer separado.</h3><p>Se a solução vai juntar vários arquivos, abra o Apps Script, clique em <strong>Novo projeto</strong> e dê um nome que explique a tarefa.</p><a class="visual-open" href="media/02-criar-ou-escolher-projeto.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/03-adicionar-arquivo.png" target="_blank" rel="noopener"><img src="media/03-adicionar-arquivo.png" alt="Editor do Apps Script com o menu de adicionar arquivo aberto, mostrando as opções Script e HTML"></a>
+          <div class="visual-copy"><span class="visual-step">03 / qualquer caminho</span><h3>Cada arquivo tem um papel.</h3><p>Adicione um arquivo de script para as ações e um HTML para a tela. A memória do projeto ajuda a retomar o trabalho.</p><a class="visual-open" href="media/03-adicionar-arquivo.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/04-reconhecer-menu.png" target="_blank" rel="noopener"><img src="media/04-reconhecer-menu.png" alt="Editor do Apps Script com os arquivos Code.gs, index.html e PM.html e a lista de funções do projeto aberta"></a>
+          <div class="visual-copy"><span class="visual-step">04 / reconhecer</span><h3>Os arquivos aparecem no projeto.</h3><p>Você vê o Code.gs, a tela HTML e a memória lado a lado. A lista de funções mostra as ações que o projeto pode executar.</p><a class="visual-open" href="media/04-reconhecer-menu.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="criar-projeto" class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Criar o projeto</div><h2>Dois começos. A mesma ideia.</h2></div><p>O melhor caminho depende de onde os seus dados estão e de quantos arquivos a solução vai usar.</p></div>
+      <div class="project-start">
+        <article class="project-lead"><div class="section-kicker" style="color:var(--yellow);">Escolha sem medo</div><h3>Comece pelo arquivo ou comece pelo Apps Script.</h3><p>Se a tarefa nasce em uma planilha ou documento, ficar perto dele costuma ser mais simples. Se a solução vai juntar várias fontes, um projeto independente pode organizar melhor as conexões.</p></article>
+        <div class="project-steps">
+          <article class="project-step"><div class="number">01</div><div><strong>Vinculado a uma planilha ou documento</strong><p>Abra o arquivo no Google, entre em <strong>Extensões → Apps Script</strong> e crie o projeto por ali. É um bom começo quando a automação trabalha principalmente com esse arquivo.</p></div></article>
+          <article class="project-step"><div class="number">02</div><div><strong>Independente do arquivo</strong><p>Abra <strong>script.google.com</strong>, clique em <strong>Novo projeto</strong> e conecte as planilhas, Docs ou pastas que o código vai usar. É útil quando existem várias fontes ou uma interface própria.</p></div></article>
+          <article class="project-step"><div class="number">03</div><div><strong>Em qualquer caminho, nomeie e documente</strong><p>Use um nome que conte o que o projeto faz e registre os arquivos envolvidos no PM.html. Seu “eu” de amanhã vai agradecer.</p></div></article>
+        </div>
+      </div>
+      <div class="id-guide">
+        <div><div class="section-kicker">Peça o ID, não a URL inteira</div><h3>O ID é a etiqueta única do arquivo.</h3><p>Antes de executar, reúna um ID para cada arquivo externo que o projeto vai usar. Você não precisa adivinhar: eles aparecem no link, entre as barras indicadas.</p></div>
+        <div class="id-examples">
+          <div class="id-example"><span class="id-label">Planilha</span><code>https://docs.google.com/<strong>spreadsheets/d/</strong><mark>ID_DA_PLANILHA</mark><strong>/edit</strong></code></div>
+          <div class="id-example"><span class="id-label">Documento</span><code>https://docs.google.com/<strong>document/d/</strong><mark>ID_DO_DOCUMENTO</mark><strong>/edit</strong></code></div>
+          <div class="id-example"><span class="id-label">Pasta do Drive</span><code>https://drive.google.com/<strong>drive/folders/</strong><mark>ID_DA_PASTA</mark></code></div>
+          <p class="id-tip">Copie apenas o trecho em destaque. Não copie <code>/edit</code>, <code>?gid=</code> ou a URL inteira.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Práticas que ajudam</div><h2>Não é sobre saber tudo.</h2></div><p>É sobre criar um jeito seguro de aprender, testar e melhorar uma coisa de cada vez.</p></div>
+      <div class="principles-grid">
+        <article class="principle"><span class="principle-number">01 / COMEÇO</span><h3>Comece pela dor.</h3><p>Descreva a repetição que atrapalha antes de pedir uma tela bonita.</p></article>
+        <article class="principle"><span class="principle-number">02 / TAMANHO</span><h3>Faça pequeno primeiro.</h3><p>Um botão que resolve uma etapa vale mais que um sistema enorme que ninguém testou.</p></article>
+        <article class="principle"><span class="principle-number">03 / CONTEXTO</span><h3>Dê nomes reais.</h3><p>Informe nomes de abas, arquivos, campos e o resultado esperado. Contexto reduz chute.</p></article>
+        <article class="principle"><span class="principle-number">04 / REVISÃO</span><h3>Leia antes de executar.</h3><p>IA ajuda a construir. A decisão sobre dados, permissões e envio continua sendo sua.</p></article>
+        <article class="principle"><span class="principle-number">05 / TESTE</span><h3>Teste com pouco.</h3><p>Use uma cópia e poucos registros. Primeiro confirme o caminho, depois aumente o volume.</p></article>
+        <article class="principle"><span class="principle-number">06 / MEMÓRIA</span><h3>Deixe uma pista.</h3><p>Guarde objetivo, IDs usados, decisões e próximos passos para a próxima conversa.</p></article>
       </div>
     </section>
 
@@ -342,8 +461,8 @@
     <section id="primeira-execucao" class="reveal">
       <div class="section-head"><div><div class="section-kicker">Antes de executar</div><h2>O modelo escreve. Você faz o check.</h2></div><p>Permissão não é detalhe. É parte do produto.</p></div>
       <div class="grid">
-        <article class="card span-7"><h3>Checklist da primeira execução</h3><div class="checklist"><label class="check-item"><input type="checkbox"> A planilha está em uma conta e projeto permitidos?</label><label class="check-item"><input type="checkbox"> Os nomes das abas batem com a configuração?</label><label class="check-item"><input type="checkbox"> Os IDs de Docs e Drive apontam para os arquivos certos?</label><label class="check-item"><input type="checkbox"> Eu entendi o que o código lê, cria e envia?</label><label class="check-item"><input type="checkbox"> Testei com poucos dados antes de rodar em lote?</label></div></article>
-        <article class="warning span-5"><strong>Confira os IDs antes de executar.</strong><p>O projeto demonstrado usa um `templateDocId` e um `pastaDestinoId`. Se você copiar o projeto, substitua pelos IDs do seu ambiente. Nunca assuma que um link de exemplo é o seu destino.</p><p style="margin-top:10px;">Também confira o gatilho escolhido, a conta correta e os dados que o código vai acessar.</p></article>
+           <article class="card span-7"><h3>Checklist da primeira execução</h3><div class="checklist"><label class="check-item"><input type="checkbox"> Escolhi entre um projeto vinculado ao arquivo ou um projeto independente?</label><label class="check-item"><input type="checkbox"> Os nomes das abas batem com a configuração?</label><label class="check-item"><input type="checkbox"> Separei os IDs de cada planilha, documento ou pasta que o código usa?</label><label class="check-item"><input type="checkbox"> Eu entendi o que o código lê, cria e envia?</label><label class="check-item"><input type="checkbox"> Testei com poucos dados antes de rodar em lote?</label></div></article>
+           <article class="warning span-5"><strong>Um ID para cada arquivo externo.</strong><p>O arquivo principal de um projeto vinculado já está conectado. Mas cada planilha, documento ou pasta adicional que o código abrir, ler ou usar como destino precisa do seu próprio ID. O projeto demonstrado usa um `templateDocId` e um `pastaDestinoId`.</p><p style="margin-top:10px;">Se você copiar o projeto, substitua pelos IDs do seu ambiente. Não copie a URL inteira nem use o ID de um exemplo como se fosse o seu. Também confira a conta correta, o gatilho escolhido e as permissões.</p></article>
       </div>
     </section>
 
@@ -355,7 +474,7 @@
         <a class="resource" href="https://drive.google.com/drive/folders/1LgP_QFjidp26qGVXY2JEVhRH2F5yNVR_" target="_blank" rel="noopener"><span class="resource-icon">03</span><span class="resource-copy"><strong>Pasta de materiais</strong><small>Exemplos, planilha, template e referências.</small></span><span class="resource-arrow">↗</span></a>
         <a class="resource" href="https://docs.google.com/spreadsheets/d/1BiIf7VnlQSjtfTvgRUrnuQ5GPQnqMyFWiJQLDibCEes/edit?gid=2003454773#gid=2003454773" target="_blank" rel="noopener"><span class="resource-icon">04</span><span class="resource-copy"><strong>Planilha da demonstração</strong><small>Base de campanhas usada no fluxo.</small></span><span class="resource-arrow">↗</span></a>
         <a class="resource" href="https://docs.google.com/document/d/1BXv7XdJZxgaFXaTI7vWTVWErfCnmuzaIw3ApsPKbYDo/edit?tab=t.0" target="_blank" rel="noopener"><span class="resource-icon">05</span><span class="resource-copy"><strong>Template de relatório</strong><small>Documento com chaves substituíveis.</small></span><span class="resource-arrow">↗</span></a>
-        <a class="resource" href="https://script.google.com/u/0/home/projects/1jvynmyw-Als6wXqwMX47yaVMKSH5heSbByPAq64i4oLw6EEn6l8M0oCq/edit" target="_blank" rel="noopener"><span class="resource-icon">06</span><span class="resource-copy"><strong>Projeto Apps Script</strong><small>Veja a aplicação funcionando por dentro.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://script.google.com/home/projects/1jvynmyw-Als6wXqwMX47yaVMKSH5heSbByPAq64i4oLw6EEn6l8M0oCq/edit" target="_blank" rel="noopener"><span class="resource-icon">06</span><span class="resource-copy"><strong>Projeto Apps Script</strong><small>Veja a aplicação funcionando por dentro.</small></span><span class="resource-arrow">↗</span></a>
       </div>
     </section>
 
@@ -366,25 +485,45 @@
     <footer><strong>Eletromidia · Transformação digital</strong><span>Material de apoio da oficina com Gemini + Google Workspace · 12/08/2026</span></footer>
   </main>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog class="prompt-dialog" id="promptDialog" aria-labelledby="promptDialogTitle">
+    <form method="dialog">
+      <h3 id="promptDialogTitle">Seu prompt está aqui.</h3>
+      <p>A cópia automática não ficou disponível neste navegador. Selecione o texto ou use o botão abaixo.</p>
+      <textarea id="promptFallback" readonly aria-label="Prompt para copiar"></textarea>
+      <div class="hero-actions"><button class="btn" id="copyFallback" type="button">Tentar copiar</button><button class="btn btn-secondary" type="submit">Fechar</button></div>
+    </form>
+  </dialog>
   <script>
     const steps = [
       { label: '01 / CONVERSA 1', title: 'Planifique antes de construir.', text: 'Anexe o xlsx ao Gem de Planificação. Esta conversa serve para entender a base: abas, colunas, fórmulas, relações e finalidade. Não peça o app ainda.', input: 'Uma planilha e uma pergunta: “para que esse dado serve?”', check: 'Se a descrição representa a planilha real. Se inventou algo, pare e corrija.' },
       { label: '02 / CONVERSA 2', title: 'Leve o contexto para a solução.', text: 'Abra uma nova conversa, anexe a planificação gerada e descreva a ideia do produto. O segundo Gem pensa a solução, propõe a arquitetura e gera o Apps Script.', input: 'A planificação anexada + uma tarefa real + o resultado que você quer.', check: 'Se o produto resolve uma dor pequena e se as abas necessárias existem.' },
-      { label: '03 / MONTAR', title: 'Cole os blocos onde cada coisa vive.', text: 'Abra o Apps Script vinculado à planilha e cole os arquivos gerados. O backend cuida da lógica; o HTML cuida da tela; o PM.html guarda o contexto.', input: 'Código.js / Code.gs, index.html e PM.html.', check: 'Se os nomes das funções e arquivos usados pelo código existem no projeto.' },
-      { label: '04 / PREPARAR', title: 'Troque os marcadores e autorize com atenção.', text: 'Procure comentários como [AJUSTAR], substitua IDs, nomes de abas e emails. Execute uma função e leia a tela de permissões antes de aceitar.', input: 'IDs do seu Docs, pasta do Drive, nomes reais das abas e conta correta.', check: 'Se o código vai acessar somente os dados e serviços que você espera.' },
+       { label: '03 / MONTAR', title: 'Escolha onde o projeto vai viver.', text: 'Se a tarefa nasce em uma planilha ou documento, abra Extensões → Apps Script por ali. Se a solução juntar vários arquivos, crie um projeto independente em script.google.com. Depois cole os arquivos gerados.', input: 'Um projeto vinculado ou independente + Code.gs, index.html e PM.html.', check: 'Se o tipo de projeto combina com a tarefa e se os nomes dos arquivos usados pelo código existem.' },
+       { label: '04 / PREPARAR', title: 'Troque os marcadores e autorize com atenção.', text: 'Procure comentários como [AJUSTAR], substitua IDs, nomes de abas e emails. Para achar um ID, copie apenas o trecho entre /d/ e /edit ou depois de /folders/. Execute uma função e leia a tela de permissões antes de aceitar.', input: 'IDs dos Docs, planilhas e pastas, nomes reais das abas e conta correta.', check: 'Se cada ID aponta para o arquivo certo e se o código vai acessar somente os dados e serviços que você espera.' },
       { label: '05 / USAR', title: 'Execute do jeito que fizer sentido.', text: 'O onOpen() pode criar um menu personalizado, mas é apenas uma opção. O projeto também pode reagir a edições, horários, formulários, URLs e outros eventos.', input: 'O gatilho escolhido para o seu processo.', check: 'Se o evento certo dispara a ação e se o resultado faz sentido com poucos registros.' }
     ];
     const tabButtons = document.querySelectorAll('.step-tab');
     const setStep = (index) => {
       const step = steps[index];
-      tabButtons.forEach((tab, i) => { tab.classList.toggle('active', i === index); tab.setAttribute('aria-selected', i === index ? 'true' : 'false'); });
+      tabButtons.forEach((tab, i) => { tab.classList.toggle('active', i === index); tab.setAttribute('aria-selected', i === index ? 'true' : 'false'); tab.tabIndex = i === index ? 0 : -1; });
+      document.getElementById('stepDetail').setAttribute('aria-labelledby', `step-tab-${index}`);
       document.getElementById('detailLabel').textContent = step.label;
       document.getElementById('detailTitle').textContent = step.title;
       document.getElementById('detailText').textContent = step.text;
       document.getElementById('detailInput').textContent = step.input;
       document.getElementById('detailCheck').textContent = step.check;
     };
-    tabButtons.forEach((tab) => tab.addEventListener('click', () => setStep(Number(tab.dataset.step))));
+    tabButtons.forEach((tab) => {
+      tab.addEventListener('click', () => setStep(Number(tab.dataset.step)));
+      tab.addEventListener('keydown', (event) => {
+        const current = Number(tab.dataset.step);
+        let next = current;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (current + 1) % tabButtons.length;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (current - 1 + tabButtons.length) % tabButtons.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = tabButtons.length - 1;
+        if (next !== current) { event.preventDefault(); setStep(next); tabButtons[next].focus(); }
+      });
+    });
 
     const toast = document.getElementById('toast');
     const showToast = (message) => { toast.textContent = message; toast.classList.add('show'); window.clearTimeout(window.toastTimer); window.toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2600); };
@@ -392,13 +531,22 @@
       plan: 'Analise a planilha anexada por completo e gere uma planificação em pt-BR. Descreva o propósito, todas as abas, colunas, tipos de dados, fórmulas, relações, regras de negócio, valor e riscos. Esta conversa serve somente para entender e documentar a planilha. Não proponha um app nem escreva Apps Script. Não invente dados; marque o que não estiver informado.',
       product: 'Estou começando uma nova conversa. A planificação da minha planilha está anexada. Quero transformar este processo em uma solução dentro do Google Workspace. Minha ideia é: [descreva aqui a tarefa e o resultado desejado]. Use a planificação como contexto, proponha a solução mais simples e explique o produto antes do código. Depois gere o Apps Script de forma copiável, com Code.gs, index.html e PM.html quando fizer sentido. Mostre os gatilhos possíveis, marque tudo que eu preciso ajustar e não avance sem minha revisão. Responda em pt-BR.'
     };
-    const copyText = async (text, message) => { try { await navigator.clipboard.writeText(text); showToast(message); } catch { showToast('Selecione e copie o prompt na conversa do Gemini.'); } };
+    const promptDialog = document.getElementById('promptDialog');
+    const promptFallback = document.getElementById('promptFallback');
+    let pendingPrompt = '';
+    const openPromptDialog = (text) => { pendingPrompt = text; promptFallback.value = text; promptDialog.showModal(); promptFallback.focus(); promptFallback.select(); };
+    const copyText = async (text, message) => {
+      try { await navigator.clipboard.writeText(text); showToast(message); }
+      catch { openPromptDialog(text); }
+    };
     document.getElementById('copyPlanPrompt').addEventListener('click', () => copyText(prompts.plan, 'Prompt da Conversa 1 copiado. Anexe a planilha ao Gem 1.'));
     document.getElementById('copyProductPrompt').addEventListener('click', () => copyText(prompts.product, 'Prompt da Conversa 2 copiado. Abra uma nova conversa e anexe a planificação.'));
     document.getElementById('copyPromptBottom').addEventListener('click', () => copyText(prompts.product, 'Prompt da Conversa 2 copiado.'));
 
     const themeButton = document.getElementById('themeToggle');
-    themeButton.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = next; localStorage.setItem('em-theme', next); themeButton.textContent = next === 'dark' ? '☀' : '☼'; });
+    const syncThemeButton = () => { const isDark = document.documentElement.dataset.theme === 'dark'; themeButton.textContent = isDark ? '☀' : '☼'; themeButton.setAttribute('aria-label', isDark ? 'Usar tema claro' : 'Usar tema escuro'); };
+    syncThemeButton();
+    themeButton.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = next; try { localStorage.setItem('em-theme', next); } catch (error) {} syncThemeButton(); });
     window.addEventListener('scroll', () => { const max = document.documentElement.scrollHeight - window.innerHeight; document.getElementById('progress').style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`; }, { passive: true });
   </script>
 </body>
