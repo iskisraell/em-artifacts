@@ -62,21 +62,18 @@
     .skip:focus { top: 0; }
     .nav { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(14px); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(var(--max), calc(100% - 32px)); min-height: 62px; margin: 0 auto; }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 14px; font-weight: 800; }
-    .brand-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--orange); color: var(--white); font-size: 13px; }
+    .brand { display: flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 800; }
     .nav-links { display: flex; align-items: center; gap: 18px; font-size: 13px; font-weight: 700; color: var(--text); }
     .nav-links a { text-decoration: none; }
     .nav-links a:hover { color: var(--orange); }
     .theme { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--heading); cursor: pointer; }
     .theme:hover { border-color: var(--orange); color: var(--orange); }
     main { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 22px 0 70px; }
-    .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 590px; padding: clamp(28px, 6vw, 72px); border-radius: 24px; background: var(--black); color: var(--white); }
+    .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 470px; padding: clamp(28px, 6vw, 72px); border-radius: 24px; background: var(--black); color: var(--white); }
     .hero::before { content: ""; position: absolute; z-index: -1; right: -110px; top: -170px; width: 480px; height: 480px; border: 48px solid rgba(255, 79, 0, .88); border-radius: 50%; }
     .hero::after { content: ""; position: absolute; z-index: -1; right: 110px; bottom: -230px; width: 390px; height: 390px; border: 34px solid rgba(78, 24, 255, .8); border-radius: 48px; transform: rotate(28deg); }
-    .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: clamp(58px, 10vw, 120px); }
     .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #D1D1D1; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
     .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); }
-    .hero-note { max-width: 230px; color: #AFAFAF; font-size: 13px; line-height: 1.3; text-align: right; }
     h1 { max-width: 910px; margin-bottom: 26px; color: var(--white); font-size: clamp(48px, 8.5vw, 104px); line-height: .88; letter-spacing: -.045em; }
     .hero h1 em { color: var(--yellow); font-style: normal; }
     .hero-lede { max-width: 630px; margin-bottom: 30px; color: #D2D2D2; font-size: clamp(17px, 2vw, 22px); line-height: 1.25; }
@@ -89,9 +86,6 @@
     .btn-light:hover { background: var(--yellow); }
     .btn-outline { border-color: rgba(255,255,255,.3); color: var(--white); }
     .btn-outline:hover { border-color: var(--white); }
-    .hero-foot { position: absolute; right: clamp(28px, 6vw, 72px); bottom: 28px; left: clamp(28px, 6vw, 72px); display: flex; align-items: end; justify-content: space-between; gap: 20px; }
-    .hero-foot p { max-width: 380px; color: #888; font-size: 12px; }
-    .hero-foot .stamp { color: var(--yellow); font-size: 12px; font-weight: 800; text-transform: uppercase; }
     section { margin-top: 22px; scroll-margin-top: 88px; }
     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin: 54px 0 16px; }
     .section-kicker { margin-bottom: 7px; color: var(--orange); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
@@ -129,6 +123,17 @@
     .callout { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 26px; border-radius: var(--radius); background: var(--yellow); }
     .callout p { max-width: 720px; color: rgba(0,0,0,.72); }
     .callout strong { color: var(--black); }
+    .gem-chain { display: grid; grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr); align-items: stretch; gap: 12px; }
+    .gem-node { display: flex; min-height: 205px; flex-direction: column; align-items: flex-start; padding: clamp(20px, 2.6vw, 28px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+    .gem-node:nth-child(3) { border-color: var(--purple); }
+    .gem-node h3 { margin-top: 9px; }
+    .gem-node p { margin-top: 9px; font-size: 14px; }
+    .gem-tag { color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .gem-node:nth-child(3) .gem-tag { color: var(--purple); }
+    .gem-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; }
+    .gem-node .btn { min-height: 37px; padding: 0 13px; border-color: var(--line); background: var(--muted); color: var(--heading); font-size: 12px; }
+    .gem-node .btn:hover { border-color: var(--orange); background: var(--orange); color: var(--white); }
+    .chain-arrow { display: grid; place-items: center; align-self: center; color: var(--orange); font-size: 28px; font-weight: 800; }
     .pipeline-wrap { padding: clamp(20px, 3vw, 32px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
     .pipeline-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-bottom: 22px; }
     .step-tab { position: relative; min-height: 78px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--muted); color: var(--text); text-align: left; cursor: pointer; transition: .18s; }
@@ -153,14 +158,11 @@
     .rail-card h3 { padding-right: 28px; }
     .rail-card p { margin-top: 9px; font-size: 14px; }
     .syntax { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .file-card { position: relative; overflow: hidden; min-height: 190px; padding: 23px; border-radius: 14px; background: var(--muted); }
-    .file-card::before { content: ""; position: absolute; right: -15px; bottom: -33px; width: 110px; height: 110px; border: 19px solid var(--orange); border-radius: 34px; transform: rotate(23deg); opacity: .9; }
-    .file-card:nth-child(2)::before { border-color: var(--purple); }
-    .file-card:nth-child(3)::before { border-color: var(--yellow); }
+    .file-card { min-height: 190px; padding: 23px; border-radius: 14px; background: var(--muted); }
     .file-type { position: relative; display: inline-block; margin-bottom: 36px; color: var(--orange); font-family: Consolas, monospace; font-size: 13px; font-weight: 800; }
     .file-card:nth-child(2) .file-type { color: var(--purple); }
     .file-card:nth-child(3) .file-type { color: #8B6E00; }
-    .file-card h3, .file-card p { position: relative; max-width: 250px; }
+    .file-card h3, .file-card p { max-width: 280px; }
     .file-card p { margin-top: 8px; font-size: 14px; }
     .mini-code { margin-top: 16px; padding: 14px; border-radius: 12px; background: var(--black); color: #D9D9D9; font-family: Consolas, monospace; font-size: 12px; line-height: 1.6; overflow-x: auto; }
     .mini-code .hot { color: var(--yellow); }
@@ -178,6 +180,11 @@
     .warning { padding: 20px; border: 1px solid #F0C000; border-radius: 14px; background: color-mix(in srgb, var(--yellow) 20%, var(--card)); }
     .warning strong { display: block; margin-bottom: 6px; }
     .warning p { font-size: 14px; }
+    .trigger-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .trigger { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    .trigger strong { display: block; margin-bottom: 7px; font-size: 16px; }
+    .trigger p { font-size: 13px; }
+    .trigger code { margin-bottom: 14px; color: var(--orange); }
     footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--text); font-size: 12px; }
     footer strong { color: var(--heading); }
     .toast { position: fixed; right: 20px; bottom: 20px; z-index: 30; max-width: 320px; padding: 13px 16px; border-radius: 12px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; opacity: 0; transform: translateY(18px); pointer-events: none; transition: .2s; }
@@ -189,16 +196,14 @@
       .pipeline-tabs { grid-template-columns: repeat(5, minmax(112px, 1fr)); overflow-x: auto; padding-bottom: 3px; }
       .step-detail, .syntax { grid-template-columns: 1fr; }
       .rail { grid-template-columns: 1fr 1fr; }
+      .trigger-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
       main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
       .nav-inner { width: min(100% - 20px, var(--max)); }
       .nav-links a { display: none; }
-      .hero { min-height: 620px; padding: 28px 22px; border-radius: 16px; }
-      .hero-top { align-items: flex-start; margin-bottom: 90px; }
-      .hero-note { max-width: 155px; font-size: 11px; }
+      .hero { min-height: 510px; padding: 28px 22px; border-radius: 16px; }
       h1 { font-size: clamp(48px, 14vw, 70px); }
-      .hero-foot { right: 22px; bottom: 22px; left: 22px; align-items: start; flex-direction: column; gap: 8px; }
       .section-head { display: block; margin-top: 42px; }
       .section-head > p { margin-top: 10px; }
       .callout { display: block; padding: 20px; }
@@ -207,7 +212,9 @@
       .pipeline-tabs { grid-template-columns: repeat(5, 112px); margin-right: -2px; }
       .step-detail { display: block; }
       .detail-side { margin-top: 12px; }
-      .rail, .resource-grid { grid-template-columns: 1fr; }
+      .gem-chain { grid-template-columns: 1fr; }
+      .chain-arrow { transform: rotate(90deg); }
+      .rail, .resource-grid, .trigger-grid { grid-template-columns: 1fr; }
       footer { display: block; }
       footer span { display: block; margin-top: 7px; }
     }
@@ -226,7 +233,7 @@
   <div class="progress" id="progress"></div>
   <nav class="nav" aria-label="Navegação principal">
     <div class="nav-inner">
-      <a class="brand" href="#topo"><span class="brand-mark">EM</span><span>Eletromidia · Programa de Estágio</span></a>
+      <a class="brand" href="#topo">Programa de estágio</a>
       <div class="nav-links">
         <a href="#pipeline">Pipeline</a>
         <a href="#materiais">Materiais</a>
@@ -237,19 +244,11 @@
 
   <main id="conteudo">
     <header class="hero reveal" id="topo">
-      <div class="hero-top">
-        <div class="eyebrow">Transformação digital · oficina prática</div>
-        <p class="hero-note">Um mapa para sair da tarefa repetitiva e chegar numa ferramenta que trabalha por você.</p>
-      </div>
-      <h1>Sua planilha está pedindo <em>um botão.</em></h1>
-      <p class="hero-lede">Com Gemini e Apps Script, você pode transformar dados do Google Workspace em dashboards, relatórios e automações úteis. Sem começar pelo código.</p>
+      <h1>Sua tarefa está pedindo <em>uma ferramenta.</em></h1>
+      <p class="hero-lede">Use uma planilha como ponto de partida para criar algo útil no Google Workspace.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#pipeline">Começar pelo pipeline <span>↓</span></a>
         <a class="btn btn-outline" href="#materiais">Abrir materiais <span>↗</span></a>
-      </div>
-      <div class="hero-foot">
-        <p>O modelo ajuda a entender, planejar e construir. Você explica o problema, revisa o resultado e decide o que entra em produção.</p>
-        <span class="stamp">Do dado à ação / 01</span>
       </div>
     </header>
 
@@ -271,63 +270,88 @@
       </div>
     </section>
 
-    <section class="reveal">
-      <div class="callout"><p><strong>A regra simples:</strong> não peça “faça um app”. Explique o dado, a tarefa e o resultado que você quer ver.</p><button class="btn btn-light" id="copyPrompt" type="button">Copiar prompt inicial</button></div>
+    <section class="reveal" id="gems">
+      <div class="section-head"><div><div class="section-kicker">O ponto-chave</div><h2>Duas conversas. Um projeto.</h2></div><p>Os Gems são encadeados. Cada um vive em uma conversa e tem uma responsabilidade diferente.</p></div>
+      <div class="gem-chain">
+        <article class="gem-node">
+          <span class="gem-tag">Conversa 1 · contexto</span>
+          <h3>Planifique a planilha.</h3>
+          <p>Anexe o arquivo e peça apenas o entendimento completo da base. O resultado vira contexto para a próxima conversa.</p>
+          <div class="gem-actions"><a class="btn" href="https://gemini.google.com/gem/1TTpxI5jsTDutGPuU_EMi0xeL8TT9pFP6?usp=sharing" target="_blank" rel="noopener">Abrir Gem 1 ↗</a><button class="btn" id="copyPlanPrompt" type="button">Copiar prompt</button></div>
+        </article>
+        <div class="chain-arrow" aria-hidden="true">→</div>
+        <article class="gem-node">
+          <span class="gem-tag">Conversa 2 · solução</span>
+          <h3>Construa o produto.</h3>
+          <p>Abra uma nova conversa, anexe a planificação e explique a ideia. O segundo Gem pensa a solução e gera o Apps Script.</p>
+          <div class="gem-actions"><a class="btn" href="https://gemini.google.com/gem/1DHTZkWqcbZZzLzJTC_O8KPVIxpxODn7y?usp=sharing" target="_blank" rel="noopener">Abrir Gem 2 ↗</a><button class="btn" id="copyProductPrompt" type="button">Copiar prompt</button></div>
+        </article>
+      </div>
     </section>
 
     <section id="pipeline" class="reveal">
       <div class="section-head">
-        <div><div class="section-kicker">O caminho</div><h2>Da planilha ao menu personalizado.</h2></div>
-        <p>Clique em cada etapa. O objetivo é entender o que entra, o que a IA faz e o que você precisa conferir.</p>
+        <div><div class="section-kicker">O caminho</div><h2>Da planilha a uma solução.</h2></div>
+        <p>Clique em cada etapa. O processo conecta duas conversas com IA a um projeto que pode evoluir.</p>
       </div>
       <div class="pipeline-wrap">
         <div class="pipeline-tabs" role="tablist" aria-label="Etapas do pipeline">
-          <button class="step-tab active" role="tab" aria-selected="true" data-step="0"><span class="step-num">01 / ENTENDER</span><strong>Planificar</strong></button>
-          <button class="step-tab" role="tab" aria-selected="false" data-step="1"><span class="step-num">02 / IMAGINAR</span><strong>Gerar app</strong></button>
+          <button class="step-tab active" role="tab" aria-selected="true" data-step="0"><span class="step-num">01 / CONVERSA 1</span><strong>Planificar</strong></button>
+          <button class="step-tab" role="tab" aria-selected="false" data-step="1"><span class="step-num">02 / CONVERSA 2</span><strong>Pensar produto</strong></button>
           <button class="step-tab" role="tab" aria-selected="false" data-step="2"><span class="step-num">03 / MONTAR</span><strong>Colar código</strong></button>
           <button class="step-tab" role="tab" aria-selected="false" data-step="3"><span class="step-num">04 / PREPARAR</span><strong>Configurar</strong></button>
           <button class="step-tab" role="tab" aria-selected="false" data-step="4"><span class="step-num">05 / USAR</span><strong>Abrir menu</strong></button>
         </div>
         <div class="step-detail" id="stepDetail" role="tabpanel">
-          <div class="detail-main"><span class="detail-label" id="detailLabel">01 / ENTENDER</span><h3 id="detailTitle">Planifique antes de construir.</h3><p id="detailText">Anexe o xlsx ao Gem de Planificação. Ele transforma abas, colunas, fórmulas e relações em um texto que a IA consegue carregar como contexto para o próximo passo.</p></div>
+          <div class="detail-main"><span class="detail-label" id="detailLabel">01 / CONVERSA 1</span><h3 id="detailTitle">Planifique antes de construir.</h3><p id="detailText">Anexe o xlsx ao Gem de Planificação. Ele transforma abas, colunas, fórmulas e relações em um texto que a IA consegue carregar na nova conversa do próximo passo.</p></div>
           <div class="detail-side"><div class="detail-box"><h4>Você fornece</h4><p id="detailInput">Uma planilha e uma pergunta: “para que esse dado serve?”</p></div><div class="detail-box"><h4>Você confere</h4><p id="detailCheck">Se a descrição representa a planilha real. Se inventou algo, pare e corrija.</p></div></div>
         </div>
       </div>
     </section>
 
     <section class="reveal">
-      <div class="section-head"><div><div class="section-kicker">O resultado</div><h2>O Google Workspace já é a infraestrutura.</h2></div><p>Você não precisa construir tudo do zero. Sheets guarda, Apps Script conecta, Docs documenta e Gmail entrega.</p></div>
+      <div class="section-head"><div><div class="section-kicker">O resultado</div><h2>O Workspace abre muitas portas.</h2></div><p>Sheets, Docs, Drive, Gmail, Forms e Calendar podem virar partes de uma solução feita para o seu processo.</p></div>
       <div class="rail">
         <article class="rail-card"><h3>Gemini entende</h3><p>Recebe contexto, organiza o problema e ajuda a escolher o próximo passo.</p></article>
-        <article class="rail-card"><h3>Apps Script executa</h3><p>Lê a planilha, abre interfaces, cria documentos, chama serviços e automatiza fluxos.</p></article>
-        <article class="rail-card"><h3>Você melhora</h3><p>Testa com poucos dados, revisa permissões e transforma a primeira versão em algo útil.</p></article>
+        <article class="rail-card"><h3>Apps Script conecta</h3><p>Lê, transforma, cria, envia, chama serviços e automatiza fluxos dentro do Workspace.</p></article>
+        <article class="rail-card"><h3>Você escolhe o formato</h3><p>Dashboard, relatório, alerta, formulário, rotina ou web app: a possibilidade depende do problema.</p></article>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Como começa</div><h2>O botão é só uma das portas.</h2></div><p><code>onOpen()</code> cria um menu na planilha, mas não limita o que o Apps Script pode fazer.</p></div>
+      <div class="trigger-grid">
+        <article class="trigger"><code>onOpen()</code><strong>Menu na planilha</strong><p>Mostra ações personalizadas quando a pessoa abre o arquivo.</p></article>
+        <article class="trigger"><code>doGet()</code><strong>Web app</strong><p>Entrega uma interface própria acessível por uma URL.</p></article>
+        <article class="trigger"><code>onEdit(e)</code><strong>Reação a mudanças</strong><p>Executa uma ação quando uma célula é editada.</p></article>
+        <article class="trigger"><code>Gatilhos</code><strong>Rotina automática</strong><p>Roda por horário, envio de formulário ou outros eventos.</p></article>
       </div>
     </section>
 
     <section id="projeto" class="reveal">
       <div class="section-head"><div><div class="section-kicker">Dentro do projeto</div><h2>Três arquivos. Três responsabilidades.</h2></div><p>O código gerado fica mais fácil de entender e retomar quando cada parte tem um lugar claro.</p></div>
       <div class="syntax">
-        <article class="file-card"><span class="file-type">Código.js / Code.gs</span><h3>O motor</h3><p>Menu, leitura de dados, cálculos e integrações com o Workspace.</p></article>
+        <article class="file-card"><span class="file-type">Código.js / Code.gs</span><h3>O motor</h3><p>Lógica, dados, integrações e qualquer forma de iniciar uma ação.</p></article>
         <article class="file-card"><span class="file-type">index.html</span><h3>A tela</h3><p>Dashboard, botões, tabelas e a experiência que aparece para quem usa.</p></article>
         <article class="file-card"><span class="file-type">PM.html</span><h3>A memória</h3><p>Objetivo, estrutura, decisões e próximos passos para a próxima conversa com a IA.</p></article>
       </div>
       <div class="mini-code"><span class="hot">function onOpen() {</span><br>&nbsp;&nbsp;SpreadsheetApp.getUi()<br>&nbsp;&nbsp;&nbsp;&nbsp;.createMenu('Eletromidia')<br>&nbsp;&nbsp;&nbsp;&nbsp;.addItem('Abrir Dashboard', 'abrirDashboard')<br>&nbsp;&nbsp;&nbsp;&nbsp;.addToUi();<br><span class="hot">}</span></div>
-      <p style="margin-top:10px;font-size:13px;">Este pequeno gatilho é a virada: ao abrir a planilha, aparece um menu que chama as ferramentas do projeto.</p>
+      <p style="margin-top:10px;font-size:13px;">Este é um exemplo de gatilho. O mesmo projeto também pode responder a edições, horários, formulários, URLs e outros eventos.</p>
     </section>
 
     <section id="primeira-execucao" class="reveal">
       <div class="section-head"><div><div class="section-kicker">Antes de executar</div><h2>O modelo escreve. Você faz o check.</h2></div><p>Permissão não é detalhe. É parte do produto.</p></div>
       <div class="grid">
         <article class="card span-7"><h3>Checklist da primeira execução</h3><div class="checklist"><label class="check-item"><input type="checkbox"> A planilha está em uma conta e projeto permitidos?</label><label class="check-item"><input type="checkbox"> Os nomes das abas batem com a configuração?</label><label class="check-item"><input type="checkbox"> Os IDs de Docs e Drive apontam para os arquivos certos?</label><label class="check-item"><input type="checkbox"> Eu entendi o que o código lê, cria e envia?</label><label class="check-item"><input type="checkbox"> Testei com poucos dados antes de rodar em lote?</label></div></article>
-        <article class="warning span-5"><strong>Confira os IDs antes de clicar.</strong><p>O projeto demonstrado usa um `templateDocId` e um `pastaDestinoId`. Se você copiar o projeto, substitua pelos IDs do seu ambiente. Nunca assuma que um link de exemplo é o seu destino.</p><p style="margin-top:10px;">Também confira se a pasta compartilhada e o projeto Apps Script pertencem à conta correta.</p></article>
+        <article class="warning span-5"><strong>Confira os IDs antes de executar.</strong><p>O projeto demonstrado usa um `templateDocId` e um `pastaDestinoId`. Se você copiar o projeto, substitua pelos IDs do seu ambiente. Nunca assuma que um link de exemplo é o seu destino.</p><p style="margin-top:10px;">Também confira o gatilho escolhido, a conta correta e os dados que o código vai acessar.</p></article>
       </div>
     </section>
 
     <section id="materiais" class="reveal">
       <div class="section-head"><div><div class="section-kicker">Caixa de ferramentas</div><h2>Agora escolha um ponto de partida.</h2></div><p>O artefato explica o caminho. Os links abaixo levam para o trabalho real.</p></div>
       <div class="resource-grid">
-        <a class="resource" href="https://gemini.google.com/gem/1TTpxI5jsTDutGPuU_EMi0xeL8TT9pFP6?usp=sharing" target="_blank" rel="noopener"><span class="resource-icon">01</span><span class="resource-copy"><strong>Gem de Planificação</strong><small>Transforme uma planilha em contexto legível.</small></span><span class="resource-arrow">↗</span></a>
-        <a class="resource" href="https://gemini.google.com/gem/1DHTZkWQcbZZzLzJTC_O8KPVIxpxODn7y?usp=sharing" target="_blank" rel="noopener"><span class="resource-icon">02</span><span class="resource-copy"><strong>Gem de Apps Script</strong><small>Saia da ideia para a arquitetura e o código.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://gemini.google.com/gem/1TTpxI5jsTDutGPuU_EMi0xeL8TT9pFP6?usp=sharing" target="_blank" rel="noopener"><span class="resource-icon">01</span><span class="resource-copy"><strong>Gem 1 · Planificação</strong><small>Conversa 1: transforme a planilha em contexto.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://gemini.google.com/gem/1DHTZkWqcbZZzLzJTC_O8KPVIxpxODn7y?usp=sharing" target="_blank" rel="noopener"><span class="resource-icon">02</span><span class="resource-copy"><strong>Gem 2 · Apps Script</strong><small>Conversa 2: anexe a planificação e construa a solução.</small></span><span class="resource-arrow">↗</span></a>
         <a class="resource" href="https://drive.google.com/drive/folders/1LgP_QFjidp26qGVXY2JEVhRH2F5yNVR_" target="_blank" rel="noopener"><span class="resource-icon">03</span><span class="resource-copy"><strong>Pasta de materiais</strong><small>Exemplos, planilha, template e referências.</small></span><span class="resource-arrow">↗</span></a>
         <a class="resource" href="https://docs.google.com/spreadsheets/d/1BiIf7VnlQSjtfTvgRUrnuQ5GPQnqMyFWiJQLDibCEes/edit?gid=2003454773#gid=2003454773" target="_blank" rel="noopener"><span class="resource-icon">04</span><span class="resource-copy"><strong>Planilha da demonstração</strong><small>Base de campanhas usada no fluxo.</small></span><span class="resource-arrow">↗</span></a>
         <a class="resource" href="https://docs.google.com/document/d/1BXv7XdJZxgaFXaTI7vWTVWErfCnmuzaIw3ApsPKbYDo/edit?tab=t.0" target="_blank" rel="noopener"><span class="resource-icon">05</span><span class="resource-copy"><strong>Template de relatório</strong><small>Documento com chaves substituíveis.</small></span><span class="resource-arrow">↗</span></a>
@@ -344,11 +368,11 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script>
     const steps = [
-      { label: '01 / ENTENDER', title: 'Planifique antes de construir.', text: 'Anexe o xlsx ao Gem de Planificação. Ele transforma abas, colunas, fórmulas e relações em um texto que a IA consegue carregar como contexto para o próximo passo.', input: 'Uma planilha e uma pergunta: “para que esse dado serve?”', check: 'Se a descrição representa a planilha real. Se inventou algo, pare e corrija.' },
-      { label: '02 / IMAGINAR', title: 'Descreva o produto, não a tecnologia.', text: 'Leve a planificação e diga o resultado esperado: um dashboard, um relatório, um alerta ou uma ação. O Gem de Apps Script propõe uma arquitetura antes de escrever.', input: 'A planificação + uma tarefa real + o resultado que você quer.', check: 'Se o produto resolve uma dor pequena e se as abas necessárias existem.' },
+      { label: '01 / CONVERSA 1', title: 'Planifique antes de construir.', text: 'Anexe o xlsx ao Gem de Planificação. Esta conversa serve para entender a base: abas, colunas, fórmulas, relações e finalidade. Não peça o app ainda.', input: 'Uma planilha e uma pergunta: “para que esse dado serve?”', check: 'Se a descrição representa a planilha real. Se inventou algo, pare e corrija.' },
+      { label: '02 / CONVERSA 2', title: 'Leve o contexto para a solução.', text: 'Abra uma nova conversa, anexe a planificação gerada e descreva a ideia do produto. O segundo Gem pensa a solução, propõe a arquitetura e gera o Apps Script.', input: 'A planificação anexada + uma tarefa real + o resultado que você quer.', check: 'Se o produto resolve uma dor pequena e se as abas necessárias existem.' },
       { label: '03 / MONTAR', title: 'Cole os blocos onde cada coisa vive.', text: 'Abra o Apps Script vinculado à planilha e cole os arquivos gerados. O backend cuida da lógica; o HTML cuida da tela; o PM.html guarda o contexto.', input: 'Código.js / Code.gs, index.html e PM.html.', check: 'Se os nomes das funções e arquivos usados pelo código existem no projeto.' },
       { label: '04 / PREPARAR', title: 'Troque os marcadores e autorize com atenção.', text: 'Procure comentários como [AJUSTAR], substitua IDs, nomes de abas e emails. Execute uma função e leia a tela de permissões antes de aceitar.', input: 'IDs do seu Docs, pasta do Drive, nomes reais das abas e conta correta.', check: 'Se o código vai acessar somente os dados e serviços que você espera.' },
-      { label: '05 / USAR', title: 'Abra a planilha e encontre seu novo menu.', text: 'O onOpen() cria um menu personalizado. A partir dele, você abre o dashboard ou gera relatórios sem voltar ao editor de código.', input: 'A planilha reaberta ou atualizada depois da autorização.', check: 'Se o menu apareceu e se o resultado faz sentido com poucos registros.' }
+      { label: '05 / USAR', title: 'Execute do jeito que fizer sentido.', text: 'O onOpen() pode criar um menu personalizado, mas é apenas uma opção. O projeto também pode reagir a edições, horários, formulários, URLs e outros eventos.', input: 'O gatilho escolhido para o seu processo.', check: 'Se o evento certo dispara a ação e se o resultado faz sentido com poucos registros.' }
     ];
     const tabButtons = document.querySelectorAll('.step-tab');
     const setStep = (index) => {
@@ -364,10 +388,14 @@
 
     const toast = document.getElementById('toast');
     const showToast = (message) => { toast.textContent = message; toast.classList.add('show'); window.clearTimeout(window.toastTimer); window.toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2600); };
-    const prompt = 'Quero transformar uma tarefa repetitiva em uma pequena aplicação no Google Workspace. Primeiro, analise a planilha anexada e gere uma planificação completa das abas, colunas, fórmulas e relações. Depois, proponha uma solução simples em Apps Script, explique a arquitetura e gere os arquivos Code.gs, index.html e PM.html. Não avance sem eu revisar cada etapa. Responda em pt-BR e marque tudo que eu preciso ajustar.';
-    const copyPrompt = async () => { try { await navigator.clipboard.writeText(prompt); showToast('Prompt copiado. Agora cole no Gem de Planificação.'); } catch { showToast('Selecione e copie o prompt na conversa do Gemini.'); } };
-    document.getElementById('copyPrompt').addEventListener('click', copyPrompt);
-    document.getElementById('copyPromptBottom').addEventListener('click', copyPrompt);
+    const prompts = {
+      plan: 'Analise a planilha anexada por completo e gere uma planificação em pt-BR. Descreva o propósito, todas as abas, colunas, tipos de dados, fórmulas, relações, regras de negócio, valor e riscos. Esta conversa serve somente para entender e documentar a planilha. Não proponha um app nem escreva Apps Script. Não invente dados; marque o que não estiver informado.',
+      product: 'Estou começando uma nova conversa. A planificação da minha planilha está anexada. Quero transformar este processo em uma solução dentro do Google Workspace. Minha ideia é: [descreva aqui a tarefa e o resultado desejado]. Use a planificação como contexto, proponha a solução mais simples e explique o produto antes do código. Depois gere o Apps Script de forma copiável, com Code.gs, index.html e PM.html quando fizer sentido. Mostre os gatilhos possíveis, marque tudo que eu preciso ajustar e não avance sem minha revisão. Responda em pt-BR.'
+    };
+    const copyText = async (text, message) => { try { await navigator.clipboard.writeText(text); showToast(message); } catch { showToast('Selecione e copie o prompt na conversa do Gemini.'); } };
+    document.getElementById('copyPlanPrompt').addEventListener('click', () => copyText(prompts.plan, 'Prompt da Conversa 1 copiado. Anexe a planilha ao Gem 1.'));
+    document.getElementById('copyProductPrompt').addEventListener('click', () => copyText(prompts.product, 'Prompt da Conversa 2 copiado. Abra uma nova conversa e anexe a planificação.'));
+    document.getElementById('copyPromptBottom').addEventListener('click', () => copyText(prompts.product, 'Prompt da Conversa 2 copiado.'));
 
     const themeButton = document.getElementById('themeToggle');
     themeButton.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = next; localStorage.setItem('em-theme', next); themeButton.textContent = next === 'dark' ? '☀' : '☼'; });
