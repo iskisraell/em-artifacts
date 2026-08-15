@@ -1,0 +1,7 @@
+{
+  "title": "Ticket Analysis: tirar a gordura da PR #912",
+  "date": "2026-08-15",
+  "description": "Auditoria de 48 findings na feature de Ticket Analysis (saIA) e o plano em fatias para destravar o merge da PR #912, respeitando as regras de revisão do William.",
+  "tags": ["saia", "pr-912", "defat", "ticket-analysis", "gemini", "laravel-8", "william-review", "agent-loop"],
+  "sections": ["Contexto", "A gordura", "As regras", "O que não cortar", "Decisões", "Visão adversária", "Executar"]
+}
