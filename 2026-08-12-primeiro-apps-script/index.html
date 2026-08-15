@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Como transformar uma planilha em uma aplicação do Google Workspace com Gemini e Apps Script.">
+  <title>Eletromidia | Sua planilha está pedindo um botão</title>
+  <script>
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('em-theme'); } catch (error) { saved = null; }
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = saved || (prefersDark ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #FF4F00;
+      --purple: #4E18FF;
+      --yellow: #FECC14;
+      --pink: #F577ED;
+      --green: #3D7700;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --black: #000;
+      --white: #FFF;
+      --bg: #FAFAFA;
+      --muted: #F2F2F2;
+      --line: #E5E5E5;
+      --text: #6E6E6E;
+      --heading: #080808;
+      --card: #FFF;
+      --radius: 18px;
+      --max: 1180px;
+    }
+    [data-theme="dark"] {
+      --bg: #0B0B0B;
+      --muted: #161616;
+      --line: #2A2A2A;
+      --text: #A7A7A7;
+      --heading: #FAFAFA;
+      --card: #141414;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--heading);
+      font-family: "Rethink Sans", system-ui, sans-serif;
+      line-height: 1.45;
+      transition: background .25s ease, color .25s ease;
+    }
+    ::selection { background: var(--orange); color: var(--white); }
+    a { color: inherit; }
+    button { font: inherit; }
+    code { font-family: Consolas, "Cascadia Mono", monospace; }
+    p { color: var(--text); font-size: 16px; }
+    .progress { position: fixed; z-index: 20; inset: 0 auto auto 0; height: 3px; width: 0; background: var(--orange); }
+    .skip { position: absolute; top: -80px; left: 0; z-index: 30; padding: 10px 14px; background: var(--black); color: var(--white); border-radius: 0 0 10px 0; font-weight: 800; }
+    .skip:focus { top: 0; }
+    .nav { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(14px); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(var(--max), calc(100% - 32px)); min-height: 62px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 800; }
+     .nav-links { display: flex; align-items: center; gap: 18px; font-size: 13px; font-weight: 700; color: var(--text); }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--orange); }
+    .theme { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); color: var(--heading); cursor: pointer; }
+    .theme:hover { border-color: var(--orange); color: var(--orange); }
+    main { width: min(var(--max), calc(100% - 32px)); margin: 0 auto; padding: 22px 0 70px; }
+    .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 470px; padding: clamp(28px, 6vw, 72px); border-radius: 24px; background: var(--black); color: var(--white); }
+    .hero::before { content: ""; position: absolute; z-index: -1; right: -110px; top: -170px; width: 480px; height: 480px; border: 48px solid rgba(255, 79, 0, .88); border-radius: 50%; }
+    .hero::after { content: ""; position: absolute; z-index: -1; right: 110px; bottom: -230px; width: 390px; height: 390px; border: 34px solid rgba(78, 24, 255, .8); border-radius: 48px; transform: rotate(28deg); }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #D1D1D1; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); }
+    h1 { max-width: 910px; margin-bottom: 26px; color: var(--white); font-size: clamp(48px, 8.5vw, 104px); line-height: .88; letter-spacing: -.045em; }
+    .hero h1 em { color: var(--yellow); font-style: normal; }
+    .hero-lede { max-width: 630px; margin-bottom: 30px; color: #D2D2D2; font-size: clamp(17px, 2vw, 22px); line-height: 1.25; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 17px; border: 1px solid transparent; border-radius: 999px; font-size: 14px; font-weight: 800; text-decoration: none; cursor: pointer; transition: transform .18s, background .18s, color .18s, border-color .18s; }
+    .btn:hover { transform: translateY(-2px); }
+     .btn-primary { background: var(--orange); color: var(--white); }
+     .btn-primary:hover { background: #983200; }
+     #copyPromptBottom { background: var(--orange); }
+     #copyPromptBottom:hover { background: #e44600; }
+    .btn-light { background: var(--white); color: var(--black); }
+    .btn-light:hover { background: var(--yellow); }
+    .btn-outline { border-color: rgba(255,255,255,.3); color: var(--white); }
+    .btn-outline:hover { border-color: var(--white); }
+    section { margin-top: 22px; scroll-margin-top: 88px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin: 54px 0 16px; }
+    .section-kicker { margin-bottom: 7px; color: var(--orange); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    h2 { max-width: 780px; font-size: clamp(30px, 4.6vw, 54px); line-height: .98; letter-spacing: -.03em; }
+    h3 { font-size: 21px; line-height: 1.08; }
+    .section-head > p { max-width: 310px; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; }
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+    .card { min-height: 100%; padding: clamp(20px, 2.6vw, 30px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); transition: transform .18s, border-color .18s, box-shadow .18s; }
+    .card:hover { transform: translateY(-2px); border-color: var(--orange); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .card p { margin-top: 10px; }
+    .card.orange { border-color: var(--orange); background: var(--orange); color: var(--white); }
+    .card.orange p, .card.black p, .card.purple p { color: rgba(255,255,255,.78); }
+    .card.black { background: var(--black); color: var(--white); }
+    .card.purple { background: var(--purple); color: var(--white); }
+    .card.yellow { background: var(--yellow); color: var(--black); }
+    .card.yellow p { color: rgba(0,0,0,.68); }
+    .number { display: inline-grid; place-items: center; width: 33px; height: 33px; margin-bottom: 22px; border-radius: 10px; background: var(--muted); color: var(--heading); font-size: 13px; font-weight: 800; }
+    .orange .number, .black .number, .purple .number { background: rgba(255,255,255,.16); color: var(--white); }
+    .yellow .number { background: rgba(0,0,0,.1); }
+    .big-line { display: block; margin-top: 19px; font-size: clamp(28px, 4vw, 48px); font-weight: 800; line-height: .95; letter-spacing: -.04em; }
+    .before-after { align-items: stretch; }
+    .problem-stack { display: grid; gap: 8px; margin-top: 18px; }
+    .problem { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 11px; color: var(--text); font-size: 14px; }
+    .problem::before { content: "×"; color: var(--red); font-size: 20px; font-weight: 800; }
+    .solution-stack { display: grid; gap: 9px; margin-top: 20px; }
+    .solution { display: flex; align-items: center; gap: 12px; color: var(--text); font-size: 14px; }
+    .solution strong { color: var(--heading); }
+    .solution-icon { display: grid; flex: 0 0 32px; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: var(--orange); color: var(--white); font-size: 13px; font-weight: 800; }
+    .callout { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 26px; border-radius: var(--radius); background: var(--yellow); }
+    .callout p { max-width: 720px; color: rgba(0,0,0,.72); }
+    .callout strong { color: var(--black); }
+    .gem-chain { display: grid; grid-template-columns: minmax(0, 1fr) 42px minmax(0, 1fr); align-items: stretch; gap: 12px; }
+    .gem-node { display: flex; min-height: 205px; flex-direction: column; align-items: flex-start; padding: clamp(20px, 2.6vw, 28px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+    .gem-node:nth-child(3) { border-color: var(--purple); }
+    .gem-node h3 { margin-top: 9px; }
+    .gem-node p { margin-top: 9px; font-size: 14px; }
+    .gem-tag { color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .gem-node:nth-child(3) .gem-tag { color: var(--purple); }
+    .gem-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; }
+    .gem-node .btn { min-height: 37px; padding: 0 13px; border-color: var(--line); background: var(--muted); color: var(--heading); font-size: 12px; }
+    .gem-node .btn:hover { border-color: var(--orange); background: var(--orange); color: var(--white); }
+    .chain-arrow { display: grid; place-items: center; align-self: center; color: var(--orange); font-size: 28px; font-weight: 800; }
+    .pipeline-wrap { padding: clamp(20px, 3vw, 32px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+    .pipeline-tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-bottom: 22px; }
+    .step-tab { position: relative; min-height: 78px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--muted); color: var(--text); text-align: left; cursor: pointer; transition: .18s; }
+    .step-tab:hover { border-color: var(--orange); }
+    .step-tab.active { border-color: var(--orange); background: var(--orange); color: var(--white); }
+    .step-tab .step-num { display: block; margin-bottom: 7px; font-size: 11px; font-weight: 800; opacity: .7; }
+    .step-tab strong { display: block; font-size: 14px; line-height: 1.05; }
+    .step-detail { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(250px, .85fr); gap: 12px; }
+    .detail-main { padding: clamp(20px, 3vw, 30px); border-radius: 14px; background: var(--black); color: var(--white); }
+    .detail-main .detail-label { color: var(--yellow); }
+    .detail-main h3 { margin: 9px 0 10px; font-size: clamp(24px, 3.2vw, 37px); }
+    .detail-main p { color: #C8C8C8; }
+    .detail-side { display: grid; gap: 12px; }
+    .detail-box { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--muted); }
+    .detail-box h4 { margin-bottom: 7px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+    .detail-box p { font-size: 14px; }
+    .detail-label { color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .rail { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .rail-card { position: relative; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    .rail-card::after { content: "→"; position: absolute; right: 17px; top: 19px; color: var(--orange); font-size: 20px; font-weight: 800; }
+    .rail-card:last-child::after { content: "✓"; color: var(--green); }
+    .rail-card h3 { padding-right: 28px; }
+    .rail-card p { margin-top: 9px; font-size: 14px; }
+    .syntax { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .file-card { min-height: 190px; padding: 23px; border-radius: 14px; background: var(--muted); }
+    .file-type { position: relative; display: inline-block; margin-bottom: 36px; color: var(--orange); font-family: Consolas, monospace; font-size: 13px; font-weight: 800; }
+    .file-card:nth-child(2) .file-type { color: var(--purple); }
+    .file-card:nth-child(3) .file-type { color: #8B6E00; }
+    .file-card h3, .file-card p { max-width: 280px; }
+    .file-card p { margin-top: 8px; font-size: 14px; }
+    .mini-code { margin-top: 16px; padding: 14px; border-radius: 12px; background: var(--black); color: #D9D9D9; font-family: Consolas, monospace; font-size: 12px; line-height: 1.6; overflow-x: auto; }
+    .mini-code .hot { color: var(--yellow); }
+    .checklist { display: grid; gap: 10px; margin-top: 18px; }
+    .check-item { display: flex; align-items: flex-start; gap: 10px; color: var(--text); font-size: 14px; }
+    .check-item input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--orange); }
+    .resource-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .resource { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 19px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); text-decoration: none; transition: .18s; }
+    .resource:hover { border-color: var(--orange); transform: translateY(-2px); }
+    .resource-icon { display: grid; flex: 0 0 36px; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--muted); color: var(--orange); font-weight: 800; }
+    .resource-copy { flex: 1; }
+    .resource-copy strong { display: block; font-size: 15px; }
+    .resource-copy small { display: block; margin-top: 3px; color: var(--text); font-size: 12px; }
+    .resource-arrow { color: var(--orange); font-size: 20px; font-weight: 800; }
+    .warning { padding: 20px; border: 1px solid #F0C000; border-radius: 14px; background: color-mix(in srgb, var(--yellow) 20%, var(--card)); }
+    .warning strong { display: block; margin-bottom: 6px; }
+    .warning p { font-size: 14px; }
+    .trigger-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .trigger { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+     .trigger strong { display: block; margin-bottom: 7px; font-size: 16px; }
+     .trigger p { font-size: 13px; }
+     .trigger code { margin-bottom: 14px; color: var(--orange); }
+     .visual-intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
+     .visual-intro > p { max-width: 360px; font-size: 14px; }
+     .visual-note { margin-bottom: 12px; padding: 13px 16px; border-left: 3px solid var(--orange); border-radius: 0 10px 10px 0; background: var(--muted); color: var(--text); font-size: 13px; }
+     .visual-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+     .visual-card { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+     .visual-card:hover { border-color: var(--orange); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+     .visual-image-link { display: block; padding: 10px; background: var(--muted); }
+     .visual-image-link img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 9px; background: var(--white); }
+     .visual-copy { padding: 19px 21px 21px; }
+     .visual-step { display: block; margin-bottom: 8px; color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+     .visual-copy h3 { margin-bottom: 7px; }
+     .visual-copy p { font-size: 14px; }
+     .visual-open { display: inline-block; margin-top: 13px; color: var(--orange); font-size: 12px; font-weight: 800; text-decoration: none; }
+     .visual-open:hover { text-decoration: underline; }
+     .prompt-dialog { width: min(620px, calc(100% - 28px)); padding: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--card); color: var(--heading); box-shadow: 0 18px 60px rgba(0,0,0,.25); }
+     .prompt-dialog::backdrop { background: rgba(0,0,0,.55); }
+     .prompt-dialog form { padding: 22px; }
+     .prompt-dialog h3 { margin-bottom: 8px; }
+     .prompt-dialog p { font-size: 13px; }
+     .prompt-dialog textarea { display: block; width: 100%; min-height: 190px; margin: 14px 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--muted); color: var(--heading); font: 13px/1.5 Consolas, monospace; resize: vertical; }
+     .prompt-dialog .btn { border: 0; background: var(--orange); color: var(--white); }
+     .principles-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+     .principle { min-height: 170px; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+     .principle:nth-child(2) { background: var(--yellow); }
+     .principle:nth-child(4) { background: var(--orange); color: var(--white); }
+     .principle:nth-child(5) { background: var(--purple); color: var(--white); }
+     .principle:nth-child(4) p, .principle:nth-child(5) p { color: rgba(255,255,255,.78); }
+     .principle-number { display: block; margin-bottom: 28px; color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; }
+     .principle:nth-child(2) .principle-number, .principle:nth-child(4) .principle-number, .principle:nth-child(5) .principle-number { color: inherit; opacity: .7; }
+     .principle h3 { font-size: 18px; }
+     .principle p { margin-top: 8px; font-size: 14px; }
+     .project-start { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 12px; }
+     .project-lead { padding: clamp(23px, 3vw, 34px); border-radius: var(--radius); background: var(--black); color: var(--white); }
+     .project-lead h3 { max-width: 410px; margin-top: 10px; font-size: clamp(27px, 4vw, 44px); letter-spacing: -.035em; }
+     .project-lead p { max-width: 430px; margin-top: 15px; color: #C8C8C8; }
+     .project-steps { display: grid; gap: 8px; }
+     .project-step { display: grid; grid-template-columns: 38px 1fr; gap: 13px; align-items: start; padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: var(--card); }
+     .project-step strong { display: block; font-size: 15px; }
+     .project-step p { margin-top: 4px; font-size: 13px; }
+     .project-step .number { margin: 0; background: var(--orange); color: var(--white); }
+     .id-guide { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 18px; margin-top: 12px; padding: clamp(22px, 3vw, 30px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--muted); }
+     .id-guide h3 { margin-top: 9px; font-size: clamp(23px, 3vw, 34px); letter-spacing: -.025em; }
+     .id-guide p { margin-top: 10px; font-size: 14px; }
+     .id-examples { display: grid; gap: 8px; }
+     .id-example { padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+     .id-label { display: block; margin-bottom: 8px; color: var(--orange); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+     .id-example code { display: block; overflow-wrap: anywhere; color: var(--text); font-size: clamp(11px, 1.3vw, 13px); line-height: 1.55; }
+     .id-example code strong { color: var(--heading); }
+     .id-example mark { padding: 2px 4px; border-radius: 4px; background: var(--yellow); color: var(--black); font-weight: 800; }
+     .id-tip { margin: 0 !important; color: var(--text); font-size: 12px !important; }
+     .id-tip code { color: var(--heading); }
+     footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--text); font-size: 12px; }
+    footer strong { color: var(--heading); }
+    .toast { position: fixed; right: 20px; bottom: 20px; z-index: 30; max-width: 320px; padding: 13px 16px; border-radius: 12px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; opacity: 0; transform: translateY(18px); pointer-events: none; transition: .2s; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .reveal { opacity: 0; transform: translateY(9px); animation: enter .55s ease forwards; }
+    @keyframes enter { to { opacity: 1; transform: none; } }
+    @media (max-width: 920px) {
+      .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .pipeline-tabs { grid-template-columns: repeat(5, minmax(112px, 1fr)); overflow-x: auto; padding-bottom: 3px; }
+       .step-detail, .syntax { grid-template-columns: 1fr; }
+       .rail { grid-template-columns: 1fr 1fr; }
+       .trigger-grid { grid-template-columns: 1fr 1fr; }
+       .principles-grid { grid-template-columns: 1fr 1fr; }
+       .project-start { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      main { width: min(100% - 20px, var(--max)); padding-top: 10px; }
+      .nav-inner { width: min(100% - 20px, var(--max)); }
+      .nav-links a { display: none; }
+      .hero { min-height: 510px; padding: 28px 22px; border-radius: 16px; }
+      h1 { font-size: clamp(48px, 14vw, 70px); }
+      .section-head { display: block; margin-top: 42px; }
+      .section-head > p { margin-top: 10px; }
+      .callout { display: block; padding: 20px; }
+      .callout .btn { margin-top: 14px; }
+      .pipeline-wrap { padding: 14px; }
+      .pipeline-tabs { grid-template-columns: repeat(5, 112px); margin-right: -2px; }
+       .step-detail { display: block; }
+       .detail-side { margin-top: 12px; }
+       .gem-chain { grid-template-columns: 1fr; }
+       .chain-arrow { transform: rotate(90deg); }
+       .rail, .resource-grid, .trigger-grid, .visual-grid, .principles-grid { grid-template-columns: 1fr; }
+       .visual-intro { display: block; }
+       .visual-intro > p { margin-top: 10px; }
+       .visual-image-link { padding: 7px; }
+       .id-guide { grid-template-columns: 1fr; }
+       footer { display: block; }
+      footer span { display: block; margin-top: 7px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media print {
+      .nav, .progress, .theme, .hero-actions, .toast { display: none; }
+      .hero { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
+  <div class="progress" id="progress"></div>
+  <nav class="nav" aria-label="Navegação principal">
+    <div class="nav-inner">
+      <a class="brand" href="#topo">Programa de estágio</a>
+      <div class="nav-links">
+        <a href="#pipeline">Pipeline</a>
+        <a href="#na-pratica">Na prática</a>
+        <a href="#materiais">Materiais</a>
+        <button class="theme" id="themeToggle" type="button" aria-label="Alternar tema">☼</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="conteudo">
+    <header class="hero reveal" id="topo">
+      <h1>Sua tarefa está pedindo <em>uma ferramenta.</em></h1>
+       <p class="hero-lede">A IA é sua maior companheira aqui. Diga qual é a sua dor e siga o passo a passo. Se você se perder, pergunte para ela.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#pipeline">Começar pelo pipeline <span>↓</span></a>
+        <a class="btn btn-outline" href="#materiais">Abrir materiais <span>↗</span></a>
+      </div>
+    </header>
+
+    <section id="por-que" class="reveal">
+      <div class="section-head">
+        <div><div class="section-kicker">A virada</div><h2>Automação começa onde a paciência acaba.</h2></div>
+        <p>Não é sobre criar um sistema gigante. É sobre remover uma repetição que não deveria consumir seu tempo.</p>
+      </div>
+      <div class="grid before-after">
+        <article class="card span-5">
+          <div class="number">01</div><h3>O jeito que trava</h3>
+          <div class="problem-stack"><div class="problem">Copiar e colar o mesmo dado</div><div class="problem">Refazer relatório toda semana</div><div class="problem">Esperar alguém criar uma ferramenta simples</div></div>
+        </article>
+        <article class="card orange span-7">
+          <div class="number">02</div><h3>O jeito que escala</h3>
+          <p>Você descreve o problema. O Gemini organiza o contexto e propõe um caminho. O Apps Script conecta Sheets, Docs, Drive e Gmail para executar.</p>
+          <span class="big-line">Uma tarefa menor.<br>Um processo melhor.</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="reveal" id="gems">
+      <div class="section-head"><div><div class="section-kicker">O ponto-chave</div><h2>Duas conversas. Um projeto.</h2></div><p>Os Gems são encadeados. Cada um vive em uma conversa e tem uma responsabilidade diferente.</p></div>
+      <div class="gem-chain">
+        <article class="gem-node">
+          <span class="gem-tag">Conversa 1 · contexto</span>
+          <h3>Planifique a planilha.</h3>
+          <p>Anexe o arquivo e peça apenas o entendimento completo da base. O resultado vira contexto para a próxima conversa.</p>
+          <div class="gem-actions"><a class="btn" href="https://gemini.google.com/gem/1TTpxI5jsTDutGPuU_EMi0xeL8TT9pFP6?usp=sharing" target="_blank" rel="noopener">Abrir Gem 1 ↗</a><button class="btn" id="copyPlanPrompt" type="button">Copiar prompt</button></div>
+        </article>
+        <div class="chain-arrow" aria-hidden="true">→</div>
+        <article class="gem-node">
+          <span class="gem-tag">Conversa 2 · solução</span>
+          <h3>Construa o produto.</h3>
+          <p>Abra uma nova conversa, anexe a planificação e explique a ideia. O segundo Gem pensa a solução e gera o Apps Script.</p>
+          <div class="gem-actions"><a class="btn" href="https://gemini.google.com/gem/1DHTZkWqcbZZzLzJTC_O8KPVIxpxODn7y?usp=sharing" target="_blank" rel="noopener">Abrir Gem 2 ↗</a><button class="btn" id="copyProductPrompt" type="button">Copiar prompt</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="pipeline" class="reveal">
+      <div class="section-head">
+        <div><div class="section-kicker">O caminho</div><h2>Da planilha a uma solução.</h2></div>
+        <p>Clique em cada etapa. O processo conecta duas conversas com IA a um projeto que pode evoluir.</p>
+      </div>
+      <div class="pipeline-wrap">
+        <div class="pipeline-tabs" role="tablist" aria-label="Etapas do pipeline">
+          <button class="step-tab active" id="step-tab-0" role="tab" aria-selected="true" aria-controls="stepDetail" tabindex="0" data-step="0"><span class="step-num">01 / CONVERSA 1</span><strong>Planificar</strong></button>
+          <button class="step-tab" id="step-tab-1" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="1"><span class="step-num">02 / CONVERSA 2</span><strong>Pensar produto</strong></button>
+          <button class="step-tab" id="step-tab-2" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="2"><span class="step-num">03 / MONTAR</span><strong>Criar projeto</strong></button>
+          <button class="step-tab" id="step-tab-3" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="3"><span class="step-num">04 / PREPARAR</span><strong>Configurar</strong></button>
+          <button class="step-tab" id="step-tab-4" role="tab" aria-selected="false" aria-controls="stepDetail" tabindex="-1" data-step="4"><span class="step-num">05 / USAR</span><strong>Abrir menu</strong></button>
+        </div>
+        <div class="step-detail" id="stepDetail" role="tabpanel" aria-labelledby="step-tab-0" tabindex="0">
+          <div class="detail-main"><span class="detail-label" id="detailLabel">01 / CONVERSA 1</span><h3 id="detailTitle">Planifique antes de construir.</h3><p id="detailText">Anexe o xlsx ao Gem de Planificação. Ele transforma abas, colunas, fórmulas e relações em um texto que a IA consegue carregar na nova conversa do próximo passo.</p></div>
+           <div class="detail-side"><div class="detail-box"><h4>Você fornece</h4><p id="detailInput">Uma planilha e uma pergunta: “para que esse dado serve?”</p></div><div class="detail-box"><h4>Você confere</h4><p id="detailCheck">Se a descrição representa a planilha real. Se inventou algo, pare e corrija.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="na-pratica" class="reveal">
+      <div class="visual-intro">
+        <div><div class="section-kicker">Na prática</div><h2>Dois caminhos. Um projeto que você entende.</h2></div>
+        <p>Não precisa decorar a tela. Estas imagens mostram o que aparece quando você sai da planilha e começa a montar a solução.</p>
+      </div>
+      <p class="visual-note"><strong>Leia assim:</strong> as imagens 01 e 02 mostram dois jeitos de começar. Depois, as imagens 03 e 04 mostram o que acontece dentro do projeto, qualquer que seja o caminho escolhido.</p>
+      <div class="visual-grid">
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/01-abrir-apps-script.png" target="_blank" rel="noopener"><img src="media/01-abrir-apps-script.png" alt="Planilha do Google com o menu Extensões aberto e a opção Apps Script visível"></a>
+          <div class="visual-copy"><span class="visual-step">01 / caminho vinculado</span><h3>O atalho está na planilha.</h3><p>Se a automação nasce nesse arquivo, clique em <strong>Extensões</strong> e escolha <strong>Apps Script</strong>. O projeto já começa conectado a ele.</p><a class="visual-open" href="media/01-abrir-apps-script.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/02-criar-ou-escolher-projeto.png" target="_blank" rel="noopener"><img src="media/02-criar-ou-escolher-projeto.png" alt="Tela inicial do Apps Script com o botão Novo projeto destacado e uma lista de projetos existentes"></a>
+          <div class="visual-copy"><span class="visual-step">02 / caminho independente</span><h3>Um projeto pode nascer separado.</h3><p>Se a solução vai juntar vários arquivos, abra o Apps Script, clique em <strong>Novo projeto</strong> e dê um nome que explique a tarefa.</p><a class="visual-open" href="media/02-criar-ou-escolher-projeto.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/03-adicionar-arquivo.png" target="_blank" rel="noopener"><img src="media/03-adicionar-arquivo.png" alt="Editor do Apps Script com o menu de adicionar arquivo aberto, mostrando as opções Script e HTML"></a>
+          <div class="visual-copy"><span class="visual-step">03 / qualquer caminho</span><h3>Cada arquivo tem um papel.</h3><p>Adicione um arquivo de script para as ações e um HTML para a tela. A memória do projeto ajuda a retomar o trabalho.</p><a class="visual-open" href="media/03-adicionar-arquivo.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+        <article class="visual-card">
+          <a class="visual-image-link" href="media/04-reconhecer-menu.png" target="_blank" rel="noopener"><img src="media/04-reconhecer-menu.png" alt="Editor do Apps Script com os arquivos Code.gs, index.html e PM.html e a lista de funções do projeto aberta"></a>
+          <div class="visual-copy"><span class="visual-step">04 / reconhecer</span><h3>Os arquivos aparecem no projeto.</h3><p>Você vê o Code.gs, a tela HTML e a memória lado a lado. A lista de funções mostra as ações que o projeto pode executar.</p><a class="visual-open" href="media/04-reconhecer-menu.png" target="_blank" rel="noopener">Abrir imagem maior ↗</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="criar-projeto" class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Criar o projeto</div><h2>Dois começos. A mesma ideia.</h2></div><p>O melhor caminho depende de onde os seus dados estão e de quantos arquivos a solução vai usar.</p></div>
+      <div class="project-start">
+        <article class="project-lead"><div class="section-kicker" style="color:var(--yellow);">Escolha sem medo</div><h3>Comece pelo arquivo ou comece pelo Apps Script.</h3><p>Se a tarefa nasce em uma planilha ou documento, ficar perto dele costuma ser mais simples. Se a solução vai juntar várias fontes, um projeto independente pode organizar melhor as conexões.</p></article>
+        <div class="project-steps">
+          <article class="project-step"><div class="number">01</div><div><strong>Vinculado a uma planilha ou documento</strong><p>Abra o arquivo no Google, entre em <strong>Extensões → Apps Script</strong> e crie o projeto por ali. É um bom começo quando a automação trabalha principalmente com esse arquivo.</p></div></article>
+          <article class="project-step"><div class="number">02</div><div><strong>Independente do arquivo</strong><p>Abra <strong>script.google.com</strong>, clique em <strong>Novo projeto</strong> e conecte as planilhas, Docs ou pastas que o código vai usar. É útil quando existem várias fontes ou uma interface própria.</p></div></article>
+          <article class="project-step"><div class="number">03</div><div><strong>Em qualquer caminho, nomeie e documente</strong><p>Use um nome que conte o que o projeto faz e registre os arquivos envolvidos no PM.html. Seu “eu” de amanhã vai agradecer.</p></div></article>
+        </div>
+      </div>
+      <div class="id-guide">
+        <div><div class="section-kicker">Peça o ID, não a URL inteira</div><h3>O ID é a etiqueta única do arquivo.</h3><p>Antes de executar, reúna um ID para cada arquivo externo que o projeto vai usar. Você não precisa adivinhar: eles aparecem no link, entre as barras indicadas.</p></div>
+        <div class="id-examples">
+          <div class="id-example"><span class="id-label">Planilha</span><code>https://docs.google.com/<strong>spreadsheets/d/</strong><mark>ID_DA_PLANILHA</mark><strong>/edit</strong></code></div>
+          <div class="id-example"><span class="id-label">Documento</span><code>https://docs.google.com/<strong>document/d/</strong><mark>ID_DO_DOCUMENTO</mark><strong>/edit</strong></code></div>
+          <div class="id-example"><span class="id-label">Pasta do Drive</span><code>https://drive.google.com/<strong>drive/folders/</strong><mark>ID_DA_PASTA</mark></code></div>
+          <p class="id-tip">Copie apenas o trecho em destaque. Não copie <code>/edit</code>, <code>?gid=</code> ou a URL inteira.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Práticas que ajudam</div><h2>Não é sobre saber tudo.</h2></div><p>É sobre criar um jeito seguro de aprender, testar e melhorar uma coisa de cada vez.</p></div>
+      <div class="principles-grid">
+        <article class="principle"><span class="principle-number">01 / COMEÇO</span><h3>Comece pela dor.</h3><p>Descreva a repetição que atrapalha antes de pedir uma tela bonita.</p></article>
+        <article class="principle"><span class="principle-number">02 / TAMANHO</span><h3>Faça pequeno primeiro.</h3><p>Um botão que resolve uma etapa vale mais que um sistema enorme que ninguém testou.</p></article>
+        <article class="principle"><span class="principle-number">03 / CONTEXTO</span><h3>Dê nomes reais.</h3><p>Informe nomes de abas, arquivos, campos e o resultado esperado. Contexto reduz chute.</p></article>
+        <article class="principle"><span class="principle-number">04 / REVISÃO</span><h3>Leia antes de executar.</h3><p>IA ajuda a construir. A decisão sobre dados, permissões e envio continua sendo sua.</p></article>
+        <article class="principle"><span class="principle-number">05 / TESTE</span><h3>Teste com pouco.</h3><p>Use uma cópia e poucos registros. Primeiro confirme o caminho, depois aumente o volume.</p></article>
+        <article class="principle"><span class="principle-number">06 / MEMÓRIA</span><h3>Deixe uma pista.</h3><p>Guarde objetivo, IDs usados, decisões e próximos passos para a próxima conversa.</p></article>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-head"><div><div class="section-kicker">O resultado</div><h2>O Workspace abre muitas portas.</h2></div><p>Sheets, Docs, Drive, Gmail, Forms e Calendar podem virar partes de uma solução feita para o seu processo.</p></div>
+      <div class="rail">
+        <article class="rail-card"><h3>Gemini entende</h3><p>Recebe contexto, organiza o problema e ajuda a escolher o próximo passo.</p></article>
+        <article class="rail-card"><h3>Apps Script conecta</h3><p>Lê, transforma, cria, envia, chama serviços e automatiza fluxos dentro do Workspace.</p></article>
+        <article class="rail-card"><h3>Você escolhe o formato</h3><p>Dashboard, relatório, alerta, formulário, rotina ou web app: a possibilidade depende do problema.</p></article>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Como começa</div><h2>O botão é só uma das portas.</h2></div><p><code>onOpen()</code> cria um menu na planilha, mas não limita o que o Apps Script pode fazer.</p></div>
+      <div class="trigger-grid">
+        <article class="trigger"><code>onOpen()</code><strong>Menu na planilha</strong><p>Mostra ações personalizadas quando a pessoa abre o arquivo.</p></article>
+        <article class="trigger"><code>doGet()</code><strong>Web app</strong><p>Entrega uma interface própria acessível por uma URL.</p></article>
+        <article class="trigger"><code>onEdit(e)</code><strong>Reação a mudanças</strong><p>Executa uma ação quando uma célula é editada.</p></article>
+        <article class="trigger"><code>Gatilhos</code><strong>Rotina automática</strong><p>Roda por horário, envio de formulário ou outros eventos.</p></article>
+      </div>
+    </section>
+
+    <section id="projeto" class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Dentro do projeto</div><h2>Três arquivos. Três responsabilidades.</h2></div><p>O código gerado fica mais fácil de entender e retomar quando cada parte tem um lugar claro.</p></div>
+      <div class="syntax">
+        <article class="file-card"><span class="file-type">Código.js / Code.gs</span><h3>O motor</h3><p>Lógica, dados, integrações e qualquer forma de iniciar uma ação.</p></article>
+        <article class="file-card"><span class="file-type">index.html</span><h3>A tela</h3><p>Dashboard, botões, tabelas e a experiência que aparece para quem usa.</p></article>
+        <article class="file-card"><span class="file-type">PM.html</span><h3>A memória</h3><p>Objetivo, estrutura, decisões e próximos passos para a próxima conversa com a IA.</p></article>
+      </div>
+      <div class="mini-code"><span class="hot">function onOpen() {</span><br>&nbsp;&nbsp;SpreadsheetApp.getUi()<br>&nbsp;&nbsp;&nbsp;&nbsp;.createMenu('Eletromidia')<br>&nbsp;&nbsp;&nbsp;&nbsp;.addItem('Abrir Dashboard', 'abrirDashboard')<br>&nbsp;&nbsp;&nbsp;&nbsp;.addToUi();<br><span class="hot">}</span></div>
+      <p style="margin-top:10px;font-size:13px;">Este é um exemplo de gatilho. O mesmo projeto também pode responder a edições, horários, formulários, URLs e outros eventos.</p>
+    </section>
+
+    <section id="primeira-execucao" class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Antes de executar</div><h2>O modelo escreve. Você faz o check.</h2></div><p>Permissão não é detalhe. É parte do produto.</p></div>
+      <div class="grid">
+           <article class="card span-7"><h3>Checklist da primeira execução</h3><div class="checklist"><label class="check-item"><input type="checkbox"> Escolhi entre um projeto vinculado ao arquivo ou um projeto independente?</label><label class="check-item"><input type="checkbox"> Os nomes das abas batem com a configuração?</label><label class="check-item"><input type="checkbox"> Separei os IDs de cada planilha, documento ou pasta que o código usa?</label><label class="check-item"><input type="checkbox"> Eu entendi o que o código lê, cria e envia?</label><label class="check-item"><input type="checkbox"> Testei com poucos dados antes de rodar em lote?</label></div></article>
+           <article class="warning span-5"><strong>Um ID para cada arquivo externo.</strong><p>O arquivo principal de um projeto vinculado já está conectado. Mas cada planilha, documento ou pasta adicional que o código abrir, ler ou usar como destino precisa do seu próprio ID. O projeto demonstrado usa um `templateDocId` e um `pastaDestinoId`.</p><p style="margin-top:10px;">Se você copiar o projeto, substitua pelos IDs do seu ambiente. Não copie a URL inteira nem use o ID de um exemplo como se fosse o seu. Também confira a conta correta, o gatilho escolhido e as permissões.</p></article>
+      </div>
+    </section>
+
+    <section id="materiais" class="reveal">
+      <div class="section-head"><div><div class="section-kicker">Caixa de ferramentas</div><h2>Agora escolha um ponto de partida.</h2></div><p>O artefato explica o caminho. Os links abaixo levam para o trabalho real.</p></div>
+      <div class="resource-grid">
+        <a class="resource" href="https://gemini.google.com/gem/1TTpxI5jsTDutGPuU_EMi0xeL8TT9pFP6?usp=sharing" target="_blank" rel="noopener"><span class="resource-icon">01</span><span class="resource-copy"><strong>Gem 1 · Planificação</strong><small>Conversa 1: transforme a planilha em contexto.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://gemini.google.com/gem/1DHTZkWqcbZZzLzJTC_O8KPVIxpxODn7y?usp=sharing" target="_blank" rel="noopener"><span class="resource-icon">02</span><span class="resource-copy"><strong>Gem 2 · Apps Script</strong><small>Conversa 2: anexe a planificação e construa a solução.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://drive.google.com/drive/folders/1LgP_QFjidp26qGVXY2JEVhRH2F5yNVR_" target="_blank" rel="noopener"><span class="resource-icon">03</span><span class="resource-copy"><strong>Pasta de materiais</strong><small>Exemplos, planilha, template e referências.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://docs.google.com/spreadsheets/d/1BiIf7VnlQSjtfTvgRUrnuQ5GPQnqMyFWiJQLDibCEes/edit?gid=2003454773#gid=2003454773" target="_blank" rel="noopener"><span class="resource-icon">04</span><span class="resource-copy"><strong>Planilha da demonstração</strong><small>Base de campanhas usada no fluxo.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://docs.google.com/document/d/1BXv7XdJZxgaFXaTI7vWTVWErfCnmuzaIw3ApsPKbYDo/edit?tab=t.0" target="_blank" rel="noopener"><span class="resource-icon">05</span><span class="resource-copy"><strong>Template de relatório</strong><small>Documento com chaves substituíveis.</small></span><span class="resource-arrow">↗</span></a>
+        <a class="resource" href="https://script.google.com/home/projects/1jvynmyw-Als6wXqwMX47yaVMKSH5heSbByPAq64i4oLw6EEn6l8M0oCq/edit" target="_blank" rel="noopener"><span class="resource-icon">06</span><span class="resource-copy"><strong>Projeto Apps Script</strong><small>Veja a aplicação funcionando por dentro.</small></span><span class="resource-arrow">↗</span></a>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <div class="card black"><div class="section-kicker" style="color:var(--yellow);">Para levar</div><h2 style="color:var(--white);">Não comece pelo código.<br>Comece pelo incômodo.</h2><p style="max-width:620px;margin-top:17px;">Dê contexto. Faça uma versão pequena. Revise antes de autorizar. Guarde a memória do projeto. Depois, repita o processo em outra tarefa.</p><div style="margin-top:24px;"><button class="btn btn-primary" id="copyPromptBottom" type="button">Copiar meu primeiro pedido</button></div></div>
+    </section>
+
+    <footer><strong>Eletromidia · Transformação digital</strong><span>Material de apoio da oficina com Gemini + Google Workspace · 12/08/2026</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog class="prompt-dialog" id="promptDialog" aria-labelledby="promptDialogTitle">
+    <form method="dialog">
+      <h3 id="promptDialogTitle">Seu prompt está aqui.</h3>
+      <p>A cópia automática não ficou disponível neste navegador. Selecione o texto ou use o botão abaixo.</p>
+      <textarea id="promptFallback" readonly aria-label="Prompt para copiar"></textarea>
+      <div class="hero-actions"><button class="btn" id="copyFallback" type="button">Tentar copiar</button><button class="btn btn-secondary" type="submit">Fechar</button></div>
+    </form>
+  </dialog>
+  <script>
+    const steps = [
+      { label: '01 / CONVERSA 1', title: 'Planifique antes de construir.', text: 'Anexe o xlsx ao Gem de Planificação. Esta conversa serve para entender a base: abas, colunas, fórmulas, relações e finalidade. Não peça o app ainda.', input: 'Uma planilha e uma pergunta: “para que esse dado serve?”', check: 'Se a descrição representa a planilha real. Se inventou algo, pare e corrija.' },
+      { label: '02 / CONVERSA 2', title: 'Leve o contexto para a solução.', text: 'Abra uma nova conversa, anexe a planificação gerada e descreva a ideia do produto. O segundo Gem pensa a solução, propõe a arquitetura e gera o Apps Script.', input: 'A planificação anexada + uma tarefa real + o resultado que você quer.', check: 'Se o produto resolve uma dor pequena e se as abas necessárias existem.' },
+       { label: '03 / MONTAR', title: 'Escolha onde o projeto vai viver.', text: 'Se a tarefa nasce em uma planilha ou documento, abra Extensões → Apps Script por ali. Se a solução juntar vários arquivos, crie um projeto independente em script.google.com. Depois cole os arquivos gerados.', input: 'Um projeto vinculado ou independente + Code.gs, index.html e PM.html.', check: 'Se o tipo de projeto combina com a tarefa e se os nomes dos arquivos usados pelo código existem.' },
+       { label: '04 / PREPARAR', title: 'Troque os marcadores e autorize com atenção.', text: 'Procure comentários como [AJUSTAR], substitua IDs, nomes de abas e emails. Para achar um ID, copie apenas o trecho entre /d/ e /edit ou depois de /folders/. Execute uma função e leia a tela de permissões antes de aceitar.', input: 'IDs dos Docs, planilhas e pastas, nomes reais das abas e conta correta.', check: 'Se cada ID aponta para o arquivo certo e se o código vai acessar somente os dados e serviços que você espera.' },
+      { label: '05 / USAR', title: 'Execute do jeito que fizer sentido.', text: 'O onOpen() pode criar um menu personalizado, mas é apenas uma opção. O projeto também pode reagir a edições, horários, formulários, URLs e outros eventos.', input: 'O gatilho escolhido para o seu processo.', check: 'Se o evento certo dispara a ação e se o resultado faz sentido com poucos registros.' }
+    ];
+    const tabButtons = document.querySelectorAll('.step-tab');
+    const setStep = (index) => {
+      const step = steps[index];
+      tabButtons.forEach((tab, i) => { tab.classList.toggle('active', i === index); tab.setAttribute('aria-selected', i === index ? 'true' : 'false'); tab.tabIndex = i === index ? 0 : -1; });
+      document.getElementById('stepDetail').setAttribute('aria-labelledby', `step-tab-${index}`);
+      document.getElementById('detailLabel').textContent = step.label;
+      document.getElementById('detailTitle').textContent = step.title;
+      document.getElementById('detailText').textContent = step.text;
+      document.getElementById('detailInput').textContent = step.input;
+      document.getElementById('detailCheck').textContent = step.check;
+    };
+    tabButtons.forEach((tab) => {
+      tab.addEventListener('click', () => setStep(Number(tab.dataset.step)));
+      tab.addEventListener('keydown', (event) => {
+        const current = Number(tab.dataset.step);
+        let next = current;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (current + 1) % tabButtons.length;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (current - 1 + tabButtons.length) % tabButtons.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = tabButtons.length - 1;
+        if (next !== current) { event.preventDefault(); setStep(next); tabButtons[next].focus(); }
+      });
+    });
+
+    const toast = document.getElementById('toast');
+    const showToast = (message) => { toast.textContent = message; toast.classList.add('show'); window.clearTimeout(window.toastTimer); window.toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2600); };
+    const prompts = {
+      plan: 'Analise a planilha anexada por completo e gere uma planificação em pt-BR. Descreva o propósito, todas as abas, colunas, tipos de dados, fórmulas, relações, regras de negócio, valor e riscos. Esta conversa serve somente para entender e documentar a planilha. Não proponha um app nem escreva Apps Script. Não invente dados; marque o que não estiver informado.',
+      product: 'Estou começando uma nova conversa. A planificação da minha planilha está anexada. Quero transformar este processo em uma solução dentro do Google Workspace. Minha ideia é: [descreva aqui a tarefa e o resultado desejado]. Use a planificação como contexto, proponha a solução mais simples e explique o produto antes do código. Depois gere o Apps Script de forma copiável, com Code.gs, index.html e PM.html quando fizer sentido. Mostre os gatilhos possíveis, marque tudo que eu preciso ajustar e não avance sem minha revisão. Responda em pt-BR.'
+    };
+    const promptDialog = document.getElementById('promptDialog');
+    const promptFallback = document.getElementById('promptFallback');
+    let pendingPrompt = '';
+    const openPromptDialog = (text) => { pendingPrompt = text; promptFallback.value = text; promptDialog.showModal(); promptFallback.focus(); promptFallback.select(); };
+    const copyText = async (text, message) => {
+      try { await navigator.clipboard.writeText(text); showToast(message); }
+      catch { openPromptDialog(text); }
+    };
+    document.getElementById('copyPlanPrompt').addEventListener('click', () => copyText(prompts.plan, 'Prompt da Conversa 1 copiado. Anexe a planilha ao Gem 1.'));
+    document.getElementById('copyProductPrompt').addEventListener('click', () => copyText(prompts.product, 'Prompt da Conversa 2 copiado. Abra uma nova conversa e anexe a planificação.'));
+    document.getElementById('copyPromptBottom').addEventListener('click', () => copyText(prompts.product, 'Prompt da Conversa 2 copiado.'));
+
+    const themeButton = document.getElementById('themeToggle');
+    const syncThemeButton = () => { const isDark = document.documentElement.dataset.theme === 'dark'; themeButton.textContent = isDark ? '☀' : '☼'; themeButton.setAttribute('aria-label', isDark ? 'Usar tema claro' : 'Usar tema escuro'); };
+    syncThemeButton();
+    themeButton.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = next; try { localStorage.setItem('em-theme', next); } catch (error) {} syncThemeButton(); });
+    window.addEventListener('scroll', () => { const max = document.documentElement.scrollHeight - window.innerHeight; document.getElementById('progress').style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`; }, { passive: true });
+  </script>
+</body>
+</html>
