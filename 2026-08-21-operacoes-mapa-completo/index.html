@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operações | O mapa completo</title>
+<script>
+  (function() {
+    var saved = localStorage.getItem('em-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+  })();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #FF4F00;
+  --purple: #4E18FF;
+  --yellow: #FECC14;
+  --pink: #F577ED;
+  --green: #3D7700;
+  --black: #000000;
+  --white: #FFFFFF;
+  --red: #DC2626;
+  --blue: #2563EB;
+  --bg: #FAFAFA;
+  --surface: #FAFAFA;
+  --muted: #F5F5F5;
+  --line: #E5E5E5;
+  --text: #737373;
+  --heading: #000000;
+  --card: #FFFFFF;
+  --code-bg: #FFFFFF;
+  --hero-text: #E8E8E8;
+  --radius: 18px;
+  --max: 1180px;
+}
+[data-theme="dark"] {
+  --bg: #0B0B0B;
+  --surface: #0B0B0B;
+  --muted: #161616;
+  --line: #262626;
+  --text: #A3A3A3;
+  --heading: #FAFAFA;
+  --card: #141414;
+  --code-bg: #141414;
+  --hero-text: #C7C7C7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; background: var(--bg); color: var(--text); font-family: "Rethink Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; transition: background .25s ease, color .25s ease; }
+a { color: inherit; }
+ul, ol { padding-left: 20px; }
+li { margin-bottom: 7px; }
+::selection { background: var(--orange); color: var(--white); }
+::-moz-selection { background: var(--orange); color: var(--white); }
+
+h1 { font-size: clamp(42px, 7.5vw, 90px); line-height: .92; letter-spacing: 0; font-weight: 800; max-width: 980px; color: var(--white); }
+h2 { font-size: clamp(28px, 3.6vw, 46px); line-height: 1.04; font-weight: 800; max-width: 820px; color: var(--heading); }
+h3 { font-size: 21px; line-height: 1.12; font-weight: 800; color: var(--heading); }
+p { font-size: 16px; line-height: 1.45; color: var(--text); }
+code { padding: 2px 6px; border-radius: 5px; background: var(--muted); color: var(--purple); font-family: Consolas, "Cascadia Mono", monospace; font-size: .86em; }
+
+.scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--orange); z-index: 50; width: 0; transition: width .1s linear; }
+
+.topbar { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 24px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.topbar strong { font-size: 14px; font-weight: 800; color: var(--heading); }
+.theme-toggle { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--heading); background: transparent; color: var(--heading); font-family: inherit; font-weight: 800; font-size: 13px; cursor: pointer; transition: all .15s; }
+.theme-toggle:hover { background: var(--orange); border-color: var(--orange); color: var(--white); }
+
+.layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); max-width: 1400px; margin: 0 auto; padding: 0 24px; gap: 32px; }
+.toc { position: sticky; top: 70px; align-self: start; padding: 18px 0; border-left: 1px solid var(--line); padding-left: 14px; max-height: calc(100vh - 90px); overflow-y: auto; font-size: 13px; }
+.toc-label { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--text); font-weight: 800; margin-bottom: 14px; }
+.toc ol { list-style: none; padding: 0; margin: 0; counter-reset: toc; }
+.toc li { margin: 0; counter-increment: toc; }
+.toc a { display: flex; gap: 8px; padding: 6px 8px; border-radius: 8px; text-decoration: none; color: var(--text); font-weight: 700; font-size: 13px; line-height: 1.2; transition: background .15s, color .15s; }
+.toc a::before { content: counter(toc, decimal-leading-zero); color: var(--text); font-variant-numeric: tabular-nums; opacity: .6; }
+.toc a:hover { background: var(--muted); color: var(--heading); }
+.toc a.active { background: var(--orange); color: var(--white); }
+.toc a.active::before { color: var(--white); opacity: 1; }
+
+main { padding: 18px 0 60px; min-width: 0; }
+section { margin-top: 22px; scroll-margin-top: 70px; }
+section:first-of-type { margin-top: 0; }
+
+.hero { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-height: 420px; padding: clamp(24px, 4vw, 52px); border-radius: var(--radius); background: var(--black); }
+.hero::before, .hero::after { content: ""; position: absolute; z-index: -1; }
+.hero::before { width: 340px; height: 340px; right: -90px; top: -110px; border-radius: 34px; background: var(--purple); transform: rotate(24deg); }
+.hero::after { width: 220px; height: 220px; right: 130px; bottom: -100px; border: 34px solid rgba(255,79,0,.55); border-radius: 50%; }
+.eyebrow { display: inline-block; width: fit-content; padding: 7px 12px; border-radius: 999px; background: var(--yellow); color: var(--black); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 18px; }
+.hero .lead { max-width: 620px; font-size: clamp(16px, 1.6vw, 19px); color: var(--hero-text); margin-top: 16px; }
+.hero-bar { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.pill { display: inline-flex; align-items: center; min-height: 32px; padding: 7px 11px; border-radius: 999px; font-size: 13px; font-weight: 800; line-height: 1; white-space: normal; }
+.pill.orange { background: var(--orange); color: var(--white); }
+.pill.purple { background: var(--purple); color: var(--white); }
+.pill.yellow { background: var(--yellow); color: var(--black); }
+.pill.green { background: var(--green); color: var(--white); }
+.pill.pink { background: var(--pink); color: var(--black); }
+.pill.black { background: var(--black); color: var(--white); }
+[data-theme="dark"] .pill.black { background: var(--white); color: var(--black); }
+
+.tldr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 22px; }
+.tldr > div { background: var(--card); padding: 18px 20px; }
+.tldr strong { display: block; font-size: 22px; color: var(--heading); font-weight: 800; margin-bottom: 4px; line-height: 1; }
+.tldr span { font-size: 12px; color: var(--text); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.tldr p { font-size: 13px; color: var(--text); margin-top: 6px; margin-bottom: 0; }
+
+.head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 14px; }
+.head p { max-width: 440px; margin-bottom: 0; font-size: 16px; }
+.sec-num { display: block; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; color: var(--orange); margin-bottom: 8px; }
+
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px; }
+.span-3 { grid-column: span 3; } .span-4 { grid-column: span 4; } .span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; } .span-7 { grid-column: span 7; } .span-8 { grid-column: span 8; } .span-12 { grid-column: span 12; }
+
+.card { min-height: 100%; padding: clamp(18px, 2.4vw, 28px); border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); transition: transform .18s, box-shadow .18s; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+.card h3 { margin-bottom: 8px; }
+.card.black, .card.purple, .card.orange, .card.green { border-color: transparent; color: var(--white); }
+.card.black { background: var(--black); }
+.card.purple { background: var(--purple); }
+.card.orange { background: var(--orange); }
+.card.green { background: var(--green); }
+.card.yellow { background: var(--yellow); }
+.card.black p, .card.purple p, .card.orange p, .card.green p { color: #FFFFFF; }
+.card.yellow p { color: rgba(0,0,0,.72); }
+.card.black h3, .card.purple h3, .card.orange h3, .card.green h3 { color: var(--white); }
+.card.yellow h3 { color: var(--black); }
+.card ul { margin-top: 8px; }
+
+.metric-card { text-align: left; }
+.metric { margin-bottom: 6px; font-size: clamp(44px, 8vw, 86px); font-weight: 800; line-height: .86; color: var(--heading); }
+.metric-card h3 { font-size: 15px; margin-bottom: 4px; }
+.metric-card p { font-size: 13px; margin: 0; }
+
+.flow-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+.flow-lane { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+.flow-lane.removed { border-color: var(--red); }
+.flow-lane.added { border-color: var(--green); }
+.flow-lane.kept { border-color: var(--purple); }
+.flow-node { padding: 12px; border-radius: 12px; background: var(--muted); margin-top: 10px; }
+.flow-node strong { display: block; font-size: 14px; color: var(--heading); margin-bottom: 3px; }
+.flow-node p { font-size: 13px; margin: 0; }
+
+.syntax-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.syntax-box { padding: 14px; border-radius: 14px; background: var(--black); color: var(--white); overflow: hidden; }
+.syntax-box h3 { color: var(--yellow); font-size: 14px; margin-bottom: 8px; }
+.syntax-box code { display: block; white-space: pre-wrap; word-break: break-word; background: transparent; color: var(--yellow); padding: 0; font-size: 13px; line-height: 1.5; }
+
+.table-wrap { overflow-x: auto; margin-top: 12px; border-radius: 14px; border: 1px solid var(--line); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+th { background: var(--black); color: var(--white); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: none; }
+
+.badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; line-height: 1; }
+.badge.green { background: var(--green); color: var(--white); }
+.badge.orange { background: var(--orange); color: var(--white); }
+.badge.red { background: var(--red); color: var(--white); }
+.badge.purple { background: var(--purple); color: var(--white); }
+.badge.black { background: var(--black); color: var(--white); }
+.badge.yellow { background: var(--yellow); color: var(--black); }
+
+details { border: 1px solid var(--line); border-radius: 14px; background: var(--card); overflow: hidden; }
+details + details { margin-top: 8px; }
+summary { cursor: pointer; padding: 16px 18px; font-weight: 800; list-style: none; color: var(--heading); }
+summary::-webkit-details-marker { display: none; }
+details[open] summary { background: var(--yellow); color: var(--black); }
+.details-body { padding: 0 18px 18px; }
+
+.change-list { display: grid; gap: 8px; }
+.change-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); transition: transform .15s, box-shadow .15s; }
+.change-item:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,.05); }
+.change-item small { color: var(--text); font-weight: 700; }
+.change-item strong { color: var(--heading); }
+
+.callout { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: clamp(20px, 3vw, 32px); border-radius: var(--radius); background: var(--yellow); }
+.callout h3 { color: var(--black); margin-bottom: 6px; }
+.callout p { color: rgba(0,0,0,.78); max-width: 720px; }
+
+.path { display: grid; gap: 0; }
+.path-step { display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 18px 0; border-top: 1px solid var(--line); }
+.path-step:first-child { border-top: none; padding-top: 4px; }
+.path-num { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; font-weight: 800; font-size: 18px; background: var(--card); color: var(--heading); border: 1px solid var(--line); }
+.path-step.priority-p0 .path-num { background: var(--orange); color: var(--white); border-color: var(--orange); }
+.path-step.priority-p1 .path-num { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+.path-step.priority-p2 .path-num { background: var(--purple); color: var(--white); border-color: var(--purple); }
+.path-body h4 { font-size: 15px; line-height: 1.25; margin-bottom: 4px; color: var(--heading); }
+.path-body p { font-size: 14px; color: var(--text); margin: 0; }
+
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before { content: ""; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
+.tl-step { position: relative; margin-bottom: 18px; }
+.tl-dot { position: absolute; left: -28px; top: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); display: grid; place-items: center; font-size: 11px; font-weight: 800; color: var(--text); }
+.tl-step.done .tl-dot { background: var(--green); border-color: var(--green); color: var(--white); }
+.tl-step.now .tl-dot { background: var(--orange); border-color: var(--orange); color: var(--white); box-shadow: 0 0 0 4px rgba(255,79,0,.18); }
+.tl-step.next .tl-dot { background: var(--bg); border-color: var(--text); color: var(--text); }
+.tl-step .tl-title { font-weight: 800; color: var(--heading); font-size: 15px; line-height: 1.2; margin-bottom: 4px; }
+.tl-step .tl-meta { font-size: 12px; color: var(--text); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+.tl-step p { margin: 0; font-size: 14px; }
+
+footer { margin-top: 22px; padding: 20px 0 0; color: var(--text); font-size: 14px; border-top: 1px solid var(--line); }
+footer strong { color: var(--heading); }
+
+.reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+@media print {
+  .scroll-progress, .topbar, .toc { display: none; }
+  .layout { grid-template-columns: 1fr; }
+  body { background: #fff; color: #000; }
+}
+@media (max-width: 1100px) {
+  .layout { grid-template-columns: 1fr; padding: 0 20px; }
+  .toc { display: none; }
+}
+@media (max-width: 920px) {
+  .span-3, .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+  .head, .callout { display: grid; }
+  .syntax-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  main { width: min(100% - 20px, var(--max)); }
+  .layout { padding: 0 10px; }
+  .hero { border-radius: 14px; }
+  h1 { font-size: clamp(40px, 13vw, 56px); }
+  h2 { font-size: clamp(30px, 9.5vw, 40px); }
+  .tldr { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="topbar">
+  <strong>operacoes · mapa completo</strong>
+  <button class="theme-toggle" id="themeToggle">tema</button>
+</div>
+
+<div class="layout">
+<aside class="toc" aria-label="Sumário">
+  <div class="toc-label">Nesta página</div>
+  <ol>
+    <li><a href="#sistema">O que é esse sistema</a></li>
+    <li><a href="#numeros">Em números</a></li>
+    <li><a href="#camadas">Como o código se organiza</a></li>
+    <li><a href="#modulos">Os módulos</a></li>
+    <li><a href="#frontend">Frontend</a></li>
+    <li><a href="#dados">Dados e integrações</a></li>
+    <li><a href="#agentes">As regras dos agentes</a></li>
+    <li><a href="#saia">saIA: spec pronta, código pendente</a></li>
+    <li><a href="#armadilhas">Armadilhas</a></li>
+    <li><a href="#comecando">Primeiro dia</a></li>
+  </ol>
+</aside>
+
+<main>
+
+<section class="hero" id="top">
+  <div>
+    <span class="eyebrow">Eletromidia | Onboarding técnico</span>
+    <h1>O sistema que mantém a mídia de pé.</h1>
+    <p class="lead">Uma leitura completa do repositório <strong>operacoes</strong>: o que ele faz, como o código se organiza, quais regras os agentes seguem e onde o projeto está indo. Baseado no repo, não em memória.</p>
+  </div>
+  <div class="hero-bar">
+    <span class="pill orange">Laravel 8</span>
+    <span class="pill purple">PHP 7.4</span>
+    <span class="pill yellow">Vue 3 islands</span>
+    <span class="pill green">MySQL 8 + SQL Server</span>
+    <span class="pill pink">Laravel Sail</span>
+  </div>
+</section>
+
+<div class="tldr">
+  <div>
+    <span>O que é</span>
+    <strong>ERP operacional</strong>
+    <p>Chamados de manutenção de equipamentos OOH, rotas, frotas, qualidade e concorrência. Interno, crítico, em produção.</p>
+  </div>
+  <div>
+    <span>Estado</span>
+    <strong>main estável</strong>
+    <p>PPO e sync Google Sheets recém-mergidos. saIA existe como spec densa e PR #912 em draft. Zero código saIA no main.</p>
+  </div>
+  <div>
+    <span>Como rodar</span>
+    <strong>Docker only</strong>
+    <p>./setup.sh sobe tudo via Sail. Você não precisa de PHP, Composer nem MySQL na máquina.</p>
+  </div>
+</div>
+
+<section id="sistema">
+  <div class="head">
+    <h2><span class="sec-num">01 / Contexto</span>Um técnico, um lugar, um chamado.</h2>
+    <p>Entenda o domínio antes do código. Todo o resto do sistema orbita essa tríade.</p>
+  </div>
+  <div class="grid">
+    <article class="card black span-7">
+      <h3>O negócio em uma frase</h3>
+      <p>A Eletromidia instala e mantém equipamentos de mídia exterior (paineis, telas, relógios) em ruas, prédios e shoppings. Quando um equipamento quebra ou precisa de manutenção preventiva, abre-se um chamado. Um técnico vai até o place, executa a atividade, responde checklist, tira fotos de antes e depois. O Operações registra tudo isso, controla prazos, calcula produtividade e conversa com sistemas legados e APIs de prefeitura.</p>
+      <p style="margin-top:10px">O núcleo é o <strong>ticket</strong>. Models como Place, Establishment, ActivityType, Checklist e Route giram em volta dele. Se você entender o ciclo de vida do ticket, entendeu 80% do domínio.</p>
+    </article>
+    <article class="card span-5">
+      <h3>Quem usa</h3>
+      <ul class="checklist">
+        <li><strong>Técnicos em campo</strong>, via app mobile autenticado por API (Passport/Sanctum).</li>
+        <li><strong>Backoffice</strong>, via painel AdminLTE com Blade e Vue.</li>
+        <li><strong>Gestão</strong>, via dashboards, relatórios PDF/Excel e NPS.</li>
+        <li><strong>Sistemas externos</strong>, via rotas de API e jobs de sincronização.</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section id="numeros">
+  <div class="head">
+    <h2><span class="sec-num">02 / Dimensão</span>O tamanho do bicho.</h2>
+    <p>Números medidos no repositório hoje, branch main. Serve de expectativa realista antes de abrir a primeira pasta.</p>
+  </div>
+  <div class="grid">
+    <article class="card metric-card span-3"><div class="metric">126</div><h3>Models Eloquent</h3><p>O domínio inteiro mapeado.</p></article>
+    <article class="card metric-card span-3"><div class="metric">105</div><h3>Repositories</h3><p>Camada de acesso a dados consistente.</p></article>
+    <article class="card metric-card span-3"><div class="metric">134</div><h3>Controllers</h3><p>Cerca de 16,5 mil linhas no total.</p></article>
+    <article class="card metric-card span-3"><div class="metric">627</div><h3>Views Blade</h3><p>Mais 233 componentes Vue.</p></article>
+    <article class="card metric-card span-3"><div class="metric">438</div><h3>Migrations</h3><p>Onze anos de evolução de schema.</p></article>
+    <article class="card metric-card span-3"><div class="metric">548</div><h3>Rotas web</h3><p>Distribuídas em 11 arquivos de rota.</p></article>
+    <article class="card metric-card span-3"><div class="metric">30</div><h3>Arquivos de teste</h3><p>PHPUnit, concentrados nos módulos novos.</p></article>
+    <article class="card metric-card span-3"><div class="metric">10+</div><h3>Grupos de Commands</h3><p>Tickets, Ppo, Reports, GoogleSheets, Quality...</p></article>
+  </div>
+</section>
+
+<section id="camadas">
+  <div class="head">
+    <h2><span class="sec-num">03 / Arquitetura</span>Camada sobre camada, com exceções honestas.</h2>
+    <p>O padrão nominal é Controller → Service → Repository → Model. A prática é mais interessante.</p>
+  </div>
+  <div class="flow-board">
+    <article class="flow-lane kept">
+      <span class="pill purple">entrada</span>
+      <h3>Routes</h3>
+      <div class="flow-node"><strong>routes/web.php</strong><p>790 linhas, 548 rotas. O painel inteiro.</p></div>
+      <div class="flow-node"><strong>routes/{dominio}.php</strong><p>projects, fleet, posting, checking, competitor, legacy, 4yousee, api. Cada módulo com seu arquivo.</p></div>
+    </article>
+    <article class="flow-lane kept">
+      <span class="pill purple">orquestração</span>
+      <h3>Controllers</h3>
+      <div class="flow-node"><strong>app/Http/Controllers</strong><p>13 subpastas por domínio. TicketController (773 linhas) e TicketReportController (764) são os gigantes.</p></div>
+      <div class="flow-node"><strong>Requests</strong><p>Validação em FormRequest, ex.: TicketSuspendRequest com validação customizada de foto.</p></div>
+    </article>
+    <article class="flow-lane added">
+      <span class="pill green">regra de negócio</span>
+      <h3>Services</h3>
+      <div class="flow-node"><strong>Services/Ppo</strong><p>10 services: cálculo de recompensa, regras de almoço, períodos, participantes, reviews. O módulo mais bem estruturado do repo.</p></div>
+      <div class="flow-node"><strong>Services/GoogleSheets, Route, Api</strong><p>Datasets tipados para sync, snapshot de rotas, IVC e prefeitura de SP.</p></div>
+    </article>
+    <article class="flow-lane kept">
+      <span class="pill purple">dados</span>
+      <h3>Repositories e Models</h3>
+      <div class="flow-node"><strong>105 repositories</strong><p>Quase um por model. Padrão antigo e respeitado nas partes novas.</p></div>
+      <div class="flow-node"><strong>Observers e Jobs</strong><p>Loggable observer transversal, 10 jobs enfileirados via Horizon.</p></div>
+    </article>
+  </div>
+  <div class="grid" style="margin-top:12px">
+    <article class="card yellow span-12">
+      <h3>A verdade sobre os controllers gordos</h3>
+      <p>TicketController tem 773 linhas e DashboardController tem 705. Nem todo código segue o padrão de services, e tudo bem: é um sistema vivo com onze anos de história. A regra prática é simples. Código novo entra em Service. Refactor de código antigo só quando a tarefa pedir. Não abra uma guerra contra o legado num PR de feature.</p>
+    </article>
+  </div>
+</section>
+
+<section id="modulos">
+  <div class="head">
+    <h2><span class="sec-num">04 / Domínios</span>Os módulos e onde eles moram.</h2>
+    <p>Cada módulo tem rota própria, pasta de controller própria e, nos mais recentes, services dedicados.</p>
+  </div>
+  <div class="grid">
+    <article class="card black span-6">
+      <h3>Tickets <span class="badge yellow">core</span></h3>
+      <p>O coração. Abertura, atribuição, suspensão com foto e motivo, fechamento em lote via command (timer de 1800s), relatórios pesados. Fluxos de app mobile espelhados em testes N0 a N3, separando street/not-street e preventive/corrective.</p>
+    </article>
+    <article class="card purple span-6">
+      <h3>PPO <span class="badge green">recém-mergido</span></h3>
+      <p>Programa de pontos e recompensas para técnicos. O módulo mais moderno do repo: 10 services nomeados por responsabilidade, campos de status migrados para enums no último refactor, autorização coberta pelo PpoAuthorizationTest e justificativas de review estruturadas com colunas próprias no banco.</p>
+    </article>
+    <article class="card span-4">
+      <h3>Google Sheets sync</h3>
+      <p>Infraestrutura nova de sincronização automática: datasets tipados (Tickets, Technicians, Checklists, Places) com handlers e controle de estado por destino.</p>
+    </article>
+    <article class="card span-4">
+      <h3>Fleet, Checking, Quality</h3>
+      <p>Frota de veículos, conferência de equipamentos e qualidade de execução. Cada um com arquivo de rotas e pasta de controllers.</p>
+    </article>
+    <article class="card span-4">
+      <h3>Posting, Projects, Competitor</h3>
+      <p>Postagem de mídia, projetos de obra com inspeção e roteirização, monitoração de concorrentes. Projects é o segundo maior arquivo de rotas (302 linhas).</p>
+    </article>
+    <article class="card span-4">
+      <h3>Integrações externas</h3>
+      <p>IVC (dados de equipamentos), MunicipalSp (prefeitura de SP), 4yousee, SAML2 para SSO corporativo, Slack para notificações, web-push para alertas no navegador.</p>
+    </article>
+    <article class="card span-4">
+      <h3>Legacy <span class="badge red">só leitura</span></h3>
+      <p>routes/legacy.php expõe users, establishments e chamados do sistema antigo. O SQL Server entra aqui: conexão sqlsrv configurada apenas para consultas ao legado.</p>
+    </article>
+    <article class="card span-4">
+      <h3>Radar <span class="badge purple">congelado</span></h3>
+      <p>Tem controller, teste de boundary de escopo e um HTML solto na raiz. O contexto atual diz: não reviver. Está no backlog de infra, não no roadmap.</p>
+    </article>
+  </div>
+</section>
+
+<section id="frontend">
+  <div class="head">
+    <h2><span class="sec-num">05 / Frontend</span>Blade com ilhas de Vue 3, servidas pelo Mix.</h2>
+    <p>Não é SPA. Não é Vite. É Laravel clássico com Vue montado onde faz sentido.</p>
+  </div>
+  <div class="split" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+    <div class="compare card" style="border-color:var(--green)">
+      <span class="pill green">como funciona</span>
+      <h3 style="margin-top:10px">A stack real</h3>
+      <ul class="checklist">
+        <li><strong>Laravel Mix 6 sobre Webpack 5.</strong> Build via <code>npm run development</code> ou <code>production</code>. Node 16.13.</li>
+        <li><strong>Vue 3.2 + Vuex 4.</strong> 233 componentes em resources/js/components, stores em resources/js/store.</li>
+        <li><strong>Bootstrap 4 + AdminLTE 3.</strong> O layout do painel inteiro depende disso.</li>
+        <li><strong>Bibliotecas de campo:</strong> DataTables, Select2, Filepond, FullCalendar, Leaflet, Chart.js, Summernote.</li>
+      </ul>
+    </div>
+    <div class="compare card" style="border-color:var(--red)">
+      <span class="pill pink">o que esperar</span>
+      <h3 style="margin-top:10px">O convívio com o legado</h3>
+      <ul class="checklist">
+        <li><strong>jQuery ainda vive aqui.</strong> Vem junto com Bootstrap 4 e não vai embora tão cedo.</li>
+        <li><strong>moment.js</strong> em vez de dayjs. Já está no package.json, respeite.</li>
+        <li><strong>Vuex, não Pinia.</strong> Novo estado entra no store existente.</li>
+        <li><strong>Nunca rode watch/dev/production localmente.</strong> Regra do AGENTS.md. O build roda no pipeline.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="dados">
+  <div class="head">
+    <h2><span class="sec-num">06 / Dados</span>Dois bancos, um dump obrigatório.</h2>
+    <p>MySQL 8 é a verdade. SQL Server é o passado que ainda precisa ser consultado.</p>
+  </div>
+  <div class="grid">
+    <article class="card span-6">
+      <h3>MySQL 8 (primário)</h3>
+      <p>Toda escrita acontece aqui. 438 migrations contam a história. Para desenvolver de verdade você precisa restaurar um dump de produção localmente, o README avisa isso explicitamente. Sem dados reais, metade dos fluxos não se comporta como em produção.</p>
+    </article>
+    <article class="card span-6">
+      <h3>SQL Server (legado)</h3>
+      <p>Conexão <code>sqlsrv</code> em config/database.php, usada para ler dados do sistema anterior. Nunca escreva nela. Os controllers Legacy consomem essas tabelas.</p>
+    </article>
+    <article class="card span-12">
+      <h3>Autenticação e filas</h3>
+      <p>Três mecanismos convivem: Passport para os tokens do app mobile, Sanctum para sessões de API mais leves e Socialite SAML2 para o login corporativo. As filas rodam no Horizon, com jobs para fechamento em lote de tickets, sincronizações e notificações push.</p>
+    </article>
+  </div>
+</section>
+
+<section id="agentes">
+  <div class="head">
+    <h2><span class="sec-num">07 / Agent-driven</span>Este repo foi escrito para humanos e agentes.</h2>
+    <p>A especificação dirigida por agentes não é enfeite. Ela define como qualquer IA deve trabalhar neste código.</p>
+  </div>
+  <div class="grid">
+    <article class="card black span-6">
+      <h3>AGENTS.md: o contrato operacional</h3>
+      <p>Define o papel (senior dev focado em manutenção segura), a compatibilidade (PHP 7.4, nada de sintaxe do 8), performance (evitar N+1, chunk em volumes grandes), o fluxo WSL (editar no Linux real, nunca via PowerShell) e a economia de tokens (comandos curtos, buscas com rg, não reabrir arquivos lidos).</p>
+    </article>
+    <article class="card purple span-6">
+      <h3>CLAUDE.md: as verdades do repo</h3>
+      <p>A regra número um é forte: <strong>evidência atual do repo vence Obsidian, comentários de PR, planos antigos e memória</strong>. Notas históricas são pistas, não autoridade. Antes de mudar comportamento, leia os arquivos que hoje o implementam. Também fixa: npm com lockfile, não Bun. PHPUnit, não Pest. Comandos sempre via ./sail.</p>
+    </article>
+    <article class="card span-4">
+      <h3>docs/wayfinder</h3>
+      <p>Mapas de investigação em markdown. O mapa do saIA lista decisões tomadas (analysis grain = 1 ticket, persistência dedicada fora de tickets, cron com janela rolante) e perguntas abertas com tradeoffs explícitos.</p>
+    </article>
+    <article class="card span-4">
+      <h3>graphify-out</h3>
+      <p>Grafos de conhecimento do codebase gerados por data, com GRAPH_REPORT.md. Útil para entender dependências sem ler arquivo por arquivo.</p>
+    </article>
+    <article class="card span-4">
+      <h3>docs/agents/skills</h3>
+      <p>Habilidades específicas do repo, como operacoes-continuous-development, que força verificação no código atual antes de confiar em notas históricas.</p>
+    </article>
+  </div>
+</section>
+
+<section id="saia">
+  <div class="head">
+    <h2><span class="sec-num">08 / saIA</span>A spec está pronta. O código ainda não chegou.</h2>
+    <p>O próximo capítulo do Operações é um harness de análise visual com IA. E ele tem um dos contratos técnicos mais bem escritos que este repo já produziu.</p>
+  </div>
+  <div class="grid">
+    <article class="card span-7">
+      <h3>O que a spec garante</h3>
+      <ul class="checklist">
+        <li><strong>Seleção determinística.</strong> Command horário pega tickets concluídos entre 4h e 5h atrás, janela semiaberta (<code>&gt;=</code> e <code>&lt;</code>) para nunca processar duas vezes.</li>
+        <li><strong>Idempotência por design.</strong> <code>UNIQUE(ticket_id)</code> em ticket_analyses. Qualquer análise existente exclui o ticket do cron. Sem flag de force.</li>
+        <li><strong>Reserva transacional.</strong> Lock, seleção, criação da run, reserva das linhas e commit antes de despachar qualquer job.</li>
+        <li><strong>Claim atômico no job.</strong> analysis_id + expected_run_id precisam bater e o estado precisa ser queued. Entrega duplicada retorna sem efeito.</li>
+        <li><strong>Estados explícitos.</strong> queued → processing → completed_dry_run / completed_live / skipped_no_evidence_pair / failed / dispatch_failed. Uma tentativa automática, depois só retry manual via <code>saia:retry-maintenance-analysis</code>.</li>
+        <li><strong>Read-only no MVP.</strong> A IA reconstrói evidências (fotos antes/depois/checklists) e apoia a decisão humana. Ela não aprova, rejeita nem encerra chamado.</li>
+      </ul>
+    </article>
+    <article class="card orange span-5">
+      <h3>Onde está hoje</h3>
+      <p><strong>PR #912, draft.</strong> Verifiquei direto no repositório: nenhum arquivo saIA, TicketAnalysis ou migration ticket_analyses existe no main. O que existe é a spec em docs/saia/maintenance-analysis-overview.md, validada localmente segundo o próprio documento, esperando revisão de contract e isolamento do banco de testes.</p>
+      <p style="margin-top:10px">Se alguém te disser que a saIA "já roda", desconfie. Ela roda na cabeça da spec e numa PR fechada. O caminho aberto é: revisar accounting e testes, suíte verde, merge da fundação, e só então prompt builder e live Gemini.</p>
+    </article>
+  </div>
+</section>
+
+<section id="armadilhas">
+  <div class="head">
+    <h2><span class="sec-num">09 / Armadilhas</span>O que derruba quem chega agora.</h2>
+    <p>Cada item abaixo já custou tempo de alguém. Leia antes do primeiro commit.</p>
+  </div>
+  <div class="change-list">
+    <div class="change-item"><div><strong>PHP 7.4, sem discussão.</strong><br><small>Sem enums nativos, sem match, sem constructor property promotion, sem readonly. O composer.json trava platform em 7.4.3. Sintaxe do PHP 8 quebra o build.</small></div><span class="pill orange">compatibilidade</span></div>
+    <div class="change-item"><div><strong>npm, não Bun. Node 16.13.</strong><br><small>O ecossistema global do Israel é Bun, mas este repo usa npm com package-lock.json. Respeite o lockfile.</small></div><span class="pill purple">tooling</span></div>
+    <div class="change-item"><div><strong>Tudo via ./sail.</strong><br><small>Sem php artisan serve. Sem php local. Artisan, composer, npm e phpunit passam pelo wrapper do Sail.</small></div><span class="pill black">runtime</span></div>
+    <div class="change-item"><div><strong>Cobertura de testes desigual.</strong><br><small>30 arquivos cobrem bem API mobile, PPO e Radar. O painel Blade, com 627 views, quase não tem teste. Mudança em tela admin = teste manual.</small></div><span class="pill pink">atenção</span></div>
+    <div class="change-item"><div><strong>Migrations e índices exigem aprovação.</strong><br><small>Regra do CLAUDE.md: nada de dep nova, índice ou migration sem aprovação explícita. 438 migrations já bastam.</small></div><span class="badge red">gate</span></div>
+    <div class="change-item"><div><strong>WSL é o ambiente real.</strong><br><small>O projeto pode abrir por caminho UNC no Windows, mas execução é no Linux. Edite no WSL, valide com git diff no fim.</small></div><span class="pill green">ambiente</span></div>
+  </div>
+</section>
+
+<section id="comecando">
+  <div class="head">
+    <h2><span class="sec-num">10 / Começando</span>Seu primeiro dia, em cinco passos.</h2>
+    <p>Do clone ao primeiro diff válido. Nada aqui é opcional.</p>
+  </div>
+  <div class="path">
+    <div class="path-step priority-p0">
+      <div class="path-num">1</div>
+      <div class="path-body">
+        <h4>Suba o ambiente</h4>
+        <p>Clone, rode <code>./setup.sh</code> com Docker ativo. Ele cria .env, instala deps, gera APP_KEY, sobe os containers e roda migrations. Depois <code>./sail up -d</code> no dia a dia.</p>
+      </div>
+    </div>
+    <div class="path-step priority-p0">
+      <div class="path-num">2</div>
+      <div class="path-body">
+        <h4>Restaure o dump de produção</h4>
+        <p>Sem dados reais no MySQL do Sail, os fluxos de ticket não se comportam como em produção. O README deixa isso explícito.</p>
+      </div>
+    </div>
+    <div class="path-step priority-p1">
+      <div class="path-num">3</div>
+      <div class="path-body">
+        <h4>Leia os dois contratos</h4>
+        <p>AGENTS.md e CLAUDE.md na raiz. São curtos e salvam horas. Depois leia docs/saia/maintenance-analysis-overview.md para entender para onde o projeto vai.</p>
+      </div>
+    </div>
+    <div class="path-step priority-p1">
+      <div class="path-num">4</div>
+      <div class="path-body">
+        <h4>Conheça os atalhos</h4>
+        <p><code>make help</code> lista tudo: start, stop, migrate, test-db, seed com CLASS=Nome, optimize. O Makefile é o manual de bolso do repo.</p>
+      </div>
+    </div>
+    <div class="path-step priority-p2">
+      <div class="path-num">5</div>
+      <div class="path-body">
+        <h4>Valide antes de dizer pronto</h4>
+        <p><code>git diff</code> no fim, <code>php -l</code> nos arquivos tocados, e os testes do módulo via <code>./sail php vendor/bin/phpunit</code>. Esse é o fluxo preferido documentado no AGENTS.md.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="callout">
+  <div>
+    <h3>Por onde entrar no código</h3>
+    <p>Comece pelo ciclo do ticket: routes/web.php → TicketController → TicketRepository → Ticket model. Depois suba um nível e leia Services/Ppo, que mostra o padrão que o código novo deve seguir. Deixe o Legacy e o Radar quietos. E acompanhe a PR #912: quando ela mergear, o main ganha o capítulo mais interessante dos próximos meses.</p>
+  </div>
+  <span class="pill black">posição</span>
+</div>
+
+<footer>
+  <strong>Operações | Mapa completo do repositório</strong>
+  <p>Fontes: composer.json, package.json, config/database.php, rotas, contagem de classes via find/wc, AGENTS.md, CLAUDE.md, README.md, Makefile, docs/saia, docs/wayfinder, gh pr list. Levantamento em 21/08/2026, branch main @ f846996b8.</p>
+</footer>
+
+</main>
+</div>
+
+<script>
+var bar = document.getElementById('scrollProgress');
+function updateBar() {
+  var doc = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (doc > 0 ? Math.min(100, (window.scrollY / doc) * 100) : 0) + '%';
+}
+window.addEventListener('scroll', updateBar, { passive: true });
+updateBar();
+
+document.getElementById('themeToggle').addEventListener('click', function() {
+  var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('em-theme', next);
+});
+
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+
+var tocLinks = document.querySelectorAll('.toc a');
+var sections = document.querySelectorAll('main section[id]');
+function updateToc() {
+  var fromTop = window.scrollY + 120;
+  var current = sections[0] ? sections[0].id : '';
+  sections.forEach(function(s) { if (s.offsetTop <= fromTop) current = s.id; });
+  tocLinks.forEach(function(a) { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', updateToc, { passive: true });
+updateToc();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "title": "Operações | O mapa completo",
+  "date": "2026-08-21",
+  "description": "Onboarding técnico do repositório operacoes: domínio de negócio, arquitetura em camadas, módulos, stack frontend, dados e integrações, especificações agent-driven (AGENTS.md, CLAUDE.md, docs/saia) e o estado real da saIA. Baseado em evidência do repo, branch main.",
+  "tags": ["operacoes", "laravel", "onboarding", "arquitetura", "saia"],
+  "sections": [
+    "O que é esse sistema",
+    "Em números",
+    "Como o código se organiza",
+    "Os módulos",
+    "Frontend",
+    "Dados e integrações",
+    "As regras dos agentes",
+    "saIA: spec pronta, código pendente",
+    "Armadilhas",
+    "Primeiro dia"
+  ]
+}
