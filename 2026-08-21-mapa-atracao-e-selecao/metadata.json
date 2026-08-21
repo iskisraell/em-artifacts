@@ -1,0 +1,7 @@
+{
+  "title": "Mapa do Atração & Seleção: um ATS próprio com dois cérebros de IA.",
+  "date": "2026-08-21",
+  "description": "Visão completa do repositório atracao-e-selecao: domínio de recrutamento, arquitetura Laravel 12 + Inertia, os dois módulos de IA (Análise IA e Triage Telegram), segurança, infra Cloud Run, skills de agente e testes. Feito pra quem vai começar a trabalhar no projeto.",
+  "tags": ["atracao-e-selecao", "laravel", "inertia", "vue3", "ia", "triagem", "arquitetura", "onboarding"],
+  "sections": ["TL;DR", "Domínio", "Arquitetura", "Os dois cérebros de IA", "Máquina de conversa", "Segurança", "Infraestrutura", "Agentes no comando", "Testes", "Comece aqui", "Bloqueios de produção"]
+}
