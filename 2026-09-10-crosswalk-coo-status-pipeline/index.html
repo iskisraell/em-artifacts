@@ -359,12 +359,12 @@
         <div class="grid">
           <div class="span-8 table-wrap">
             <table>
-              <thead><tr><th>Praça</th><th>Cidade exibida</th><th>Preset / domínio</th><th>Estado</th></tr></thead>
+              <thead><tr><th>Praça</th><th>Cidade exibida</th><th>Preset / domínio</th><th>Regra</th></tr></thead>
               <tbody>
-                <tr><td>SP</td><td><strong>São Paulo e outros municípios</strong><span>Osasco, Barueri, Guarulhos e mais</span></td><td><strong>Ruas / Pedro Paulo</strong><span>Manutenção / Chico é outra leitura</span></td><td><span class="pill yellow">validar lista</span></td></tr>
-                <tr><td>RJ</td><td><strong>Rio de Janeiro e outros municípios</strong><span>A sigla não autoriza um único município</span></td><td><strong>Ruas / pendente</strong><span>Owner ainda não alinhado</span></td><td><span class="pill pink">pendente</span></td></tr>
-                <tr><td>CP</td><td><strong>Campinas e outros municípios</strong><span>Rio Claro, Sumaré e mais</span></td><td><strong>Não inferir</strong><span>Aplicar depois da validação do preset</span></td><td><span class="pill pink">pendente</span></td></tr>
-                <tr><td>demais</td><td><strong>Cidade da fonte física</strong><span>Manter “não mapeado” quando faltar evidência</span></td><td><strong>Definir por domínio</strong><span>Regional / gestor / carteira</span></td><td><span class="pill orange">revisar</span></td></tr>
+                <tr><td>SP</td><td><strong>São Paulo e outros municípios</strong><span>Osasco, Barueri, Guarulhos e mais</span></td><td><strong>Ruas / Pedro Paulo</strong><span>Manutenção / Chico é outra leitura</span></td><td><span class="pill green">aprovado</span></td></tr>
+                <tr><td>RJ</td><td><strong>Rio de Janeiro e outros municípios</strong><span>A sigla não autoriza um único município</span></td><td><strong>Ruas / Pedro Paulo</strong><span>Manutenção / Chico é outra leitura</span></td><td><span class="pill green">aprovado</span></td></tr>
+                <tr><td>CP</td><td><strong>Campinas e outros municípios</strong><span>Rio Claro, Sumaré e mais</span></td><td><strong>Ruas / Lucas</strong><span>Manutenção / Demais Praças é outra leitura</span></td><td><span class="pill green">aprovado</span></td></tr>
+                <tr><td>demais</td><td><strong>Cidade da fonte física</strong><span>Manter “não mapeado” quando faltar evidência</span></td><td><strong>Demais Praças</strong><span>Residual por domínio, sem atribuição silenciosa</span></td><td><span class="pill orange">residual</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -376,7 +376,7 @@
             <div class="field"><code>versão + vigência</code><p>Permite explicar quando a regra mudou.</p></div>
           </article>
         </div>
-        <div class="warning"><strong>Regra de segurança do crosswalk.</strong><p>Se cidade, UF e praça divergirem, o painel mostra a exceção. Não corrige silenciosamente e não transforma sigla em município.</p></div>
+        <div class="warning"><strong>Regra confirmada e segura.</strong><p>Ruas: SP + RJ → Pedro Paulo; RS, PR, CS, SO, CP, MG, BA, PE e MT → Lucas. Manutenção: SP, RJ, DF, MG, PE, PR, RS e SC → Chico. O restante vira Demais Praças. Se cidade, UF e praça divergirem, o painel mostra a exceção e não transforma sigla em município.</p></div>
       </section>
 
       <section id="fluxo">
@@ -427,14 +427,14 @@
         <div class="head"><div><span class="num">05 / fechamento</span><h2>Quatro decisões destravam o próximo slice.</h2></div><p>O desenho está encaminhado. Falta transformar as regras de negócio em contratos publicados.</p></div>
         <div class="card decision-list">
           <div class="decision"><div class="decision-num">1</div><div><h4>Confirmar encerramento amplo.</h4><p>Manter o automático no fechamento operacional e decidir sua participação no SLA médio.</p></div><span class="decision-state ready">código sustenta</span></div>
-          <div class="decision"><div class="decision-num">2</div><div><h4>Validar o crosswalk por domínio.</h4><p>Fechar Ruas/RJ, regionais e os agrupamentos restantes. Manutenção/Chico e Ruas/SP/Pedro Paulo já estão delimitados.</p></div><span class="decision-state pending">alinhamento</span></div>
+          <div class="decision"><div class="decision-num">2</div><div><h4>Aplicar o crosswalk por domínio.</h4><p>Ruas/SP + RJ é Pedro Paulo; Regionais é Lucas; Manutenção/Foco é Chico. O restante aparece como Demais Praças.</p></div><span class="decision-state ready">regra confirmada</span></div>
           <div class="decision"><div class="decision-num">3</div><div><h4>Escolher a fonte de verdade.</h4><p>Publicar tabela versionada com cidade, UF, praça, domínio, preset, vigência e exceções.</p></div><span class="decision-state pending">alinhamento</span></div>
           <div class="decision"><div class="decision-num">4</div><div><h4>Definir o recorte abaixo da cidade.</h4><p>Ambiente é o próximo nível disponível. Equipe e liderança só entram quando houver cobertura confiável.</p></div><span class="decision-state pending">dados</span></div>
         </div>
       </section>
 
       <section class="callout" id="posicao">
-        <div><h2>A próxima entrega não é outro gráfico.</h2><p>É o contrato de status, o crosswalk auditável e o Pareto que leva do Brasil à exceção certa sem perder o contexto.</p></div>
+        <div><h2>A próxima entrega não é outro gráfico.</h2><p>É ligar o crosswalk auditável ao Pareto cidade → ambiente e levar do Brasil à exceção certa sem perder o contexto.</p></div>
         <button class="copy-button" id="copyButton">Copiar próximo slice</button>
       </section>
 
@@ -456,7 +456,7 @@
         ['Ler a fonte física', 'Entrada: ponto_id, praça, cidade e UF.', 'Saída: registro bruto preservado para auditoria.'],
         ['Normalizar sem apagar a origem', 'Entrada: caixa, acentos, codificação e vazios.', 'Saída: cidade legível + valor bruto mantido.'],
         ['Reconciliar as duas camadas', 'Entrada: cidade física contra praça operacional.', 'Saída: correspondência, divergência ou não mapeado.'],
-        ['Aplicar preset por domínio', 'Entrada: domínio, praça e regra de gestão.', 'Saída: Chico, Pedro Paulo, Lucas ou pendência explícita.'],
+        ['Aplicar preset por domínio', 'Entrada: domínio, praça e regra de gestão.', 'Saída: Chico, Pedro Paulo, Lucas ou Demais Praças.'],
         ['Revisar as exceções', 'Entrada: cidade vazia, ambígua ou fora do estado esperado.', 'Saída: fila de validação com motivo e responsável.'],
         ['Publicar uma versão', 'Entrada: crosswalk aprovado, versão e vigência.', 'Saída: dashboard usa cidade exibida e mantém auditoria.']
       ];
@@ -478,7 +478,7 @@
 
       var paretoData = [
         ['43,5%', 'SP concentra o primeiro foco.', 'Descer para cidade física e depois ambiente. Não usar a praça como se fosse um município.'],
-        ['16,1%', 'RJ é o segundo recorte.', 'Resolver o crosswalk de Ruas/RJ antes de atribuir gestão por cidade.'],
+        ['16,1%', 'RJ é o segundo recorte.', 'Ruas/RJ já pertence a Pedro Paulo; o próximo clique deve abrir a cidade física.'],
         ['6,0%', 'CE aparece no terceiro bloco.', 'Comparar taxa e pendência contra a base justa antes de priorizar volume.'],
         ['5,8%', 'DF forma um recorte relevante.', 'Abrir ambiente no clique e procurar o gap, não apenas os chamados totais.'],
         ['5,5%', 'MG completa o top 5.', 'Manter a mesma janela, denominador e regra de status para comparar.'],
