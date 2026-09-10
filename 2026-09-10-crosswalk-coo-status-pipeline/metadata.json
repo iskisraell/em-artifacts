@@ -1,0 +1,7 @@
+{
+  "title": "O painel começa pela decisão",
+  "date": "2026-09-10",
+  "description": "Contrato para tratar concluído pelo sistema, crosswalk praça-cidade por domínio e pipeline do Pareto acionável do Dashboard COO.",
+  "tags": ["Dashboard COO", "BigQuery", "crosswalk", "Pareto", "Operações", "Manutenção", "Ruas"],
+  "sections": ["Contrato de status", "Crosswalk praça-cidade", "Pipeline de validação", "Pareto executivo", "Decisões do próximo slice"]
+}
