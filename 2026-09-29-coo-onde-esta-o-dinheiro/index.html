@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eletromidia | COO: onde o dinheiro está indo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>
+  (function () {
+    var saved = localStorage.getItem('em-theme');
+    var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+  })();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#FF4F00;--purple:#4E18FF;--yellow:#FECC14;--pink:#F577ED;--green:#3D7700;--red:#DC2626;--blue:#2563EB;
+  --black:#000;--white:#fff;
+  --bg:#FAFAFA;--muted:#F5F5F5;--line:#E5E5E5;--text:#737373;--heading:#000;--card:#fff;
+  --good:#3D7700;--bad:#DC2626;--warn:#B98900;
+  --radius:18px;--max:1180px;
+}
+[data-theme="dark"]{
+  --bg:#0B0B0B;--muted:#161616;--line:#262626;--text:#A3A3A3;--heading:#FAFAFA;--card:#141414;
+  --good:#7BC62D;--bad:#FF6B6B;--warn:#FECC14;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Rethink Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background .25s,color .25s}
+::selection{background:var(--orange);color:#fff}
+button{font:inherit;color:inherit;cursor:pointer}
+h1{font-size:clamp(40px,7vw,84px);line-height:.94;font-weight:800;color:#fff;max-width:900px}
+h2{font-size:clamp(26px,3.4vw,42px);line-height:1.05;font-weight:800;color:var(--heading)}
+h3{font-size:19px;line-height:1.15;font-weight:800;color:var(--heading)}
+p{font-size:16px;line-height:1.4}
+.wrap{width:min(var(--max),calc(100% - 32px));margin:0 auto}
+
+/* barra */
+.bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:12px;padding:10px 0}
+.brand{font-weight:800;color:var(--heading);letter-spacing:.2px;white-space:nowrap}
+.brand b{color:var(--orange)}
+.tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--heading);border-radius:999px;padding:8px 15px;font-weight:700;font-size:14px;white-space:nowrap;transition:all .15s}
+.tab:hover{border-color:var(--heading)}
+.tab[aria-selected=true]{background:var(--heading);color:var(--bg);border-color:var(--heading)}
+.tab .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:6px;vertical-align:1px}
+.theme{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--heading);display:grid;place-items:center;flex:none}
+.theme svg{width:18px;height:18px}
+[data-theme=dark] .i-moon{display:none}
+[data-theme=light] .i-sun{display:none}
+
+/* hero */
+.hero{margin-top:16px;background:#000;border-radius:var(--radius);padding:clamp(24px,4vw,52px);position:relative;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;z-index:-1;right:-90px;top:-90px;width:320px;height:320px;border:34px solid rgba(255,79,0,.9);border-radius:50%}
+.hero::after{content:"";position:absolute;z-index:-1;right:130px;bottom:-70px;width:200px;height:200px;background:var(--purple);border-radius:34px;transform:rotate(18deg)}
+.hero .sub{color:#cfcfcf;margin:14px 0 26px;font-size:18px;max-width:560px}
+.kpis{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpi{background:#151515;border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:14px 16px;color:#fff}
+.kpi b{display:block;font-size:clamp(26px,3.2vw,40px);line-height:1;font-weight:800}
+.kpi span{font-size:13px;color:#cfcfcf}
+.kpi.hot b{color:var(--yellow)}
+
+/* painel */
+.panel{display:none;padding:22px 0 60px}
+.panel.on{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.head p{max-width:420px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}
+.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(16px,2.2vw,26px);transition:transform .15s,box-shadow .15s,border-color .15s}
+.card.link{cursor:pointer}
+.card.link:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.06);border-color:var(--heading)}
+.card.orange{background:var(--orange);border-color:var(--orange)}.card.purple{background:var(--purple);border-color:var(--purple)}.card.black{background:#000;border-color:#000}.card.yellow{background:var(--yellow);border-color:var(--yellow)}
+.card.orange,.card.purple,.card.black{color:#fff}.card.orange h3,.card.purple h3,.card.black h3,.card.orange .big,.card.purple .big,.card.black .big{color:#fff}
+.card.orange p,.card.purple p,.card.black p{color:rgba(255,255,255,.85)}
+.card.yellow,.card.yellow h3,.card.yellow .big,.card.yellow p{color:#000}
+.big{font-size:clamp(38px,5vw,64px);font-weight:800;line-height:.95;color:var(--heading);letter-spacing:-.5px}
+.tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:var(--muted);color:var(--heading);margin-bottom:10px}
+.card.orange .tag,.card.purple .tag,.card.black .tag{background:rgba(255,255,255,.18);color:#fff}
+.card.yellow .tag{background:rgba(0,0,0,.12);color:#000}
+.mt{margin-top:12px}
+.go{display:inline-block;margin-top:10px;font-weight:800;font-size:13px;color:var(--orange)}
+.card.orange .go,.card.purple .go,.card.black .go{color:#fff}.card.yellow .go{color:#000}
+
+/* controles */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;background:var(--card);padding:3px;gap:2px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 13px;font-weight:700;font-size:13px;color:var(--text)}
+.seg button[aria-pressed=true]{background:var(--heading);color:var(--bg)}
+.ctl{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.slider{display:grid;gap:4px;min-width:210px;flex:1}
+.slider label{font-size:13px;font-weight:700;color:var(--heading);display:flex;justify-content:space-between}
+.slider label output{color:var(--orange)}
+input[type=range]{width:100%;accent-color:var(--orange);height:22px}
+
+/* barras divergentes */
+.rows{display:grid;gap:4px}
+.row{display:grid;grid-template-columns:150px 1fr 96px;gap:10px;align-items:center;padding:7px 10px;border-radius:12px;cursor:pointer;transition:background .12s}
+.row:hover,.row.sel{background:var(--muted)}
+.row .nm{font-weight:700;color:var(--heading);font-size:14px;line-height:1.1}
+.row .dv{position:relative;height:18px}
+.row .dv::before{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;background:var(--line)}
+.row .fill{position:absolute;top:3px;bottom:3px;border-radius:6px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.row .val{text-align:right;font-weight:800;font-size:14px;color:var(--heading);font-variant-numeric:tabular-nums}
+.row .val small{display:block;font-weight:600;font-size:11px;color:var(--text)}
+.up{background:var(--red)}.down{background:var(--green)}.flat{background:var(--line)}
+.why{grid-column:1/-1;display:none;padding:2px 10px 10px 160px;font-size:14px;color:var(--heading)}
+.why.on{display:block;animation:in .25s}
+.pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;font-weight:800;background:var(--muted);color:var(--heading)}
+.pill.r{background:color-mix(in srgb,var(--red) 16%,transparent);color:var(--bad)}
+.pill.g{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--good)}
+.pill.y{background:color-mix(in srgb,var(--yellow) 30%,transparent);color:var(--heading)}
+
+/* gráficos */
+svg text{font-family:inherit}
+.chart{width:100%;height:auto;display:block}
+.ax{fill:var(--text);font-size:11px}
+.gl{stroke:var(--line);stroke-width:1}
+.tip{position:fixed;pointer-events:none;z-index:40;background:var(--heading);color:var(--bg);padding:8px 11px;border-radius:10px;font-size:13px;font-weight:600;line-height:1.3;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s;max-width:240px}
+.tip.on{opacity:1;transform:none}
+.bub{cursor:pointer;transition:opacity .15s}
+.bub:hover{opacity:.8}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;margin-top:6px}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+
+/* praças: lista de dinheiro que volta */
+.rk{display:grid;gap:6px}
+.rk .it{display:grid;grid-template-columns:110px 1fr 84px;gap:10px;align-items:center;padding:5px 8px;border-radius:10px;cursor:pointer}
+.rk .it:hover,.rk .it.sel{background:var(--muted)}
+.rk .n{font-weight:700;font-size:14px;color:var(--heading)}
+.rk .t{height:16px;border-radius:6px;background:var(--muted);overflow:hidden}
+.rk .t i{display:block;height:100%;background:var(--orange);border-radius:6px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.rk .v{text-align:right;font-weight:800;font-size:14px;color:var(--heading);font-variant-numeric:tabular-nums}
+
+/* selecionada */
+.sel-card h3{font-size:26px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.trio div{background:var(--muted);border-radius:12px;padding:10px 12px}
+.trio b{display:block;font-size:22px;font-weight:800;color:var(--heading);line-height:1.05}
+.trio span{font-size:12px}
+.say{font-size:16px;color:var(--heading);line-height:1.35}
+
+/* multas */
+.verdict{font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1;color:#fff}
+.find{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid var(--line)}
+.find:last-child{border:0}
+.find b{color:var(--heading);font-size:15px}
+.find small{display:block;color:var(--text);font-size:13px}
+.find .amt{font-weight:800;color:var(--heading);font-size:17px;font-variant-numeric:tabular-nums;text-align:right}
+.badge{font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap}
+.badge.c{background:var(--green);color:#fff}.badge.p{background:var(--yellow);color:#000}.badge.h{background:var(--muted);color:var(--heading);border:1px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.step{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card)}
+.step b{display:block;color:var(--orange);font-size:24px;font-weight:800}
+.step span{color:var(--heading);font-weight:700;font-size:14px}
+
+/* alertas */
+.al{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card);transition:border-color .15s}
+.al:hover{border-color:var(--heading)}
+.led{width:14px;height:14px;border-radius:50%;background:var(--line)}
+.led.r{background:var(--red);box-shadow:0 0 0 5px color-mix(in srgb,var(--red) 20%,transparent)}
+.led.y{background:var(--yellow);box-shadow:0 0 0 5px color-mix(in srgb,var(--yellow) 30%,transparent)}
+.led.g{background:var(--green)}
+.al b{color:var(--heading);font-size:15px;display:block}
+.al small{font-size:13px}
+.al .n{font-weight:800;color:var(--heading);font-size:22px;text-align:right;min-width:60px}
+.stack{display:grid;gap:8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;color:var(--heading);background:var(--muted);cursor:pointer}
+.chip:hover{border-color:var(--orange)}
+
+footer{padding:26px 0 70px;font-size:13px;border-top:1px solid var(--line)}
+footer b{color:var(--heading)}
+
+@media(max-width:920px){
+  .s4,.s5,.s6,.s7,.s8{grid-column:span 12}
+  .kpis{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr}
+  .brand{display:none}
+}
+@media(max-width:560px){
+  .row{grid-template-columns:100px 1fr 74px}.why{padding-left:10px}
+  .rk .it{grid-template-columns:78px 1fr 70px}
+  .find{grid-template-columns:1fr auto}.find .badge{grid-column:1/-1;justify-self:start;order:3}
+  .al{grid-template-columns:auto 1fr}.al .n{grid-column:2;text-align:left}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="wrap">
+  <div class="brand">Eletromidia <b>·</b> COO</div>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <button class="theme" id="theme" aria-label="Alternar tema">
+    <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+</div></div>
+
+<main class="wrap">
+  <section class="hero" id="hero">
+    <h1>Onde o dinheiro está indo.</h1>
+    <p class="sub">COO, janeiro a agosto de 2026. Custo, visitas em campo e o que volta.</p>
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+  <!-- RESUMO -->
+  <section class="panel on" id="p-resumo">
+    <div class="head"><h2>Seis coisas para saber.</h2><p>Toque num cartão para ver o número por trás.</p></div>
+    <div class="grid" id="achados"></div>
+  </section>
+
+  <!-- DINHEIRO -->
+  <section class="panel" id="p-dinheiro">
+    <div class="head"><h2>Gastamos menos que o orçado. Mas onde?</h2><p>Barra para a direita: gastou a mais. Para a esquerda: gastou a menos. Toque numa linha.</p></div>
+    <div class="grid">
+      <div class="card s12">
+        <div class="ctl">
+          <div class="seg" id="mDiv"><button data-m="rs" aria-pressed="true">Em R$</button><button data-m="pct" aria-pressed="false">Em %</button></div>
+          <span class="pill" id="mTot"></span>
+        </div>
+        <div class="rows" id="rowsLinhas"></div>
+      </div>
+      <div class="card s12">
+        <h3>Mês a mês: gasto real contra o orçado</h3>
+        <svg class="chart mt" id="chMes" viewBox="0 0 900 260"></svg>
+        <div class="leg"><span><i style="background:var(--orange)"></i>Realizado</span><span><i style="background:var(--text)"></i>Orçado</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRAÇAS -->
+  <section class="panel" id="p-pracas">
+    <div class="head"><h2>Cada visita que volta é dinheiro gasto duas vezes.</h2><p>"Volta" = nova visita física no mesmo ponto em até 30 dias. Toque numa bolha.</p></div>
+    <div class="grid">
+      <div class="card s7">
+        <div class="ctl">
+          <div class="seg" id="fPraca"><button data-f="all" aria-pressed="true">Todas</button><button data-f="ruas" aria-pressed="false">Com custo no COO</button><button data-f="reg" aria-pressed="false">Regionais</button></div>
+        </div>
+        <svg class="chart" id="chBub" viewBox="0 0 660 380"></svg>
+        <div class="leg"><span><i style="background:var(--red)"></i>Volta mais que o limite</span><span><i style="background:var(--yellow)"></i>Perto</span><span><i style="background:var(--green)"></i>Abaixo</span><span>Tamanho = custo (Opex). Contorno = sem custo próprio no COO.</span></div>
+      </div>
+      <div class="card s5 sel-card" id="selCard"></div>
+      <div class="card s7">
+        <div class="head" style="margin-bottom:8px"><h3>Onde a volta custa mais</h3></div>
+        <div class="ctl">
+          <div class="slider"><label>Meta de volta <output id="oMeta"></output></label><input type="range" id="rMeta" min="20" max="60" value="40"></div>
+          <div class="slider"><label>Custo de uma visita <output id="oCusto"></output></label><input type="range" id="rCusto" min="80" max="400" step="10" value="160"></div>
+        </div>
+        <div class="rk" id="rk"></div>
+        <p class="mt" style="font-size:13px" id="rkNote"></p>
+      </div>
+      <div class="card s5">
+        <h3>Não melhorou no ano</h3>
+        <p style="font-size:14px">% de visitas que voltam, por mês.</p>
+        <svg class="chart mt" id="chVolta" viewBox="0 0 400 220"></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- MULTAS -->
+  <section class="panel" id="p-multas">
+    <div class="head"><h2>Multa de rua: não achamos.</h2><p>Nem no Capex, nem no Opex. A multa de SPObras não passa pelo financeiro.</p></div>
+    <div class="grid">
+      <div class="card black s5">
+        <span class="tag">Veredito</span>
+        <div class="verdict">R$ 589</div>
+        <p class="mt">É o único gasto ligado a SPObras: uma compra de reposição "urgente devido resposta carta SPObras".</p>
+        <p class="mt">A multa em si vem por carta e ofício. Só vira R$ quando a operação reage.</p>
+      </div>
+      <div class="card s7">
+        <h3>O que existe, e o quanto dá para confiar</h3>
+        <div id="finds"></div>
+      </div>
+      <div class="card s7">
+        <h3>Multa de trânsito recuperada, por mês</h3>
+        <p style="font-size:14px">Valor descontado em folha. A multa bruta não aparece.</p>
+        <svg class="chart mt" id="chMulta" viewBox="0 0 640 220"></svg>
+      </div>
+      <div class="card s5">
+        <h3>Por região</h3>
+        <div class="rk mt" id="rkMulta"></div>
+      </div>
+      <div class="card s12">
+        <h3>Como descobrir a multa de verdade</h3>
+        <div class="steps mt">
+          <div class="step"><b>1</b><span>Razão do Opex com conta contábil e documento, igual ao do Capex.</span></div>
+          <div class="step"><b>2</b><span>Extrato do Sem Parar (CGMP) por placa e mês.</span></div>
+          <div class="step"><b>3</b><span>Controle de cartas e ofícios do SPObras, com data e prazo.</span></div>
+        </div>
+      </div>
+      <div class="card yellow s12">
+        <span class="tag">Acidentes</span>
+        <h3>O que já se vê em R$, e o que falta.</h3>
+        <p class="mt">Vandalismo e acidente no Capex: <b>R$ 60 mil</b>. Multas, seguros e frota estão acima. A planilha de acidentes ainda não foi cruzada com o custo. É o próximo passo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALERTAS -->
+  <section class="panel" id="p-alertas">
+    <div class="head"><h2>O painel pode avisar sozinho.</h2><p>Mexa nos limites. A lista abaixo mostra o que dispararia hoje.</p></div>
+    <div class="grid">
+      <div class="card s5">
+        <h3>Limites</h3>
+        <div class="stack mt">
+          <div class="slider"><label>Volta acima de <output id="oA1"></output></label><input type="range" id="rA1" min="30" max="80" value="50"></div>
+          <div class="slider"><label>Mínimo de visitas <output id="oA2"></output></label><input type="range" id="rA2" min="0" max="5000" step="100" value="1000"></div>
+          <div class="slider"><label>Linha gastou a mais que <output id="oA3"></output></label><input type="range" id="rA3" min="5" max="60" value="20"></div>
+          <div class="slider"><label>Praça gastou a menos que <output id="oA4"></output></label><input type="range" id="rA4" min="10" max="70" value="30"></div>
+        </div>
+      </div>
+      <div class="card s7">
+        <h3>Disparando hoje</h3>
+        <div class="stack mt" id="alDyn"></div>
+      </div>
+      <div class="card s12">
+        <h3>Avisos fixos</h3>
+        <div class="stack mt" id="alFix"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Fontes.</b> Capex realizado (ago/26), base Diretoria COO (ago/26) e chamados corretivos do BigQuery (jan a ago/26).</p>
+    <p class="mt"><b>Limites.</b> Custo por praça = Opex das operações de concessão (inclui energia e aluguel). Custo de visita é estimativa: você regula no controle. Regionais não têm custo próprio no COO.</p>
+  </footer>
+</main>
+
+<div class="tip" id="tip"></div>
+
+<script>
+/* ============ DADOS ============ */
+var LINHAS=[
+ {n:"Energia elétrica",r:15844,o:18688,w:"Maior linha: 22% do Opex. Enel SP sozinha é R$ 3,7 mi."},
+ {n:"Instalações",r:12851,o:19568,w:"Não é economia real: R$ 6,0 mi do realizado são baixa de estoque, não serviço."},
+ {n:"Aluguel de imóveis",r:11085,o:11760,w:"Dentro do previsto. Virgo e Pipeline somam R$ 7,8 mi."},
+ {n:"Veículos",r:6632,o:7477,w:"91% é aluguel de frota (Movida, Localiza, Urban)."},
+ {n:"Links e internet",r:5680,o:6765,w:"Abaixo do orçado."},
+ {n:"Máquinas e equip.",r:3544,o:2002,w:"Estourou. Convergint e Agasus lideram."},
+ {n:"Condução",r:3529,o:3769,w:"Dentro. R$ 2,9 mi é Ticket."},
+ {n:"Sistemas e infra",r:607,o:1622,w:"Menos de 40% do orçado. Projeto atrasado ou cancelado?"},
+ {n:"Segurança",r:818,o:1279,w:"Abaixo do orçado."},
+ {n:"Fretes",r:789,o:345,w:"Mais que o dobro do orçado. Baruc e Move somam 88%."},
+ {n:"Seguros",cal:1,r:872,o:673,w:"É calendário, não estouro. O orçado esperava R$ 586 mil em abril; pagou-se todo mês."},
+ {n:"Tributária (PIS/COFINS)",r:523,o:0,w:"Sem orçamento. Diferencial de alíquota, só em Abrigos SP."}
+];
+var MES=["jan","fev","mar","abr","mai","jun","jul","ago"];
+var REAL=[8212,7522,10209,9468,7640,8227,10415,9359], ORC=[10008,10296,10730,10761,10306,10933,10993,10810];
+var VOLTA_MES=[53.2,51.5,51.4,48.7,50.2,50.6,52.7,54.8];
+/* n, sigla, visitas físicas, voltaram, opex real (mil), orçado (mil), grupo */
+var PRACAS=[
+ {n:"São Paulo",s:"SP",f:34406,v:14472,r:13489,o:13386,g:"ruas"},
+ {n:"Rio de Janeiro",s:"RJ",f:14721,v:8820,r:2949,o:5580,g:"ruas"},
+ {n:"Porto Alegre",s:"POA",f:6070,v:3099,r:2854,o:3601,g:"ruas"},
+ {n:"Salvador",s:"BA",f:6013,v:3514,r:3416,o:4957,g:"ruas"},
+ {n:"Belo Horizonte",s:"BH",f:4120,v:1770,r:1146,o:2744,g:"ruas"},
+ {n:"Curitiba",s:"PR",f:3425,v:1027,r:2807,o:5657,g:"ruas"},
+ {n:"Campinas",s:"CP",f:2367,v:915,r:1543,o:1833,g:"ruas"},
+ {n:"Recife",s:"PE",f:2093,v:986,r:2039,o:2293,g:"ruas"},
+ {n:"Sorocaba",s:"SO",f:653,v:342,r:694,o:434,g:"ruas"},
+ {n:"Fortaleza",s:"CE",f:9530,v:7758,g:"reg"},
+ {n:"Brasília",s:"DF",f:3306,v:1754,g:"reg"},
+ {n:"Goiânia",s:"GO",f:1626,v:1080,g:"reg"},
+ {n:"Belém",s:"BE",f:1486,v:1141,g:"reg"},
+ {n:"Teresina",s:"PI",f:1314,v:888,g:"reg"},
+ {n:"São Luís",s:"MA",f:1223,v:989,g:"reg"}
+];
+var MULTA_MES=[3.8,4.9,7.7,7.1,5.3,5.2,5.7,6.3];
+var MULTA_REG=[["São Paulo",21.1],["Paraná",17.8],["Rio de Janeiro",6.0],["Minas Gerais",0.8]];
+var ACHADOS_FIXOS=[
+ {t:"Custas de protesto",d:"R$ 39 mil em 17 lançamentos, pico de R$ 23,8 mil em junho. Sinal de pagamento em atraso.",s:"r",n:"R$ 39 mil"},
+ {t:"Tributária sem orçamento",d:"Diferencial de alíquota PIS/COFINS: R$ 523 mil no ano, todo em Abrigos SP.",s:"r",n:"R$ 523 mil"},
+ {t:"Multa orçada, sem lançamento",d:"R$ 16,8 mil orçados em Multas; o realizado cai em Condução (Sem Parar), não em Multas.",s:"y",n:"R$ 17 mil"},
+ {t:"Baixa de estoque dentro de Instalações",d:"46% do realizado da linha é movimentação contábil. Compara mal com o orçado.",s:"y",n:"46%"},
+ {t:"Visitas sem praça",d:"5.239 visitas físicas sem praça no cadastro do ponto.",s:"y",n:"5,2 mil"},
+ {t:"Março atípico em multas",d:"89 lançamentos contra a média de 18 nos outros meses.",s:"g",n:"Ok"}
+];
+var FINDS=[
+ ["c","Multa de trânsito descontada em folha","216 lançamentos, crédito líquido","-R$ 45,8 mil"],
+ ["c","Multa orçada (Sem Parar e Globo)","jan a ago","R$ 16,8 mil"],
+ ["c","Compra por carta do SPObras","almoxarifado da Lapa","R$ 589"],
+ ["p","Custas de protesto","IEPTB SP e tabelião","R$ 39,4 mil"],
+ ["p","DETRAN e Fazenda estadual","Brasil Outdoor, quase tudo em fevereiro","R$ 35,9 mil"],
+ ["h","Estacionamento rotativo","Zona Azul e Hora Park, quase tudo em SP","R$ 39,1 mil"],
+ ["h","Vandalismo e acidente (Capex)","abrigos, totens, relógios","R$ 59,9 mil"]
+];
+var LBL={c:"Confirmado",p:"Provável",h:"Hipótese"};
+
+/* ============ UTIL ============ */
+var $=function(s,r){return (r||document).querySelector(s)};
+var fmtK=function(k){var a=Math.abs(k);return (k<0?"-":"")+"R$ "+(a>=1000?(a/1000).toFixed(1).replace(".",",")+" mi":Math.round(a).toLocaleString("pt-BR")+" mil")};
+var fmtN=function(n){return Math.round(n).toLocaleString("pt-BR")};
+var fmtP=function(p,d){return (p>0?"+":"")+p.toFixed(d==null?0:d).replace(".",",")+"%"};
+var tip=$("#tip");
+function showTip(e,html){tip.innerHTML=html;tip.classList.add("on");var x=Math.min(e.clientX+14,innerWidth-250),y=e.clientY+14;tip.style.left=x+"px";tip.style.top=y+"px"}
+function hideTip(){tip.classList.remove("on")}
+var NS="http://www.w3.org/2000/svg";
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+
+/* ============ TABS ============ */
+var TABS=[["resumo","Resumo"],["dinheiro","Dinheiro"],["pracas","Praças"],["multas","Multas e risco"],["alertas","Alertas"]];
+var tabsEl=$("#tabs");
+TABS.forEach(function(t){
+  var b=document.createElement("button");b.className="tab";b.role="tab";b.dataset.t=t[0];b.textContent=t[1];
+  if(t[0]==="alertas")b.insertAdjacentHTML("beforeend",'<span class="dot" id="alDot"></span>');
+  b.onclick=function(){go(t[0])};tabsEl.appendChild(b);
+});
+function go(id,silent){
+  document.querySelectorAll(".tab").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===id)});
+  document.querySelectorAll(".panel").forEach(function(p){p.classList.toggle("on",p.id==="p-"+id)});
+  if(!silent)history.replaceState(null,"","#"+id);
+  var b=$('.tab[data-t="'+id+'"]');if(b&&b.scrollIntoView)b.scrollIntoView({inline:"center",block:"nearest"});
+  window.scrollTo({top:0,behavior:"smooth"});
+  $("#hero").style.display=id==="resumo"?"":"none";
+  if(id==="pracas")drawBub();
+}
+$("#theme").onclick=function(){var n=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=n;localStorage.setItem("em-theme",n)};
+
+/* ============ NÚMEROS GERAIS ============ */
+var totR=REAL.reduce(function(a,b){return a+b},0),totO=ORC.reduce(function(a,b){return a+b},0);
+var totF=PRACAS.reduce(function(a,p){return a+p.f},0),totV=PRACAS.reduce(function(a,p){return a+p.v},0);
+var FISICAS_TODAS=101266,VOLTOU_TODAS=52302;
+$("#kpis").innerHTML=
+ '<div class="kpi"><b>R$ 71,1 mi</b><span>Opex realizado, '+fmtP((totR/totO-1)*100)+' do orçado</span></div>'+
+ '<div class="kpi"><b>'+fmtN(FISICAS_TODAS/1000)+' mil</b><span>visitas físicas de corretiva</span></div>'+
+ '<div class="kpi hot"><b>'+Math.round(VOLTOU_TODAS/FISICAS_TODAS*100)+'%</b><span>voltam ao mesmo ponto em 30 dias</span></div>'+
+ '<div class="kpi"><b>R$ 0</b><span>de multa de rua achada nas bases</span></div>';
+
+/* ============ RESUMO ============ */
+var pr=function(s){return PRACAS.filter(function(p){return p.s===s})[0]};
+var reg=PRACAS.filter(function(p){return p.g==="reg"});
+var regF=reg.reduce(function(a,p){return a+p.f},0),regV=reg.reduce(function(a,p){return a+p.v},0);
+var CARDS=[
+ {c:"black",tag:"Multas",big:"R$ 0",t:"Multa de rua não aparece.",d:"O que sobra é multa de trânsito descontada em folha.",to:"multas"},
+ {c:"orange",tag:"Volta",big:Math.round(VOLTOU_TODAS/FISICAS_TODAS*100)+"%",t:"Metade das visitas volta.",d:"Nenhum mês do ano ficou abaixo de 48%.",to:"pracas"},
+ {c:"purple",tag:"Regionais",big:Math.round(regV/regF*100)+"%",t:"Nas regionais, três em quatro voltam.",d:"E a manutenção regional já gastou 45% acima do orçado.",to:"pracas",sel:"CE"},
+ {c:"",tag:"Mesma economia",big:"RJ x PR",t:"Gastaram metade e deram resultados opostos.",d:"Rio: -47% de custo, 60% voltam. Curitiba: -50%, 30% voltam.",to:"pracas",sel:"RJ"},
+ {c:"yellow",tag:"Cuidado",big:"-34%",t:"Instalações parece economia. Não é.",d:"R$ 6 mi do realizado é baixa de estoque.",to:"dinheiro"},
+ {c:"",tag:"Estourou",big:"+129%",t:"Fretes e máquinas passaram do orçado.",d:"Fretes +129%, Máquinas e equip. +77%.",to:"dinheiro"}
+];
+$("#achados").innerHTML=CARDS.map(function(c,i){
+ return '<div class="card link s4 '+c.c+'" data-i="'+i+'"><span class="tag">'+c.tag+'</span><div class="big">'+c.big+'</div><h3 class="mt">'+c.t+'</h3><p style="margin-top:6px;font-size:14px">'+c.d+'</p><span class="go">Ver →</span></div>'}).join("");
+document.querySelectorAll("#achados .card").forEach(function(e){e.onclick=function(){var c=CARDS[e.dataset.i];if(c.sel)selSigla=c.sel;go(c.to);if(c.to==="pracas")setTimeout(function(){drawBub();drawSel()},50)}});
+
+/* ============ DINHEIRO ============ */
+var modo="rs";
+function drawLinhas(){
+ var L=LINHAS.map(function(l){var d=l.r-l.o;return {l:l,d:d,p:l.o?d/l.o*100:null}});
+ L.sort(function(a,b){return Math.abs(b.d)-Math.abs(a.d)});
+ var mx=modo==="rs"?Math.max.apply(null,L.map(function(x){return Math.abs(x.d)})):120;
+ var h="";
+ L.forEach(function(x,i){
+  var v=modo==="rs"?x.d:(x.p==null?120:Math.max(-120,Math.min(120,x.p)));
+  var w=Math.min(50,Math.abs(v)/mx*50);
+  var cls=Math.abs(x.p||100)<3?"flat":(x.d>0?"up":"down");
+  var st=x.d>0?"left:50%":"right:50%";
+  h+='<div class="row" data-i="'+i+'"><div class="nm">'+x.l.n+'</div><div class="dv"><div class="fill '+cls+'" style="'+st+';width:0" data-w="'+w+'"></div></div><div class="val">'+(modo==="rs"?fmtK(x.d):(x.p==null?"novo":fmtP(x.p)))+'<small>'+(modo==="rs"?(x.p==null?"":fmtP(x.p)):fmtK(x.d))+'</small></div></div><div class="why" id="why'+i+'"><span class="pill '+(x.d>0?"r":"g")+'">'+(x.d>0?"a mais":"a menos")+'</span> '+x.l.w+'</div>';
+ });
+ $("#rowsLinhas").innerHTML=h;
+ requestAnimationFrame(function(){document.querySelectorAll("#rowsLinhas .fill").forEach(function(f){f.style.width=f.dataset.w+"%"})});
+ document.querySelectorAll("#rowsLinhas .row").forEach(function(r){r.onclick=function(){
+  var w=$("#why"+r.dataset.i),on=!w.classList.contains("on");
+  document.querySelectorAll("#rowsLinhas .why").forEach(function(e){e.classList.remove("on")});
+  document.querySelectorAll("#rowsLinhas .row").forEach(function(e){e.classList.remove("sel")});
+  if(on){w.classList.add("on");r.classList.add("sel")}}});
+ $("#mTot").textContent="Total: "+fmtK(totR-totO)+" ("+fmtP((totR/totO-1)*100)+") contra o orçado";
+}
+document.querySelectorAll("#mDiv button").forEach(function(b){b.onclick=function(){modo=b.dataset.m;document.querySelectorAll("#mDiv button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});drawLinhas()}});
+
+function lineChart(svg,series,labels,o){
+ svg.innerHTML="";var W=o.w,H=o.h,l=o.l||44,r=14,t=14,b=26;
+ var all=[].concat.apply([],series.map(function(s){return s.d}));
+ var mn=o.min!=null?o.min:Math.min.apply(null,all),mxx=o.max!=null?o.max:Math.max.apply(null,all);
+ var X=function(i){return l+i*(W-l-r)/(labels.length-1)},Y=function(v){return t+(1-(v-mn)/(mxx-mn))*(H-t-b)};
+ for(var g=0;g<=4;g++){var v=mn+(mxx-mn)*g/4,y=Y(v);el("line",{x1:l,x2:W-r,y1:y,y2:y,class:"gl"},svg);var tx=el("text",{x:l-6,y:y+4,"text-anchor":"end",class:"ax"},svg);tx.textContent=o.f(v)}
+ labels.forEach(function(m,i){var tx=el("text",{x:X(i),y:H-6,"text-anchor":"middle",class:"ax"},svg);tx.textContent=m});
+ series.forEach(function(s){
+  var d=s.d.map(function(v,i){return (i?"L":"M")+X(i)+" "+Y(v)}).join(" ");
+  var p=el("path",{d:d,fill:"none",stroke:s.c,"stroke-width":s.w||3,"stroke-linecap":"round","stroke-linejoin":"round","stroke-dasharray":s.dash||""},svg);
+  var len=p.getTotalLength?p.getTotalLength():0;if(len&&!s.dash){p.style.strokeDasharray=len;p.style.strokeDashoffset=len;p.getBoundingClientRect();p.style.transition="stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)";p.style.strokeDashoffset=0}
+  s.d.forEach(function(v,i){el("circle",{cx:X(i),cy:Y(v),r:3.5,fill:s.c},svg)});
+ });
+ var hov=el("line",{y1:t,y2:H-b,stroke:"var(--heading)","stroke-width":1,opacity:0},svg);
+ var hit=el("rect",{x:l,y:0,width:W-l-r,height:H,fill:"transparent"},svg);
+ hit.onmousemove=hit.ontouchmove=function(e){
+  var pt=e.touches?e.touches[0]:e,bb=svg.getBoundingClientRect(),x=(pt.clientX-bb.left)/bb.width*W;
+  var i=Math.max(0,Math.min(labels.length-1,Math.round((x-l)/((W-l-r)/(labels.length-1)))));
+  hov.setAttribute("x1",X(i));hov.setAttribute("x2",X(i));hov.setAttribute("opacity",.35);
+  showTip(pt,"<b>"+labels[i]+"</b><br>"+series.map(function(s){return s.n+": "+o.f(s.d[i],1)}).join("<br>"))};
+ hit.onmouseleave=hit.ontouchend=function(){hov.setAttribute("opacity",0);hideTip()};
+}
+function drawMes(){lineChart($("#chMes"),[{n:"Orçado",d:ORC,c:"var(--text)",dash:"6 6",w:2},{n:"Realizado",d:REAL,c:"var(--orange)"}],MES,{w:900,h:260,min:6000,max:12000,l:84,f:function(v){return "R$ "+(v/1000).toFixed(1).replace(".",",")+" mi"}})}
+
+/* ============ PRAÇAS ============ */
+var LIM=50,filtro="all",selSigla="RJ",META=40,CUSTO=160;
+function tone(p){var pc=p.v/p.f*100;return pc>LIM+5?"var(--red)":(pc>LIM-8?"var(--yellow)":"var(--green)")}
+function drawBub(){
+ var svg=$("#chBub");svg.innerHTML="";var W=660,H=380,l=48,r=18,t=16,b=40,w=W-l-r,h=H-t-b;
+ var X=function(v){return l+(Math.log10(v)-Math.log10(500))/(Math.log10(40000)-Math.log10(500))*w},Y=function(v){return t+(1-v/100)*h};
+ [0,25,50,75,100].forEach(function(v){el("line",{x1:l,x2:W-r,y1:Y(v),y2:Y(v),class:"gl"},svg);var tx=el("text",{x:l-8,y:Y(v)+4,"text-anchor":"end",class:"ax"},svg);tx.textContent=v+"%"});
+ [1000,3000,10000,30000].forEach(function(v){var tx=el("text",{x:X(v),y:H-16,"text-anchor":"middle",class:"ax"},svg);tx.textContent=fmtN(v)});
+ var ax=el("text",{x:l+w/2,y:H-2,"text-anchor":"middle",class:"ax"},svg);ax.textContent="visitas físicas no ano →";
+ el("line",{x1:l,x2:W-r,y1:Y(LIM),y2:Y(LIM),stroke:"var(--red)","stroke-width":1.5,"stroke-dasharray":"5 5"},svg);
+ var lt=el("text",{x:W-r-4,y:Y(LIM)-6,"text-anchor":"end",class:"ax",fill:"var(--red)"},svg);lt.textContent="limite "+LIM+"%";lt.style.fill="var(--red)";
+ PRACAS.filter(function(p){return filtro==="all"||p.g===filtro}).forEach(function(p){
+  var pc=p.v/p.f*100,rad=p.r?7+Math.sqrt(p.r/13489)*20:7,c=tone(p);
+  var g=el("g",{class:"bub"},svg);
+  var ci=el("circle",{cx:X(p.f),cy:Y(100),r:rad,fill:c,"fill-opacity":p.r?.85:.18,stroke:c,"stroke-width":p.r?0:2.5,"stroke-dasharray":p.r?"":"4 3"},g);
+  ci.setAttribute("cy",Y(100));
+  ci.animate([{cy:Y(100)+"px",opacity:0},{cy:Y(pc)+"px",opacity:1}],{duration:650,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"});
+  ci.setAttribute("cy",Y(pc));
+  var tx=el("text",{x:X(p.f),y:Y(pc)+4,"text-anchor":"middle","font-size":11,"font-weight":800,fill:p.r?"#fff":"var(--heading)","pointer-events":"none"},g);tx.textContent=p.s;
+  if(p.s===selSigla){el("circle",{cx:X(p.f),cy:Y(pc),r:rad+5,fill:"none",stroke:"var(--heading)","stroke-width":2},g)}
+  g.onmousemove=function(e){showTip(e,"<b>"+p.n+"</b><br>"+fmtN(p.f)+" visitas · "+pc.toFixed(0)+"% voltam"+(p.r?"<br>Opex "+fmtK(p.r):"<br>Sem custo próprio no COO"))};
+  g.onmouseleave=hideTip;
+  g.onclick=function(){selSigla=p.s;drawBub();drawSel()};
+ });
+}
+document.querySelectorAll("#fPraca button").forEach(function(b){b.onclick=function(){filtro=b.dataset.f;document.querySelectorAll("#fPraca button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});drawBub()}});
+
+function drawSel(){
+ var p=pr(selSigla)||PRACAS[0],pc=p.v/p.f*100;
+ var evit=Math.max(0,p.v-p.f*META/100),rs=evit*CUSTO/1000;
+ var dv=p.r?(p.r/p.o-1)*100:null;
+ var frase="<b>"+pc.toFixed(0)+"%</b> das visitas voltam."+(dv==null?" Sem linha de custo própria no COO: o gasto está diluído.":" Gastou <b>"+Math.abs(dv).toFixed(0)+"% "+(dv<0?"menos":"mais")+"</b> que o orçado.")+
+  (evit>0?" Se caísse a "+META+"%, seriam <b>"+fmtN(evit)+"</b> visitas a menos: cerca de <b>"+fmtK(rs)+"</b>.":" Já está abaixo da meta.");
+ $("#selCard").innerHTML='<span class="tag">'+(p.g==="reg"?"Regional":"Ruas")+'</span><h3>'+p.n+'</h3>'+
+  '<div class="trio"><div><b>'+fmtN(p.f)+'</b><span>visitas</span></div><div><b style="color:'+tone(p)+'">'+pc.toFixed(0)+'%</b><span>voltam</span></div><div><b>'+(p.r?fmtK(p.r).replace("R$ ",""):"—")+'</b><span>Opex</span></div></div>'+
+  '<p class="say">'+frase+'</p><div class="chips" id="chipsP"></div>';
+ var ch=$("#chipsP");PRACAS.slice(0,15).forEach(function(q){var c=document.createElement("span");c.className="chip";c.textContent=q.s;c.onclick=function(){selSigla=q.s;drawBub();drawSel();drawRk()};ch.appendChild(c)});
+}
+function drawRk(){
+ var L=PRACAS.map(function(p){var e=Math.max(0,p.v-p.f*META/100);return {p:p,e:e,rs:e*CUSTO/1000}}).sort(function(a,b){return b.rs-a.rs}).filter(function(x){return x.rs>0});
+ var mx=L.length?L[0].rs:1,tot=L.reduce(function(a,x){return a+x.rs},0);
+ $("#rk").innerHTML=L.slice(0,9).map(function(x){return '<div class="it'+(x.p.s===selSigla?" sel":"")+'" data-s="'+x.p.s+'"><span class="n">'+x.p.n+'</span><div class="t"><i style="width:0" data-w="'+(x.rs/mx*100)+'"></i></div><span class="v">'+fmtK(x.rs)+'</span></div>'}).join("");
+ requestAnimationFrame(function(){document.querySelectorAll("#rk .t i").forEach(function(f){f.style.width=f.dataset.w+"%"})});
+ document.querySelectorAll("#rk .it").forEach(function(e){e.onclick=function(){selSigla=e.dataset.s;drawBub();drawSel();drawRk()}});
+ $("#rkNote").innerHTML="Visitas que sobrariam se todas as praças chegassem a "+META+"%: <b>"+fmtK(tot)+"</b> no ano, a R$ "+CUSTO+" por visita. R$ 160 é uma estimativa (manutenção ÷ visitas).";
+}
+function bindSlider(id,out,fmt,cb){var r=$(id),o=$(out);var f=function(){o.textContent=fmt(+r.value);cb(+r.value)};r.oninput=f;f()}
+bindSlider("#rMeta","#oMeta",function(v){return v+"%"},function(v){META=v;drawSel();drawRk()});
+bindSlider("#rCusto","#oCusto",function(v){return "R$ "+v},function(v){CUSTO=v;drawSel();drawRk()});
+function drawVolta(){lineChart($("#chVolta"),[{n:"Voltam",d:VOLTA_MES,c:"var(--orange)"}],MES,{w:400,h:220,min:40,max:60,l:36,f:function(v,d){return v.toFixed(d?1:0).replace(".",",")+"%"}})}
+
+/* ============ MULTAS ============ */
+$("#finds").innerHTML=FINDS.map(function(f){return '<div class="find"><span class="badge '+f[0]+'">'+LBL[f[0]]+'</span><div><b>'+f[1]+'</b><small>'+f[2]+'</small></div><span class="amt">'+f[3]+'</span></div>'}).join("");
+function drawMulta(){
+ var svg=$("#chMulta");svg.innerHTML="";var W=640,H=220,l=40,r=8,t=14,b=26,bw=(W-l-r)/MULTA_MES.length,mx=9;
+ [0,3,6,9].forEach(function(v){var y=t+(1-v/mx)*(H-t-b);el("line",{x1:l,x2:W-r,y1:y,y2:y,class:"gl"},svg);var tx=el("text",{x:l-6,y:y+4,"text-anchor":"end",class:"ax"},svg);tx.textContent=v});
+ var avg=MULTA_MES.reduce(function(a,b){return a+b},0)/MULTA_MES.length;
+ MULTA_MES.forEach(function(v,i){
+  var h=v/mx*(H-t-b),x=l+i*bw+bw*.18,y=H-b-h;
+  var rc=el("rect",{x:x,y:H-b,width:bw*.64,height:0,rx:6,fill:v>avg*1.3?"var(--red)":"var(--orange)"},svg);
+  rc.animate([{height:"0px",y:(H-b)+"px"},{height:h+"px",y:y+"px"}],{duration:600,delay:i*50,easing:"cubic-bezier(.2,.8,.2,1)",fill:"forwards"});
+  rc.setAttribute("y",y);rc.setAttribute("height",h);
+  var tx=el("text",{x:x+bw*.32,y:H-8,"text-anchor":"middle",class:"ax"},svg);tx.textContent=MES[i];
+  rc.onmousemove=function(e){showTip(e,"<b>"+MES[i]+"</b><br>R$ "+v.toFixed(1).replace(".",",")+" mil recuperados"+(v>avg*1.3?"<br>Acima da média":""))};rc.onmouseleave=hideTip;
+ });
+ var ya=t+(1-avg/mx)*(H-t-b);el("line",{x1:l,x2:W-r,y1:ya,y2:ya,stroke:"var(--heading)","stroke-dasharray":"4 4","stroke-width":1},svg);
+ var at=el("text",{x:l+6,y:ya-6,"text-anchor":"start",class:"ax"},svg);at.textContent="média R$ "+avg.toFixed(1).replace(".",",")+" mil";
+}
+(function(){var mx=MULTA_REG[0][1];$("#rkMulta").innerHTML=MULTA_REG.map(function(m){return '<div class="it"><span class="n">'+m[0]+'</span><div class="t"><i style="width:'+(m[1]/mx*100)+'%"></i></div><span class="v">R$ '+m[1].toFixed(1).replace(".",",")+' mil</span></div>'}).join("")})();
+
+/* ============ ALERTAS ============ */
+var A1=50,A2=1000,A3=20,A4=30;
+function drawAl(){
+ var out=[];
+ var v=PRACAS.filter(function(p){return p.f>=A2&&p.v/p.f*100>A1}).sort(function(a,b){return b.v/b.f-a.v/a.f});
+ out.push({led:v.length?"r":"g",t:"Praças em que a volta passa de "+A1+"%",d:v.length?v.map(function(p){return p.s+" "+Math.round(p.v/p.f*100)+"%"}).join(" · "):"Nenhuma.",n:v.length,go:"pracas"});
+ var m=LINHAS.filter(function(l){return l.o&&l.r>300&&(l.r/l.o-1)*100>A3}).sort(function(a,b){return b.r/b.o-a.r/a.o});
+ out.push({led:m.length?"r":"g",t:"Linhas que gastaram mais de "+A3+"% acima do orçado",d:m.length?m.map(function(l){return l.n+" "+fmtP((l.r/l.o-1)*100)+(l.cal?" (é calendário)":"")}).join(" · "):"Nenhuma.",n:m.length,go:"dinheiro"});
+ var b=PRACAS.filter(function(p){return p.r&&(1-p.r/p.o)*100>A4}).sort(function(a,b){return a.r/a.o-b.r/b.o});
+ out.push({led:b.length?"y":"g",t:"Praças que gastaram mais de "+A4+"% abaixo do orçado",d:b.length?b.map(function(p){return p.s+" "+fmtP((p.r/p.o-1)*100)+(p.v/p.f*100>A1?" (e volta "+Math.round(p.v/p.f*100)+"%)":"")}).join(" · "):"Nenhuma.",n:b.length,go:"pracas"});
+ var arriscadas=b.filter(function(p){return p.v/p.f*100>A1});
+ out.push({led:arriscadas.length?"r":"g",t:"Economia arriscada: gastou pouco e a volta é alta",d:arriscadas.length?arriscadas.map(function(p){return p.s}).join(" · "):"Nenhuma.",n:arriscadas.length,go:"pracas"});
+ $("#alDyn").innerHTML=out.map(function(a,i){return '<div class="al" data-g="'+a.go+'" style="cursor:pointer"><span class="led '+a.led+'"></span><div><b>'+a.t+'</b><small>'+a.d+'</small></div><span class="n">'+a.n+'</span></div>'}).join("");
+ document.querySelectorAll("#alDyn .al").forEach(function(e){e.onclick=function(){go(e.dataset.g)}});
+ var total=out.filter(function(a){return a.led==="r"}).length+ACHADOS_FIXOS.filter(function(a){return a.s==="r"}).length;
+ $("#alDot").style.display=total?"inline-block":"none";
+}
+[["#rA1","#oA1",function(v){return v+"%"},function(v){A1=v}],["#rA2","#oA2",function(v){return fmtN(v)},function(v){A2=v}],["#rA3","#oA3",function(v){return v+"%"},function(v){A3=v}],["#rA4","#oA4",function(v){return v+"%"},function(v){A4=v}]].forEach(function(s){
+ bindSlider(s[0],s[1],s[2],function(v){s[3](v);if(s[0]==="#rA1"){LIM=v;}drawAl()})});
+$("#alFix").innerHTML=ACHADOS_FIXOS.map(function(a){return '<div class="al"><span class="led '+a.s+'"></span><div><b>'+a.t+'</b><small>'+a.d+'</small></div><span class="n">'+a.n+'</span></div>'}).join("");
+
+/* ============ INÍCIO ============ */
+drawLinhas();drawMes();drawSel();drawRk();drawVolta();drawMulta();drawAl();
+var h=(location.hash||"").slice(1);go(TABS.some(function(t){return t[0]===h})?h:"resumo",true);window.scrollTo(0,0);
+</script>
+</body>
+</html>
