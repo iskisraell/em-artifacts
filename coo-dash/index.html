@@ -49,7 +49,7 @@
   <script>
     /* O endereço do painel vem em ?u= (o link de cada ambiente), para não deixar deployment no repo público. Só vale endereço do Apps Script da Eletromidia. */
     var u = new URLSearchParams(location.search).get("u") || "";
-    var valido = /^https:\/\/script\.google\.com\/(a\/macros\/eletromidia\.com\.br\/|macros\/)s\/[\w-]+\/exec$/.test(u);
+    var valido = /^https:\/\/script\.google\.com\/a\/macros\/eletromidia\.com\.br\/s\/[\w-]+\/exec$/.test(u);
     var noApp = window.navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches;
     var forcar = new URLSearchParams(location.search).get("ir") === "1";
     if (valido && (noApp || forcar)) {
