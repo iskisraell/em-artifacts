@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Dash COO</title>
+  <!-- O iPhone lê o ícone da tela de início do documento de topo. O Apps Script serve esse documento (sem ícone), então o atalho nasce desta página, que mora fora do Google, e só repassa para o painel quando abre pela tela de início. -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Dash COO" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#0A0A0B" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="icone-120.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="icone-152.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="icone-167.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <style>
+    :root { color-scheme: dark light; --fundo: #0A0A0B; --texto: #F4F4F2; --texto-2: rgb(244 244 242 / .66); --linha: rgb(255 255 255 / .12); --laranja: #FF4F00; }
+    @media (prefers-color-scheme: light) { :root { --fundo: #F4F4F2; --texto: #101010; --texto-2: rgb(16 16 16 / .62); --linha: rgb(0 0 0 / .12); } }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--fundo); color: var(--texto); font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    main { min-height: 100dvh; display: grid; align-content: center; justify-items: center; gap: 14px; padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom)); text-align: center; }
+    img { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 0 0 1px var(--linha), 0 18px 40px -18px rgb(255 79 0 / .55); }
+    h1 { margin: 6px 0 0; font-size: 26px; letter-spacing: -.02em; }
+    p { margin: 0; max-width: 32ch; color: var(--texto-2); }
+    ol { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; max-width: 32ch; text-align: left; color: var(--texto-2); }
+    ol b { color: var(--texto); }
+    a.abrir { margin-top: 6px; padding: 11px 22px; border-radius: 999px; background: var(--laranja); color: #fff; font-weight: 700; text-decoration: none; }
+    .erro { color: var(--laranja); }
+    [hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="apple-touch-icon.png" alt="" width="96" height="96" />
+    <h1>Dash COO</h1>
+    <p id="aviso" hidden class="erro">Este link não tem o endereço do painel. Peça o link completo.</p>
+    <div id="instalar" hidden>
+      <p>Para ter o painel na tela de início:</p>
+      <ol>
+        <li>Toque em <b>Compartilhar</b> no Safari.</li>
+        <li>Toque em <b>Adicionar à Tela de Início</b>.</li>
+        <li>Mantenha <b>Abrir como app</b> ligado e toque em <b>Adicionar</b>.</li>
+      </ol>
+    </div>
+    <a id="abrir" class="abrir" hidden>Abrir o painel agora</a>
+  </main>
+  <script>
+    /* O endereço do painel vem em ?u= (o link de cada ambiente), para não deixar deployment no repo público. Só vale endereço do Apps Script da Eletromidia. */
+    var u = new URLSearchParams(location.search).get("u") || "";
+    var valido = /^https:\/\/script\.google\.com\/(a\/macros\/eletromidia\.com\.br\/|macros\/)s\/[\w-]+\/exec$/.test(u);
+    var noApp = window.navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches;
+    var forcar = new URLSearchParams(location.search).get("ir") === "1";
+    if (valido && (noApp || forcar)) {
+      location.replace(u);
+    } else if (valido) {
+      document.getElementById("instalar").hidden = false;
+      var a = document.getElementById("abrir");
+      a.href = u;
+      a.hidden = false;
+    } else {
+      document.getElementById("aviso").hidden = false;
+    }
+  </script>
+</body>
+</html>
